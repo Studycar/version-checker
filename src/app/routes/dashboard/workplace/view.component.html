@@ -1,0 +1,29 @@
+<nz-skeleton [nzLoading]="loading">
+  <sv-container col="1" [title]="'基本信息'" labelWidth="100">
+    <sv label="描述" *ngIf="i.Description" type="primary">{{i.Description}}</sv>
+    <sv label="请求URL">{{i.Url}}</sv>
+    <sv label="请求参数">{{i.Parameters}}</sv>
+    <sv label="请求类型">{{i.HttpMethod}}</sv>
+    <sv label="请求次数">{{i.VisitCount}}</sv>
+    <sv label="客户端IP">{{i.ClientIpAddress}}</sv>
+    <sv label="客户端类型">{{i.ClientName}}</sv>
+    <sv label="返回状态码" type="success">{{i.HttpStatusCode}}</sv>
+    <sv label="请求用户" *ngIf="i.UserName">{{i.UserName}}</sv>
+    <sv label="浏览器" col="1">{{i.BrowserInfo}}</sv>
+    <sv label="异常信息" col="1" type="danger" *ngIf="i.Exceptions">{{i.Exceptions}}</sv>
+  </sv-container>
+  <st #st [data]="i.SqlLogInfos" [columns]="columns" [expand]="expand" [footer]="footer" [ps]="10" [header]="header">
+    <ng-template #expand let-g let-index="index" let-column="column">
+      {{g.Sql}}
+    </ng-template>
+    <ng-template #header>
+        <strong>SQL执行日志</strong>
+      </ng-template>
+    <ng-template #footer>
+      <div class="text-right">
+        总共耗时：
+        <strong class="text-error">{{totalDuration}}</strong>ms
+      </div>
+    </ng-template>
+  </st>
+</nz-skeleton>

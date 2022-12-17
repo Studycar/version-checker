@@ -1,0 +1,70 @@
+<custom-formquery [queryParams]="queryParams" [context]="context">
+  <custom-button text="{{ '新增' | translate }}" [src]="'基础icon-新增'" (clickEvent)="add()"></custom-button>
+  <custom-button text="{{ '删除' | translate }}" [src]="'基础icon-删除'" (clickEvent)="remove()"></custom-button>
+  <custom-button text="{{ '导入' | translate }}" [src]="'基础icon-导入'" [loading]="optionsLoading" (clickEvent)="import()">
+  </custom-button>
+  <custom-button text="{{ '导出' | translate }}" [src]="'基础icon-导出'" (clickEvent)="export()"></custom-button>
+  <custom-button text="{{ '变更审核' | translate }}" [src]="'提交审核'" (clickEvent)="changeApproval()"></custom-button>
+  <custom-button text="{{ '执行变更' | translate }}" [src]="'变更'" (clickEvent)="applyChange()"></custom-button>
+</custom-formquery>
+<nz-card>
+  <ag-grid-angular #agGrid [class]="themeClass" [style.height.px]="gridHeight" [rowData]="gridData"
+    [columnDefs]="columns" [gridOptions]="gridOptions" [myAgGridState]="'hw-customer-change-order'"
+    [myAgGridRowKey]="{tb:'PS_CHANGE_ORDER'}" (filterChanged)="onFilterChanged($event)">
+  </ag-grid-angular>
+  <custom-pager [height]="pagerHeight" [context]="context" [view]='context.view' [(pageSize)]="_pageSize"
+    [(pageNo)]="_pageNo" (pageChangeEvent)="onPageChanged($event)"></custom-pager>
+  <custom-excelexport [expColumns]='expColumns' [expColumnsOptions]='expColumnsOptions' fileName='变更单' #excelexport>
+  </custom-excelexport>
+</nz-card>
+<ng-template #customTemplate let-dataItem>
+  <div *ngIf="!dataItem.isBottomRowData">
+    <div style="display: inline;" *ngIf="['10', '40'].includes(dataItem.changeOrderState)">
+      <span>
+        <span title="{{ '编辑' | translate}}" (click)="add(dataItem)" style="cursor: Pointer">
+          <i class="anticon anticon-edit"></i>
+        </span>
+        <nz-divider nzType="vertical"></nz-divider>
+      </span>
+      <span>
+        <span title="{{ '提交' | translate}}" class="pointer" (click)="openAuditModal(dataItem)">
+          <i nz-icon nzType="audit" nzTheme="outline"></i>
+        </span>
+        <nz-divider nzType="vertical"></nz-divider>
+      </span>
+      <span>
+        <span title="{{ '删除' | translate}}" nz-popconfirm nzTitle="{{ '是否确认删除该记录?' | translate}}"
+          (nzOnConfirm)="remove(dataItem);" class="pointer">
+          <i class="anticon anticon-delete"></i>
+        </span>
+      </span>
+    </div>
+    <!-- 仅已审核可废弃 -->
+    <div style="display: inline;" *ngIf="dataItem.changeOrderState === '30'">
+      <span title="{{ '废弃' | translate}}" nz-popconfirm nzTitle="{{ '是否确认废弃该记录?' | translate}}"
+        (nzOnConfirm)="cancel(dataItem);" class="pointer">
+        <i class="anticon anticon-stop"></i>
+      </span>
+    </div>
+  </div>
+</ng-template>
+<nz-modal [(nzVisible)]="isVisible" [nzTitle]="'执行变更'" [nzFooter]="modalFooter"
+  (nzOnCancel)="handleCancel()">
+  <form #f="ngForm" se-container="1">
+    <se label="{{ '工厂' | translate }}" required>
+      <nz-select nzShowSearch name="plantCode" [(ngModel)]="plantCode" required>
+        <nz-option *ngFor="let op of plantOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '产品大类' | translate }}" required>
+      <nz-select nzShowSearch name="productCategory" [(ngModel)]="productCategory" required>
+        <nz-option *ngFor="let op of productCategoryOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se>
+  </form>
+  <ng-template #modalFooter>
+    <button nz-button nzType="default" (click)="handleCancel()">取消</button>
+    <button nz-button nzType="primary" [disabled]="f.invalid" (click)="handleOk()"
+      [nzLoading]="http.loading">确认</button>
+  </ng-template>
+</nz-modal>

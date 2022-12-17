@@ -1,0 +1,23 @@
+<!--<div class="modal-header">
+  <div class="modal-title">{{ '技改明细编辑' | translate}}</div>
+</div>-->
+<custom-formquery [queryParams]="queryParams" [context]="context">
+  <span>
+    <custom-button text="{{ '确定' | translate}}" (clickEvent)="save()" [src]="'保存'">      
+    </custom-button>
+  </span>
+</custom-formquery>
+<form nz-form #f="ngForm" se-container="1" *ngIf='inputParam.showSelectText'>
+  <se label="{{'已选值' | translate}}">
+    <textarea nz-input [(ngModel)]="inputParam.selectText" name="selectText"></textarea>
+  </se>
+</form>
+<nz-card>
+  <ag-grid-angular #agGrid [class]="themeClass" [style.height.px]="gridHeight" [rowData]="gridData" [columnDefs]="columns"(rowSelected)="onRowSelected($event)"
+    (rowDoubleClicked)="selectConfrim($event)" [rowSelection]="rowSelectionMode" (selectionChanged)="onSelectionChanged($event)"
+    [gridOptions]="gridOptions" [myAgGridRowKey]="{tb:'PS_ITEM,PS_CATEGORY'}" [myAgGridState]="'PS_TECHNICAL_MODIFY'">
+  </ag-grid-angular>
+  <custom-pager [height]="pagerHeight" [context]="context" [view]='context.view' [(pageSize)]="_pageSize" [(pageNo)]="_pageNo"
+    [fixed]="false" (pageChangeEvent)="onPageChanged($event)">
+  </custom-pager>
+</nz-card>

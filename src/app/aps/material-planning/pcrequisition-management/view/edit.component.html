@@ -1,0 +1,60 @@
+<div class="modal-header">
+  <div class="modal-title">{{ '采购申请' | translate}} {{ record.id }}</div>
+</div>
+<div *ngIf="!Isview" style=" margin:2px auto;">
+  <button style="float: left;" nz-button nzType="primary" [disabled]="!f.valid || !dirty" (click)="addrow()">
+    {{ '新增行' | translate}}</button>
+  <button style="float: left;background-color: red;" nz-button nzType="primary"  nzDanger (click)="removerows()"><i nz-icon nzType="delete" nzTheme="outline"></i>
+    {{ '删除' | translate}}</button>
+  <button style="float: left;" nz-button nzType="primary"  nzDanger (click)="editrows()"><i nz-icon nzType="delete" nzTheme="outline"></i>
+    {{ '编辑' | translate}}</button>
+  <button  *ngIf="Istrue"  style="float: left;" nz-button nzType="primary" (click)="approval()"><i nz-icon nzType="check-circle" nzTheme="outline"></i>
+    {{ '审批' | translate}}</button>
+  <div style="clear: both;"></div>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="3">
+    <se label="{{ '申请编号' | translate}}">
+      <input type="text" nz-input [(ngModel)]="i.documentNum" name="documentNum" readonly [class.disabled]="true">
+    </se>
+    <se label="{{ '工厂' | translate}}" required>
+      <nz-select [(ngModel)]="i.plantCode" name="plantCode" [disabled]="Isview||Isedit" nzAllowClear nzShowSearch required>
+        <nz-option *ngFor="let option of listPlant" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '订单类型' | translate}}" required>
+      <nz-select [(ngModel)]="i.poType" name="poType" [disabled]="Isview||Isedit" nzAllowClear nzShowSearch required>
+        <nz-option *ngFor="let option of listOrderType" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '状态' | translate}} " required>
+      <nz-select [(ngModel)]="i.status" name="status"  readonly [disabled]="true" nzAllowClear nzShowSearch required>
+        <nz-option *ngFor="let option of listPRStatus" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '来源类型' | translate}}" required>
+      <nz-select [(ngModel)]="i.sourceCode" name="sourceCode" readonly [disabled]="true" nzAllowClear nzShowSearch required>
+        <nz-option *ngFor="let option of listPRSourceStatus" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '保税类型' | translate}}" >
+      <nz-select [(ngModel)]="i.bondedType" name="bondedType" [disabled]="Isview" nzAllowClear nzShowSearch >
+        <nz-option *ngFor="let option of listBondedType" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '申请备注' | translate}}" col=2  >
+      <input type="textarea" nz-input colspan="2" [(ngModel)]="i.comments" name="comments"  [class.disabled]="Isview" >
+    </se>
+  </form>
+</div>
+<ag-grid-angular #agGrid [class]="themeClass" [style.height.px]="gridHeight" [rowData]="gridData" [columnDefs]="columns"
+  [gridOptions]="gridOptions" [myAgGridRowKey]="{tb:'myGridRowKey'}" [myAgGridState]="'PcRequisitionManagementEditViewDetial'"
+   (virtualColumnsChanged)="onVirtualColumnsChanged($event)">
+</ag-grid-angular>
+<custom-pager [height]="pagerHeight" [context]="context" [view]='context.view' [(pageSize)]="_pageSize" [(pageNo)]="_pageNo"
+    [fixed]="false" (pageChangeEvent)="onPageChanged($event)">
+ </custom-pager>
+<div class="modal-footer">
+  <button *ngIf="!Isview" nz-button type="submit" [nzType]="'primary'" (click)="save()" [disabled]="!f.valid || !dirty" [nzLoading]="http.loading">保存</button>
+  <button nz-button type="button" (click)="close()">关闭</button>
+</div>

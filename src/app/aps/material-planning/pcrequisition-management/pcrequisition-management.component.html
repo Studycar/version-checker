@@ -1,0 +1,28 @@
+<custom-formquery [queryParams]="queryParams" [context]="context" (event1)="searchItems($event)" (event2)="searchBuyer($event)" (event3)="searchVendor($event)" (event4)="searchPlanner($event)" (event5)="searchDocumentNum($event)" >
+  <span>
+   <!-- <custom-button text="{{ '保存' | translate}}" (clickEvent)="save()" [src]="'保存'"></custom-button>-->
+    <custom-button text="{{ '新增' | translate}}" (clickEvent)="addnew()" [src]="'基础icon-新增'"></custom-button>
+    <custom-button text="{{ '导出' | translate }}" (clickEvent)="exportFile()" [src]="'基础icon-导出'"></custom-button>
+  </span>
+</custom-formquery>
+<nz-card>
+  <ag-grid-angular #agGrid [class]="themeClass" id="PcRequisitionManagementGrid" [style.height.px]="gridHeight" [rowData]="gridData"
+    [columnDefs]="columns" [gridOptions]="gridOptions" [myAgGridRowKey]="{tb:'PC_REQUISITION_HEADER'}" [myAgGridState]="'PcRequisitionManagement'"
+    [suppressRowClickSelection]="true" [isRowSelectable]="isRowSelectable" (virtualColumnsChanged)="onVirtualColumnsChanged($event)">
+  </ag-grid-angular>
+  <custom-pager [height]="pagerHeight" [context]="context" [view]='context.view' [(pageSize)]="_pageSize" [(pageNo)]="_pageNo"
+    [fixed]="!isPopShow" (pageChangeEvent)="onPageChanged($event)">
+  </custom-pager>
+  <custom-excelexport [expColumns]='expColumns' [expColumnsOptions]='expColumnsOptions' fileName='采购申请管理' #excelexport>
+  </custom-excelexport>
+</nz-card>
+
+<ng-template #customTemplate let-dataItem>
+  <span class="pointer" title="{{'查看' | translate}}" (click)="viewItem(dataItem)" ><i nz-icon nzType="bars" nzTheme="outline"></i></span>
+  <nz-divider nzType="vertical" [hidden]="!dataRowEdit(dataItem)"></nz-divider>
+  <span class="pointer" title="{{'编辑' | translate}}" [hidden]="!dataRowEdit(dataItem)" (click)="editItem(dataItem)"><i nz-icon nzType="edit" nzTheme="outline"></i></span>
+  <nz-divider nzType="vertical"></nz-divider>
+  <span class="pointer" title="{{'删除' | translate}}" [hidden]="!dataRowDelete(dataItem)" nz-popconfirm nzTitle="{{ '是否确认删除该记录?' | translate}}" (nzOnConfirm)="deleteRow(dataItem);" ><i nz-icon nzType="delete" nzTheme="outline"></i></span>
+  <span class="pointer" title="{{'取消' | translate}}" [hidden]="!dataRowCancle(dataItem)" (click)="cancleRow(dataItem);"><i nz-icon nzType="close-circle" nzTheme="outline"></i></span>
+</ng-template>
+

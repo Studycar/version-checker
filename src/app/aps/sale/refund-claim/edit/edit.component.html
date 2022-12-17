@@ -1,0 +1,92 @@
+<!-- 头部 -->
+<div class="modal-header">
+  <div class="modal-title">{{ (isModify ? '编辑信息' :' 新增信息') | translate}}</div>
+</div>
+<div style="margin:2px auto;" *ngIf="isModify">
+  <button style="float: right;" nz-button nzType="dashed" (click)="clear()">{{ '重置' | translate}}</button>
+  <div style="clear: both;"></div>
+</div>
+<!-- 内容 -->
+<div>
+  <form nz-form #f="ngForm" se-container="2">
+    <se label="{{ '业务类型' | translate}}" required>
+      <nz-select nzShowSearch [(ngModel)]="i.businessType" name="businessType" required [disabled]="isModify">
+        <nz-option *ngFor="let option of filteredBusinessTypeOptions" [nzLabel]="option.label" [nzValue]="option.value">
+        </nz-option>
+      </nz-select>
+    </se>
+    <se *ngIf="isModify" label="{{ '申请单号' | translate}}" required>
+      <input type="text" nz-input [(ngModel)]="i.refundClaimCode" name="refundClaimCode" required disabled>
+    </se>
+    <se label="{{ '付款公司' | translate}}" required>
+      <nz-select nzShowSearch [(ngModel)]="i.plantCode" name="plantCode" required>
+        <nz-option *ngFor="let option of orgReflectOptions" [nzLabel]="option.label" [nzValue]="option.value">
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '客户编码' | translate }}" required>
+      <popup-select [Value]="i.cusCode" [ValueField]="'cusCode'"
+        [Text]="i.cusName" [TextField]="'cusName'" required [options]="customersOptions"
+        [gridView]="gridViewCustoms" [columns]="columnsCustoms"
+        (SearchEvent)="searchCustoms($event)" (RowSelect)="onRowSelectCustoms($event)">
+      </popup-select>
+    </se>
+    <!-- <se label="{{ '付款账号' | translate}}" required>
+      <input type="text" nz-input [(ngModel)]="i.payAccountNo" name="payAccountNo" required>
+    </se> -->
+    <se label="{{ '付款方法' | translate}}" required>
+      <nz-select nzShowSearch [(ngModel)]="i.payType" name="payType" required>
+        <nz-option *ngFor="let option of payTypeOptions" [nzLabel]="option.label" [nzValue]="option.value">
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '付款金额' | translate}}" required>
+      <nz-input-number type="text" nz-input [(ngModel)]="i.payAmount" name="payAmount" required></nz-input-number>
+    </se>
+    <se label="{{ '币种' | translate}}" required>
+      <nz-select nzShowSearch [(ngModel)]="i.currency" name="currency" required>
+        <nz-option *ngFor="let option of currencyOptions" [nzLabel]="option.label" [nzValue]="option.value">
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '收款方账号' | translate}}" required>
+      <input type="text" nz-input [(ngModel)]="i.receiveAccountNo" name="receiveAccountNo" required>
+    </se>
+    <se label="{{ '收款方账户户名' | translate}}" required>
+      <input type="text" nz-input [(ngModel)]="i.receiveAccountName" name="receiveAccountName" required>
+    </se>
+    <se label="{{ '收款方联行号' | translate}}" required>
+      <input type="text" nz-input [(ngModel)]="i.receiveCnaps" name="receiveCnaps" required>
+    </se>
+    <se label="{{ '收款方银行名称' | translate}}" required>
+      <input type="text" nz-input [(ngModel)]="i.receiveBankName" name="receiveBankName" required>
+    </se>
+    <se label="{{ '收款方省' | translate}}">
+      <input type="text" nz-input [(ngModel)]="i.prov" name="prov">
+    </se>
+    <se label="{{ '收款方市' | translate}}">
+      <input type="text" nz-input [(ngModel)]="i.city" name="city">
+    </se>
+    <se label="{{ '对公标识' | translate}}" required>
+      <nz-select nzShowSearch [(ngModel)]="i.personnel" name="personnel" required>
+        <nz-option *ngFor="let option of YesNoOptions" [nzLabel]="option.label" [nzValue]="option.value">
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '是否加急' | translate}}" required>
+      <nz-select nzShowSearch [(ngModel)]="i.urgent" name="urgent" required>
+        <nz-option *ngFor="let option of YesNoOptions" [nzLabel]="option.label" [nzValue]="option.value">
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '摘要' | translate}}" required col="1">
+      <textarea nz-input rows="3" [(ngModel)]="i.remark" name="remark" required></textarea>
+    </se>
+  </form>
+</div>
+<!-- 底部 -->
+<div class="modal-footer">
+  <button nz-button type="button" (click)="close()">{{ '取消' | translate}}</button>
+  <button nz-button type="submit" nzType="primary" (click)="save(f)"
+    [disabled]="!f.valid || !f.dirty" [nzLoading]="loading">{{ '保存' | translate}}</button>
+</div>

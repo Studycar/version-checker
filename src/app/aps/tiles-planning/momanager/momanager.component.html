@@ -1,0 +1,96 @@
+<custom-formquery [queryParams]="queryParams" [context]="context" (event1)="plantchange($event)"
+  (event2)="groupchange($event)">
+  <span>
+    <custom-button text="{{ '导出' | translate }}" (clickEvent)="export()" [src]="'基础icon-导出'">
+    </custom-button>
+    <!-- <custom-button
+      text="{{ '更新最早开始时间' | translate }}"
+      (clickEvent)="updateMoEarliestStartTime()"
+      [src]="'排产检核'"
+    >
+    </custom-button> -->
+    <!-- <custom-button
+      text="{{ '参与排产' | translate }}"
+      [disabled]="isCheck"
+      (clickEvent)="takeSchedule()"
+      [src]="'参与排产'"
+      [srcDisabled]="'不参与排产'"
+    >
+    </custom-button> -->
+    <custom-button text="{{ ' 转基地' | translate }}" (clickEvent)="ChangePlant()" *ngIf="canShow" [src]="'发布'">
+      <nz-modal [(nzVisible)]="isVisible" nzTitle="请选择新基地" nzOkText="确认" nzCancelText="取消" (nzOnOk)="handleOk()"
+        (nzOnCancel)="handleCancel()">
+        <!-- <div>原基地：{{OrgPlantCode}}</div> -->
+        <div>原基地：
+          <nz-select [ngModel]="OrgPlantCode" style="width: 130px;" [nzDisabled]="true">
+            <nz-option *ngFor="let code of OrgPlantList" [nzValue]="code.value" [nzLabel]="code.value"></nz-option>
+          </nz-select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <!-- <ng-container *nzModalContent> -->
+          <!-- <p>Bla bla ...</p> -->
+          更改后基地：
+          <nz-select [(ngModel)]="selectedPlantCode" style="width: 130px;">
+            <nz-option *ngFor="let code of PlantList" [nzValue]="code.value" [nzLabel]="code.value"></nz-option>
+          </nz-select>
+        </div>
+        <!-- </ng-container> -->
+      </nz-modal>
+    </custom-button>
+
+    <!-- <custom-button text="{{ '重读组件' | translate}}" (clickEvent)="readMoRequirement()" [src]="'发布'">
+    </custom-button> -->
+  </span>
+</custom-formquery>
+
+<nz-card>
+  <div>
+    <!-- <nz-tabset>
+      <nz-tab
+        *ngFor="let tab of tabs"
+        [nzTitle]="titleTemplate"
+        (nzSelect)="tabSelect(tab)"
+      >
+        <ng-template #titleTemplate>
+          <div style="height: 24px;">
+            {{ tab.name | translate }}
+            <div
+              style="position: absolute; margin-top: -10px;width: 35px;text-align: center;"
+            >
+              <i
+                class="anticon anticon-up"
+                *ngIf="tab.index === selectIndex"
+              ></i>
+            </div>
+          </div>
+        </ng-template>
+      </nz-tab>
+    </nz-tabset> -->
+    <ag-grid-angular #agGrid [class]="themeClass" [style.height.px]="gridHeight" [rowData]="gridData"
+      [columnDefs]="columns" [gridOptions]="gridOptions2" (selectionChanged)="onSelectionChanged($event)"
+      (rowSelected)="onRowSelected($event)" [myAgGridRowKey]="{ tb: 'psMakeOrder' }"
+      [myAgGridState]="'planschedule-momanager'">
+    </ag-grid-angular>
+    <custom-pager [height]="pagerHeight" [context]="context" [view]="context.view" [checkMoRows]="checkMoRows"
+      [(pageSize)]="_pageSize" [(pageNo)]="_pageNo" (pageChangeEvent)="onPageChanged($event)"></custom-pager>
+    <custom-excelexport [expColumns]="expColumns" [expColumnsOptions]='expColumnsOptions' fileName="MO维护" #excelexport>
+    </custom-excelexport>
+  </div>
+</nz-card>
+<ng-template #customTemplate let-dataItem>
+  <span
+    *ngIf="dataItem.canEdit ||dataItem.groupIndex2===1"
+    title="{{ '编辑' | translate }}" (click)="add(dataItem)" class="pointer">
+    <i class="anticon anticon-edit"></i>
+  </span>
+  <nz-divider nzType="vertical"></nz-divider>
+  <span *ngIf="dataItem.canSplit" title="{{ '拆分' | translate}}" (click)="splitMo(dataItem);" class="pointer">
+    <i class="anticon anticon-appstore"></i>
+  </span>
+  <nz-divider nzType="vertical"></nz-divider>
+  <!-- <span title="{{ '展开' | translate }}" *ngIf="dataItem.LEVEL_NUM === 0" (click)="OpenLevel(dataItem)" class="pointer">
+    <i class="anticon anticon-plus"></i>
+  </span> -->
+  <span title="{{ '查看明细' | translate }}" *ngIf="dataItem.groupIndex2 === 1" (click)="showDetail(dataItem)"
+    class="pointer">
+    <i nz-icon nzType="bars" nzTheme="outline"></i>
+  </span>
+</ng-template>

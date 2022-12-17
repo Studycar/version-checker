@@ -1,0 +1,46 @@
+<div class="modal-header">
+  <div class="modal-title">{{ (Istrue?'编辑信息':'新增信息') | translate}}</div>
+</div>
+<div style=" margin:2px auto;" *ngIf="Istrue">
+  <button style="float: right;" nz-button nzType="dashed" (click)="clear()">{{ '重置' | translate}}</button>
+  <div style="clear: both;"></div>
+</div>
+
+<div>
+  <form nz-form #f="ngForm" se-container="2">
+
+    <se label="{{ '类别集名称' | translate}}" required>
+      <input type="text" nz-input [(ngModel)]="i.categorySetCode" name="categorySetCode" [disabled]="Istrue"
+        required>
+    </se>
+
+    <se label="{{ '类别集描述' | translate}}" required>
+      <input type="text" nz-input [(ngModel)]="i.descriptions" name="descriptions" required>
+    </se>
+
+    <se label="{{ '段数' | translate}}" required>
+      <nz-input-number [(ngModel)]="i.segmentsQty" [nzMin]="0" name="segmentsQty"
+        (ngModelChange)="modelValueValidate($event)" required></nz-input-number>
+    </se>
+
+    <se label="{{ '是否冲减维度' | translate}}" required>
+
+      <nz-select #select [(ngModel)]="i.consumeSet" nzShowSearch name="consumeSet" required>
+        <nz-option *ngFor="let o of applicationYesNo" [nzValue]="o.value" [nzLabel]="o.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '是否有效' | translate}}" required>
+
+      <nz-select #select [(ngModel)]="i.enableFlag" nzShowSearch name="enableFlag" required>
+        <nz-option *ngFor="let o of applicationYesNo" [nzValue]="o.value" [nzLabel]="o.label"></nz-option>
+      </nz-select>
+    </se>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save()"
+    [disabled]="!segmentsQtyValidate || f.invalid || !f.dirty" [nzLoading]="http.loading">
+    {{ '保存' | translate}}</button>
+  <button nz-button type="button" (click)="close()">
+    {{ '关闭' | translate}}</button>
+</div>

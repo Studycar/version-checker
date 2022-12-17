@@ -1,0 +1,179 @@
+<div class="modal-header">
+  <div class="modal-title">{{ isModify ? '编辑信息' : '新增信息' | translate }}</div>
+</div>
+<div style="position: relative; height: 32px" *ngIf="isModify">
+  <button nz-button nzType="dashed" style="position: absolute; right: 0;" (click)="clear()">{{'重置' | translate}}</button>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="2">
+    <se label="{{ '销售订单号' | translate }}" *ngIf="isModify">
+      <input nz-input type="text" name="salesOrderCode" disabled [(ngModel)]="i.salesOrderCode">
+    </se>
+    <se label="{{ '明细行号' | translate }}" *ngIf="isModify">
+      <input nz-input type="text" name="detailedNum" disabled [(ngModel)]="i.detailedNum">
+    </se>
+    <se label="{{ '明细状态' | translate }}" *ngIf="isModify">
+      <nz-select #select nzShowSearch name="salesOrderDetailedState" nzDisabled [(ngModel)]="i.salesOrderDetailedState">
+        <nz-option *ngFor="let op of salesOrderDetailedStateOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '出库类别' | translate }}" *ngIf="isModify">
+      <input nz-input type="text" disabled name="cklb" [(ngModel)]="i.cklb">
+    </se>
+    <se label="{{ '出库类别说明' | translate }}" *ngIf="isModify">
+      <input nz-input type="text" disabled name="cklbRemarks" [(ngModel)]="i.cklbRemarks">
+    </se>
+    <se label="{{ '工厂' | translate }}" *ngIf="isModify">
+      <nz-select #select nzShowSearch name="plantCode" nzDisabled [(ngModel)]="i.plantCode">
+        <nz-option *ngFor="let op of plantOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se>
+    <!-- <se label="{{ '客户订单号' | translate }}" required>
+      <popup-select [(SelectValue)]="i.cusOrderCode" [ValueField]="'cusOrderCode'"
+        [(SelectText)]="i.cusOrderCode" [TextField]="'cusOrderCode'" name="cusOrderCode" [options]="customOrderOptions"
+        [gridView]="gridViewCustomOrders" [columns]="columnsCustomOrders" (TextChanged)="onCustomerOrderTextChanged($event)"
+        (SearchEvent)="searchCustomerOrders($event)" (RowSelect)="onRowSelectCustomerOrders($event)" required>
+      </popup-select>
+    </se> -->
+    <!-- <se label="{{ '下单日期' | translate }}" *ngIf="isModify" required>
+      <nz-date-picker nzFormat="yyyy-MM-dd" [(ngModel)]="i.orderDate" name="orderDate" required>
+      </nz-date-picker>
+    </se> -->
+    <se label="{{ '合同号' | translate }}" required>
+      <popup-select [(SelectValue)]="i.contractCode" [ValueField]="'contractCode'"
+        [(SelectText)]="i.contractCode" [TextField]="'contractCode'" name="contractCode" [options]="contractOptions"
+        [gridView]="gridViewContracts" [columns]="columnsContracts" (TextChanged)="ContractTextChanged($event)"
+        (SearchEvent)="searchContracts($event)" (RowSelect)="onRowSelectContracts($event)" required>
+      </popup-select>
+    </se>
+    <se label="{{ '驳回原因' | translate }}" *ngIf="isModify">
+      <input nz-input type="text" name="reason" disabled [(ngModel)]="i.reason">
+    </se>
+    <se label="{{ '存货编码' | translate }}" required>
+      <popup-select [(SelectValue)]="i.stockCode" [ValueField]="'itemId'"
+        [(SelectText)]="i.stockCode" [TextField]="'itemId'" name="stockCode" [options]="onhandOptions"
+        [gridView]="gridViewStocks" [columns]="columnsStocks" (TextChanged)="onStockTextChanged($event)"
+        (SearchEvent)="searchStocks($event)" (RowSelect)="onHandsSelect($event)" required>
+      </popup-select>
+    </se>
+    <se label="{{ '存货名称' | translate }}" *ngIf="isModify">
+      <input nz-input type="text" name="stockName" disabled [(ngModel)]="i.stockName">    
+    </se>
+    <se label="{{ '面膜编码' | translate }}" *ngIf="isModify">
+      <input nz-input type="text" name="coatingUpCode" disabled [(ngModel)]="i.coatingUpCode">    
+    </se>
+    <se label="{{ '底膜编码' | translate }}" *ngIf="isModify">
+      <input nz-input type="text" name="coatingDownCode" disabled [(ngModel)]="i.coatingDownCode">    
+    </se>
+    <se label="{{ '垫纸' | translate }}" *ngIf="isModify">
+      <input nz-input type="text" name="paper" disabled [(ngModel)]="i.paper">    
+    </se>
+    <se label="{{ '配送公仓' | translate }}" *ngIf="isModify">
+      <!-- <input nz-input type="text" name="distributionWarehouse" disabled [(ngModel)]="i.distributionWarehouse"> -->
+      <popup-select [(SelectValue)]="i.distributionWarehouse" [ValueField]="'warehouse'"
+        [(SelectText)]="i.distributionWarehouse" [TextField]="'warehouse'" name="distributionWarehouse"
+        [gridView]="gridViewWares" [columns]="columnsWares" (TextChanged)="onWaresTextChanged($event)"
+        (SearchEvent)="searchWares($event)" (RowSelect)="onWaresSelect($event)">
+      </popup-select>
+    </se>
+    <se label="{{ '批号' | translate }}" *ngIf="isModify">
+      <input nz-input type="text" name="batchNum" disabled [(ngModel)]="i.batchNum">
+    </se>
+    <se label="{{ '钢种' | translate }}" *ngIf="isModify">
+      <input nz-input type="text" name="steelType" disabled [(ngModel)]="i.steelType">
+    </se>
+    <se label="{{ '规格型号' | translate }}" *ngIf="isModify">
+      <input nz-input type="text" name="standardsType" disabled [(ngModel)]="i.standardsType">
+    </se>
+    <se label="{{ '钢材规格尺寸' | translate }}" *ngIf="isModify">
+      <input nz-input type="text" name="steelStandart" disabled [(ngModel)]="i.steelStandart">
+    </se>
+    <se label="{{ '单位' | translate }}" *ngIf="isModify">
+      <input nz-input type="text" name="unitOfMeasure" disabled [(ngModel)]="i.unitOfMeasure">
+    </se>
+    <se label="{{ '数量' | translate }}" *ngIf="isModify">
+      <nz-input-number name="quantity" nzDisabled [(ngModel)]="i.quantity"></nz-input-number>
+    </se>
+    <se label="{{ '样本' | translate }}" *ngIf="isModify">
+      <input nz-input type="text" name="sample" [(ngModel)]="i.sample">
+    </se>
+    <se label="{{ '标签规格' | translate }}" *ngIf="isModify">
+      <input nz-input type="text" name="label" [(ngModel)]="i.label">
+    </se>
+    
+    <se label="{{ '按重量计价' | translate }}" *ngIf="isModify">
+      <!-- 默认是否 -->
+      <nz-select nzShowSearch name="priceByWeight" [(ngModel)]="i.priceByWeight">
+        <nz-option *ngFor="let op of YesNoOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '提货方式' | translate }}" *ngIf="isModify">
+      <input nz-input type="text" name="deliveryMethod" [(ngModel)]="i.deliveryMethod">
+    </se>
+    <se label="{{ '备注' | translate }}" *ngIf="isModify">
+      <input nz-input type="text" name="remarks" [(ngModel)]="i.remarks">
+    </se>
+    <se label="{{ '内部说明' | translate }}" *ngIf="isModify">
+      <input nz-input type="text" name="description" [(ngModel)]="i.description">
+    </se>
+    <se label="{{ '客户地址' | translate }}" *ngIf="isModify">
+      <input nz-input type="text" name="cusAddress" [(ngModel)]="i.cusAddress">
+    </se>
+    <se label="{{ '厚度下工差' | translate }}" *ngIf="isModify">
+      <input nz-input type="text" name="toleranceThickness" [(ngModel)]="i.toleranceThickness">
+    </se>
+    <se label="{{ '已输磅重' | translate }}" *ngIf="isModify" required>
+      <nz-input-number name="poundsLost" [(ngModel)]="i.poundsLost" (ngModelChange)="generateAmountIncludingTax()" required></nz-input-number>
+    </se>
+    <se label="{{ '仓库' | translate }}" *ngIf="isModify">
+      <input nz-input type="text" disabled name="warehouse" [(ngModel)]="i.warehouse">
+    </se>
+    <se label="{{ '仓位' | translate }}" *ngIf="isModify">
+      <input nz-input type="text" name="location" [(ngModel)]="i.location">
+    </se>
+    <se label="{{ '实宽' | translate }}" *ngIf="isModify">
+      <nz-input-number name="width" [(ngModel)]="i.width"></nz-input-number>
+    </se>
+    <se label="{{ '净重' | translate }}" *ngIf="isModify">
+      <nz-input-number name="weigthKg" [(ngModel)]="i.weigthKg"></nz-input-number>
+    </se>
+    <se label="{{ '理重' | translate }}" *ngIf="isModify">
+      <nz-input-number name="lilunWeigth" [(ngModel)]="i.lilunWeigth"></nz-input-number>
+    </se>
+    <se label="{{ '加工费' | translate }}" *ngIf="isModify">
+      <nz-input-number name="processFee" [(ngModel)]="i.processFee"></nz-input-number>
+    </se>
+    <se label="{{ '基价' | translate }}" *ngIf="isModify">
+      <nz-input-number name="basePrice" nzDisabled [nzFormatter]="formatterPrecision6" [(ngModel)]="i.basePrice"></nz-input-number>
+    </se>
+    <se label="{{ '加价' | translate }}" *ngIf="isModify">
+      <nz-input-number name="markUp" [(ngModel)]="i.markUp" [nzFormatter]="formatterPrecision6" (ngModelChange)="generateFixedPrice()"></nz-input-number>
+    </se>
+    <se label="{{ '特殊加价' | translate }}" *ngIf="isModify">
+      <nz-input-number name="specialMarkup" [(ngModel)]="i.specialMarkup" [nzFormatter]="formatterPrecision6" (ngModelChange)="generateFixedPrice()"></nz-input-number>
+    </se>
+    <se label="{{ '限价' | translate }}" *ngIf="isModify">
+      <nz-input-number name="fixedPrice" nzDisabled [nzFormatter]="formatterPrecision6" [(ngModel)]="i.fixedPrice"></nz-input-number>
+    </se>
+    <se label="{{ '税率' | translate }}" *ngIf="isModify">
+      <nz-input-number name="taxRate" [(ngModel)]="i.taxRate" [nzFormatter]="formatterPrecision" (ngModelChange)="taxRateChange()"></nz-input-number>
+    </se>
+    <se label="{{ '含税金额' | translate }}" *ngIf="isModify">
+      <nz-input-number name="amountIncludingTax" nzDisabled [nzFormatter]="formatterPrecision" [(ngModel)]="i.amountIncludingTax"></nz-input-number>
+    </se>
+    <se label="{{ '税额' | translate }}" *ngIf="isModify">
+      <nz-input-number name="taxAmount" nzDisabled [nzFormatter]="formatterPrecision"[(ngModel)]="i.taxAmount"></nz-input-number>
+    </se>
+    <se label="{{ '金额' | translate }}" *ngIf="isModify">
+      <nz-input-number name="money" nzDisabled [nzFormatter]="formatterPrecision" [(ngModel)]="i.money"></nz-input-number>
+    </se>
+    <se label="{{ '含税价' | translate }}" *ngIf="isModify">
+      <nz-input-number name="taxPrice" [nzFormatter]="formatterPrecision6" [(ngModel)]="i.taxPrice"></nz-input-number>
+    </se>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="button" (click)="close()">{{ '取消' | translate }}</button>
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save(f.value)" [nzLoading]="http.loading" [disabled]="f.invalid || !f.dirty">{{'保存' | translate }}</button>
+</div>
+

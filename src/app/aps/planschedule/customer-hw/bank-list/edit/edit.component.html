@@ -1,0 +1,52 @@
+<div class="modal-header">
+  <div class="modal-title">{{ isModify ? '编辑信息' : '新增信息' | translate }}</div>
+</div>
+<div style="position: relative; height: 32px" *ngIf="isModify">
+  <button nz-button nzType="dashed" style="position: absolute; right: 0;" (click)="clear()">{{'重置' | translate}}</button>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="2">
+    <se label="{{ '税号' | translate }}">
+      <input nz-input type="text" disabled name="taxNum" [(ngModel)]="i.taxNum"/>
+    </se>
+    <se label="{{ '银行账号' | translate }}" required>
+      <input nz-input type="text" name="accountNum" [(ngModel)]="i.accountNum" required/>
+    </se>
+    <se label="{{ '账号名称' | translate }}" required>
+      <input nz-input type="text" name="accountName" [(ngModel)]="i.accountName" required/>
+    </se>
+    <se label="{{ '开户银行' | translate }}" required>
+      <input nz-input type="text" name="branch" [(ngModel)]="i.branch" required/>
+    </se>
+    <se label="{{ '银行档案' | translate }}" required>
+      <input nz-input type="text" name="bankArchives" [(ngModel)]="i.bankArchives" required/>
+    </se>
+    <se label="{{ '联行号' | translate }}">
+      <input nz-input type="text" name="branchId" [(ngModel)]="i.branchId"/>
+    </se>
+    <se label="{{ '联行号II（中银专用）' | translate }}">
+      <input nz-input type="text" name="branchIdSec" [(ngModel)]="i.branchIdSec"/>
+    </se>
+    <se label="{{ '省/自治区' | translate }}">
+      <!-- <input nz-input type="text" [disabled]="isModify" name="province" [(ngModel)]="i.province"/> -->
+      <input nz-input type="text" name="province" [(ngModel)]="i.province"/>
+    </se>
+    <se label="{{ '市/县' | translate }}">
+      <!-- <input nz-input type="text" [disabled]="isModify" name="city" [(ngModel)]="i.city"/> -->
+      <input nz-input type="text" name="city" [(ngModel)]="i.city"/>
+    </se>
+    <se label="{{ '机构号' | translate }}">
+      <!-- <input nz-input type="text" [disabled]="isModify" name="cbbDepId" [(ngModel)]="i.cbbDepId"/> -->
+      <input nz-input type="text" name="cbbDepId" [(ngModel)]="i.cbbDepId"/>
+    </se>
+    <!-- <se label="{{ '默认银行' | translate }}" required>
+      <nz-select nzShowSearch name="defaultFlag" required [(ngModel)]="i.defaultFlag">
+        <nz-option *ngFor="let op of yesOrNoOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se> -->
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="button" (click)="close()">{{ '取消' | translate }}</button>
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save(f.value)" [nzLoading]="http.loading" [disabled]="f.invalid || !f.dirty">{{'保存' | translate }}</button>
+</div>

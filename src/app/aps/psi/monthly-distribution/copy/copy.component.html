@@ -1,0 +1,30 @@
+<div class="modal-header">
+  <div class="modal-title">{{ '复制' | translate}} </div>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="2">
+    <se label="{{ '事业部' | translate}}" required>
+      <nz-select nzShowSearch [(ngModel)]="i.businessUnitCode" name="businessUnitCode" required>
+        <nz-option *ngFor="let option of buCodeOptions" [nzLabel]="option.label" [nzValue]="option.value">
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '复制源' | translate}}" required>
+      <nz-select nzShowSearch [(ngModel)]="i.sourceTarget" name="sourceTarget" required>
+        <nz-option *ngFor="let option of sourceTargetOptions" [nzLabel]="option.label" [nzValue]="option.value">
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '复制月份' | translate}}" required>
+      <nz-month-picker [(ngModel)]="i.startMonth" name="startMonth" required></nz-month-picker>
+    </se>
+    <se label="{{ '目标月份' | translate}}" required>
+      <nz-month-picker [(ngModel)]="i.endMonth" name="endMonth" required></nz-month-picker>
+    </se>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save(f)"
+  [disabled]="!f.valid || !f.dirty">{{ '确定' | translate}}</button>
+  <button nz-button type="button" (click)="close()">{{ '关闭' | translate}}</button>
+</div>

@@ -1,0 +1,36 @@
+<div class="modal-header">
+  <div class="modal-title">{{'色标管理' | translate}}</div>
+</div>
+
+<nz-card>
+
+  <kendo-grid #grid [data]="view | async" [height]="kendoHeight" [pageSize]="gridState.take" [skip]="gridState.skip" [sort]="gridState.sort"
+    [sortable]="true" (dataStateChange)="onStateChange($event)" [filter]="gridState.filter" filterable="menu" [resizable]="true"
+    [kendoGridSelectBy]="'LOOKUP_CODE'" [selectedKeys]="mySelection" [columnMenu]="true" [reorderable]="true" [pageable]="{
+    buttonCount: 10,
+    info: true,
+    pageSizes: true,
+    previousNext: true
+  }" [loading]="editService.http.loading">
+
+    <kendo-grid-messages pagerPage="分页" pagerOf="的" pagerItems="总数" pagerItemsPerPage="页项" groupPanelEmpty="Drag here to group"
+      noRecords="没有数据">
+    </kendo-grid-messages>
+
+    <kendo-grid-column field="MEANING" title="描述" width="60%" [style]="{'border-bottom': '1px solid #d9d9d9'}"></kendo-grid-column>
+    <kendo-grid-column field="LOOKUP_CODE" title="颜色" width="40%" [style]="{'border-bottom': '1px solid #d9d9d9'}">
+        <ng-template kendoGridCellTemplate let-dataItem>
+
+            <input style="width:60px;" type="color" nz-input [(ngModel)]="dataItem.LOOKUP_CODE">
+          </ng-template>
+
+    </kendo-grid-column>
+
+  </kendo-grid>
+</nz-card>
+<div class="modal-footer">
+    <button nz-button type="button" (click)="close()">
+      <i class="anticon anticon-close"></i>{{ '关闭' | translate}}</button>
+    <button nz-button type="submit" [nzType]="'primary'" (click)="save()"  [nzLoading]="http.loading">
+      <i class="anticon anticon-check"></i>{{ '保存' | translate}}</button>
+  </div>

@@ -1,0 +1,32 @@
+<div class="modal-header">
+  <div class="modal-title">{{ '订单排序' }}</div>
+</div>
+<div>
+  <nz-radio-group [(ngModel)]="radioValue">
+    <label nz-radio [ngStyle]="style" *ngFor="let column of allSortColumns; let i = index" [nzValue]="i">
+      <span>{{ parseColumn(column) }}</span>
+      <i nz-icon nzType="close-circle" nzTheme="outline" style="margin-left: 10px; color: red" 
+        title="{{ '删除' | translate}}" nz-popconfirm nzTitle="{{ '是否确认删除该记录?' | translate}}" (nzOnConfirm)="remove(i)" ></i>
+    </label>
+    <label nz-radio [ngStyle]="style" [nzValue]="-1">
+      More...
+    </label>
+  </nz-radio-group>
+  <div *ngIf="radioValue === -1">
+    <nz-tag *ngFor="let tag of tags let i=index">
+      {{ (i+1) + '. ' + tag.headerName }}
+    </nz-tag>
+    <nz-tag *ngIf="!inputVisible" class="editable-tag" nzNoAnimation (click)="showInput()">
+      <i nz-icon nzType="plus"></i> New Tag
+    </nz-tag>
+    <nz-select *ngIf="inputVisible" #select nzShowSearch name="newTag" nzSize="small" [(ngModel)]="newTag.field" style="width: 120px;"
+      (ngModelChange)="handleInputConfirm($event)" (keydown.enter)="handleInputConfirm()" required>
+      <nz-option *ngFor="let op of sortColumns" [nzValue]="op.field" [nzLabel]="op.headerName" [nzHide]="isHide(op)"></nz-option>
+    </nz-select>
+    <button nz-button [nzType]="'link'" style="margin-left: 10px" (click)="saveSortColumns()">{{'保存' | translate }}</button>
+  </div>
+</div>
+<div class="modal-footer">
+  <button nz-button type="button" (click)="close()">{{ '取消' | translate }}</button>
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save()" [nzLoading]="http.loading" [disabled]="radioValue === -1">{{'确定' | translate }}</button>
+</div>

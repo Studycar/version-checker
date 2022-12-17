@@ -1,0 +1,52 @@
+<div class="modal-header">
+  <div class="title">{{ (isModify ? '编辑' : '新增') | translate }}</div>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="2">
+    <se label="{{ '事业部' | translate}}" required>
+      <nz-select nzShowSearch [(ngModel)]="i.businessUnitCode" name="businessUnitCode" required (ngModelChange)="buCodeOptionsChange($event)">
+        <nz-option *ngFor="let option of buCodeOptions" [nzLabel]="option.label" [nzValue]="option.value">
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '预警维度' | translate}}" required>
+      <nz-select nzShowSearch [(ngModel)]="i.warnDimension" name="warnDimension" required (ngModelChange)="warnDimensionChange($event)">
+        <nz-option *ngFor="let option of warnDimensionOptions" [nzLabel]="option.label" [nzValue]="option.value">
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '预警项' | translate}}" required>
+      <nz-select nzShowSearch [(ngModel)]="i.warnProject" name="warnProject" required (ngModelChange)="optionChange($event,'warnProject')">
+        <nz-option *ngFor="let option of warnProjectOptions" [nzLabel]="option.label" [nzValue]="option.value">
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '预警条件' | translate}}" required>
+      <nz-select nzShowSearch [(ngModel)]="i.warnCondition" name="warnCondition" required (ngModelChange)="optionChange($event,'warnCondition')">
+        <nz-option *ngFor="let option of warnConditionOptions" [nzLabel]="option.label" [nzValue]="option.value">
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '预警偏差(%)' | translate}}">
+      <nz-input-number [(ngModel)]="i.warnDeviation" name="warnDeviation" [nzMin]="0" [nzMax]="100"></nz-input-number>
+    </se>
+    <se label="{{ '预警对象' | translate}}" required>
+      <nz-select nzShowSearch [(ngModel)]="i.warnObject" name="warnObject" required (ngModelChange)="optionChange($event,'warnObject')">
+        <nz-option *ngFor="let option of warnObjectOptions" [nzLabel]="option.label" [nzValue]="option.value">
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '预警内容' | translate}}" required>
+      <textarea nz-input [(ngModel)]="i.warnContent" name="warnContent" rows="4" maxlength="200" required></textarea>
+      <span style="float: right; line-height: 13px;">{{i.warnContent ? i.warnContent.length : 0}}/200</span>
+    </se>
+    <se label="{{ '升级条件(天)' | translate}}">
+      <nz-input-number [(ngModel)]="i.warnUpgradeDays" name="warnUpgradeDays" [nzMin]="0"></nz-input-number>
+    </se>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save(f)"
+  [disabled]="!f.valid || !f.dirty">{{ '保存' | translate}}</button>
+  <button nz-button type="button" (click)="close()">{{ '关闭' | translate}}</button>
+</div>

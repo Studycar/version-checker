@@ -1,0 +1,20 @@
+<div class="modal-header">
+  <div class="modal-title">保存</div>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="2">
+    <se label="{{ '当前版本' | translate}}" required>
+      <input nz-input [(ngModel)]="i.originParamVersion" name="originParamVersion">
+    </se>
+    <se label="{{ '保存到' | translate}}" required>
+      <nz-select nzShowSearch [(ngModel)]="i.paramVersion" name="paramVersion" required>
+        <nz-option *ngFor="let option of versionOptions" [nzLabel]="option.label" [nzValue]="option.value">
+        </nz-option>
+      </nz-select>
+    </se>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save(f)" [nzLoading]="loading">{{ '保存' | translate}}</button>
+  <button nz-button type="button" (click)="close()">{{ '关闭' | translate}}</button>
+</div>

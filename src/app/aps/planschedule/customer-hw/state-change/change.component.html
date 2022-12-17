@@ -1,0 +1,23 @@
+<div class="modal-header">
+  <div class="modal-title">{{ '状态变更' }}</div>
+</div>
+<div>
+  <form #f="ngForm" se-container="1">
+    <se label="{{ '客户编码' | translate }}">
+      <input type="text" nz-input name="cusCode" disabled [(ngModel)]="stateChange.cusCode">
+    </se>
+    <se label="{{ '客户变更状态' | translate }}" required>
+      <!-- <nz-select nzShowSearch name="cusStateNew" [(ngModel)]="stateChange.cusStateNew" required>
+        <nz-option *ngFor="let op of cusStateOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select> -->
+      <nz-switch [(ngModel)]="switchValue" [nzCheckedChildren]="cusStateNewLabel" [nzUnCheckedChildren]="cusStateNewLabel" name="cusStateNew" nzDisabled></nz-switch>
+    </se>
+    <se label="{{ '变更原因' | translate }}" required>
+      <input type="text" nz-input name="reason" [(ngModel)]="stateChange.reason" required>
+    </se>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="button" (click)="close()">{{ '取消' | translate }}</button>
+  <button nz-button type="submit" [nzType]="'primary'" (click)="submit(f.value)" [nzLoading]="http.loading" [disabled]="f.invalid || !f.dirty">{{'提交' | translate }}</button>
+</div>

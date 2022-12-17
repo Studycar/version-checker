@@ -1,0 +1,65 @@
+<div class="alain-default__header-logo">
+  <a [routerLink]="['/']" class="alain-default__header-logo-link">
+    <img class="alain-default__header-logo-expanded" src="./assets/logo-full.svg" alt="{{settings.app.name}}" style="max-height:40px;" />
+    <img class="alain-default__header-logo-collapsed" src="./assets/logo.svg" alt="{{settings.app.name}}" style="max-height:30px;" />
+  </a>
+</div>
+<div class="alain-default__nav-wrap">
+  <ul class="alain-default__nav">
+    <!-- Menu -->
+    <li>
+      <div class="alain-default__nav-item" (click)="toggleCollapsedSidebar()">
+        <i class="anticon anticon-menu-{{settings.layout.collapsed ? 'unfold' : 'fold'}}"></i>
+      </div>
+    </li>
+    <!-- Github Page -->
+    <!-- <li>
+      <a class="item" href="//github.com/cipchk/ng-alain" target="_blank">
+        <i class="anticon anticon-github"></i>
+      </a>
+    </li> -->
+    <!-- Lock Page -->
+    <li class="hidden-mobile">
+      <div class="alain-default__nav-item" [routerLink]="['/lock']">
+        <i class="anticon anticon-lock"></i>
+      </div>
+    </li>
+    <!-- Search Button -->
+    <li class="hidden-mobile">
+        <div class="alain-default__nav-item">
+          <layout-simple-header-search></layout-simple-header-search>
+        </div>
+      </li>
+  </ul>
+  <!-- <header-search class="header-search" [toggleChange]="searchToggleStatus"></header-search> -->
+  <ul class="alain-default__nav">
+    <li class="hidden-mobile">
+      <header-responsibility></header-responsibility>
+    </li>
+    <li class="hidden-mobile">
+      <header-factory></header-factory>
+    </li>
+    <li>
+      <header-notify></header-notify>
+    </li>
+    <!-- Settings -->
+    <li class="hidden-mobile">
+      <div class="alain-default__nav-item" nz-dropdown [nzDropdownMenu]="menu">
+        <i class="anticon anticon-setting"></i>
+      </div>
+      <nz-dropdown-menu nzTrigger="click" nzPlacement="bottomRight" #menu="nzDropdownMenu">
+        <div nz-menu style="width:200px;">
+          <div nz-menu-item>
+            <header-storage></header-storage>
+          </div>
+          <div nz-menu-item>
+            <header-i18n></header-i18n>
+          </div>
+        </div>
+      </nz-dropdown-menu>
+    </li>
+    <li class="hidden-mobile">
+      <header-user></header-user>
+    </li>
+  </ul>
+</div>

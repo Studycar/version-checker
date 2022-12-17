@@ -1,0 +1,53 @@
+<!--
+ * @Author: Zwh
+ * @contact: zhangweika@outlook.com
+ * @Date: 2020-09-08 20:35:42
+ * @LastEditors: Zwh
+ * @LastEditTime: 2021-02-23 17:37:18
+ * @Note: ...
+-->
+<custom-formquery [queryParams]="queryParams" [context]="context" (event1)="plantchange($event)"
+  (event2)="groupchange($event)" (event3)="searchItems($event)" (event4)="rowSelect($event)">
+  <span>
+    <custom-button text="{{ '导出' | translate}}" (clickEvent)="export()" [src]="'基础icon-导出'">
+    </custom-button>
+    <custom-button text="{{ '参与排产' | translate}}" [disabled]="isCheck" (clickEvent)="takeSchedule()" [src]="'参与排产'"
+      [srcDisabled]="'不参与排产'">
+    </custom-button>
+    <custom-button text="{{ '重读组件' | translate}}" (clickEvent)="readMoRequirement()" [src]="'发布'">
+    </custom-button>
+  </span>
+</custom-formquery>
+<nz-card>
+  <div>
+    <nz-tabset>
+      <nz-tab *ngFor="let tab of tabs" [nzTitle]="titleTemplate" (nzSelect)="tabSelect(tab)">
+        <ng-template #titleTemplate>
+          <div style="height: 24px;">
+            {{ tab.name | translate }}
+            <span class="tag-triangle">
+              <i class="anticon anticon-up" *ngIf="tab.index===selectIndex" style="margin-right: 0;"></i>
+            </span>
+          </div>
+        </ng-template>
+      </nz-tab>
+    </nz-tabset>
+    <ag-grid-angular #agGrid [class]="themeClass" [style.height.px]="gridHeight" [rowData]="gridData"
+      [columnDefs]="columns" [gridOptions]="gridOptions2" (selectionChanged)="onSelectionChanged($event)"
+      [myAgGridRowKey]="{tb:'PS_MAKE_ORDER'}" tabAggridState [originState]="tabFirstFlag" [stateKey]="stateKey"
+      [tabSubject]="tabSubject">
+    </ag-grid-angular>
+    <custom-pager [height]="pagerHeight" [context]="context" [view]='context.view' [(pageSize)]="_pageSize"
+      [(pageNo)]="_pageNo" (pageChangeEvent)="onPageChanged($event)"></custom-pager>
+    <custom-excelexport [expColumns]='expColumns' fileName='MO维护' #excelexport></custom-excelexport>
+  </div>
+</nz-card>
+<ng-template #customTemplate let-dataItem>
+  <span title="{{ '编辑' | translate}}" (click)="add(dataItem)" class="pointer">
+    <i class="anticon anticon-edit"></i>
+  </span>
+  <nz-divider nzType="vertical"></nz-divider>
+  <span title="{{ '展开' | translate}}" *ngIf="dataItem.levelNum === 0" (click)="OpenLevel(dataItem)" class="pointer">
+    <i class="anticon anticon-plus"></i>
+  </span>
+</ng-template>

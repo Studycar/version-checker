@@ -1,0 +1,34 @@
+<custom-formquery [queryParams]="queryParams" [context]="context" (event1)="searchItems($event)"
+  (event2)="onRowSelect($event)">
+  <span>
+    <!-- <custom-button text="{{ '删除' | translate}}" (clickEvent)="removeBath()" [src]="'基础icon-删除'">
+    </custom-button> -->
+    <custom-button text="{{ '导出' | translate}}" (clickEvent)="export()" [src]="'基础icon-导出'">
+    </custom-button>
+    <custom-button text="{{ '导入' | translate}}" (clickEvent)="import()" [src]="'基础icon-导入'" [loading]="optionsLoading">
+    </custom-button>
+    <!--<custom-button text="{{ '拆分合并' | translate}}" (clickEvent)="split()" [src]="'自动拆分合并'"></custom-button>-->
+    <custom-button text="{{ '订单引入' | translate}}" (clickEvent)="send()" [src]="'引入需求工作台'">
+    </custom-button>
+    <!-- <custom-button text="{{ '交期运算' | translate}}" (clickEvent)="calculateDelivery()" [src]="'提交新请求'">
+    </custom-button> -->
+  </span>
+</custom-formquery>
+<nz-card>
+  <ag-grid-angular #agGrid [class]="themeClass" [style.height.px]="gridHeight" [rowData]="gridData"
+    [columnDefs]="columns" [gridOptions]="gridOptions" (selectionChanged)="onSelectionChanged($event)"
+    [myAgGridRowKey]="{tb:'PI_REQ_ORDERS'}" [myAgGridState]="'demanddatainterface'">
+  </ag-grid-angular>
+  <custom-pager [height]="pagerHeight" [context]="context" [view]='context.view' [(pageSize)]="_pageSize"
+    [(pageNo)]="_pageNo" (pageChangeEvent)="onPageChanged($event)"></custom-pager>
+  <custom-excelexport [expColumns]='expColumns' [expColumnsOptions]='expColumnsOptions' fileName="{{'需求接口数据' | translate}}" #excelexport>
+  </custom-excelexport>
+</nz-card>
+<ng-template #customTemplate let-dataItem>
+  <span title="{{'非标需求' | translate}}" *ngIf="dataItem.standardFlag === 'N'" (click)="QueryChild(dataItem)" style="cursor: Pointer">
+    <i class="anticon anticon-bars"></i>
+  </span>
+  <span title="{{ '编辑' | translate}}" (click)="modifyData(dataItem)" class="spanStyle">
+    <i class="anticon anticon-edit"></i>
+  </span>
+</ng-template>

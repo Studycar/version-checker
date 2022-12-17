@@ -1,0 +1,152 @@
+<div class="modal-header">
+  <div class="modal-title">{{ title }}信息</div>
+</div>
+<div style="position: relative; height: 32px">
+  <button nz-button nzType="dashed" style="position: absolute; right: 0;" (click)="clear()">重置</button>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="3">
+    <nz-collapse>
+      <nz-collapse-panel [nzHeader]="'主要'" [nzActive]="isOpen">
+        <se label="{{ '创建时间' | translate}}">
+          <input nz-input type="text" [(ngModel)]="i.creationDate" name="strCREATE_DATE" [disabled]="readOnly">
+        </se>
+        <se label="{{ '计划组' | translate}}">
+          <input nz-input type="text" [(ngModel)]="i.scheduleGroupCode" name="strSCHEDULE_GROUP_CODE"
+            [disabled]="readOnly">
+        </se>
+        <se label="{{ '资源' | translate}}" required>
+          <!-- <nz-select [(ngModel)]="i.resourceCode" name="strRESOURCE_CODE" [disabled]="flagOne" nzShowSearch
+            nzAllowClear>
+            <nz-option *ngFor="let option of resourceoptions" [nzValue]="option.value" [nzLabel]="option.label">
+            </nz-option>
+          </nz-select> -->
+          <popup-select [(SelectValue)]="i.resourceCode" [ValueField]="'resourceCode'" [Disabled]="flagOne || flagOneR"
+            [(SelectText)]="i.resourceDesc" [TextField]="'resourceDesc'" name="resourceCode"
+            [gridView]="gridViewResources" [columns]="columnsResources" required
+            (SearchEvent)="searchResources($event)" (RowSelect)="onResourcesSelect($event)">
+          </popup-select>
+        </se>
+
+        <se label="{{ '工艺版本' | translate}}">
+          <nz-select [(ngModel)]="i.techVersion" name="strTECH_VERSION"
+            [disabled]="flagOneVersion||i.processScheduleFlag!=='Y'" (ngModelChange)="onChangeVersion($event)"
+            nzShowSearch nzAllowClear>
+            <nz-option *ngFor="let option of optionVersion" [nzValue]="option.value" [nzLabel]="option.label">
+            </nz-option>
+          </nz-select>
+        </se>
+        <se label="{{ '模具' | translate}}">
+          <!-- <input nz-input type="text" [(ngModel)]="i.MOUDLE_CODE" name="MOUDLE_CODE"> -->
+          <nz-select [(ngModel)]="i.mouldCode" name="i.MOULD_CODE" [disabled]="flagThree || flagOneR"
+            [nzAllowClear]="true">
+            <nz-option *ngFor="let option of optionsMold" [nzLabel]="option.value" [nzValue]="option.value">
+            </nz-option>
+          </nz-select>
+        </se>
+        <se label="{{ '工单号' | translate}}">
+          <input nz-input type="text" [(ngModel)]="i.makeOrderNum" name="strMAKE_ORDER_NUM" [disabled]="readOnly">
+        </se>
+
+        <se label="{{ '物料编码' | translate}}">
+          <input nz-input type="text" [(ngModel)]="i.itemCode" name="strITEM_CODE" [disabled]="readOnly">
+        </se>
+        <se label="{{ '物料描述' | translate}}">
+          <input nz-input type="text" [(ngModel)]="i.descriptionsCn" name="strDESCRIPTIONS_CN" [disabled]="readOnly">
+        </se>
+        <se label="{{ '开始时间' | translate}}">
+          <input nz-input type="text" [(ngModel)]="i.fpcTime" name="strFPS_TIME" [disabled]="readOnly">
+        </se>
+        <se label="{{ '结束时间' | translate}}">
+          <input nz-input type="text" [(ngModel)]="i.lpcTime" name="LPC_TIME" [disabled]="readOnly">
+        </se>
+        <se label="{{ '工单类型' | translate}}">
+          <input nz-input type="text" [(ngModel)]="i.makeOrderType" name="strMAKE_ORDER_TYPE" [disabled]="readOnly">
+        </se>
+        <se label="{{ '工单数量' | translate}}" required>
+          <input nz-input type="number" [(ngModel)]="i.moQty" name="strMO_QTY" required [disabled]="flagFour || flagOneR">
+        </se>
+        <se label="{{ '完工数量' | translate}}">
+          <input nz-input type="text" [(ngModel)]="i.completeNum" name="strCOMPLETE_NUM" [disabled]="readOnly">
+        </se>
+        <se label="{{ '工单状态' | translate}}">
+          <nz-select [(ngModel)]="i.makeOrderStatus" name="i.MAKE_ORDER_STATUS" [nzDisabled]="true">
+            <nz-option *ngFor="let option of statusoptions" [nzLabel]="option.label" [nzValue]="option.value">
+            </nz-option>
+          </nz-select>
+        </se>
+        <se label="{{ '参与排产标识' | translate}}">
+          <nz-select type="text" [(ngModel)]="i.scheduleFlag" name="SCHEDULE_FLAG"
+            (ngModelChange)="scheduleChange($event)" [disabled]="flagOne || flagOneR">
+            <nz-option *ngFor="let option of yesOrNo" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+          </nz-select>
+        </se>
+        <se label="{{ '尾单标识' | translate}}">
+          <nz-select type="text" [(ngModel)]="i.backlogFlag" name="BACKLOG_FLAG"
+            (ngModelChange)="backChange($event)" [disabled]="flagTwo || flagOneR">
+            <nz-option *ngFor="let option of yesOrNo" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+          </nz-select>
+        </se>
+        <se label="{{ '尾单原因' | translate}}" [required]="i.backlogFlag==='Y'">
+          <input nz-input type="text" [(ngModel)]="i.backlogReason" name="BACKLOG_REASON"
+            [required]="i.backlogFlag==='Y'" [disabled]="flagTwo || this.i.backlogFlag!=='Y'">
+        </se>
+        <se label="{{ '固定时间' | translate}}">
+          <nz-date-picker nzShowTime nzFormat="yyyy-MM-dd HH:mm:ss" [(ngModel)]="i.fixScheduleTime"
+            name="FIX_SCHEDULE_TIME" [disabled]="flagOne">
+          </nz-date-picker>
+        </se>
+        <se label="{{ '备注' | translate}}">
+          <input nz-input type="text" [(ngModel)]="i.comments" name="strCOMMENTS" [disabled]="flagFive || flagOneR">
+        </se>
+      </nz-collapse-panel>
+      <nz-collapse-panel [nzHeader]="'需求'">
+        <se label="{{ '项目号' | translate}}">
+          <input nz-input type="text" [(ngModel)]="i.projectNumber" name="strPROJECT_NUM" [disabled]="readOnly">
+        </se>
+        <se label="{{ '需求订单号' | translate}}">
+          <input nz-input type="text" [(ngModel)]="i.reqNumber" name="strREQ_NUMBER" [disabled]="readOnly">
+        </se>
+        <se label="{{ '需求日期' | translate}}">
+          <input nz-input type="text" [(ngModel)]="i.demandDate" name="strDEMAND_DATE" [disabled]="readOnly">
+        </se>
+        <se label="{{ '父工单' | translate}}">
+          <input nz-input type="text" [(ngModel)]="i.parentMoNum" name="strPARENT_MO_NUM" [disabled]="readOnly">
+        </se>
+        <se label="{{ '父工单开始时间' | translate}}">
+          <input nz-input type="text" [(ngModel)]="i.parentMoStartDate" name="strPARENT_MO_START_DATE"
+            [disabled]="readOnly">
+        </se>
+        <se label="{{ '父工单状态' | translate}}">
+          <input nz-input type="text" [(ngModel)]="i.parentMoStatus" name="strPARENT_MO_STATUS" [disabled]="readOnly">
+        </se>
+        <se label="{{ '顶层工单' | translate}}">
+          <input nz-input type="text" [(ngModel)]="i.topMoNum" name="strTOP_MO_NUM" [disabled]="readOnly">
+        </se>
+        <se label="{{ '顶层工单开始时间' | translate}}">
+          <input nz-input type="text" [(ngModel)]="i.topMoStartDate" name="strTOP_MO_START_DATE"
+            [disabled]="readOnly">
+        </se>
+        <se label="{{ '顶层工单状态' | translate}}">
+          <input nz-input type="text" [(ngModel)]="i.topMoStatus" name="strTOP_MO_STATUS" [disabled]="readOnly">
+        </se>
+        <se label="{{ '最早开始时间' | translate}}">
+          <nz-date-picker nzShowTime nzFormat="yyyy-MM-dd HH:mm:ss" [(ngModel)]="i.earliestStartTime"
+            name="EARLIEST_START_TIME" [disabled]="flagOne">
+          </nz-date-picker>
+        </se>
+        <se label="{{ '验货时间' | translate}}">
+          <nz-date-picker nzShowTime nzFormat="yyyy-MM-dd HH:mm:ss" [(ngModel)]="i.inspectionTime"
+            name="INSPECTION_TIME" [disabled]="flagOne">
+          </nz-date-picker>
+        </se>
+
+      </nz-collapse-panel>
+    </nz-collapse>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save()" [disabled]="!f.valid || !f.dirty"
+    [nzLoading]="http.loading">{{ '保存' | translate}}</button>
+  <button nz-button type="button" (click)="close()">{{ '关闭' | translate}}</button>
+</div>

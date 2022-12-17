@@ -1,0 +1,24 @@
+<div class="alain-pro__header-item alain-pro__header-account" nz-dropdown [nzDropdownMenu]="menu">
+  <nz-avatar [nzSrc]="'./assets/logo-color.svg'" nzSize="small" class="mr-sm"></nz-avatar>
+  <div style="display: flex; flex-direction: column;">
+    <span class="name">{{settings.user.name}}</span>
+    <span class="name">{{activePlantDesc}}</span>
+  </div>
+</div>
+<nz-dropdown-menu nzPlacement="bottomRight" #menu="nzDropdownMenu">
+  <div nz-menu class="width-sm">
+    <div nz-menu-item routerLink="/pro/account/center"><i nz-icon [nzType]="'user'" class="mr-sm"></i>
+      {{ '个人中心' | translate }}
+    </div>
+    <div nz-menu-item (click)="resetPassword()"><i nz-icon [nzType]="'setting'" class="mr-sm"></i>
+      {{ '设置密码' | translate }}
+    </div>
+    <div nz-menu-item routerLink="/changelog"><i nz-icon [nzType]="'file'" class="mr-sm"></i>
+      {{ '日志' | translate }}
+    </div>
+    <li nz-menu-divider></li>
+    <div nz-menu-item (click)="logout()"><i nz-icon [nzType]="'logout'" class="mr-sm"></i>
+      {{ '退出登录' | translate }}
+    </div>
+  </div>
+</nz-dropdown-menu>

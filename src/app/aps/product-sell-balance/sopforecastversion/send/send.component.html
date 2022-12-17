@@ -1,0 +1,14 @@
+<div class="modal-header">
+  <div class="modal-title">{{ '下达'| translate}} </div>
+</div>
+<nz-card>
+  <ag-grid-angular #agGrid [class]="themeClass" [style.height.px]="gridHeight" [rowData]="gridData"
+    [columnDefs]="columns" [gridOptions]="gridOptions" [pagination]="false"
+    (selectionChanged)="onSelectionChanged($event)">
+  </ag-grid-angular>
+</nz-card>
+<div class="modal-footer">
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save()" [disabled]="selectionKeys.length===0"
+    [nzLoading]="http.loading">{{ '保存' | translate}}</button>
+  <button nz-button type="button" (click)="close()">{{ '关闭' | translate}}</button>
+</div>

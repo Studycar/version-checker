@@ -1,0 +1,35 @@
+<div class="modal-header" *ngIf="pShowTitle">
+  <div class="modal-title">{{ ('工单明细（Q）') | translate}} </div>
+</div>
+<custom-formquery [queryParams]="queryParams" [showExpandIcon]="showButton" [context]="context"
+  (event1)="searchItems($event)" (event2)="searchItems2($event)" (event3)="groupChange($event)"
+  (event4)="searchMo($event)" (event5)="plantChange($event)">
+  <span>
+    <custom-button [showExpand]="showButton" text="{{ '导出' | translate}}" (clickEvent)="export()" [src]="'基础icon-导出'">
+    </custom-button>
+  </span>
+</custom-formquery>
+<nz-card>
+  <div>
+    <nz-tabset>
+      <nz-tab *ngFor="let tab of tabs" [nzTitle]="titleTemplate" (nzSelect)="tabSelect(tab)">
+        <ng-template #titleTemplate>
+          <div style="height: 24px;">
+            {{ tab.name | translate }}
+            <span class="tag-triangle">
+              <i class="anticon anticon-up" *ngIf="tab.index===selectIndex" style="margin-right: 0;"></i>
+            </span>
+          </div>
+        </ng-template>
+      </nz-tab>
+    </nz-tabset>
+    <ag-grid-angular #agGrid [class]="themeClass" [style.height.px]="gridHeight" [rowData]="gridData"
+      [columnDefs]="columns" [gridOptions]="gridOptions" (selectionChanged)="onSelectionChanged($event)"
+      [myAgGridRowKey]="{tb:'PS_MO_REQUIREMENT'}" [myAgGridState]="'mo-comvindicate'">
+    </ag-grid-angular>
+    <custom-pager [height]="pagerHeight" [fixed]="fixed" [context]="context" [view]='context.view' [(pageSize)]="_pageSize"
+      [(pageNo)]="_pageNo" (pageChangeEvent)="onPageChanged($event)"></custom-pager>
+    <custom-excelexport [expColumns]='expColumns' [expColumnsOptions]='expColumnsOptions' fileName='工单明细' #excelexport>
+    </custom-excelexport>
+  </div>
+</nz-card>

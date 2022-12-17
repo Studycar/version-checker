@@ -1,0 +1,26 @@
+<custom-formquery [queryParams]="queryParams" [context]="context" >
+  <custom-button text="{{ '新增' | translate }}" [src]="'基础icon-新增'" (clickEvent)="add()"></custom-button>
+  <custom-button text="{{ '删除' | translate }}" [src]="'基础icon-删除'" (clickEvent)="remove()"></custom-button>
+  <!-- <custom-button text="{{ '导入' | translate }}" [src]="'基础icon-导入'" [loading]="optionsLoading" (clickEvent)="import()"></custom-button> -->
+  <custom-button text="{{ '历史记录' | translate }}" [src]="'历史记录'" (clickEvent)="showChangeDetail()"></custom-button>
+  <custom-button text="{{ '导出' | translate }}" [src]="'基础icon-导出'" (clickEvent)="export()"></custom-button>
+</custom-formquery>
+<nz-card>
+  <ag-grid-angular #agGrid [class]="themeClass" [style.height.px]="gridHeight" [rowData]="gridData"
+    [columnDefs]="columns" [gridOptions]="gridOptions" [myAgGridState]="'hw-markup-element'"
+    [myAgGridRowKey]="{tb:'PS_MARKUP_ELEMENT'}">
+  </ag-grid-angular>
+  <custom-pager [height]="pagerHeight" [context]="context" [view]='context.view' [(pageSize)]="_pageSize"
+    [(pageNo)]="_pageNo" (pageChangeEvent)="onPageChanged($event)"></custom-pager>
+  <custom-excelexport [expColumns]='expColumns' [expColumnsOptions]='expColumnsOptions' fileName='加价维度与产品大类关系' #excelexport></custom-excelexport>
+</nz-card>
+<ng-template #customTemplate let-dataItem>
+  <span title="{{ '编辑' | translate}}" (click)="add(dataItem)" style="cursor: Pointer">
+    <i class="anticon anticon-edit"></i>
+  </span>
+  <nz-divider nzType="vertical"></nz-divider>
+  <span title="{{ '删除' | translate}}" nz-popconfirm nzTitle="{{ '是否确认删除该记录?' | translate}}"
+    (nzOnConfirm)="remove(dataItem);" class="pointer">
+    <i class="anticon anticon-delete"></i>
+  </span>
+</ng-template>

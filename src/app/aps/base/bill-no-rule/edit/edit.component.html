@@ -1,0 +1,52 @@
+<div class="modal-header">
+  <div class="modal-title">{{ (curBillNoRule.id === undefined ? '新增' : '修改') + '单据编号规则'| translate}} </div>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="2" [labelWidth]=200>
+    <se label="{{ '规则编码' | translate}}" required>
+      <nz-select [(ngModel)]="curBillNoRule.code" name="ruleCODE" [nzShowSearch]="true"
+        (ngModelChange)="codeChange($event)" required="required" [nzDisabled]="!addFlag">
+        <nz-option *ngFor="let code of ruleCodes" [nzLabel]="code.value" [nzValue]="code.value"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '规则名称' | translate}}" required>
+      <input type="text" nz-input [(ngModel)]="curBillNoRule.name" required="required" name="ruleNAME">
+    </se>
+    <se label="{{ '前缀' | translate}}" required>
+      <input type="text" nz-input [(ngModel)]="curBillNoRule.prefix" required="required" name="rulePREFIX">
+    </se>
+    <se label="{{ '格式' | translate}}" required>
+      <nz-select [(ngModel)]="curBillNoRule.dateFormat" name="ruleDATE_FORMAT" [nzShowSearch]="true"
+        required="required" [nzDisabled]="!addFlag">
+        <nz-option *ngFor="let dateFormat of ruleDateFormats" [nzLabel]="dateFormat.value" [nzValue]="dateFormat.value">
+        </nz-option>
+      </nz-select>
+    </se>
+
+    <se label="{{ '流水位数' | translate}}" required>
+      <input type="number" nz-input [(ngModel)]="curBillNoRule.noDigits" required="required" min="1" max="10"
+        name="ruleNO_DIGITS">
+    </se>
+    <!--  <se label="编码格式">
+      <input type="text" nz-input [(ngModel)]="curBillNoRule.CODE_FORMAT" [readOnly]='true' name="ruleCODE_FORMAT">
+    </se>
+    <se label="示例">
+      <input type="text" nz-input [(ngModel)]="curBillNoRule.EXAMPLES" [readOnly]='true' name="ruleEXAMPLES">
+    </se> -->
+    <se label="{{ '排序' | translate}}" required>
+      <input type="number" nz-input [(ngModel)]="curBillNoRule.sort" required="required" min="1" name="ruleSORT">
+    </se>
+
+    <se label="{{ '启用' | translate}}" required>
+      <label nz-checkbox [(ngModel)]="curBillNoRule.active" name="ruleACTIVE"></label>
+    </se>
+  </form>
+  <div text-align="center">
+    {{ '说明' | translate}}：{{ '生产单号' | translate}}={{ '前缀' | translate}}+{{ '日期' | translate}}+{{ '流水号' | translate}}
+  </div>
+</div>
+<div class="modal-footer">
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save()" [disabled]="!f.valid || !f.dirty">保存</button>
+
+  <button nz-button type="button" (click)="close()">关闭</button>
+</div>

@@ -1,0 +1,32 @@
+<div class="modal-header">
+  <div class="modal-title">{{title | translate}}</div>
+</div>
+<div style="position: relative; height: 32px" *ngIf="editType === 'update'">
+  <button nzType="dashed" nz-button style="position: absolute; right: 0;" (click)="clear()">{{ '重置' | translate}}
+  </button>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="2">
+    <se *ngFor="let field of fields" label="{{field.label | translate}}" [ngSwitch]="field.type"
+      [required]="field.required">
+      <input *ngSwitchCase="1" type="text" nz-input name="{{field.field}}" [(ngModel)]="formFields[field.field]"
+        [required]="field.required" [readonly]="field.readonly" [class.disabled]="field.readonly">
+      <nz-date-picker *ngSwitchCase="2" nzShowTime name="{{field.field}}" [(ngModel)]="formFields[field.field]"
+        [nzStyle]="{width:'100%'}" [required]="field.required" nzPlaceHolder=""></nz-date-picker>
+      <input *ngSwitchCase="3" type="number" nz-inp name="{{field.field}}" [(ngModel)]="formFields[field.field]"
+        [required]="field.required">
+      <nz-select *ngSwitchCase="4" nzAllowClear name="{{field.field}}" [required]="field.required"
+        [(ngModel)]="formFields[field.field]" [nzPlaceHolder]="formFields[field.field]">
+        <nz-option *ngFor="let option of field.options" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+      <label *ngSwitchCase="5" nz-checkbox name="{{field.field}}" [(ngModel)]="!!formFields[field.field]"></label>
+    </se>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="submit" nzType='primary' (click)="save()"
+    [disabled]="!f.valid || !f.dirty">{{ '保存' | translate}}
+  </button>
+  <button nz-button (click)="close()">{{ '关闭' | translate}}
+  </button>
+</div>

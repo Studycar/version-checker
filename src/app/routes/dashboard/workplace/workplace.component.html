@@ -1,0 +1,134 @@
+<page-header-wrapper [breadcrumb]="phBreadcrumb" [content]="phContent" [extra]="phExtra" [phContent]="phNgContent">
+  <ng-template #phBreadcrumb class>
+    <nz-breadcrumb>
+      <nz-breadcrumb-item>
+        <a [routerLink]="['/']">{{ '首页' | translate}}</a>
+      </nz-breadcrumb-item>
+      <nz-breadcrumb-item>
+        <a [routerLink]="['/']">{{ '系统设置' | translate}}</a>
+      </nz-breadcrumb-item>
+      <nz-breadcrumb-item>{{ '系统监控台' | translate}}</nz-breadcrumb-item>
+    </nz-breadcrumb>
+  </ng-template>
+  <ng-template #phContent>
+    <div class="content">
+      <div class="avatar">
+        <nz-avatar nzSrc="../../../assets/logo-color.svg"></nz-avatar>
+      </div>
+      <div class="desc">
+        <div class="desc-title">
+          {{ '系统信息监控工作台' | translate}}
+          <button (click)="get(1)" nz-button nzShape="circle" nz-tooltip="{{ '刷新' | translate}}">
+            <i nz-icon [nzType]="'reload'"></i>
+          </button>
+        </div>
+        <div>{{ '系统版本：' | translate}}{{info.AFSCoreVersion}} | {{ '操作系统：' | translate}}{{info.OSDescription}}</div>
+      </div>
+    </div>
+  </ng-template>
+  <ng-template #phExtra>
+    <div class="page-extra">
+      <div>
+        <p>{{ '插件数' | translate}}</p>
+        <p>{{info.PluginCount}}</p>
+      </div>
+      <div>
+        <p>{{ '访问平均耗时' | translate}}</p>
+        <p>
+          98
+          <span>ms</span>
+        </p>
+      </div>
+      <div>
+        <p>{{ 'API数' | translate}}</p>
+        <p>{{info.ApiCount}}</p>
+      </div>
+    </div>
+  </ng-template>
+  <ng-template #phNgContent>
+  </ng-template>
+  <div nz-row [nzGutter]="24">
+    <div nz-col nzXs="24" nzSm="24" nzMd="18">
+      <nz-card nzTitle="{{ '访问耗时Top6' | translate}}" [nzBordered]="false" [nzLoading]="loading" class="ant-card__body-nopadding mb-lg project-list">
+        <div *ngFor="let item of notice" nz-card-grid class="project-grid">
+          <nz-card [nzBordered]="false" class="ant-card__body-nopadding mb0">
+            <nz-card-meta [nzTitle]="noticeTitle" [nzDescription]="item.Url">
+              <ng-template #noticeTitle>
+                <div class="card-title">
+                  <nz-avatar nzSrc="https://gw.alipayobjects.com/zos/rmsportal/zOsKZmFRdUtvpqCImOVY.png" [nzSize]="'small'"></nz-avatar>
+                  <a (click)="view(item)">{{item.MethodName}}<span *ngIf="item.Description" class="text-grey text-sm">[{{item.Description}}]</span></a>
+                </div>
+              </ng-template>
+            </nz-card-meta>
+            <div class="project-item">
+              <a>{{item.ExecutionTime}}</a>
+              <trend flag="up"></trend>
+              <span class="text-error">{{item.ExecutionDuration | number}} </span>ms
+            </div>
+          </nz-card>
+        </div>
+      </nz-card>
+      <nz-card nzTitle="{{ '审计日志' | translate}}" [nzBordered]="false" [nzLoading]="loading">
+        <div class="d-flex justify-content-between align-items-center mb-md">
+          <range-picker class="brand-range-picker__date" [(ngModel)]="params.start" [(ngModelEnd)]="params.end"
+            nzFormat="yyyy-MM-dd HH:mm:ss" nzShowTime (ngModelEndChange)="st1.reload()"></range-picker>
+          <nz-input-group nzSearch [nzSuffix]="suffixIconButton" class="max-width-md">
+            <input type="text" [(ngModel)]="params.q" delay (delayChange)="st1.reload()" nz-input placeholder="{{ '搜索...' | translate}}">
+          </nz-input-group>
+          <ng-template #suffixIconButton>
+            <i nz-icon [nzType]="'search'"></i>
+          </ng-template>
+        </div>
+        <st #st1 [data]="url" [columns]="columns" [req]="{ params: params }" [expand]="expand" [res]="{reName:{list: 'Result', total: 'TotalCount'}}"
+          rowClickTime="0">
+          <ng-template #expand let-i let-index="index" let-column="column">
+            <div class="border-1 rounded-sm p-lg bg-white">
+              <sv-container col="2" title="{{ '明细' | translate}}" labelWidth="100">
+                <sv label="{{ '描述' | translate}}" *ngIf="i.Description" type="primary">{{i.Description}}</sv>
+                <sv label="{{ '请求URL' | translate}}">{{i.Url}}</sv>
+                <sv label="{{ '请求参数' | translate}}">{{i.Parameters}}</sv>
+                <sv label="{{ '请求类型' | translate}}">{{i.HttpMethod}}</sv>
+                <sv label="{{ '请求次数' | translate}}">{{i.VisitCount}}</sv>
+                <sv label="{{ '客户端IP' | translate}}">{{i.ClientIpAddress}}</sv>
+                <sv label="{{ '客户端类型' | translate}}">{{i.ClientName}}</sv>
+                <sv label="{{ '返回状态码' | translate}}" type="success">{{i.HttpStatusCode}}</sv>
+                <sv label="{{ '请求用户' | translate}}" *ngIf="i.UserName">{{i.UserName}}</sv>
+                <sv label="{{ '浏览器' | translate}}" col="1">{{i.BrowserInfo}}</sv>
+                <sv label="{{ '异常信息' | translate}}" col="1" type="danger" *ngIf="i.Exceptions">{{i.Exceptions}}</sv>
+              </sv-container>
+            </div>
+          </ng-template>
+          <ng-template st-row="name" let-i>
+            <a (click)="view(i)">
+              {{i.MethodName}}
+            </a>
+          </ng-template>
+          <ng-template st-row="status" let-i>
+            <nz-badge [nzStatus]="i.ExecutionDuration > 1000?'error':'processing'" [nzText]="i.ExecutionDuration"></nz-badge>
+          </ng-template>
+        </st>
+      </nz-card>
+    </div>
+    <div nz-col nzXs="24" nzSm="24" nzMd="6" class="mb-lg">
+      <nz-card nzTitle="{{ '服务器信息' | translate}}" [nzBordered]="false" class="mb-lg">
+
+        <div class="px-md pb-md d-flex align-items-center align-items-start">
+          <sv-container col="1">
+            <sv label="{{ '操作系统版本' | translate}}">{{info.OSDescription}}</sv>
+            <sv label="{{ '服务器机器名' | translate}}">{{info.MachineName}}</sv>
+            <sv label="{{ '网站使用内存' | translate}}">{{info.MemoryUsage}}</sv>
+          </sv-container>
+        </div>
+
+      </nz-card>
+      <nz-card nzTitle="{{ 'CPU占用' | translate}}" [nzBordered]="false" [nzBodyStyle]="{'overflow': 'hidden'}">
+        <g2-gauge [title]="'CPU'" height="164" [percent]="20"></g2-gauge>
+      </nz-card>
+      <nz-card nzTitle="{{ '内存占用' | translate}}" [nzBordered]="false" [nzBodyStyle]="{'overflow': 'hidden'}">
+        <div style="text-align: center;">
+          <g2-water-wave title="{{ '内存' | translate}}" [percent]="34" [height]="150"></g2-water-wave>
+        </div>
+      </nz-card>
+    </div>
+  </div>
+</page-header-wrapper>

@@ -1,0 +1,22 @@
+<div class="modal-header">
+    <div class="modal-title">{{ '工厂日历明细' | translate}}</div>
+</div>
+<nz-card>
+    <form nz-form se-container="2">
+        <se label="{{'工厂' | translate}}">
+            <input nz-input type="text" [(ngModel)]="plantCode" name="plant-code" disabled>
+        </se>
+        <se>
+            <input nz-input type="text" [(ngModel)]="plantDesc" name="plant-desc" disabled>
+        </se>
+        <se label="{{'自' | translate}}">
+            <input nz-input type="text" [(ngModel)]="startDate" name="start-date" disabled>
+        </se>
+        <se label="{{'至' | translate}}">
+            <input nz-input type="text" [(ngModel)]="endDate" name="end-date" disabled>
+        </se>
+    </form>
+</nz-card>
+<nz-card>
+    <app-calendar [data]="calendarData" (clickEvent)="onCellCalendarValueChange($event)" (selectEvent)="onSelectYearMonthChange($event)"></app-calendar>
+</nz-card>

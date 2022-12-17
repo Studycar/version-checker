@@ -1,0 +1,49 @@
+<div class="modal-header">
+  <div class="modal-title">{{ (editDto.id !== undefined ? '编辑信息' : '新增信息') | translate}}</div>
+</div>
+<div style=" margin:2px auto;">
+  <button style="float: right;" nz-button nzType="dashed" (click)="clear()">
+    <i class="anticon anticon-delete"></i>{{ '重置' | translate}}</button>
+  <div style="clear: both;"></div>
+</div>
+
+<div>
+  <form nz-form #f="ngForm" se-container="2" [labelWidth]=140>
+    <se label="{{ '工厂' | translate}}" required>
+      <nz-select #select [(ngModel)]="editDto.plantCode" nzShowSearch name="plantCode"
+        (ngModelChange)="ngPlantCodeModelChange($event)" required>
+        <nz-option *ngFor="let o of plantCodes" [nzValue]="o.value" [nzLabel]="o.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '装运点' | translate}}" required>
+      <nz-select #select [(ngModel)]="editDto.loadLocation" nzShowSearch name="loadLocation" required>
+        <nz-option *ngFor="let o of loadLocations" [nzValue]="o.value" [nzLabel]="o.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '班次开始时间' | translate}}" required>
+      <nz-select #select [(ngModel)]="editDto.internal" nzShowSearch name="internal" required>
+        <nz-option *ngFor="let o of loadInternals" [nzValue]="o.value" [nzLabel]="o.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ 'A类能力吨位' | translate}}">
+      <nz-input-number [(ngModel)]="editDto.tonnageForA" [nzMin]="0" name="tonnageForA"></nz-input-number>
+    </se>
+    <se label="{{ 'B类能力吨位' | translate}}">
+      <nz-input-number [(ngModel)]="editDto.tonnageForB" [nzMin]="0" name="tonnageForB"></nz-input-number>
+    </se>
+    <se label="{{ 'C类能力吨位' | translate}}">
+      <nz-input-number [(ngModel)]="editDto.tonnageForC" [nzMin]="0" name="tonnageForC"></nz-input-number>
+    </se>
+    <se label="{{ '生效日期' | translate}}" required>
+      <nz-date-picker [(ngModel)]="editDto.enableDate" name="enableDate" required></nz-date-picker>
+    </se>
+    <se label="{{ '失效日期' | translate}}">
+      <nz-date-picker [(ngModel)]="editDto.disableDate" name="disableDate"></nz-date-picker>
+    </se>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save()" [disabled]="f.invalid || !f.dirty"
+    [nzLoading]="http.loading"> {{ '保存' | translate}}</button>
+  <button nz-button type="button" (click)="close()"> {{ '关闭' | translate}}</button>
+</div>

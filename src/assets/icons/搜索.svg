@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="32px" height="32px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 51.2 (57519) - http://www.bohemiancoding.com/sketch -->
+    <title>搜索</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="1-01数据化排产" transform="translate(-201.000000, -112.000000)" fill="#607D8B" fill-rule="nonzero">
+            <g id="1" transform="translate(181.000000, 98.000000)">
+                <g id="top">
+                    <g id="1" transform="translate(20.000000, 14.000000)">
+                        <g id="搜索">
+                            <path d="M19.4454064,18.3989598 L24.6464466,23.6 L23.2464466,25 L17.9951425,19.7486959 C16.8622292,20.5375085 15.4851249,21 14,21 C10.1340068,21 7,17.8659932 7,14 C7,10.1340068 10.1340068,7 14,7 C17.8659932,7 21,10.1340068 21,14 C21,15.6664589 20.4176729,17.1969081 19.4454064,18.3989598 Z M14,19 C16.7614237,19 19,16.7614237 19,14 C19,11.2385763 16.7614237,9 14,9 C11.2385763,9 9,11.2385763 9,14 C9,16.7614237 11.2385763,19 14,19 Z" id="Oval-3"></path>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

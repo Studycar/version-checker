@@ -1,0 +1,74 @@
+<custom-formquery [queryParams]="queryParams" [context]="context" [enableWBSetting]="false"
+  (event1)="buCodeOptionsChange($event)" (event2)="typeChange($event)">
+  <div style="float: right; line-height: 60px">时间：{{ now | date:'yyyy-MM-dd hh:mm:ss' }}</div>
+</custom-formquery>
+<div class="list mianList">
+  <section class="row" *ngIf="queryParams.values.type === 'PLANT'">
+    <factory-echart 
+      #factory
+      style="width:100%"
+      [title]="'库存预警-工厂'" 
+      [subTitle]="factorySubTitle"
+      [factoryList]="factoryList"
+      [centerList]="centerList"
+      [straightList]="straightList"
+      [factoryInventoryList]="factoryInventoryList"
+      [factoryInventoryThreshold]="factoryInventoryThreshold"
+      (downloadEvent)="downLoad($event)">
+    </factory-echart>
+  </section>
+  <section class="row" *ngIf="queryParams.values.type === 'BASE'">
+    <base-echart
+      #base
+      style="width:100%"
+      [title]="'库存预警-基地'" 
+      [subTitle]="baseSubTitle"
+      [factoryList]="factoryList"
+      [baseShipmentList]="baseShipmentList"
+      [baseInventoryList]="baseInventoryList"
+      [baseInventoryThreshold]="baseInventoryThreshold"
+      (downloadEvent)="downLoad($event)">
+    </base-echart>
+  </section>
+  <!-- <section class="row">
+    <div class="chartsView" style="width: 100%;">
+      <span class="charts-title">{{'库存预警-工厂+基地汇总' | translate}}</span>
+      <span
+        class="charts-text">{{'数据每晚12点更新，工厂+基地初期库存' + (factoryInventoryNow.count || 0) + '，工厂+基地阈值' + ((factoryInventoryThreshold.length && factoryInventoryThreshold[0].thresholdValue )|| 0)}}</span>
+      <div echarts [options]="chartOption_1" class="factory-echarts-view" [style]="0"></div>
+    </div>
+  </section> -->
+  <section class="row" *ngIf="queryParams.values.type === 'PLANT'">
+    <book-up-echart
+      #bookup
+      style="width:100%"
+      [title]="'事业部各工厂月度产量情况'"
+      [subTitle]="mainDate"
+      [sopPlantQualifiedList]="sopPlantQualifiedList">
+    </book-up-echart>
+  </section>
+  <section class="row" *ngIf="queryParams.values.type === 'PLANT'">
+    <qualified-rate-echart
+      #qualifiedRate
+      style="width:100%"
+      [title]="'工厂入库合格率'"
+      [subTitle]="'需求分析维度'"
+      [itemQualifiedRateList]="itemQualifiedRateList">
+    </qualified-rate-echart>
+  </section>
+  <custom-excelexport [expColumns]='expChartColumns' [expColumnsOptions]='expChartColumnsOptions' [fileName]='sheetName' #excelexport>
+  </custom-excelexport>
+  <section class="row" *ngIf="queryParams.values.type === 'PLANT'">
+    <div class="chartsView" style="width: 100%;">
+      <span class="charts-title">{{'本年累计不合格品前5位' | translate}}</span>
+      <span class="charts-text">{{continuedTime}}</span>
+      <ag-grid-angular #agGrid [class]="themeClass" [style.height.px]="gridHeight" [rowData]="gridData"
+        [columnDefs]="columns" [gridOptions]="gridOptions" [myAgGridRowKey]="{tb:'PSI_DATA_SHOW'}"
+        [myAgGridState]="'psi-data-show'" style="margin-left: 10px; margin-right: 10px;">
+      </ag-grid-angular>
+      <custom-pager [fixed]="false" [height]="pagerHeight" [context]="context" [view]='context.view' [(pageSize)]="_pageSize"
+        [(pageNo)]="_pageNo" (pageChangeEvent)="onPageChanged($event)" style="margin-left: 10px; margin-right: 10px;">
+      </custom-pager>
+    </div>
+  </section>
+</div>

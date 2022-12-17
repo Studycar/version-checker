@@ -1,0 +1,13 @@
+<nz-descriptions [nzTitle]="'订单历史' | translate">
+</nz-descriptions>
+<nz-timeline>  
+    <ng-container *ngFor="let item of hisData">
+      <nz-timeline-item nzColor="green">
+        【{{item.creationDate}}】{{item.changeTypeName}}，{{item.attribute1}}
+      </nz-timeline-item>
+    </ng-container>
+  
+    <ng-container *ngIf="!http.loading && hasLoadData && hisData.length === 0">
+      {{ '无数据' | translate}}
+    </ng-container>
+  </nz-timeline>

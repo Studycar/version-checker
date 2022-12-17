@@ -1,0 +1,66 @@
+<div class="modal-header">
+  <div class="modal-title">{{ isModify ? '编辑信息' : '新增信息' | translate }}</div>
+</div>
+<div style="position: relative; height: 32px" *ngIf="isModify">
+  <button nz-button nzType="dashed" style="position: absolute; right: 0;" (click)="clear()">{{'重置' | translate}}</button>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="2">
+    <se label="{{ '客诉申请单号' | translate }}" *ngIf="isModify">
+      <input nz-input type="text" disabled name="orno" [(ngModel)]="i.orno">
+    </se>
+    <se label="{{ '客户编码' | translate }}" required>
+      <popup-select [Value]="i.cusCode" [ValueField]="'cusCode'"
+        [Text]="i.cusCode" [TextField]="'cusCode'" required [options]="customersOptions"
+        [gridView]="gridViewCustoms" [columns]="columnsCustoms" (TextChanged)="onPopupSelectTextChanged($event)"
+        (SearchEvent)="searchCustoms($event)" (RowSelect)="onRowSelectCustoms($event)">
+      </popup-select>
+    </se>
+    <se label="{{ '联系电话' | translate }}" required>
+      <input nz-input type="text" name="lxdh" [(ngModel)]="i.lxdh" required maxlength="">
+    </se>
+    <se label="{{ '选择处理公司' | translate }}" required>
+      <nz-select nzShowSearch name="plantCode" [(ngModel)]="i.plantCode" [nzDisabled]="isModify" required>
+        <nz-option *ngFor="let op of plantOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '处理状态' | translate }}" required>
+      <nz-select nzShowSearch nzDisabled name="clzt" [(ngModel)]="i.clzt" required>
+        <nz-option *ngFor="let op of clztOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '代理商联系人' | translate }}" required>
+      <input nz-input type="text" name="dlslxr" [(ngModel)]="i.dlslxr" required>
+    </se>
+    <se label="{{ '收款银行联行号' | translate }}" required>
+      <input nz-input type="text" name="receiveCnaps" [(ngModel)]="i.receiveCnaps" required>
+    </se>
+    <se label="{{ '收款银行名称' | translate }}" required>
+      <input nz-input type="text" name="receiveAccountName" [(ngModel)]="i.receiveAccountName" required>
+    </se>
+    <se label="{{ '收款银行账户' | translate }}" required>
+      <input nz-input type="text" name="receiveAccountNo" [(ngModel)]="i.receiveAccountNo" required>
+    </se>
+    <se label="{{ '收款账户户名' | translate }}" required>
+      <input nz-input type="text" name="receiveBankName" [(ngModel)]="i.receiveBankName" required>
+    </se>
+    <se label="{{ '对公标识' | translate }}" required>
+      <nz-select nzShowSearch [(ngModel)]="i.personnel" name="personnel" required>
+        <nz-option
+          *ngFor="let option of personnelOptions"
+          [nzLabel]="option.label"
+          [nzValue]="option.value"
+        >
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '客诉日期' | translate }}" required>
+      <nz-date-picker nzFormat="yyyy-MM-dd" [(ngModel)]="i.ksdt" name="ksdt" required>
+      </nz-date-picker>
+    </se>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="button" (click)="close()">{{ '取消' | translate }}</button>
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save(f.value)" [nzLoading]="http.loading" [disabled]="f.invalid || !f.dirty">{{'保存' | translate }}</button>
+</div>

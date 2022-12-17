@@ -1,0 +1,68 @@
+<div class="modal-header">
+    <div class="modal-title">{{ '新增信息' | translate }}</div>
+</div>
+<div>
+    <form nz-form #f="ngForm" se-container="2">
+        <se label="{{'事业部' | translate}}" required>
+            <nz-select [(ngModel)]="params.businessUnitCode" nzShowSearch (ngModelChange)="onBusinessUnitCodeChange($event)" name="businessUnitCode" required>
+                <nz-option *ngFor="let option of businessUnitOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+            </nz-select>
+        </se>
+        <se label="{{ '分配组织' | translate }}">
+            <nz-select [(ngModel)]="params.plantCode" nzShowSearch [nzAllowClear]="true" name="plantCode">
+                <nz-option *ngFor="let option of plantOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+            </nz-select>
+        </se>
+        <se label="{{ '销售公司' | translate }}" required>
+            <nz-select [(ngModel)]="params.salesRegion" (ngModelChange)="onSalesRegionChange($event)" nzShowSearch name="salesRegion" required>
+                <nz-option *ngFor="let option of salesRegionOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+            </nz-select>
+        </se>
+        <se label="{{ '销售区域' | translate }}">
+            <nz-select [(ngModel)]="params.salesArea" (ngModelChange)="onSalesAreaChange($event)" nzShowSearch [nzAllowClear]="true" name="salesArea">
+                <nz-option *ngFor="let option of salesAreaOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+            </nz-select>
+        </se>
+        <se label="{{ '客户' | translate }}">
+            <nz-select [(ngModel)]="params.customerNumber" nzShowSearch [nzAllowClear]="true" name="customerNumber" [nzServerSearch]="true" (nzScrollToBottom)="downScroll($event)" (nzOnSearch)="downSearch($event)">
+                <nz-option *ngFor="let option of customerOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+            </nz-select>
+        </se>
+        <se label="{{ '订单编号' | translate }}" required>
+            <input nz-input type="text" [(ngModel)]="params.orderNum" name="orderNum" required>
+        </se>
+        <se label="{{ '行号' | translate }}" required>
+            <nz-input-number [(ngModel)]="params.orderLine" [nzMin]="0" [nzStep]="1" name="orderLine" required></nz-input-number>
+        </se>
+        <se label="{{ '订单类型' | translate }}" required>
+            <nz-select [(ngModel)]="params.orderType" nzShowSearch name="enableFlag" required>
+                <nz-option *ngFor="let option of orderTypeOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+            </nz-select>
+        </se>
+        <se label="{{'产品编码' | translate}}" required>
+            <app-popup-select
+                [(SelectText)]="params.itemCode"
+                [TextField]="'itemCode'"
+                [ValueField]="'itemCode'"
+                [gridView]="gridViewItems"
+                [columns]="columnsItems"
+                (SearchEvent)="searchItems($event)">
+            </app-popup-select>
+        </se>
+        <se label="{{'需求日期' | translate}}" required>
+            <nz-date-picker [(ngModel)]="params.reqDate" [nzAllowClear]="false" name="reqDate" required></nz-date-picker>
+        </se>
+        <se label="{{'需求数量' | translate}}" required>
+            <nz-input-number [(ngModel)]="params.reqQty" [nzMin]="1" [nzStep]="1" name="reqQty" required></nz-input-number>
+        </se>
+        <se label="{{'内外销' | translate}}" required>
+            <nz-select [(ngModel)]="params.domesticOversea" nzShowSearch name="domesticOversea" required>
+                <nz-option *ngFor="let option of domesticOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+            </nz-select>
+        </se>
+    </form>
+</div>
+<div class="modal-footer">
+    <button nz-button type="submit" [nzType]="'primary'" [disabled]="!f.valid || !f.dirty" [nzLoading]="http.loading" (click)="save()">{{'交期承诺' | translate}}</button>
+    <button nz-button type="button" (click)="close()">{{'关闭' | translate}}</button>
+</div>

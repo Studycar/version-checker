@@ -1,0 +1,23 @@
+<div class="div_title">
+  <button nz-button [nzType]="'primary'" (click)="queryAllItem()">
+    <i class="anticon anticon-reload"></i>{{ '全部物料' | translate}}
+  </button>
+  <button nz-button (click)="export()">
+    <i class="anticon anticon-export"></i> {{ '导出' | translate}}
+  </button>
+</div>
+<nz-card>
+  <ag-grid-angular #agGrid [class]="themeClass" [style.height.px]="gridHeight" [rowData]="gridData" [columnDefs]="columns"
+    [gridOptions]="gridOptions" (selectionChanged)="onSelectionChanged($event)" [myAgGridRowKey]="{tb:'PC_KIT_AUTO_CALCULATE'}"
+    [myAgGridState]="'query-kitstatus-working-material'">
+  </ag-grid-angular>
+  <custom-pager [height]="pagerHeight" [context]="context" [fixed]="false" [view]='context.view' [(pageSize)]="_pageSize" [(pageNo)]="_pageNo"
+    (pageChangeEvent)="onPageChanged($event)"></custom-pager>
+  <custom-excelexport [expColumns]='expColumns' [expColumnsOptions]='expColumnsOptions' fileName='作业材料' #excelexport></custom-excelexport>
+</nz-card>
+<ng-template #customTemplate let-dataItem>
+  <span title="{{ '物料明细' | translate}}" style="text-align: center;display:block;cursor: Pointer;" (click)="itemdetail(dataItem)"
+    class="pointer">
+                            <i class="anticon anticon-bars"></i>
+   </span>
+</ng-template>

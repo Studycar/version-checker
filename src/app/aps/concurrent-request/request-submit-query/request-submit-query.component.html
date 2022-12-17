@@ -1,0 +1,110 @@
+<custom-formquery [context]="context" [showExpandIcon]=false>
+  <span>
+    <custom-button text="{{ '刷新数据' | translate}}" (clickEvent)="Refresh()" [src]="'基础icon-刷新'">
+    </custom-button>
+    <custom-button text="{{ '查找请求' | translate}}" (clickEvent)="FindRequest()" [src]="'查找请求'">
+    </custom-button>
+    <custom-button text="{{ '提交新请求' | translate}}" (clickEvent)="SubRequest()" [src]="'提交新请求'">
+    </custom-button>
+  </span>
+</custom-formquery>
+<!-- <div style="padding:0;margin:0;"> -->
+<!-- <nz-tabset [nzSize]="'small'" (nzSelectChange)="tabChange($event)">
+    <nz-tab nzTitle=" {{'基本信息'| translate}}">
+    </nz-tab>
+    <nz-tab nzTitle="{{'计划选项'| translate}}">
+    </nz-tab>
+  </nz-tabset>
+  <ag-grid-angular #agGrid [class]="themeClass" [style.height.px]="gridHeight" [rowData]="gridData"
+    [columnDefs]="columns22" [gridOptions]="gridOptions" [myAgGridRowKey]="{tb:'REQUEST_SUBMIT'}" [frameworkComponents]="frameworkComponents"
+    [myAgGridState]="'REQUEST_SUBMIT'">
+  </ag-grid-angular> -->
+<nz-card>
+  <div>
+    <!-- <nz-tabset>
+    <nz-tab *ngFor="let tab of tabs" [nzTitle]="titleTemplate" (nzSelect)="tabSelect(tab)">
+      <ng-template #titleTemplate>
+        <div style="height: 24px;">
+          {{ tab.name | translate }}
+          <div style="position: absolute; margin-top: -10px;width: 35px;text-align: center;">
+            <i class="anticon anticon-up" *ngIf="tab.index===selectIndex"></i>
+          </div>
+        </div>
+      </ng-template>
+    </nz-tab>
+  </nz-tabset> -->
+    <!-- <nz-tabset>
+    <nz-tab *ngFor="let tab of tabs" [nzTitle]="titleTemplate" (nzSelect)="tabSelect(tab)">
+      <ng-template #titleTemplate>
+        <div style="height: 24px;">
+          {{ tab.name | translate}}
+          <span style="position: absolute; margin-top: -6px; display: block; left: 50%; transform: translateX(-50%)">
+            <i class="anticon anticon-up" *ngIf="tab.index===selectIndex" style="margin-right: 0;"></i>
+          </span>
+        </div>
+      </ng-template>
+    </nz-tab>
+  </nz-tabset> -->
+    <nz-tabset>
+      <nz-tab *ngFor="let tab of tabs" [nzTitle]="titleTemplate" (nzSelect)="tabSelect(tab)">
+        <ng-template #titleTemplate>
+          <div style="height: 24px;">
+            {{ tab.name | translate }}
+            <span class="tag-triangle">
+              <i class="anticon anticon-up" *ngIf="tab.index===selectIndex" style="margin-right: 0;"></i>
+            </span>
+          </div>
+        </ng-template>
+      </nz-tab>
+    </nz-tabset>
+    <ag-grid-angular #agGrid [class]="themeClass" [style.height.px]="gridHeight" [rowData]="gridData"
+      [columnDefs]="columns" [gridOptions]="gridOptions" [myAgGridRowKey]="{tb:'REQUEST_SUBMIT'}" tabAggridState
+      [originState]="tabFirstFlag" [stateKey]="stateKey" [tabSubject]="tabSubject"></ag-grid-angular>
+    <custom-pager [height]="pagerHeight" [context]="context" [view]='gridView' [(pageSize)]="_pageSize"
+      [(pageNo)]="_pageNo" (pageChangeEvent)="onPageChanged($event)"></custom-pager>
+    <!-- </div> -->
+  </div>
+</nz-card>
+<ng-template #customTemplate let-dataItem>
+  <span title="{{'诊断'| translate}}" (click)="Diagnosis(dataItem.requestId)" class="pointer">
+    <i class="anticon anticon-customer-service "></i>
+    <nz-divider nzType="vertical"></nz-divider>
+  </span>
+  <span title="{{'暂挂请求'| translate}}" (click)="PendingRequest(dataItem.requestId)"
+    *ngIf="dataItem.phaseCode=='P' && dataItem.holdFlag=='N'" class="pointer">
+    <i class="anticon anticon-lock "></i>
+    <nz-divider nzType="vertical"></nz-divider>
+  </span>
+  <span title="{{'取消暂挂'| translate}}" (click)="PendingRequest(dataItem.requestId)"
+    *ngIf="dataItem.phaseCode=='P' && dataItem.holdFlag=='Y'" class="pointer">
+    <i class="anticon anticon-unlock "></i>
+    <nz-divider nzType="vertical"></nz-divider>
+  </span>
+  <span title="{{'取消请求'| translate}}" (click)="CancelRequest(dataItem.requestId)"
+    *ngIf="dataItem.phaseCode=='P' || dataItem.phaseCode=='R'" class="pointer">
+    <i class="anticon anticon-close "></i>
+    <nz-divider nzType="vertical"></nz-divider>
+  </span>
+  <span title="{{'编辑'| translate}}" (click)="Eidt(dataItem.requestId)"
+    *ngIf="dataItem.phaseCode=='P' && dataItem.holdFlag=='Y'" class="pointer">
+    <i class="anticon anticon-edit "></i>
+    <nz-divider nzType="vertical"></nz-divider>
+  </span>
+  <span title="{{'查看管理器请求'| translate}}" (click)="ManagerRequest(dataItem.requestId)"
+    *ngIf="dataItem.phaseCode=='P' || dataItem.phaseCode=='R'" class="pointer">
+    <i class="anticon anticon-search "></i>
+    <nz-divider nzType="vertical"></nz-divider>
+  </span>
+  <span title="{{'查看输出'| translate}}" (click)="Output(dataItem.requestId)" *ngIf="dataItem.phaseCode=='C'"
+    class="pointer">
+    <i class="anticon anticon-download "></i>
+    <nz-divider nzType="vertical"></nz-divider>
+  </span>
+  <span title="{{'查看日志'| translate}}" (click)="Log(dataItem.requestId)"  class="pointer">
+    <i class="anticon anticon-file "></i>
+    <nz-divider nzType="vertical"></nz-divider>
+  </span>
+  <span title="{{'参数信息'| translate}}" (click)="Argument(dataItem.requestId)" class="pointer">
+    <i class="anticon anticon-profile "></i>
+  </span>
+</ng-template>

@@ -1,0 +1,16 @@
+<custom-formquery [queryParams]="queryParams" [context]="context" (event1)="plantChange($event)" (event2)="scheduleGroupChange($event)"
+  [queryStyle]="{ 'margin-right': '10px' }">
+  <custom-button text="{{ '例外检查' | translate}}" (clickEvent)="excSubmit()" [src]="'工单例外'">
+  </custom-button>
+  <custom-button text="{{ '导出' | translate}}" (clickEvent)="export()" [src]="'基础icon-导出'">
+  </custom-button>
+</custom-formquery>
+<nz-card>
+  <ag-grid-angular #agGrid [class]="themeClass" [style.height.px]="gridHeight" [rowData]="gridData" [columnDefs]="columns"
+    [gridOptions]="gridOptions" [myAgGridRowKey]="{tb:'PS_MO_EXCEPTION_MSG'}" [myAgGridState]="'moexceptionAg'">
+  </ag-grid-angular>
+  <custom-pager [height]="pagerHeight" [context]="context" [view]='context.view' [(pageSize)]="_pageSize" [(pageNo)]="_pageNo"
+    (pageChangeEvent)="onPageChanged($event)" [fixed]="false"></custom-pager>
+  <custom-excelexport [expColumns]='expColumns' [expColumnsOptions]='expColumnsOptions' fileName='工单例外' #excelexport>
+  </custom-excelexport>
+</nz-card>

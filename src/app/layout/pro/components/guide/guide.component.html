@@ -1,0 +1,23 @@
+
+<div class="alain-pro__header-item" 
+    nz-popover
+    [nzPopoverContent]="contentTemplate"
+    nzPopoverPlacement="bottom"
+    nzOverlayClassName="popover">
+    <i class="anticon anticon-question-circle"></i>
+</div>
+<ng-template #contentTemplate>
+    
+    <div style="height: 250px; width:400px; text-align: center;">
+        <nz-tabset [nzSize]="'small'">
+          <nz-tab nzTitle=" {{'表格列拖拽'| translate}}">
+            <img src="./assets/imgs/guide/列拖拽.gif" alt="" srcset="">
+          </nz-tab>
+          <nz-tab nzTitle="{{'快捷键'| translate}}">
+            <ng-template nz-tab>
+              <keyboard-shortcut-lazy></keyboard-shortcut-lazy>
+            </ng-template>
+          </nz-tab>
+        </nz-tabset>
+    </div>
+</ng-template>

@@ -1,0 +1,32 @@
+&nbsp;
+<nz-card>
+  <div class="mb-md">
+    <button nz-button type="export" (click)="export();">
+      <i class="anticon anticon-export"></i> {{ '导出' | translate}}
+    </button>
+    <button nz-button [nzType]="'primary'" (click)="release();">
+      <i class="anticon anticon-check-circle-o"></i>{{ '发放' | translate}}
+    </button>
+  </div>
+  <div>
+    <nz-tabset>
+      <nz-tab *ngFor="let tab of tabs" [nzTitle]="titleTemplate" (nzSelect)="tabSelect(tab)">
+        <ng-template #titleTemplate>
+          <div style="height: 24px;">
+            {{ tab.name | translate }}
+            <span class="tag-triangle">
+              <i class="anticon anticon-up" *ngIf="tab.index===selectIndex"></i>
+            </span>
+          </div>
+        </ng-template>
+      </nz-tab>
+    </nz-tabset>
+    <ag-grid-angular #agGrid [class]="themeClass" [style.height.px]="gridHeight" [rowData]="gridData" [columnDefs]="columns"
+      [gridOptions]="gridOptions2" (selectionChanged)="onSelectionChanged($event)" [myAgGridRowKey]="{tb:'PS_MAKE_ORDER'}"
+      [myAgGridState]="'mobatchreleaseEdit'">
+    </ag-grid-angular>
+    <custom-pager [height]="pagerHeight" [context]="context" [fixed]="false" [view]='context.view' [(pageSize)]="_pageSize" [(pageNo)]="_pageNo"
+      (pageChangeEvent)="onPageChanged($event)"></custom-pager>
+    <custom-excelexport [expColumns]='expColumns' [expColumnsOptions]='expColumnsOptions' fileName='工单子层发放' #excelexport></custom-excelexport>
+  </div>
+</nz-card>

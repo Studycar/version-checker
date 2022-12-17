@@ -1,0 +1,40 @@
+<custom-formquery [queryParams]="queryParams" [context]="context">
+  <span>
+    <custom-button text="{{ '保存' | translate}}" (clickEvent)="save()" [src]="'保存'"></custom-button>
+    <custom-button text="{{ '发布' | translate}}" (clickEvent)="publish()" [src]="'发布'"></custom-button>
+    <custom-button text="{{ '导出' | translate }}" (clickEvent)="exportFile()" [src]="'基础icon-导出'"></custom-button>
+  </span>
+</custom-formquery>
+<nz-card>
+  <ag-grid-angular #agGrid [class]="themeClass" id="MrpPlanWorkbenchGrid" [style.height.px]="gridHeight" [rowData]="gridData"
+    [columnDefs]="columns" [gridOptions]="gridOptions" [myAgGridRowKey]="{tb:'MRP_DEMAND,MRP_SUPPLY'}" [myAgGridState]="'MrpPlanWorkbench'"
+    [suppressRowClickSelection]="true" (virtualColumnsChanged)="onVirtualColumnsChanged($event)">
+  </ag-grid-angular>
+  <custom-pager [height]="pagerHeight" [context]="context" [view]='context.view' [(pageSize)]="_pageSize" [(pageNo)]="_pageNo"
+    [fixed]="!isPopShow" (pageChangeEvent)="onPageChanged($event)">
+  </custom-pager>
+  <custom-excelexport [expColumns]='expColumns' [expColumnsOptions]='expColumnsOptions' fileName='Mrp计划工作台' #excelexport>
+  </custom-excelexport>
+</nz-card>
+
+<ng-template #customTemplate let-dataItem>
+  <span class="pointer" title="{{'现有量' | translate}}" (click)="onhand(dataItem)"><i nz-icon nzType="database" nzTheme="outline"></i></span>
+  <nz-divider nzType="vertical"></nz-divider>
+  <span class="pointer" title="{{'追溯' | translate}}" (click)="pegging(dataItem)"><i nz-icon nzType="share-alt" nzTheme="outline"></i></span>
+  <nz-divider nzType="vertical"></nz-divider>
+  <span class="pointer" title="{{'例外' | translate}}" (click)="exception(dataItem)"><i nz-icon nzType="bell" nzTheme="outline"></i></span>
+</ng-template>
+
+<ng-template #customTemplateDate let-dataItem>
+  <span>
+  <nz-date-picker nzShowTime nzFormat="yyyy-MM-dd HH:mm:ss" [(ngModel)]="dataItem.demandSupplyDate" name="demandSupplyDate"
+    nzPlaceHolder="请选择" [required]="true" [nzAllowClear]="false" [disabled]="!dataRowEdit(dataItem)">
+  </nz-date-picker>
+  </span>
+</ng-template>
+
+<ng-template #customTemplateQty let-dataItem>
+  <span>
+  <input type="number" nz-input [(ngModel)]="dataItem.demandSupplyQty" name="demandSupplyQty" required [disabled]="!dataRowEdit(dataItem)">
+  </span>
+</ng-template>

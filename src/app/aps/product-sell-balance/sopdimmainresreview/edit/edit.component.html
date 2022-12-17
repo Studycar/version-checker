@@ -1,0 +1,37 @@
+<div class="modal-header">
+  <div class="modal-title">{{ title }} 信息</div>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="2">
+    <se label="{{ '工厂' | translate}}" required>
+      <nz-select [(ngModel)]="i.plantCode" name="plantCode" [nzDisabled]="readOnly" required (ngModelChange)="plantChange($event)">
+        <nz-option *ngFor="let option of plantoptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '计划组' | translate}}">
+      <nz-select [(ngModel)]="i.scheduleGroupCode" name="scheduleGroupCode" [nzDisabled]="readOnly">
+        <nz-option *ngFor="let option of groupoptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '资源维度' | translate}}" required>
+      <input type="text" nz-input [(ngModel)]="i.divisionName" name="divisionName" [readOnly]=readOnly required>
+    </se>
+    <se label="{{ '资源描述' | translate}}" required>
+      <input type="text" nz-input [(ngModel)]="i.divisionDesc" name="divisionDesc" required>
+    </se>
+    <se label="{{ '维度类型' | translate}}" required>
+      <nz-select [(ngModel)]="i.divisionType" name="divisionType" required>
+        <nz-option *ngFor="let option of typeoptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '是否有效' | translate}}" required>
+      <nz-select [(ngModel)]="i.enableFlag" name="enableFlag" nzAllowClear nzShowSearchrequired>
+        <nz-option *ngFor="let option of yesOrNo" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save()" [disabled]="!f.valid || !f.dirty" [nzLoading]="http.loading">{{ '保存' | translate}}</button>
+  <button nz-button type="button" (click)="close()">{{ '关闭' | translate}}</button>
+</div>

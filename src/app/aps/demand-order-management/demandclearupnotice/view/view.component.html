@@ -1,0 +1,20 @@
+<div class="modal-header">
+    <div class="modal-title">{{ '取消订单' | translate}} </div>
+</div>
+<form nz-form #f="ngForm" se-container="2" labelWidth="120">
+    <se label="{{'需求订单号' | translate}}" required>
+        <input type="text" nz-input [(ngModel)]="i.reqNumber" disabled name="REQ_NUMBER" required>
+    </se>
+    <se label="{{'需求订单行号' | translate}}" required>
+        <input type="text" nz-input [(ngModel)]="i.reqLineNum" disabled name="REQ_LINE_NUM" required>
+    </se>
+    <se label="{{'取消说明' | translate}}" col="1" required>
+        <textarea rows="2" nz-input [(ngModel)]="i.cancelComments" name="CANCEL_COMMENTS" required></textarea>
+    </se>
+</form>
+<div class="modal-footer">
+    <button nz-button (click)="save()" type="submit" [disabled]="f.invalid" [nzType]="'primary'">
+        {{ '保存' | translate}}
+    </button>
+    <button nz-button type="button" (click)="close()">{{ '关闭' | translate}}</button>
+</div>

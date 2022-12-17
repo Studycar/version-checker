@@ -1,0 +1,44 @@
+<div class="modal-header">
+  <div class="modal-title">{{ title }}信息</div>
+</div>
+<div style="position: relative; height: 32px" *ngIf="isModify">
+  <button nz-button nzType="dashed" style="position: absolute; right: 0;" (click)="clear()">重置</button>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="2" [labelWidth]="80">
+    <se label="{{ '工厂' | translate}}" required="true">
+      <nz-select #select [(ngModel)]="i.plantCode" nzShowSearch (nzScrollToBottom)="loadplant()"
+        (ngModelChange)="onChangePlant($event)" name="PLANT_CODE" [nzDisabled]="IsDisable" required>
+        <nz-option *ngFor="let o of optionListPlant" [nzValue]="o.plantCode" [nzLabel]="o.plantCode"></nz-option>
+        <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+          <i class="anticon anticon-loading anticon-spin loading-icon"></i> Loading Data...
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{'物料' | translate}}" required>
+      <popup-select #selMater1 [ID]="'selMater1'" [Value]="i.itemId" [Text]='i.itemCode' [ValueField]="'itemId'"
+        [TextField]="'itemCode'" [Disabled]="IsDisable" [gridView]="gridView1" [columns]="Columns"
+        (TextChanged)="change1($event)" (SearchEvent)="onSearchMaterial($event)" (RowSelect)="onRowSelect($event)"
+        required>
+      </popup-select>
+    </se>
+    
+    <se label="{{ '物料描述' | translate}}">
+      <input #le1 type="text" nz-input [(ngModel)]="i.itemDescribe" name="strItemDescribe" disabled>
+    </se>
+    <se label="{{ '采购周期' | translate}}" required>
+      <nz-input-number nz-input [(ngModel)]="i.leadTime" [nzMin]="0" name="leadTime"></nz-input-number>
+    </se>
+   
+    <se label="{{ '是否有效' | translate}}" required>
+      <nz-select #select [(ngModel)]="i.enableFlag" name="enableFlag" required>
+          <nz-option *ngFor="let option of enableflags" [nzLabel]="option.label" [nzValue]="option.value" [nzDisabled]="option.disabled"></nz-option>
+      </nz-select>
+  </se>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save()" [disabled]="f.invalid || !f.dirty"
+    [nzLoading]="http.loading">{{ '保存' | translate}}</button>
+  <button nz-button type="button" (click)="close()">{{ '关闭' | translate}}</button>
+</div>

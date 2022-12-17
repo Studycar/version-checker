@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="32px" height="32px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.4 (67378) - http://www.bohemiancoding.com/sketch -->
+    <title>一键匹模</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="补充的icon" transform="translate(-399.000000, -795.000000)">
+            <g id="批量释放--copy-5" transform="translate(399.000000, 795.000000)">
+                <g id="分组-19" transform="translate(6.000000, 6.000000)">
+                    <rect id="矩形" fill="#6D8290" x="0" y="0.4" width="9.6" height="9.6" rx="0.8"></rect>
+                    <rect id="矩形-copy-21" fill="#8BC34A" x="0" y="10.8" width="9.6" height="9.6" rx="0.8"></rect>
+                    <rect id="矩形-copy-20" fill="#6D8290" x="10.4" y="0.4" width="9.6" height="9.6" rx="0.8"></rect>
+                    <rect id="矩形-copy-22" fill="#6D8290" x="10.4" y="10.8" width="9.6" height="9.6" rx="0.8"></rect>
+                    <text id="A" font-family="PingFangSC-Medium, PingFang SC" font-size="8" font-weight="400" fill="#FFFFFF">
+                        <tspan x="2.6" y="8">A</tspan>
+                    </text>
+                    <text id="1" font-family="PingFangSC-Medium, PingFang SC" font-size="8" font-weight="400" fill="#FFFFFF">
+                        <tspan x="3.4" y="18.4">1</tspan>
+                    </text>
+                    <text id="2" font-family="PingFangSC-Medium, PingFang SC" font-size="8" font-weight="400" fill="#FFFFFF">
+                        <tspan x="12.8" y="18.4">2</tspan>
+                    </text>
+                    <text id="B" font-family="PingFangSC-Medium, PingFang SC" font-size="8" font-weight="400" fill="#FFFFFF">
+                        <tspan x="13" y="8">B</tspan>
+                    </text>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

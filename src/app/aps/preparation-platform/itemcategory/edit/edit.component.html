@@ -1,0 +1,68 @@
+<div class="modal-header">
+    <div class="modal-title">{{ title }}{{ '信息' | translate}}</div>
+</div>
+<div style="position: relative; height: 32px" *ngIf="i.Id">
+    <button nz-button nzType="dashed" style="position: absolute; right: 0;" (click)="clear()">重置</button>
+</div>
+<div>
+    <form nz-form #f="ngForm" se-container="2">
+        <se label="{{ '工厂' | translate}}" required>
+            <nz-select [(ngModel)]="i.plantCode" name="plantCode" nzAllowClear [nzDisabled]="readOnly" required (ngModelChange)="plantChange($event)">
+                <nz-option *ngFor="let option of plantoptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+            </nz-select>
+        </se>
+        <se label="{{ '物料类别' | translate}}" required>
+            <popup-select #selMater1 [(SelectValue)]="i.categoryCode" [(SelectText)]='i.categoryCode' [ValueField]="'categoryCode'" [TextField]="'categoryCode'" [gridView]="gridView1" [columns]="columns1" (SearchEvent)="search1($event)" (TextChanged)="change1($event)"
+                (RowSelect)="codeChange($event)" required [Disabled]="readOnly">
+            </popup-select>
+        </se>
+        <se label="{{ '类别描述' | translate}}">
+            <input type="text" nz-input [(ngModel)]="i.categoryName" name="categoryName" [disabled]="true">
+        </se>
+        <se label="{{ '送货区域' | translate}}" required>
+            <nz-select [(ngModel)]="i.deliveryRegionCode" name="deliveryRegionCode" required>
+                <nz-option *ngFor="let option of regionoptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+            </nz-select>
+        </se>
+        <se label="{{ '备料方式' | translate}}" required>
+            <nz-select [(ngModel)]="i.fdSourceType" name="fdSourceType" required>
+                <nz-option *ngFor="let option of fdsourceoptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+            </nz-select>
+        </se>
+        <se label="{{ '监控方式' | translate}}" required>
+            <nz-select [(ngModel)]="i.deliveryCalendarCode" name="deliveryCalendarCode" required>
+                <nz-option *ngFor="let option of calendaroptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+            </nz-select>
+        </se>
+        <se label="{{ '需求汇总方式' | translate}}" required>
+            <nz-select [(ngModel)]="i.demandCollectType" name="demandCollectType" required>
+                <nz-option *ngFor="let option of collectOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+            </nz-select>
+        </se>
+        <se label="{{ '需求提前期(小时)' | translate}}">
+            <nz-input-number [(ngModel)]="i.reqLeadTime" [nzMin]="0" name="reqLeadTime"></nz-input-number>
+        </se>
+        <se label="{{ '过期需求时间(小时)' | translate}}">
+            <nz-input-number [(ngModel)]="i.overdueReqTime" [nzMin]="0" name="overdueReqTime"></nz-input-number>
+        </se>
+        <se label="{{ '过期送货通知时间(小时)' | translate}}">
+            <nz-input-number [(ngModel)]="i.overdueDelNotifyTime" [nzMin]="0" name="overdueDelNotifyTime"></nz-input-number>
+        </se>
+        <se label="{{ '下达时间栏(小时)' | translate}}" required>
+            <nz-input-number [(ngModel)]="i.issueTimeFence" [nzMin]="0" name="issueTimeFence" required></nz-input-number>
+        </se>
+        <se label="{{ '送货通知锁定期(小时)' | translate}}">
+            <nz-input-number [(ngModel)]="i.fixTimeFence" [nzMin]="0" name="fixTimeFence"></nz-input-number>
+        </se>
+        <se label="{{ '是否有效' | translate}}" required>
+            <nz-select #select [(ngModel)]="i.enableFlag" name="enableFlag" required>
+                <nz-option *ngFor="let option of enableOptions" [nzLabel]="option.label" [nzValue]="option.value" required>
+                </nz-option>
+            </nz-select>
+        </se>
+    </form>
+</div>
+<div class="modal-footer">
+    <button nz-button type="submit" [nzType]="'primary'" (click)="save()" [disabled]="!f.valid || !f.dirty" [nzLoading]="http.loading">保存</button>
+    <button nz-button type="button" (click)="close()">关闭</button>
+</div>

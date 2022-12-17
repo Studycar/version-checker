@@ -1,0 +1,38 @@
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { CommonQueryService, HttpAction } from '../../../modules/generated_module/services/common-query.service';
+import { AppApiService } from '../../../modules/base_module/services/app-api-service';
+import { _HttpClient } from '@delon/theme';
+import { Observable } from 'rxjs';
+import { GridSearchResponseDto } from '../../../modules/generated_module/dtos/grid-search-response-dto';
+import { ActionResponseDto } from '../../../modules/generated_module/dtos/action-response-dto';
+import { ResponseDto } from 'app/modules/generated_module/dtos/response-dto';
+
+@Injectable()
+export class QueryService extends CommonQueryService {
+  constructor(
+    public http: _HttpClient,
+    public appApiService: AppApiService
+  ) {
+    super(http, appApiService);
+  }
+
+  public queryUrl = '/api/ps/psMoType/list';
+  public exportUrl = '/api/ps/psMoType/list';
+  /** 删除 */
+  Remove(id: string): Observable<ResponseDto> {
+    return this.http
+      .get('/api/ps/psMoType/del', {
+        id: id
+      });
+  }
+  /** 批量删除 */
+  BatchRemove(ids: any): Observable<ResponseDto> {
+    return this.http
+      .post('/api/ps/psMoType/delBatch', {
+        ids: ids
+      });
+  }
+}
+
+

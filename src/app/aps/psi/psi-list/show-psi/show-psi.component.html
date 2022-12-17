@@ -1,0 +1,25 @@
+<div class="modal-header">
+  <div class="modal-title">{{ '预览' | translate}}</div>
+</div>
+<div>
+  <div style="margin-bottom: 10px;">
+    <button nz-button [nzType]="'primary'" type="button" (click)="export()">导出</button>
+  </div>
+  <ag-grid-angular
+    #agGrid
+    domLayout="normal"
+    [class]="themeClass"
+    [style.height.px]="300"
+    [rowData]="gridData"
+    [columnDefs]="columns"
+    [columnTypes]="columnTypes"
+    [suppressRowTransform]="true"
+    [gridOptions]="gridOptions"
+    >
+  </ag-grid-angular>
+  <custom-excelexport [expColumns]="expColumns" [expColumnsOptions]="expColumnsOptions" fileName="年度PSI预览" #excelexport>
+  </custom-excelexport>
+</div>
+<div class="modal-footer">
+  <button nz-button type="button" (click)="close()">{{ '关闭' | translate}}</button>
+</div>

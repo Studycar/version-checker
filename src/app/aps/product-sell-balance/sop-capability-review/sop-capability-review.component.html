@@ -1,0 +1,29 @@
+<custom-formquery [queryParams]="queryParams" [context]="context" (event1)="searchItemsFrom($event)"
+  (event2)="searchItemsTo($event)" (event3)="searchVendors($event)" (event4)="searchBuyer($event)"
+  (event5)="searchDivisionValue($event)">
+  <span>
+    <custom-button text="{{ '导出' | translate}}" (clickEvent)="export()" [src]="'基础icon-导出'">
+    </custom-button>
+    <!-- <custom-button text="{{ '需求来源' | translate}}" (clickEvent)="viewDemandDetails()" [src]="'基础icon-导出'">
+    </custom-button> -->
+  </span>
+</custom-formquery>
+<nz-card>
+  <div>
+    <ag-grid-angular #agGrid [class]="themeClass" [style.height.px]="gridHeight" [rowData]="gridData"
+      [columnDefs]="columns" [gridOptions]="gridOptions2" [myAgGridRowKey]="{tb:'SOP_UNCSTR_FORECAST'}"
+      [myAgGridState]="gridStateKey">
+    </ag-grid-angular>
+    <div>{{ '总记录数：' | translate}}{{gridData.length}}</div>
+    <!-- <custom-pager [height]="pagerHeight" [context]="context" [view]='context.view' [(pageSize)]="_pageSize"
+      [(pageNo)]="_pageNo" (pageChangeEvent)="onPageChanged($event)"></custom-pager> -->
+    <custom-excelexport [expColumns]='expColumns' [expColumnsOptions]='expColumnsOptions' fileName='供方能力检视'
+      #excelexport>
+    </custom-excelexport>
+  </div>
+</nz-card>
+<ng-template #customTemplate let-dataItem>
+  <span title="{{ '需求来源' | translate}}" (click)="viewDemandDetails(dataItem)" class="pointer">
+    <i class="anticon anticon-bars"></i>
+  </span>
+</ng-template>

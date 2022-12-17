@@ -1,0 +1,64 @@
+<div class="modal-header">
+  <div class="modal-title">{{ 'PSI明细调整' | translate}}</div>
+</div>
+<div style="margin-bottom: 10px;">
+  <form nz-form #f="ngForm" se-container="3">
+    <se label="{{ 'PSI编码' | translate}}">
+      <input nz-input [(ngModel)]="queryParams.psiCode" name="psiCode" disabled="true">
+    </se>
+    <se label="{{ '计划期' | translate}}">
+      <nz-month-picker [(ngModel)]="queryParams.planPeriodMonth" name="planPeriodMonth" required nzDisabled="true"></nz-month-picker>
+    </se>
+    <se label="{{ '模拟号' | translate}}">
+      <input nz-input [(ngModel)]="queryParams.smltNum" name="smltNum" disabled="true">
+    </se>
+    <se label="{{ '版本' | translate}}">
+      <input nz-input [(ngModel)]="queryParams.rsltVersion" name="rsltVersion" disabled="true">
+    </se>
+    <se label="{{ '事业部' | translate}}">
+      <nz-select nzShowSearch [(ngModel)]="queryParams.businessUnitCode" name="businessUnitCode" nzDisabled="true">
+        <nz-option *ngFor="let option of businessUnitCodeOptions" [nzLabel]="option.label" [nzValue]="option.value">
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '品类' | translate}}">
+      <nz-select nzMode="multiple"  nzShowSearch [(ngModel)]="queryParams.marketCategory" name="marketCategory" nzDisabled="true">
+        <nz-option *ngFor="let option of categoryOptions" [nzLabel]="option.label" [nzValue]="option.value">
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '锁定月份' | translate}}" [col]="1">
+      <nz-checkbox-group [(ngModel)]="monthCheckedList" (ngModelChange)="monthCheckedListChange()" name="monthCheckedList"></nz-checkbox-group>
+    </se>
+    <se label="{{ '调整月份' | translate}}">
+      <nz-select nzShowSearch [(ngModel)]="month" name="month">
+        <nz-option *ngFor="let option of monthList" [nzLabel]="option.label" [nzValue]="option.value">
+        </nz-option>
+      </nz-select>
+    </se>
+    <se [col]="1">
+      <button nz-button nzType="primary" (click)="query()">查询</button>
+      <button nz-button nzType="primary" (click)="save()">保存</button>
+      <button nz-button nzType="primary" (click)="edit()">修改生产均价</button>
+    </se>
+  </form>
+</div>
+<div>
+  <ag-grid-angular
+    id="adjustPsi"
+    #agGrid
+    [class]="themeClass"
+    [style.height.px]="300"
+    [rowData]="gridData"
+    [columnDefs]="columns"
+    [columnTypes]="columnTypes"
+    [suppressRowTransform]="true"
+    [gridOptions]="gridOptions"
+    [frameworkComponents]="frameworkComponents"
+    (cellValueChanged)="onCellValueChanged($event)"
+    (virtualColumnsChanged)="onVirtualColumnsChanged($event)">
+  </ag-grid-angular>
+</div>
+<div class="modal-footer">
+  <button nz-button type="button" (click)="close()">{{ '关闭' | translate}}</button>
+</div>

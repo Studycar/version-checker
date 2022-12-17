@@ -1,0 +1,48 @@
+<div class="modal-header">
+    <div class="modal-title">{{ title | translate }}</div>
+</div>
+<div style="position: relative; height: 32px" *ngIf="params.id">
+    <button nz-button nzType="dashed" style="position: absolute; right: 0;" (click)="clear()">重置</button>
+</div>
+<div>
+    <form nz-form #f="ngForm" se-container="2">
+        <se label="{{'计划名称' | translate}}" required>
+            <input type="text" nz-input [(ngModel)]="params.planName" name="planName" [disabled]="editDisabled" required>
+        </se>
+        <se label="{{'计划描述' | translate}}" required>
+            <input type="text" nz-input [(ngModel)]="params.description" name="description" required>
+        </se>
+        <se label="{{'计划类型' | translate}}" required>
+            <nz-select [(ngModel)]="params.planType" nzShowSearch name="planType" required>
+                <nz-option *ngFor="let option of planTypeOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+            </nz-select>
+        </se>
+        <se label="{{'计划应用' | translate}}" required>
+            <nz-select [(ngModel)]="params.planApplication" nzShowSearch name="planApplication" required>
+                <nz-option *ngFor="let option of planApplicationOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+            </nz-select>
+        </se>
+        <se label="{{'展望期天数' | translate}}" required>
+            <nz-input-number [(ngModel)]="params.planHorizonDays" [nzMin]="0" [nzStep]="1" name="planHorizonDays" required></nz-input-number>
+        </se>
+        <!-- <se label="{{ '采购执行计划' | translate }}" required>
+            <nz-select [(ngModel)]="params.purchasingExecutive" nzShowSearch name="purchasingExecutive" required>
+                <nz-option *ngFor="let option of whetherOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+            </nz-select>
+        </se>
+        <se label="{{ '生产执行计划' | translate }}" required>
+            <nz-select [(ngModel)]="params.productionExecutive" nzShowSearch name="productionExecutive" required>
+                <nz-option *ngFor="let option of whetherOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+            </nz-select>
+        </se>
+        <se label="{{'物料范围' | translate}}" required>
+            <nz-select [(ngModel)]="params.planIncludedItems" nzShowSearch name="planIncludedItems" required>
+                <nz-option *ngFor="let option of materialRangeOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+            </nz-select>
+        </se> -->
+    </form>
+</div>
+<div class="modal-footer">
+    <button nz-button type="submit" [nzType]="'primary'" [disabled]="!f.valid || !f.dirty" [nzLoading]="http.loading" (click)="save()">{{'保存' | translate}}</button>
+    <button nz-button type="button" (click)="close()">{{'关闭' | translate}}</button>
+</div>

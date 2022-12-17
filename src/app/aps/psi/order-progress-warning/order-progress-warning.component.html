@@ -1,0 +1,72 @@
+<custom-formquery [queryParams]="queryParams" [context]="context" [enableWBSetting]="false">
+
+</custom-formquery>
+<div class="layout-content" style="overflow-y: auto">
+  <div class="list-layout">
+    <div class="warn-charts-wrapper">
+      <div class="block-left">
+        <div class="item item-top" [class.active]="currentActiveBlock === 'CUSTOMER'" (click)="handleBlockChange('CUSTOMER')">
+          <summary-block #customer [type]="'CUSTOMER'" [chartsData]="warnDaysSummaryMap['CUSTOMER']"
+            (onProjectChangeEvent)="handleProjectChange($event)" 
+            (onFilterChangeEvent)="handleBlockChange($event)">
+          </summary-block>
+        </div>
+        <div class="item item-bottom" [class.active]="currentActiveBlock === 'AREA'" (click)="handleBlockChange('AREA')">
+          <summary-block #area [type]="'AREA'" [chartsData]="warnDaysSummaryMap['AREA']"
+            (onProjectChangeEvent)="handleProjectChange($event)" 
+            (onFilterChangeEvent)="handleBlockChange($event)">
+          </summary-block>
+        </div>
+      </div>
+      <div class="block-middle">
+        <div *ngIf="selectRow" class="item">
+          <middle-block [item]="selectRow"></middle-block>
+        </div>
+        <div *ngIf="!selectRow" class="item">
+          <nz-empty [nzNotFoundImage]="
+          'https://gw.alipayobjects.com/mdn/miniapp_social/afts/img/A*pevERLJC9v0AAAAAAAAAAABjAQAAAQ/original'
+        "></nz-empty>
+        </div>
+      </div>
+      <div class="block-right">
+        <div class="item item-top" [class.active]="currentActiveBlock === 'GROUP'" (click)="handleBlockChange('GROUP')">
+          <summary-block #group [type]="'GROUP'" [chartsData]="warnDaysSummaryMap['GROUP']"
+            (onProjectChangeEvent)="handleProjectChange($event)" 
+            (onFilterChangeEvent)="handleBlockChange($event)">
+          </summary-block>
+        </div>
+        <div class="item item-bottom" [class.active]="currentActiveBlock === 'FACTORY'" (click)="handleBlockChange('FACTORY')">
+          <summary-block #factory [type]="'FACTORY'" [chartsData]="warnDaysSummaryMap['FACTORY']"
+            (onProjectChangeEvent)="handleProjectChange($event)" 
+            (onFilterChangeEvent)="handleBlockChange($event)">
+          </summary-block>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+</div>
+
+<nz-card>
+  <ag-grid-angular
+    #agGrid
+    [class]="themeClass"
+    [style.height.px]="gridHeight"
+    [rowData]="gridData"
+    [columnDefs]="columns"
+    [gridOptions]="gridOptions"
+    (cellClicked)="onCellClicked($event)"
+    [myAgGridRowKey]="{tb:'ORDER_PEOGRESS_WARNING'}"
+    [myAgGridState]="'order-progress-warning'">
+  </ag-grid-angular>
+  <custom-pager
+    [fixed]="false"
+    [height]="pagerHeight"
+    [context]="context"
+    [view]='context.view'
+    [(pageSize)]="_pageSize"
+    [(pageNo)]="_pageNo"
+    (pageChangeEvent)="onPageChanged($event)">
+  </custom-pager>
+</nz-card>
+

@@ -1,0 +1,72 @@
+<nz-spin [nzSpinning]="loading">
+  <table>
+    <tr>
+      <td style="width: 33%;padding-right: 50px;">
+        <form id="kpi_division_form" nzLayout="inline" nz-form #kpi_division_form="ngForm" se-container>
+          <se label="{{'报表维度'| translate}}" error="请填写" required>
+            <input type="text" nz-input [(ngModel)]="kpiDivision.formsDivision" required name="FORMS_DIVISION" />
+          </se>
+          <se>
+            <button nz-button nzType="primary" (click)="addDivision()" [disabled]="kpi_division_form.invalid">
+              {{'新增'| translate}}
+            </button>
+          </se>
+        </form>
+        <nz-card>
+          <ag-grid-angular #agGrid [class]="themeClass" [style.height.px]="gridHeight" [columnDefs]="kpi_division_cols"
+            [rowData]="gridOptions_division.rowData" [gridOptions]="gridOptions_division"
+            [myAgGridRowKey]="{ tb: 'KPI_DIVISION' }" [myAgGridState]="'digital-operations-division'">
+          </ag-grid-angular>
+        </nz-card>
+      </td>
+      <td style="width: 29%;">
+        <nz-card>
+          <ag-grid-angular #agGrid [class]="themeClass" [style.height.px]="gridHeight"
+            [rowData]="gridOptions_forms.rowData" [columnDefs]="kpi_forms_cols" [gridOptions]="gridOptions_forms"
+            [myAgGridRowKey]="{ tb: 'KPI_FORMS' }" [myAgGridState]="'digital-operations-forms'">
+          </ag-grid-angular>
+        </nz-card>
+      </td>
+      <td style="width: 7%;" align="center">
+        <p>
+          <button nz-button nzType="primary" (click)="addSelectedReport()"> {{'添加>'| translate}}
+          </button>
+        </p>
+        <p>
+          <button nz-button nzType="primary" (click)="removeSelectedReport()"> {{'<移除'| translate}}
+          </button>
+        </p>
+        <p>
+          <button nz-button nzType="primary" (click)="addAllReport()"> {{'全部添加>'| translate}}
+          </button>
+        </p>
+        <p>
+          <button nz-button nzType="primary" (click)="removeAllReport()"> {{'<全部移除'| translate}}
+          </button>
+        </p>
+      </td>
+      <td style="width: 29%;" align="left">
+        <form id="queryForm" nzLayout="inline" nz-form #f="ngForm" se-container>
+          <se>
+            <button nz-button nzType="primary" [disabled]="selectedDivision===''" (click)="saveFormDivision()">
+              {{'保存'| translate}}
+            </button>
+          </se>
+        </form>
+        <nz-card>
+          <ag-grid-angular #agGrid [class]="themeClass" [style.height.px]="gridHeight"
+            [rowData]="gridOptions_formsDivision.rowData" [columnDefs]="kpi_forms_division_cols"
+            [gridOptions]="gridOptions_formsDivision" [myAgGridRowKey]="{ tb: 'KPI_FORMS_DIVISION' }"
+            [myAgGridState]="'digital-operations-form-division'">
+          </ag-grid-angular>
+        </nz-card>
+      </td>
+    </tr>
+  </table>
+  <ng-template #kpi_division_customTemplate let-dataItem>
+    <span title="{{ '删除' | translate}}" nz-popconfirm nzTitle="{{ '是否确认删除该记录?' | translate}}"
+      (nzOnConfirm)="deleteDivision(dataItem.formsDivision)" class="pointer">
+      <i class="anticon anticon-delete"></i>
+    </span>
+  </ng-template>
+</nz-spin>

@@ -1,0 +1,215 @@
+<div class="modal-header">
+  <div class="modal-title">{{ isModify ? '编辑信息' : '新增信息' | translate }}</div>
+</div>
+<div style="position: relative; height: 32px" *ngIf="isModify">
+  <button nz-button nzType="dashed" style="position: absolute; right: 0;" (click)="clear()">{{'重置' | translate}}</button>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="2">
+    <se label="{{ '发货单号' | translate }}">
+      <input nz-input type="text" disabled name="invoiceBillCode" [(ngModel)]="i.invoiceBillCode">
+    </se>
+    <se label="{{ '明细行号' | translate }}" *ngIf="isModify">
+      <input nz-input type="text" disabled name="detailedNum" [(ngModel)]="i.detailedNum">
+    </se>
+    <se label="{{ '发货单行状态' | translate }}">
+      <nz-select nzShowSearch name="state" nzDisabled [(ngModel)]="i.state">
+        <nz-option *ngFor="let op of detailedStateOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '工厂' | translate }}">
+      <nz-select nzShowSearch name="plantCode" nzDisabled [(ngModel)]="i.plantCode">
+        <nz-option *ngFor="let op of plantOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '运输企业' | translate }}">
+      <input nz-input type="text" name="transportEnterprise" [(ngModel)]="i.transportEnterprise">
+    </se>
+    <se label="{{ '炉号' | translate }}">
+      <input nz-input type="text" name="luno" [(ngModel)]="i.luno">
+    </se>
+    <se label="{{ '备注' | translate }}">
+      <input nz-input type="text" name="remark" [(ngModel)]="i.remark">
+    </se>
+    <se label="{{ '出库类别' | translate }}">
+      <input nz-input type="text" disabled name="cklb" [(ngModel)]="i.cklb">
+    </se>
+    <se label="{{ '出库类别说明' | translate }}">
+      <input nz-input type="text" disabled name="cklbRemarks" [(ngModel)]="i.cklbRemarks">
+    </se>
+    <se label="{{ '销售类型' | translate }}">
+      <nz-select nzShowSearch name="salesOrderType" nzDisabled [(ngModel)]="i.salesOrderType">
+        <nz-option *ngFor="let op of salesOrderTypeOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '销售订单号' | translate }}" required>
+      <popup-select [(SelectValue)]="i.salesOrderCode" [ValueField]="'salesOrderCode'" [options]="salesOrderDetailOptions"
+        [(SelectText)]="i.salesOrderCode" [TextField]="'salesOrderCode'" name="salesOrderCode" [selectBy]="'id'"
+        [gridView]="gridViewSaleOrderDetaileds" [columns]="columnsSaleOrderDetaileds" (TextChanged)="onSalesOrderTextChanged($event)"
+        (SearchEvent)="searchSalesOrderDetaileds($event)" (RowSelect)="onRowSelectSalesOrderDetailed($event)" required>
+      </popup-select>
+    </se>
+    <se label="{{ '销售订单行' | translate }}">
+      <input nz-input type="text" disabled name="salesOrderNum" [(ngModel)]="i.salesOrderNum">
+    </se>
+    <se label="{{ '合同号' | translate }}">
+      <input nz-input type="text" disabled name="contractCode" [(ngModel)]="i.contractCode">
+    </se>
+    <se label="{{ '存货编码' | translate }}">
+      <input nz-input type="text" disabled name="stockCode" [(ngModel)]="i.stockCode">
+    </se>
+    <se label="{{ '存货名称' | translate }}">
+      <input nz-input type="text" disabled name="stockName" [(ngModel)]="i.stockName">
+    </se>
+    <se label="{{ '面膜编码' | translate }}">
+      <input nz-input type="text" name="coatingUpCode" disabled [(ngModel)]="i.coatingUpCode">    
+    </se>
+    <se label="{{ '底膜编码' | translate }}">
+      <input nz-input type="text" name="coatingDownCode" disabled [(ngModel)]="i.coatingDownCode">    
+    </se>
+    <se label="{{ '垫纸' | translate }}">
+      <input nz-input type="text" name="paper" disabled [(ngModel)]="i.paper">    
+    </se>
+    <se label="{{ '单位' | translate }}">
+      <input nz-input type="text" disabled name="unit" [(ngModel)]="i.unit">
+    </se>
+    <se label="{{ '批号' | translate }}">
+      <input nz-input type="text" disabled name="batchNum" [(ngModel)]="i.batchNum">
+    </se>
+    <se label="{{ '钢种' | translate }}">
+      <input nz-input type="text" disabled name="steelType" [(ngModel)]="i.steelType">
+    </se>
+    <se label="{{ '规格尺寸' | translate }}">
+      <input nz-input type="text" disabled name="steelStandart" [(ngModel)]="i.steelStandart">
+    </se>
+    <se label="{{ '表面' | translate }}">
+      <input nz-input type="text" disabled name="surface" [(ngModel)]="i.surface">
+    </se>
+    <se label="{{ '等级' | translate }}">
+      <input nz-input type="text" disabled name="grade" [(ngModel)]="i.grade">
+    </se>
+    <se label="{{ '配送公仓' | translate }}">
+      <input nz-input type="text" disabled name="distributionWarehouse" [(ngModel)]="i.distributionWarehouse">
+    </se>
+    <se label="{{ '数量' | translate }}">
+      <input nz-input type="text" disabled name="quantity" [(ngModel)]="i.quantity">
+    </se>
+    <se label="{{ '含税价' | translate }}">
+      <input nz-input type="text" disabled name="taxPrice" [(ngModel)]="i.taxPrice">
+    </se>
+    <se label="{{ '限价' | translate }}">
+      <input nz-input type="text" disabled name="fixedPrice" [(ngModel)]="i.fixedPrice">
+    </se>
+    <se label="{{ '金额' | translate }}">
+      <input nz-input type="text" disabled name="money" [(ngModel)]="i.money">
+    </se>
+    <se label="{{ '税率' | translate }}">
+      <input nz-input type="text" disabled name="taxRate" [(ngModel)]="i.taxRate">
+    </se>
+    <se label="{{ '税额' | translate }}">
+      <input nz-input type="text" disabled name="taxAmount" [(ngModel)]="i.taxAmount">
+    </se>
+    <se label="{{ '胶膜' | translate }}">
+      <input nz-input type="text" disabled name="coating" [(ngModel)]="i.coating">
+    </se>
+    <se label="{{ '含税金额' | translate }}">
+      <input nz-input type="text" disabled name="amountIncludingTax" [(ngModel)]="i.amountIncludingTax">
+    </se>
+    <se label="{{ '净重' | translate }}">
+      <input nz-input type="text" disabled name="weigthKg" [(ngModel)]="i.weigthKg">
+    </se>
+    <se label="{{ '理重' | translate }}">
+      <input nz-input type="text" disabled name="lilunWeigthKg" [(ngModel)]="i.lilunWeigthKg">
+    </se>
+    <se label="{{ '厚度下工差' | translate }}">
+      <input nz-input type="text" disabled name="toleranceThickness" [(ngModel)]="i.toleranceThickness">
+    </se>
+    <se label="{{ '已输磅重' | translate }}">
+      <input nz-input type="text" disabled name="poundsLost" [(ngModel)]="i.poundsLost">
+    </se>
+    <se label="{{ '标签规格' | translate }}">
+      <input nz-input type="text" disabled name="label" [(ngModel)]="i.label">
+    </se>
+    <se label="{{ '仓库' | translate }}">
+      <input nz-input type="text" disabled name="warehouse" [(ngModel)]="i.warehouse">
+    </se>
+    <se label="{{ '仓位' | translate }}">
+      <input nz-input type="text" disabled name="location" [(ngModel)]="i.location">
+    </se>
+    <se label="{{ '实厚' | translate }}">
+      <input nz-input type="text" disabled name="thickness" [(ngModel)]="i.thickness">
+    </se>
+    <se label="{{ '实宽' | translate }}">
+      <input nz-input type="text" disabled name="weigth" [(ngModel)]="i.weigth">
+    </se>
+    <se label="{{ '单重（KG）' | translate }}">
+      <input nz-input type="text" disabled name="unitWeigthKg" [(ngModel)]="i.unitWeigthKg">
+    </se>
+    <se label="{{ '重量（KG）' | translate }}">
+      <input nz-input type="text" disabled name="weigthKg" [(ngModel)]="i.weigthKg">
+    </se>
+    <se label="{{ '按重量计价' | translate }}">
+      <input nz-input type="text" disabled name="priceByWeight" [(ngModel)]="i.priceByWeight">
+    </se>
+    <se label="{{ '价格（KG）' | translate }}">
+      <input nz-input type="text" disabled name="priceKg" [(ngModel)]="i.priceKg">
+    </se>
+    <se label="{{ '炉号' | translate }}">
+      <input nz-input type="text" disabled name="heatNum" [(ngModel)]="i.heatNum">
+    </se>
+    <se label="{{ '提货方式' | translate }}">
+      <input nz-input type="text" disabled name="deliveryMethod" [(ngModel)]="i.deliveryMethod">
+    </se>
+    <se label="{{ '装箱方式' | translate }}">
+      <input nz-input type="text" disabled name="packingMethod" [(ngModel)]="i.packingMethod">
+    </se>
+    <se label="{{ '垫纸' | translate }}">
+      <input nz-input type="text" disabled name="paper" [(ngModel)]="i.paper">
+    </se>
+    <se label="{{ '提货仓库' | translate }}">
+      <input nz-input type="text" disabled name="thWarehouse" [(ngModel)]="i.thWarehouse">
+    </se>
+    <se label="{{ '基价' | translate }}">
+      <input nz-input type="text" disabled name="basePrice" [(ngModel)]="i.basePrice">
+    </se>
+    <se label="{{ '加价' | translate }}">
+      <input nz-input type="text" disabled name="markUp" [(ngModel)]="i.markUp">
+    </se>
+    <se label="{{ '汇率' | translate }}">
+      <input nz-input type="text" disabled name="exchangeRate" [(ngModel)]="i.exchangeRate">
+    </se>
+    <se label="{{ '备注' | translate }}">
+      <input nz-input type="text" disabled name="remarks" [(ngModel)]="i.remarks">
+    </se>
+    <se label="{{ '出库单号' | translate }}">
+      <input nz-input type="text" disabled name="issueOrderCode" [(ngModel)]="i.issueOrderCode">
+    </se>
+    <se label="{{ '送货地址' | translate }}">
+      <input nz-input type="text" disabled name="shippingAddress" [(ngModel)]="i.shippingAddress">
+    </se>
+    <se label="{{ '收款协议' | translate }}">
+      <input nz-input type="text" name="collectionAgreement" [(ngModel)]="i.collectionAgreement">
+    </se>
+    <se label="{{ '业务员' | translate }}">
+      <input nz-input type="text" disabled name="salesman" [(ngModel)]="i.salesman">
+    </se>
+    <se label="{{ '部门' | translate }}">
+      <input nz-input type="text" disabled name="department" [(ngModel)]="i.department">
+    </se>
+    <se label="{{ '客户编码' | translate }}">
+      <input nz-input type="text" disabled name="cusCode" [(ngModel)]="i.cusCode">
+    </se>
+    <se label="{{ '客户简称' | translate }}">
+      <input nz-input type="text" disabled name="cusAbbreviation" [(ngModel)]="i.cusAbbreviation">
+    </se>
+    <se label="{{ '币种' | translate }}">
+      <nz-select nzShowSearch name="currency" nzDisabled [(ngModel)]="i.currency">
+        <nz-option *ngFor="let op of currencyOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="button" (click)="close()">{{ '取消' | translate }}</button>
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save(f.value)" [nzLoading]="http.loading" [disabled]="f.invalid || !f.dirty">{{'保存' | translate }}</button>
+</div>

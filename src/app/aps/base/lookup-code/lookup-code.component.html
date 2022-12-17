@@ -1,0 +1,74 @@
+<custom-formquery [queryParams]="queryParams" [context]="context">
+  <span>
+    <custom-button text="{{ '新增' | translate}}" (clickEvent)="add()" [src]="'基础icon-新增'">
+    </custom-button>
+    <custom-button text="{{ '导出' | translate}}" (clickEvent)="export()" [src]="'基础icon-导出'">
+    </custom-button>
+  </span>
+</custom-formquery>
+<nz-card>
+  <kendo-grid #grid [data]="view" [height]="gridHeight" [pageSize]="gridState.take" [skip]="gridState.skip"
+    [sort]="gridState.sort" [sortable]="true" [selectable]="true" (dataStateChange)="dataStateChange($event)"
+    [navigable]="true" [filter]="gridState.filter" filterable="menu" [resizable]="true"
+    [kendoGridSelectBy]="'LOOKUP_TYPE_CODE'" [selectedKeys]="mySelection" [columnMenu]="true" [reorderable]="true"
+    [pageable]="pageable" [loading]="commonQueryService.http.loading" [myGridRowKey]="{tb:'BASE_LOOKUP_TYPES_B'}"
+    [myGridState]="'lookupcode'">
+
+    <kendo-grid-messages pagerPage="分页" pagerOf="的" pagerItems="总数" pagerItemsPerPage="页项"
+      groupPanelEmpty="Drag here to group" noRecords="没有数据">
+    </kendo-grid-messages>
+    <kendo-grid-command-column title="操作" width="100" [locked]="true">
+      <ng-template kendoGridCellTemplate let-isNew="isNew" let-dataItem="dataItem">
+        <span title="{{ '编辑' | translate}}" style="cursor: Pointer" (click)="add(dataItem)">
+          <i class="anticon anticon-edit"></i>
+        </span>
+        <nz-divider nzType="vertical"></nz-divider>
+        <span title="{{ '明细' | translate}}" (click)="detailHandler(dataItem)" style="cursor: Pointer">
+          <!--<i class="anticon anticon-info-circle-o"></i>--><i class="anticon anticon-bars"></i>
+        </span>
+        <nz-divider nzType="vertical"></nz-divider>
+        <span title="{{ '删除' | translate}}" nz-popconfirm nzTitle="是否确认删除该记录?" (nzOnConfirm)="remove(dataItem);"
+          style="cursor: Pointer">
+          <i class="anticon anticon-delete"></i>
+        </span>
+      </ng-template>
+    </kendo-grid-command-column>
+    <!-- <kendo-grid-checkbox-column [width]="60" showSelectAll="true" [locked]="true"></kendo-grid-checkbox-column> -->
+    <kendo-grid-column field="lookupTypeCode" title="编码类型" width="250"></kendo-grid-column>
+    <kendo-grid-column field="meaning" title="编码名称" width="250">
+      <ng-template kendoGridCellTemplate let-dataItem>
+        <ellipsis lines="1">
+          <span nz-tooltip [nzTitle]="dataItem.meaning">{{dataItem.MEANING}}</span>
+        </ellipsis>
+      </ng-template>
+    </kendo-grid-column>
+    <kendo-grid-column field="applicationCode" title="应用模块" width="120">
+      <ng-template kendoGridCellTemplate let-dataItem>
+        {{application(dataItem.APPLICATION_CODE)?.type}}
+      </ng-template>
+      <ng-template kendoGridEditTemplate let-dataItem="dataItem" let-column="column" let-formGroup="formGroup">
+        <kendo-dropdownlist [data]="applications" textField="APPLICATION_NAME" valueField="APPLICATION_ID"
+          [valuePrimitive]="true" [formControl]="formGroup.get('APPLICATION_ID')">
+        </kendo-dropdownlist>
+      </ng-template>
+    </kendo-grid-column>
+    <kendo-grid-column field="description" title="描述" width="250">
+      <ng-template kendoGridCellTemplate let-dataItem>
+        <ellipsis lines="1">
+          <span nz-tooltip [nzTitle]="dataItem.description">{{dataItem.DESCRIPTION}}</span>
+        </ellipsis>
+      </ng-template>
+    </kendo-grid-column>
+    <kendo-grid-column field="LANGUAGE" title="语言" width="300">
+      <ng-template kendoGridCellTemplate let-dataItem>
+        {{LANGUAGEOptions(dataItem.LANGUAGE)?.label}}
+      </ng-template>
+    </kendo-grid-column>
+  </kendo-grid>
+</nz-card>
+<!-- <footer-toolbar errorCollect>
+    <button nz-button type="primary" nzType="primary">提交</button>
+  </footer-toolbar> -->
+<grid-context-menu [for]="grid"></grid-context-menu>
+<custom-excelexport [expColumns]='expColumns' [expColumnsOptions]='expColumnsOptions' fileName="{{ '快速编码' | translate}}"
+  #excelexport></custom-excelexport>

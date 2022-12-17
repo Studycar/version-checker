@@ -1,0 +1,16 @@
+<div class="modal-header">
+  <div class="modal-title">{{ q.title }}</div>
+</div>
+<div>
+  <ag-grid-angular #agGrid [class]="themeClass" [style.height.px]="gridHeight" [rowData]="gridData"
+    [columnDefs]="columns" [gridOptions]="gridOptions" [myAgGridRowKey]="{tb:'SOP_CAPABILITY_REVIEW_DEMAND'}"
+    [myAgGridState]="gridStateKey">
+  </ag-grid-angular>
+  <div>{{ '总记录数：' | translate}}{{gridData?.length}}</div>
+  <!-- <custom-pager [height]="pagerHeight" [fixed]="false" [context]="context" [view]='context.view' [(pageSize)]="_pageSize"
+    [(pageNo)]="_pageNo" (pageChangeEvent)="onPageChanged($event)"></custom-pager> -->
+</div>
+
+<div class="modal-footer">
+  <button nz-button type="button" (click)="close()">{{ '关闭' | translate}}</button>
+</div>

@@ -1,0 +1,40 @@
+<form nz-form [formGroup]="form" (ngSubmit)="submit()" role="form">
+  <nz-alert *ngIf="error" [nzType]="'error'" [nzMessage]="error" [nzShowIcon]="true" class="mb-lg"></nz-alert>
+  <nz-form-item>
+    <nz-form-control>
+      <nz-input-group nzSize="large" nzPrefixIcon="anticon anticon-user">
+        <input nz-input formControlName="userName" placeholder="{{ '用户名' | translate}}">
+      </nz-input-group>
+      <nz-form-explain *ngIf="userName.dirty && userName.errors">{{'请输入用户名' | translate}}</nz-form-explain>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-control>
+      <nz-input-group nzSize="large" nzPrefixIcon="anticon anticon-lock">
+        <input nz-input type="password" formControlName="password" placeholder="{{'密码' | translate}}">
+      </nz-input-group>
+      <nz-form-explain *ngIf="password.dirty && password.errors">
+        {{'请输入密码' | translate}}
+      </nz-form-explain>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-col [nzSpan]="12">
+      <label nz-checkbox formControlName="remember">{{'自动登录' | translate}}</label>
+    </nz-col>
+    <nz-col [nzSpan]="12" class="text-right">
+      <div nz-dropdown [nzDropdownMenu]="menu">
+        {{ '语言' | translate}}
+        <i class="anticon anticon-global"></i>
+      </div>
+      <nz-dropdown-menu #menu="nzDropdownMenu">
+        <ul nz-menu>
+          <li nz-menu-item *ngFor="let item of langs" [nzSelected]="item.code === settingsService.layout.lang" (click)="change(item.code)"><span role="img" [attr.aria-label]="item.text">{{item.abbr}}</span> {{item.text}}</li>
+        </ul>
+      </nz-dropdown-menu>
+    </nz-col>
+  </nz-form-item>
+  <nz-form-item>
+    <button nz-button type="submit" nzType="primary" nzSize="large" [nzLoading]="loading" nzBlock>{{'登录' | translate}}</button>
+  </nz-form-item>
+</form>

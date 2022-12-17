@@ -1,0 +1,68 @@
+<div class="modal-header">
+  <div class="modal-title">{{ isModify ? '编辑信息' : '新增信息' | translate }}</div>
+</div>
+<div style="position: relative; height: 32px" *ngIf="isModify">
+  <button nz-button nzType="dashed" style="position: absolute; right: 0;" (click)="clear()">{{'重置' | translate}}</button>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="2">
+    <se label="{{ '转货单编号' | translate }}" *ngIf="isModify">
+      <input nz-input type="text" disabled name="requisitionNoteCode" [(ngModel)]="i.requisitionNoteCode">
+    </se>
+    <se label="{{ '转移类别' | translate }}" required>
+      <nz-select nzShowSearch name="transferCategory" [(ngModel)]="i.transferCategory" required>
+        <nz-option *ngFor="let op of transferClassOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '转货单状态' | translate }}" required>
+      <nz-select nzShowSearch name="transferState" nzDisabled [(ngModel)]="i.transferState" required>
+        <nz-option *ngFor="let op of transferStateOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '发货单号' | translate }}" required>
+      <popup-select [(SelectValue)]="i.invoiceBillCode" [ValueField]="'invoiceBillCode'" [Disabled]="isModify"
+        [(SelectText)]="i.invoiceBillCode" [TextField]="'invoiceBillCode'" name="invoiceBillCode" [options]="invoiceBillOptions"
+        [gridView]="gridViewInvoices" [columns]="columnsInvoices" (TextChanged)="onInvoiceTextChanged($event)"
+        (SearchEvent)="searchInvoices($event)" (RowSelect)="onInvoiceSelect($event)" required>
+      </popup-select>
+    </se>
+    <se label="{{ '工厂' | translate }}">
+      <nz-select #select nzShowSearch name="plantCode" [(ngModel)]="i.plantCode" nzDisabled>
+        <nz-option *ngFor="let op of plantOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '目的地' | translate }}" required>
+      <popup-select [(SelectValue)]="i.distributionWarehouse" [ValueField]="'warehouse'" [Disabled]="isModify"
+        [(SelectText)]="i.distributionWarehouse" [TextField]="'warehouse'" name="distributionWarehouse"
+        [gridView]="gridViewWares" [columns]="columnsWares" (TextChanged)="onWaresTextChanged($event)"
+        (SearchEvent)="searchWares($event)" (RowSelect)="onWaresSelect($event)" required>
+      </popup-select>
+    </se>
+    <se label="{{ '车牌号' | translate }}">
+      <input nz-input type="text" name="carNumber" [(ngModel)]="i.carNumber">
+    </se>
+    <se label="{{ '转货日期' | translate }}" required>
+      <nz-date-picker nzFormat="yyyy-MM-dd" [(ngModel)]="i.requisitionDate" name="requisitionDate" required>
+      </nz-date-picker>
+    </se>
+    <se label="{{ '已打印' | translate }}" *ngIf="isModify">
+      <input nz-input type="text" disabled name="printed" [(ngModel)]="i.printed" required>
+    </se>
+    <se label="{{ '打印次数' | translate }}" *ngIf="isModify">
+      <input nz-input type="text" disabled name="printTimes" [(ngModel)]="i.printTimes" required>
+    </se>
+    <se label="{{ '制单人' | translate }}" *ngIf="isModify">
+      <input nz-input type="text" disabled name="zhidan" [(ngModel)]="i.zhidan" required>
+    </se>
+    <se label="{{ '审核人' | translate }}" *ngIf="isModify">
+      <input nz-input type="text" disabled name="audit" [(ngModel)]="i.audit" required>
+    </se>
+    <se label="{{ '审核时间' | translate }}" *ngIf="isModify">
+      <input nz-input type="text" disabled name="auditTime" [(ngModel)]="i.auditTime" required>
+    </se>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="button" (click)="close()">{{ '取消' | translate }}</button>
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save(f.value)" [nzLoading]="http.loading" [disabled]="f.invalid || !f.dirty">{{'保存' | translate }}</button>
+</div>

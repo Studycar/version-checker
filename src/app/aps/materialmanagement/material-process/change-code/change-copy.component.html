@@ -1,0 +1,71 @@
+<style type="text/css">
+  .right-float {
+    float: right;
+  }
+
+  .relative {
+    position: relative;
+  }
+
+  .group-title {
+    position: absolute;
+    top: -15px;
+    left: 10px;
+    background-color: white;
+    padding: 5px;
+  }
+
+  .group {
+    border: solid 1px #DCDCDC;
+    margin: 5px auto 20px;
+    padding: 15px 10px 5px;
+  }
+
+</style>
+<div class="modal-header">
+  <div class="modal-title">{{ '切换物料工序' | translate}} </div>
+</div>
+<div style=" margin:2px auto;">
+  <button class="right-float" nz-button nzType="dashed" (click)="clear()">
+    {{ '重置' | translate}}</button>
+  <div style="clear: both;"></div>
+</div>
+<div class="relative">
+  <div class="group-title">{{ '当前物料' | translate}}</div>
+  <div class="group">
+    <form nz-form #f1="ngForm" se-container="2" [labelWidth]="150">
+      <se label="{{ '工厂' | translate}}">
+        <input type="text" nz-input [(ngModel)]="i.PLANT_CODE" name="PLANT_CODE" readonly="true"
+          [class.disabled]="true">
+      </se>
+      <se label="{{ '物料编码' | translate}}">
+        <input type="text" nz-input [(ngModel)]="i.ITEM_CODE" name="ITEM_CODE" readonly="true" [class.disabled]="true">
+      </se>
+    </form>
+  </div>
+</div>
+<div class="relative">
+  <div class="group-title">{{ '切换到物料' | translate}}</div>
+  <div class="group">
+    <form nz-form #f2="ngForm" se-container="2" [labelWidth]="150">
+      <se label="{{ '工厂' | translate}}" required>
+        <nz-select #select [(ngModel)]="NEW_PLANT_CODE" name="NEW_PLANT_CODE" required>
+          <nz-option *ngFor="let option of plantCodes" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+        </nz-select>
+      </se>
+
+      <se label="{{ '物料' | translate}}" required>
+        <popup-select [(SelectValue)]="i.ToId" [(SelectText)]='i.ToCode' [ValueField]="'ITEM_ID'"
+          [TextField]="'ITEM_CODE'" [gridView]="gridView" [columns]="columns" (SearchEvent)="search($event)"
+          (TextChanged)="change($event)" required>
+        </popup-select>
+      </se>
+    </form>
+  </div>
+</div>
+<div class="modal-footer">
+  <button nz-button type="submit" [nzType]="'primary'" (click)="changeCode(f1.value)"
+    [disabled]="f1.invalid||f2.invalid" [nzLoading]="http.loading">
+    {{'确定' | translate}}</button>
+  <button nz-button type="button" (click)="close()">{{ '关闭' | translate}}</button>
+</div>

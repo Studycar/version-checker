@@ -1,0 +1,58 @@
+<div class="modal-header">
+  <div class="modal-title">{{ (isModify?'编辑信息':'新增信息') | translate}} </div>
+</div>
+<div style=" margin:2px auto;">
+  <button style="float: right;" nz-button nzType="dashed" (click)="clear()">
+    <i class="anticon anticon-delete"></i>{{ '重置' | translate}}</button>
+  <div style="clear: both;"></div>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="2" [labelWidth]="150">
+    <se label="{{ '事业部' | translate}}" required>
+      <nz-select nzShowSearch [(ngModel)]="i.scheduleRegionCode" (ngModelChange)="regionChange($event)"
+        name="scheduleRegionCode" [nzDisabled]="isModify" required>
+        <nz-option *ngFor="let option of regionOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '工厂' | translate}}" required>
+      <nz-select nzShowSearch [(ngModel)]="i.plantCode" (ngModelChange)="plantChange($event)"
+        name="plantCode" [nzDisabled]="isModify" required>
+        <nz-option *ngFor="let option of plantOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '计划组' | translate}}" required>
+      <nz-select nzShowSearch [(ngModel)]="i.scheduleGroupCode" (ngModelChange)="groupChange($event)"
+        name="scheduleGroupCode" [nzDisabled]="isModify" required>
+        <nz-option *ngFor="let option of groupOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '资源' | translate}}" required>
+      <nz-select nzShowSearch [(ngModel)]="i.resourceCode" name="resourceCode" [nzDisabled]="isModify"
+        required>
+        <nz-option *ngFor="let option of lineOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '日历编码' | translate}}" required>
+      <nz-select nzShowSearch [(ngModel)]="i.calendarCode" name="calendarCode"
+        (ngModelChange)="calendarChange($event)" [nzDisabled]="true" required>
+        <nz-option *ngFor="let option of calendarOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '车间班次' | translate}}" required>
+      <nz-select nzShowSearch [(ngModel)]="i.shiftCode" name="shiftCode" required>
+        <nz-option *ngFor="let option of shiftOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '是否有效' | translate}}" required>
+      <nz-select nzShowSearch [(ngModel)]="i.enableFlag" name="enableFlag" required>
+        <nz-option *ngFor="let option of enableOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="button" (click)="close()">{{ '关闭' | translate}}</button>
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save(f.value)" [disabled]="f.invalid"
+    [nzLoading]="http.loading">{{
+    '保存' | translate}}</button>
+</div>

@@ -1,0 +1,111 @@
+<div class="modal-header">
+  <div class="modal-title">{{ isModify ? '编辑信息' : '新增信息' | translate }}</div>
+</div>
+<div style="position: relative; height: 32px" *ngIf="isModify">
+  <button nz-button nzType="dashed" style="position: absolute; right: 0;" (click)="clear()">{{'重置' | translate}}</button>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="2">
+    <se label="{{ '来源' | translate }}" required>
+      <nz-select nzShowSearch name="source" [nzDisabled]="isModify" [(ngModel)]="i.source" (ngModelChange)="typeChange()" required>
+        <nz-option *ngFor="let op of deliveryTypeOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se>
+    <ng-container *ngIf="i.type === '20'">
+      <se label="{{ '来源单号' | translate }}" required>
+        <popup-select [(SelectValue)]="i.docCode" [ValueField]="'docCode'" [selectBy]="'id'" [Disabled]="isModify"
+          [(SelectText)]="i.docCode" [TextField]="'docCode'" name="docCode" [options]="invoiceDetailedOptions"
+          [gridView]="gridViewInvoicesDetail" [columns]="columnsInvoicesDetail" (TextChanged)="onInvoiceDetailTextChanged($event)"
+          (SearchEvent)="searchInvoicesDetail($event)" (RowSelect)="onInvoiceDetailSelect($event)" required>
+        </popup-select>
+      </se>
+      <se label="{{ '来源单明细行号' | translate }}">
+        <input nz-input type="text" disabled name="docDetailCode" [(ngModel)]="i.docDetailCode">
+      </se>
+    </ng-container>
+    <ng-container *ngIf="i.type === '10'">
+      <se label="{{ '来源单号' | translate }}" required>
+        <popup-select [(SelectValue)]="i.docCode" [ValueField]="'docCode'" [selectBy]="'id'" [Disabled]="isModify"
+          [(SelectText)]="i.docCode" [TextField]="'docCode'" name="docCode" [options]="transferDetailedOptions"
+          [gridView]="gridViewTransfersDetail" [columns]="columnsTransfersDetail" (TextChanged)="onTransferDetailTextChanged($event)"
+          (SearchEvent)="searchTransferDetail($event)" (RowSelect)="onTransferDetailSelect($event)" required>
+        </popup-select>
+      </se>
+      <se label="{{ '来源单明细行号' | translate }}">
+        <input nz-input type="text" disabled name="docDetailCode" [(ngModel)]="i.docDetailCode">
+      </se>
+    </ng-container>
+    <se label="{{ '工厂' | translate }}">
+      <nz-select nzShowSearch name="plantCode" nzDisabled [(ngModel)]="i.plantCode">
+        <nz-option *ngFor="let op of plantOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '批号' | translate }}">
+      <input nz-input type="text" disabled name="batchCode" [(ngModel)]="i.batchCode">
+    </se>
+    <se label="{{ '状态' | translate }}">
+      <nz-select nzShowSearch name="pendingState" nzDisabled [(ngModel)]="i.pendingState">
+        <nz-option *ngFor="let op of detailedStateOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '客户编码' | translate }}">
+      <input nz-input type="text" disabled name="cusCode" [(ngModel)]="i.cusCode">
+    </se>
+    <se label="{{ '客户简称' | translate }}">
+      <input nz-input type="text" disabled name="cusAbbreviation" [(ngModel)]="i.cusAbbreviation">
+    </se>
+    <se label="{{ '是否加急' | translate }}">
+      <nz-select nzShowSearch name="urgent" [(ngModel)]="i.urgent">
+        <nz-option *ngFor="let op of YesNoOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '实际送货车号' | translate }}">
+      <input nz-input type="text" name="realCarNumber" [(ngModel)]="i.realCarNumber">
+    </se>
+    <se label="{{ '提货方式' | translate }}">
+      <nz-select nzShowSearch name="deliveryMethod" [(ngModel)]="i.deliveryMethod">
+        <nz-option *ngFor="let op of transportTypeOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '配送公仓' | translate }}" *ngIf="!isModify">
+      <popup-select [(SelectValue)]="i.distributionWarehouse" [ValueField]="'subinventoryCode'"
+        [(SelectText)]="i.distributionWarehouse" [TextField]="'subinventoryCode'" name="distributionWarehouse"
+        [gridView]="gridViewWares" [columns]="columnsWares" (TextChanged)="onWaresTextChanged($event)"
+        (SearchEvent)="searchWares($event)" (RowSelect)="onWaresSelect($event)">
+      </popup-select>
+    </se>
+    <se label="{{ '目的地' | translate }}">
+      <popup-select [(SelectValue)]="i.place" [ValueField]="'warehouse'"
+        [(SelectText)]="i.place" [TextField]="'warehouse'" name="place"
+        [gridView]="gridViewDistrs" [columns]="columnsDistrs" (TextChanged)="onDistrsTextChanged($event)"
+        (SearchEvent)="searchDistrs($event)" (RowSelect)="onDistrsSelect($event)">
+      </popup-select>
+    </se>
+    <se label="{{ '送货地点' | translate }}">
+      <input nz-input type="text" name="shippingAddress" [(ngModel)]="i.shippingAddress" disabled >
+    </se>
+    <se label="{{ '送货区域' | translate }}">
+      <input nz-input type="text" name="area" [(ngModel)]="i.area" disabled >
+    </se>
+    <se label="{{ '送货范围' | translate }}">
+      <input nz-input type="text" name="ranges" [(ngModel)]="i.ranges" disabled >
+    </se>
+    <se label="{{ '物流公司' | translate }}">
+      <input nz-input type="text" name="logistics" [(ngModel)]="i.logistics" >
+    </se>
+    <se label="{{ '备注' | translate }}">
+      <input nz-input type="text" name="remarks" [(ngModel)]="i.remarks" >
+    </se>
+    <se label="{{ '特殊备注' | translate }}">
+      <input nz-input type="text" name="specialRemarks" placeholder="10个字内" maxlength="10" [(ngModel)]="i.specialRemarks" >
+    </se>
+    <se label="{{ '配送日期' | translate }}" required>
+      <nz-date-picker nzFormat="yyyy-MM-dd" [(ngModel)]="i.deliveryDate" name="deliveryDate" required>
+      </nz-date-picker>
+    </se>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="button" (click)="close()">{{ '取消' | translate }}</button>
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save(f.value)" [nzLoading]="http.loading" [disabled]="f.invalid || !f.dirty">{{'保存' | translate }}</button>
+</div>

@@ -1,0 +1,118 @@
+<custom-formquery [queryParams]="queryParams" [context]="context">
+  <custom-button text="{{ '新增' | translate }}" [src]="'基础icon-新增'" (clickEvent)="add()"></custom-button>
+  <custom-button text="{{ '导出' | translate }}" [src]="'基础icon-导出'" (clickEvent)="export()"></custom-button>
+  <custom-button text="{{ '刷新已分货量' | translate }}" [src]="'基础icon-刷新'" (clickEvent)="refresh()"></custom-button>
+  <custom-button text="{{ '刷新发货数' | translate }}" [src]="'基础icon-刷新'" (clickEvent)="refreshSend()"></custom-button>
+</custom-formquery>
+<nz-card>
+  <ag-grid-angular #agGrid [class]="themeClass" [style.height.px]="gridHeight" [rowData]="gridData"
+    [columnDefs]="columns" [gridOptions]="gridOptions" [myAgGridState]="'hw-contract'"
+    [myAgGridRowKey]="{tb:'PS_CONTRACT'}" (filterChanged)="onFilterChanged($event)">
+  </ag-grid-angular>
+  <custom-pager [height]="pagerHeight" [context]="context" [view]='context.view' [(pageSize)]="_pageSize"
+    [(pageNo)]="_pageNo" (pageChangeEvent)="onPageChanged($event)"></custom-pager>
+  <custom-excelexport [expColumns]='expColumns' [expColumnsOptions]='expColumnsOptions' fileName='合同信息' #excelexport>
+  </custom-excelexport>
+</nz-card>
+<ng-template #customTemplate let-dataItem>
+  <div *ngIf="!dataItem.isBottomRowData">
+    <ng-container *ngIf="dataItem.contractType !== '40'">
+      <!-- 仅已审批、拆分驳回状态可拆分 -->
+      <ng-container *ngIf="['30','100'].includes(dataItem.contractState)">
+        <span title="拆分" (click)="splitContract(dataItem)" style="cursor: Pointer">
+          <i class="anticon anticon-appstore"></i>
+        </span>
+        <nz-divider nzType="vertical"></nz-divider>
+      </ng-container>
+      <ng-container *ngIf="['30','110'].includes(dataItem.contractState) && (dataItem.calculateDepositFlag==null || dataItem.calculateDepositFlag==='')">
+          <span title="启用定金计算" (click)="calculationDeposit(dataItem)" style="cursor: Pointer">
+            <i class="anticon anticon-unlock"></i>
+          </span>
+          <nz-divider nzType="vertical"></nz-divider>
+      </ng-container>
+      <!-- 仅已审批状态可变更、解除合同、关闭 -->
+      <ng-container *ngIf="dataItem.contractState === '30'">
+        <span title="变更" (click)="modify(dataItem)" style="cursor: Pointer">
+          <i class="anticon anticon-sync"></i>
+        </span>
+        <nz-divider nzType="vertical"></nz-divider>
+        <ng-container *ngIf="!dataItem.quantityDj">
+          <span title="{{ '解除合同' | translate}}" style="cursor: Pointer" (click)="cancelContract(dataItem)">
+            <i class="anticon anticon-stop"></i>
+          </span>
+          <nz-divider nzType="vertical"></nz-divider>
+        </ng-container>
+        <span title="{{ '合同关闭' | translate}}" nz-popconfirm nzTitle="{{ '是否确认关闭该合同?' | translate}}"
+          (nzOnConfirm)="contractClose(dataItem);" class="pointer">
+          <i nz-icon nzType="issues-close" nzTheme="outline"></i>
+        </span>
+        <nz-divider nzType="vertical"></nz-divider>
+      </ng-container>
+      <ng-container *ngIf="verifyOpenManual(dataItem)">
+        <span title="{{ '手动打开' | translate}}" nz-popconfirm nzTitle="{{ '是否确认打开该合同?' | translate}}"
+          (nzOnConfirm)="contractOpenManual(dataItem);" class="pointer">
+          <i nz-icon nzType="exclamation-circle" nzTheme="outline"></i>
+        </span>
+        <nz-divider nzType="vertical"></nz-divider>
+      </ng-container>
+      <!-- <ng-container *ngIf="dataItem.reopenFlag === 'Y'">
+        <span title="{{ '合同重新打开' | translate}}" nz-popconfirm nzTitle="{{ '是否确认重新打开该合同?' | translate}}"
+          (nzOnConfirm)="contractReopen(dataItem);" class="pointer">
+          <i nz-icon nzType="retweet" nzTheme="outline"></i>
+        </span>
+        <nz-divider nzType="vertical"></nz-divider>
+      </ng-container> -->
+    </ng-container>
+    <!-- 已审批、已拆分、已变更、已完结状态下可以下载、预览 -->
+    <ng-container *ngIf="['30', '60', '90', '110'].indexOf(dataItem.contractState) > -1">
+      <span *ngIf="!dataItem.isDownloading" title="{{ '下载' | translate}}" (click)="download(dataItem)" class="pointer">
+        <i class="anticon anticon-download"></i>
+      </span>
+      <span *ngIf="dataItem.isDownloading" title="{{ '下载中' | translate}}" class="pointer">
+        <i class="anticon anticon-loading"></i>
+      </span>
+      <nz-divider nzType="vertical"></nz-divider>
+      <span *ngIf="!dataItem.isPreviewing" title="{{ '预览' | translate}}" (click)="preview(dataItem)" class="pointer">
+        <i class="anticon anticon-eye"></i>
+      </span>
+      <span *ngIf="dataItem.isPreviewing" title="{{ '预览中' | translate}}" class="pointer">
+        <i class="anticon anticon-loading"></i>
+      </span>
+      <nz-divider nzType="vertical"></nz-divider>
+    </ng-container>
+    <!-- 仅待审批状态和驳回状态可编辑、删除 -->
+    <ng-container *ngIf="(dataItem.contractState === '10' || dataItem.contractState === '40') && dataItem.contractBusinessType !== 'SEPARATE'">
+      <span title="编辑" (click)="add(dataItem)" style="cursor: Pointer">
+        <i class="anticon anticon-edit"></i>
+      </span>
+      <nz-divider nzType="vertical"></nz-divider>
+      <span title="{{ '删除' | translate}}" nz-popconfirm nzTitle="{{ '是否确认删除该记录?' | translate}}"
+        (nzOnConfirm)="remove(dataItem);" class="pointer">
+        <i class="anticon anticon-delete"></i>
+      </span>
+      <nz-divider nzType="vertical"></nz-divider>
+    </ng-container>
+    <span title="{{ '修改记录' | translate}}" style="cursor: Pointer" (click)="showChangeDetail(dataItem)">
+      <img src="/assets/icons/operate-icons/history.svg" />
+    </span>
+  </div>
+
+</ng-template>
+<nz-modal [(nzVisible)]="isVisible" [nzTitle]="'刷新已分货量'" [nzFooter]="modalFooter" (nzOnCancel)="handleCancel()">
+  <form #f="ngForm" se-container="1">
+    <se label="{{ '工厂' | translate }}" required>
+      <nz-select nzShowSearch name="plantCode" [(ngModel)]="plantCode" required>
+        <nz-option *ngFor="let op of plantOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '产品大类' | translate }}" required>
+      <nz-select nzShowSearch name="productCategory" [(ngModel)]="productCategory" required>
+        <nz-option *ngFor="let op of productCategoryOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se>
+  </form>
+  <ng-template #modalFooter>
+    <button nz-button nzType="default" (click)="handleCancel()">取消</button>
+    <button nz-button nzType="primary" [disabled]="f.invalid" (click)="handleOk()" [nzLoading]="http.loading">确认</button>
+  </ng-template>
+</nz-modal>

@@ -1,0 +1,113 @@
+<custom-formquery [queryParams]="queryParams" [context]="context" (event1)="searchItems($event)" (event2)="searchBuyer($event)" (event3)="searchVendor($event)" (event4)="searchPlanner($event)" (event5)="searchDocumentNum($event)">
+  <span>
+   <!-- <custom-button text="{{ '保存' | translate}}" (clickEvent)="save()" [src]="'保存'"></custom-button>-->
+    <custom-button text="{{ '导出' | translate }}" (clickEvent)="exportFile()" [src]="'基础icon-导出'"></custom-button>
+    <custom-button text="{{ '下达' | translate}}" (clickEvent)="publish()" [src]="'批量下达'"></custom-button>
+  </span>
+</custom-formquery>
+<nz-card>
+  <ag-grid-angular #agGrid [class]="themeClass" id="PcRequisitionWorkbenchGrid" [style.height.px]="gridHeight" [rowData]="gridData"
+    [columnDefs]="columns" [gridOptions]="gridOptions" [getRowStyle]="getRowStyle" [myAgGridRowKey]="{tb:'PC_REQUISITION_HEADER'}" [myAgGridState]="'PcRequisitionWorkbench'"
+    [suppressRowClickSelection]="true" [isRowSelectable]="isRowSelectable" (virtualColumnsChanged)="onVirtualColumnsChanged($event)">
+  </ag-grid-angular>
+  <custom-pager [height]="pagerHeight" [context]="context" [view]='context.view' [(pageSize)]="_pageSize" [(pageNo)]="_pageNo"
+    [fixed]="!isPopShow" (pageChangeEvent)="onPageChanged($event)">
+  </custom-pager>
+  <custom-excelexport [expColumns]='expColumns' [expColumnsOptions]='expColumnsOptions' fileName='采购订单下达工作台' #excelexport>
+  </custom-excelexport>
+</nz-card>
+<!--
+<ng-template #customTemplate let-dataItem>
+  <span class="pointer" title="{{'现有量' | translate}}" (click)="onhand(dataItem)"><i nz-icon nzType="database" nzTheme="outline"></i></span>
+  <nz-divider nzType="vertical"></nz-divider>
+  <span class="pointer" title="{{'追溯' | translate}}" (click)="pegging(dataItem)"><i nz-icon nzType="share-alt" nzTheme="outline"></i></span>
+  <nz-divider nzType="vertical"></nz-divider>
+  <span class="pointer" title="{{'例外' | translate}}" (click)="exception(dataItem)"><i nz-icon nzType="bell" nzTheme="outline"></i></span>
+</ng-template>
+-->
+<ng-template #customTemplateDate let-dataItem>
+  <span>
+  <nz-date-picker nzShowTime nzFormat="yyyy-MM-dd" [(ngModel)]="dataItem.actualNeedByDate" name="actualNeedByDate"
+    nzPlaceHolder="请选择" [required]="true" [nzAllowClear]="false" [disabled]="!dataRowEdit(dataItem)">
+  </nz-date-picker>
+  </span>
+</ng-template>
+
+<ng-template #customTemplateQty let-dataItem>
+  <span>
+  <input type="number" nz-input [(ngModel)]="dataItem.demandSupplyQty" name="demandSupplyQty" required [disabled]="!dataRowEdit(dataItem)">
+  </span>
+</ng-template>
+
+<ng-template #customTemplateCurrentQty let-dataItem>
+  <span>
+  <nz-input-number type="number"  #inputbox [nzMin]="0" nz-input [(ngModel)]="dataItem.currentQuantity"   (nzBlur)="currentQuantityBlur(inputbox,dataItem)"   (ngModelChange)="currentQuantityChange(inputbox,dataItem)"  name="currentQuantity" required [disabled]="!dataRowEdit(dataItem)">
+  </nz-input-number>
+  </span>
+</ng-template>
+
+<ng-template #customTemplateComments let-dataItem>
+  <span>
+  <input type="text" nz-input [(ngModel)]="dataItem.comments" name="comments" required [disabled]="!dataRowEdit(dataItem)">
+  </span>
+</ng-template>
+
+<ng-template #customTemplateBondedTypeSelect let-dataItem>
+  <span style="width: 1000px;">
+    <nz-select [(ngModel)]="dataItem.bondedType" name="bondedType" [disabled]="!dataRowEdit(dataItem)" nzAllowClear nzShowSearch style="min-width: 100px;">
+      <nz-option *ngFor="let option of listBondedType" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+    </nz-select>
+  </span>
+</ng-template>
+
+<ng-template #customTemplateSubinventory let-dataItem>
+  <span>
+    <nz-select [(ngModel)]="dataItem.destinationSubinventory" name="destinationSubinventory" [disabled]="!dataRowEdit(dataItem)" nzDropdownMatchSelectWidth='false' nzAllowClear nzShowSearch>
+      <nz-option *ngFor="let option of listSubinventory" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+    </nz-select>
+  </span>
+</ng-template>
+<ng-template #customTemplateSubinventorypop let-dataItem>
+  <span>
+      <popup-select #selMater1  [(SelectValue)]="dataItem.destinationSubinventory" [(SelectText)]='dataItem.destinationSubinventory' [ValueField]="'subinventoryCode'"
+        [TextField]="'subinventoryCode'" [gridView]="gridViewSubinventory" [columns]="columnsSubinventory" (SearchEvent)="searchSubinventory($event)" (TextChanged)="searchSubinventory($event)"
+        (RowSelect)="searchSubinventory($event)" >
+      </popup-select>
+  </span>
+</ng-template>
+
+<ng-template #customTemplateSubinventoryapppop let-dataItem>
+  <span>
+      <app-popup-select #selMater2  [nzSearchNull]="true" [(SelectValue)]="dataItem.destinationSubinventory" [(SelectText)]='dataItem.destinationSubinventory' [ValueField]="'subinventoryCode'"
+        [TextField]="'subinventoryCode'" [gridView]="gridViewSubinventory" [columns]="columnsSubinventory" (SearchEvent)="searchSubinventory($event,dataItem)" (TextChanged)="textChangedSubinventory($event)"
+        (RowSelect)="rowSelectSubinventory($event)" [Disabled]="!dataRowEdit(dataItem)">
+      </app-popup-select>
+  </span>
+</ng-template>
+
+<ng-template #customTemplateLocationapppop let-dataItem>
+  <span>
+    <app-popup-select #selMater3 [nzSearchNull]="true" [(SelectValue)]="dataItem.deliverToLocationId" [(SelectText)]='dataItem.deliverToLocationId' [ValueField]="'deliveryRegionCode'"
+    [TextField]="'deliveryRegionCode'" [gridView]="gridViewLocation" [columns]="columnsLocation" (SearchEvent)="searchLocation($event,dataItem)" (TextChanged)="textChangedLocation($event)"
+    (RowSelect)="rowSelectLocation($event)" [Disabled]="!dataRowEdit(dataItem)">
+  </app-popup-select>
+  </span>
+</ng-template>
+
+<ng-template #customTemplateNoteToVendor let-dataItem>
+  <span>
+    <input type="text" nz-input [(ngModel)]="dataItem.noteToVendor" name="noteToVendor" required [disabled]="!dataRowEdit(dataItem)">
+   <!-- <app-popup-select #selMater3 [nzSearchNull]="true" [(SelectValue)]="dataItem.NOTE_TO_VENDOR" [(SelectText)]='dataItem.NOTE_TO_VENDOR' [ValueField]="'VENDOR_NUMBER'"
+    [TextField]="'VENDOR_NUMBER'" [gridView]="gridViewVendors" [columns]="columnsVendors" (SearchEvent)="searchNoteToVendor($event,dataItem)" (TextChanged)="textChangedNoteToVendor($event)"
+    (RowSelect)="rowSelectNoteToVendor($event)" >
+  </app-popup-select> -->
+  </span>
+</ng-template>
+<ng-template #customTemplateLocation let-dataItem>
+  <span>
+    <nz-select [(ngModel)]="dataItem.deliverToLocationId" name="deliverToLocationId" [disabled]="!dataRowEdit(dataItem)" nzAllowClear nzShowSearch>
+      <nz-option *ngFor="let option of listLocation" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+    </nz-select>
+  </span>
+</ng-template>
+

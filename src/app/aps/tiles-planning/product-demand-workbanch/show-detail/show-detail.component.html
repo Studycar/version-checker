@@ -1,0 +1,4 @@
+<ag-grid-angular #agGrid [class]="themeClass" [style.height.px]="gridHeight" [rowData]="gridData"
+  [columnDefs]="columns" [gridOptions]="gridOptions" 
+  (filterChanged)="onFilterChanged($event)" [myAgGridRowKey]="{tb:'SHOW_DETAIL'}" [myAgGridState]="'show_detail'">
+</ag-grid-angular>

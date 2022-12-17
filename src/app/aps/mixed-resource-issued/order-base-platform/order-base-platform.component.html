@@ -1,0 +1,43 @@
+<!-- 查询及头部按钮 -->
+<custom-formquery [queryParams]="queryParams" [context]="context">
+  <span>
+    <custom-button text="{{ '导出' | translate}}" (clickEvent)="export()" [src]="'基础icon-导出'">
+    </custom-button>
+    <custom-button text="{{ '下达' | translate}}" (clickEvent)="batchIssue()" [src]="'批量下达'">
+    </custom-button>
+    <custom-button text="{{ '回退' | translate}}" (clickEvent)="rollback()" [src]="'btn_cancel'">
+    </custom-button>
+  </span>
+</custom-formquery>
+<nz-card>
+  <!-- 表格 -->
+  <ag-grid-angular
+    #agGrid
+    id=""
+    [class]="themeClass"
+    [style.height.px]="gridHeight"
+    [rowData]="gridData"
+    [columnDefs]="columns"
+    [gridOptions]="gridOptions"
+    (selectionChanged)="onSelectionChanged()"
+    [myAgGridState]="'resource-issued-platform-ag'"
+    [myAgGridRowKey]="{ tb:'ps_make_order' }"
+  >
+  </ag-grid-angular>
+  <!-- 分页系统 -->
+  <custom-pager
+    [height]="pagerHeight"
+    [context]="context"
+    [view]="context.view"
+    [(pageSize)]="_pageSize"
+    [(pageNo)]="_pageNo"
+    (pageChangeEvent)="onPageChanged($event)">
+  </custom-pager>
+  <!-- 导出功能组件 -->
+  <custom-excelexport [expColumns]="expColumns" [expColumnsOptions]="expColumnsOptions" fileName="总装跟单件" #excelexport></custom-excelexport>
+</nz-card>
+<ng-template #customTemplate let-dataItem>
+  <span title="{{ '明细' | translate}}" style="cursor: Pointer" (click)="showDetail(dataItem)">
+    <i class="anticon anticon-bars"></i>
+  </span>
+</ng-template>

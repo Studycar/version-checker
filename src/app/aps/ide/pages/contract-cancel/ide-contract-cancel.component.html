@@ -1,0 +1,15 @@
+<flow-page #page>
+  <div step-1>
+    <ide-contract-cancel-form #form
+    [(formData)]="formData"
+    (formDataChange)="formDataChange()"></ide-contract-cancel-form>
+  </div>
+  <div step-2>
+    <flow-iframe #flow
+      [formCode]="formCode"
+      [f]="form.f"
+      (prevPage)="prevPage()"
+      (addFormData)="addFormData($event)"
+      (actionComplete)="actionComplete($event)"></flow-iframe>
+  </div>
+</flow-page>

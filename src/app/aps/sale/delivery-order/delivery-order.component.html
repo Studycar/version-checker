@@ -1,0 +1,48 @@
+<custom-formquery [queryParams]="queryParams" [context]="context" (event3)="searchWaresHouse($event)" (event4)="searchWares($event)" (event5)="searchPlace($event)">
+  <custom-button text="{{ '删除' | translate }}" [src]="'基础icon-删除'" (clickEvent)="remove()"></custom-button>
+  <custom-button text="{{ '自动生成配送单' | translate }}" [src]="'创建工单'" (clickEvent)="generate()"></custom-button>
+  <custom-button text="{{ '修改车号' | translate }}" [src]="'基础icon-修改'" (clickEvent)="editCarNumber()"></custom-button>
+  <custom-button text="{{ '解除配车' | translate }}" [src]="'解绑'" (clickEvent)="unbind()"></custom-button>
+  <custom-button text="{{ '导出' | translate }}" [src]="'基础icon-导出'" (clickEvent)="export()"></custom-button>
+  <custom-button text="{{ '配车导入' | translate}}" (clickEvent)="imports()" [src]="'基础icon-导入'" [loading]="optionsLoading"></custom-button>
+  <custom-button text="{{ '手动开配送单' | translate}}" (clickEvent)="bindCar()" [src]="'绑定'"></custom-button>
+  <custom-button text="{{ '审批' | translate }}" [src]="'提交审核'" (clickEvent)="examineData()"></custom-button>
+  <custom-button text="{{ '刷新库位编码' | translate }}" [src]="'基础icon-刷新'" (clickEvent)="refreshSubCode()"></custom-button> 
+</custom-formquery>
+<nz-card>
+  <ag-grid-angular #agGrid id="digitalGrid" [class]="themeClass" [style.height.px]="gridHeight" [rowData]="gridData"
+    [columnDefs]="columns" [gridOptions]="gridOptions" [myAgGridState]="'hw-delivery-order'"
+    [myAgGridRowKey]="{tb:'PS_DELIVERY_ORDER'}" (cellDoubleClicked)="onCellClicked($event)"
+    (virtualColumnsChanged)="onVirtualColumnsChanged($event)"
+    (filterChanged)="onFilterChanged($event)" (cellValueChanged)="onCellValueChanged($event)">
+  </ag-grid-angular>
+  <custom-tb-select-sum [context]="context" [sumItems]="sumItems" [height]="sumHeight"></custom-tb-select-sum>
+  <custom-pager [height]="pagerHeight" [context]="context" [view]='context.view' [(pageSize)]="_pageSize" [fixed]="false"
+    [(pageNo)]="_pageNo" (pageChangeEvent)="onPageChanged($event)"></custom-pager>
+  <custom-excelexport [expColumns]='expColumns' [expColumnsOptions]='expColumnsOptions' fileName='未配车列表' #excelexport></custom-excelexport>
+</nz-card>
+<nz-modal [(nzVisible)]="isVisible" nzTitle="{{ isGenerate ? '自动开配送单' : '自动配车'}}" [nzFooter]="modalFooter" (nzOnCancel)="handleCancel()">
+  <form #f="ngForm" se-container="1">
+    <se label="{{ '工厂' | translate }}" required>
+      <nz-select nzShowSearch name="plantCode" [(ngModel)]="plantCode" required>
+        <nz-option *ngFor="let op of plantOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se>
+  </form>
+  <ng-template #modalFooter>
+    <button nz-button nzType="default" (click)="handleCancel()">取消</button>
+    <button nz-button nzType="primary" [disabled]="f.invalid" (click)="handleOk()" [nzLoading]="http.loading">确认</button>
+  </ng-template>
+</nz-modal>
+
+<!-- <nz-modal [(nzVisible)]="isChangeCar" nzTitle="修改车号" [nzFooter]="modalFooter" (nzOnCancel)="handleCarCancel()">
+  <form #f="ngForm" se-container="1">
+    <se label="{{ '车号' | translate }}" required>
+      <input nz-input type="text" name="carNumber" [(ngModel)]="carNumber">
+    </se>
+  </form>
+  <ng-template #modalFooter>
+    <button nz-button nzType="default" (click)="handleCarCancel()">取消</button>
+    <button nz-button nzType="primary" [disabled]="f.invalid" (click)="handleCarNumberOk()" [nzLoading]="http.loading">确认</button>
+  </ng-template>
+</nz-modal> -->

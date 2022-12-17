@@ -1,0 +1,14 @@
+<div class="modal-header">
+    <div class="modal-title">{{ title | translate }}</div>
+</div>
+<div>
+    <form nz-form #f="ngForm" se-container="2">
+        <se *ngFor="let item of checkboxArr">
+            <label nz-checkbox [(ngModel)]="item.enableFlag" [name]="item.parameterCode">{{item.parameterDesc | translate}}</label>
+        </se>
+    </form>
+</div>
+<div class="modal-footer">
+    <button nz-button type="submit" [nzType]="'primary'" [disabled]="!f.valid || !f.dirty" [nzLoading]="http.loading" (click)="save()">{{'保存' | translate}}</button>
+    <button nz-button type="button" (click)="close()">{{'关闭' | translate}}</button>
+</div>

@@ -1,0 +1,33 @@
+<form nz-form #f="ngForm" se-container="2">
+  <se label="{{ '客户编码' | translate}}">
+      <input type="text" nz-input [(ngModel)]="formData.cusCode" name="cusCode" disabled />
+  </se>
+  <se label="{{ '客户名称' | translate}}">
+      <input type="text" nz-input [(ngModel)]="formData.cusName" name="cusName" disabled />
+  </se>
+  <se label="{{ '客户简称' | translate}}">
+      <input type="text" nz-input [(ngModel)]="formData.cusAbbreviation" name="cusAbbreviation" disabled />
+  </se>
+  <!-- <se label="{{ '客户所属账套' | translate}}">
+    <nz-select [(ngModel)]="formData.plantCode" name="plantCode" nzDisabled>
+      <nz-option *ngFor="let op of plantOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+    </nz-select>
+  </se> -->
+  <se label="{{ '当前客户状态' | translate }}">
+    <nz-select [(ngModel)]="formData.cusState" name="cusState" nzDisabled>
+      <nz-option *ngFor="let op of cusStateOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+    </nz-select>
+  </se>
+  <se label="{{ '要变更的客户状态' | translate }}">
+    <nz-select [(ngModel)]="formData.cusStateNew" name="cusStateNew" nzDisabled>
+      <nz-option *ngFor="let op of cusStateOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+    </nz-select>
+  </se>
+  <!-- <se label="{{ '客户异常信息点（详细表述说明）' | translate}}"> -->
+  <se label="{{ '变更原因' | translate}}">
+      <textarea nz-input name="reason" [(ngModel)]="formData.reason" nzAutosize disabled></textarea>
+    </se>
+  <!-- <se label="{{ '附件信息' | translate}}">
+    <common-upload #commonUpload [annexs]="fileList" [showUpload]="false" [Disabled]="true"></common-upload>
+  </se> -->
+</form>

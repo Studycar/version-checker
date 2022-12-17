@@ -1,0 +1,18 @@
+<div class="modal-header" style="margin-bottom: 0;">
+  <div class="modal-title">{{ '例外详细信息' | translate }}</div>
+</div>
+<custom-formquery [queryParams]="queryParams" [context]="context">
+  <span>
+    <custom-button text="{{ '导出' | translate }}" (clickEvent)="exportFile()" [src]="'基础icon-导出'"></custom-button>
+  </span>
+</custom-formquery>
+<nz-card>
+  <ag-grid-angular #agGrid [class]="themeClass" [style.height.px]="gridHeight" [rowData]="gridData" [columnDefs]="columns"
+    [gridOptions]="gridOptions" [myAgGridRowKey]="{tb:'MRP_EXCEPTIONS'}" [myAgGridState]="'MRP_EXCEPTIONS'">
+  </ag-grid-angular>
+  <custom-pager [height]="pagerHeight" [context]="context" [view]='context.view' [(pageSize)]="_pageSize" [(pageNo)]="_pageNo"
+    [fixed]="false" (pageChangeEvent)="onPageChanged($event)">
+  </custom-pager>
+  <custom-excelexport [expColumns]='expColumns' [expColumnsOptions]='expColumnsOptions' fileName='Mrp计划-例外' #excelexport>
+  </custom-excelexport>
+</nz-card>

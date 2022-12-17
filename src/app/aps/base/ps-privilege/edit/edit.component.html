@@ -1,0 +1,102 @@
+<div class="modal-header">
+    <div class="modal-title">{{ (Istrue?'编辑信息':'新增信息')| translate}} {{ record.id }}</div>
+</div>
+<div style="position: relative; height: 32px" *ngIf="i.Id">
+    <button nz-button nzType="dashed" style="position: absolute; right: 0;" (click)="clear()">重置</button>
+</div>
+
+<div>
+    <form nz-form #f="ngForm" se-container="2">
+
+        <!-- <se label="{{ '用户名' | translate}}" required>
+            <nz-select [(ngModel)]="i.userName" nzShowSearch name="userName" (ngModelChange)="onChangeUSER($event)" [nzDisabled]="Istrue" nzAllowClear required>
+                <nz-option *ngFor="let o of optionListUSER" [nzValue]="o.userName" [nzLabel]="o.userName"></nz-option>
+                <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+                    <i class="anticon anticon-loading anticon-spin loading-icon"></i> Loading Data...
+                </nz-option>
+            </nz-select>
+        </se> -->
+        <se label="{{ '用户名' | translate}}" required>
+          <nz-select-server
+            [value]="i.userName" 
+            name="userName"
+            labelField="description"
+            valueField="userName"
+            (ngModelChangeEvent)="userChange($event)"
+            [nzDisabled]="Istrue"
+            [required]="true"
+            [isSelectedShowValue]="true"
+            [searchFunction]="getUserList">
+          </nz-select-server>
+        </se>
+        <se label="{{ '用户描述' | translate}}">
+            <input type="text" nz-input [(ngModel)]="i.description" disabled name="description">
+        </se>
+
+        <se label="{{ '工厂' | translate}}" required>
+            <nz-select [(ngModel)]="i.plantCode" nzShowSearch (ngModelChange)="onChangePlant($event)" name="plantCode" [nzDisabled]="Istrue" nzAllowClear required>
+                <nz-option *ngFor="let o of optionListPlant" [nzValue]="o.plantCode" [nzLabel]="o.plantCode"></nz-option>
+                <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+                    <i class="anticon anticon-loading anticon-spin loading-icon"></i> Loading Data...
+                </nz-option>
+            </nz-select>
+        </se>
+        <se label="{{ '计划组' | translate}}">
+            <nz-select [(ngModel)]="i.scheduleGroupCode" nzShowSearch (ngModelChange)="onChangeGroup($event)" name="scheduleGroupCode" nzAllowClear>
+                <nz-option *ngFor="let o of optionListPlantGroup" [nzValue]="o.scheduleGroupCode" [nzLabel]="o.scheduleGroupCode"></nz-option>
+                <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+                    <i class="anticon anticon-loading anticon-spin loading-icon"></i> Loading Data...
+                </nz-option>
+            </nz-select>
+        </se>
+        <se label="{{ '资源' | translate}}">
+            <nz-select [(ngModel)]="i.resourceCode" nzShowSearch name="resourceCode" nzAllowClear>
+                <nz-option *ngFor="let o of optionListProductLine" [nzValue]="o.resourceCode" [nzLabel]="o.resourceCode">
+                </nz-option>
+                <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+                    <i class="anticon anticon-loading anticon-spin loading-icon"></i> Loading Data...
+                </nz-option>
+            </nz-select>
+        </se>
+
+        <se label="{{ '工单修改' | translate}}" required>
+            <nz-select [(ngModel)]="i.modifyPrivilageFlag" name="modifyPrivilageFlag" nzAllowClear required>
+                <nz-option nzValue="N" nzLabel="否"></nz-option>
+                <nz-option nzValue="Y" nzLabel="是"></nz-option>
+
+            </nz-select>
+        </se>
+
+        <se label="{{ '工单发放' | translate}}" required>
+            <nz-select [(ngModel)]="i.publishPrivilageFlag" name="publishPrivilageFlag" nzAllowClear required>
+                <nz-option nzValue="N" nzLabel="否"></nz-option>
+                <nz-option nzValue="Y" nzLabel="是"></nz-option>
+
+            </nz-select>
+        </se>
+
+        <se label="{{ '是否发放邮件' | translate}}">
+            <nz-select [(ngModel)]="i.sendEmailFlag" name="sendEmailFlag" nzAllowClear>
+                <nz-option nzValue="N" nzLabel="否"></nz-option>
+                <nz-option nzValue="Y" nzLabel="是"></nz-option>
+
+            </nz-select>
+        </se>
+
+        <se label="{{ '接收消息类型' | translate}}">
+            <nz-select [(ngModel)]="i.receiveMsgType" nzShowSearch name="receiveMsgType" nzAllowClear>
+                <nz-option *ngFor="let o of applicationsMSG" [nzValue]="o.value" [nzLabel]="o.label"></nz-option>
+                <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+                    <i class="anticon anticon-loading anticon-spin loading-icon"></i> Loading Data...
+                </nz-option>
+            </nz-select>
+        </se>
+    </form>
+</div>
+
+<div class="modal-footer">
+    <button nz-button type="submit" [nzType]="'primary'" (click)="save()" [disabled]="f.invalid || !f.dirty" [nzLoading]="http.loading">
+    {{ '保存' | translate}}</button>
+    <button nz-button type="button" (click)="close()">
+    {{ '关闭' | translate}}</button>
+</div>

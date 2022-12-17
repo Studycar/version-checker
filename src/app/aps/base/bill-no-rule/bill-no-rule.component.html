@@ -1,0 +1,46 @@
+<nz-card>
+  <div class="mb-md">
+    <button nz-button (click)="Save(true)" [nzType]="'primary'">
+      <i class="anticon anticon-plus"></i>{{ '新增' | translate}}
+    </button>
+    <button nz-button (click)="Save(false)" [nzType]="'primary'">
+      <i class="anticon anticon-edit"></i>{{ '修改' | translate}}
+    </button>
+    <button nz-button (click)="Delete()" [nzType]="'danger'">
+      <i class="anticon anticon-delete"></i>{{ '删除' | translate}}
+    </button>
+    <button nz-button (click)="GetRules()" [nzType]="'primary'">
+      <i class="anticon anticon-reload"></i>{{ '刷新' | translate}}
+    </button>
+    <button nz-button (click)="GetRecords()" [nzType]="'primary'">
+      <i class="anticon anticon-database"></i>{{ '单据编号记录' | translate}}
+    </button>
+    <button nz-button (click)="GetBillNoRule()" [nzType]="'primary'">
+      <i class="anticon anticon-plus-circle-o"></i>{{ '生成流水号' | translate}}
+    </button>
+  </div>
+  <div>
+    <nz-table #billNoRuleTable [nzData]="billNoRuleList">
+      <thead>
+        <tr>
+          <th *ngFor="let head of tableHeadList">{{head | translate}}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let rule of billNoRuleTable.data; let i = index" (click)="ruleSelected(rule)"
+          [ngClass]="{'ruleSelected': curBillNoRule?.Id === rule.Id}">
+          <td>{{i+1}}</td>
+          <td>{{rule.CODE}}</td>
+          <td>{{rule.NAME}}</td>
+          <td>{{rule.PREFIX}}</td>
+          <td>{{rule.DATE_FORMAT}}</td>
+          <td>{{rule.NO_DIGITS}}</td>
+          <td>{{rule.CODE_FORMAT}}</td>
+          <td>{{rule.EXAMPLES}}</td>
+          <td>{{rule.SORT}}</td>
+          <td>{{rule.ACTIVE?'是':'否'}}</td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </div>
+</nz-card>

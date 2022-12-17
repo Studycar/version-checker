@@ -1,0 +1,26 @@
+<custom-formquery [queryParams]="queryParams" [context]="context"
+  (event1)="businessUnitCodeOptionsChange($event)"
+  (event2)="organizationOptionsChange($event)"
+>
+</custom-formquery>
+
+<nz-card>
+  <ag-grid-angular
+    #agGrid
+    [class]="themeClass"
+    [style.height.px]="gridHeight"
+    [rowData]="gridData"
+    [columnDefs]="columns"
+    [gridOptions]="gridOptions"
+    [myAgGridRowKey]="{tb:''}"
+    [myAgGridState]="'MoldExecution'">
+  </ag-grid-angular>
+  <custom-pager
+    [height]="pagerHeight"
+    [context]="context"
+    [view]='context.view'
+    [(pageSize)]="_pageSize"
+    [(pageNo)]="_pageNo"
+    (pageChangeEvent)="onPageChanged($event)">
+  </custom-pager>
+</nz-card>

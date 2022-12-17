@@ -1,0 +1,40 @@
+<div class="modal-header">
+    <div class="modal-title">{{ '参数' | translate}}</div>
+</div>
+<div>
+    <form nz-form #f="ngForm" se-container="2" [labelWidth]="140">
+        <se label="{{ '组织' | translate}}" required>
+            <nz-select [(ngModel)]="params.plantCode" nzShowSearch name="plantCode" required>
+                <nz-option *ngFor="let o of plantOptions" [nzLabel]="o.label" [nzValue]="o.value"></nz-option>
+            </nz-select>
+        </se>
+        <se label="{{'是否计算UPH' | translate}}" required>
+            <nz-select [(ngModel)]="params.uphFlag" name="calculateUph" required>
+                <nz-option *ngFor="let o of whetherOptions" [nzLabel]="o.label" [nzValue]="o.value"></nz-option>
+            </nz-select>
+        </se>
+        <se label="{{'开始时间' | translate}}" required>
+            <nz-date-picker [(ngModel)]="params.startTime" [nzAllowClear]="false" name="startTime" required></nz-date-picker>
+        </se>
+        <se label="{{'结束时间' | translate}}" required>
+            <nz-date-picker [(ngModel)]="params.endTime" [nzAllowClear]="false" name="endTime" required></nz-date-picker>
+        </se>
+        <se label="{{'UPH最小允差（%）' | translate}}">
+            <nz-input-number [(ngModel)]="params.uphRateMin" [nzMin]="0" [nzStep]="0.1" name="uphMinTolerance"></nz-input-number>
+        </se>
+        <se label="{{'UPH最大允差（%）' | translate }}">
+            <nz-input-number [(ngModel)]="params.uphRateMax" [nzMin]="0" [nzStep]="0.1" name="uphMaxtolerance"></nz-input-number>
+        </se>
+        <se label="{{'是否计算优先级' | translate}}" required>
+            <nz-select [(ngModel)]="params.priorityFlag" name="calculatePriority" required>
+                <nz-option *ngFor="let o of whetherOptions" [nzLabel]="o.label" [nzValue]="o.value"></nz-option>
+            </nz-select>
+        </se>
+    </form>
+</div>
+<div class="modal-footer">
+    <button nz-button type="submit" [nzType]="'primary'" (click)="dataRefreshConfirm()" [disabled]="f.invalid" [nzLoading]="http.loading">
+        {{ '确认' | translate}}</button>
+    <button nz-button type="button" (click)="close()">
+        {{ '关闭' | translate}}</button>
+</div>

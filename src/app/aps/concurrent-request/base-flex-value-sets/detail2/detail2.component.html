@@ -1,0 +1,39 @@
+<div class="modal-header">
+  <div class="modal-title">{{'值集查询定义'|translate}}</div>
+</div>
+
+<div>
+  <form nz-form #f1="ngForm" se-container="1">
+    <se label="{{'ApiUrl'|translate}}" required>
+      <!-- <input type="text" placeholder="{{'请输入内容'|translate}}" nz-input [(ngModel)]="i.applicationTableName"
+        name="applicationTableName" required> -->
+      <nz-select nzAllowClear [(ngModel)]="i.applicationTableName" name="applicationTableName"
+        (ngModelChange)="getterSelectChange($event)" [nzShowSearch]="true" required="required">
+        <nz-option *ngFor="let getter of allGetters" [nzLabel]="getter.GetterUrl" [nzValue]="getter.GetterUrl">
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{'ID列名(选中返回的值)'|translate}}">
+      <input type="text" nz-input [(ngModel)]="i.idColumnName" name="idColumnName">
+    </se>
+    <se label="{{'值列名(显示的值)'|translate}}">
+      <input type="text" nz-input [(ngModel)]="i.valueColumnName" name="valueColumnName">
+    </se>
+    <se label="{{'含义列名(列表含义列)'|translate}}">
+      <input type="text" nz-input [(ngModel)]="i.meaningColumnName" name="meaningColumnName">
+    </se>
+    <se label="{{'额外的参数'|translate}}">
+      <textarea [nzAutosize]="{ minRows: 2, maxRows: 10 }" nz-input [(ngModel)]="i.additionalWhereClause" name="additionalWhereClause"> </textarea>
+      <span style="font-weight: bolder">{{'参数说明：'|translate}}</span><br>
+      <span>{{paramsDes.Description}}</span><br>
+      <span style="font-weight: bolder">{{'参数格式：'|translate}}</span><br>
+      <span>{{paramsDes.AdditionalParamsSimple|json}}</span>
+    </se>
+  </form>
+</div>
+
+<!--<nz-divider nzText="Wherer/Order语句" nzOrientation="left"></nz-divider>-->
+<div class="modal-footer">
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save()" [disabled]="!f1.valid" [nzLoading]="http.loading">{{'保存'|translate}}</button>
+  <button nz-button type="submit" (click)="close()">{{'关闭'|translate}}</button>
+</div>

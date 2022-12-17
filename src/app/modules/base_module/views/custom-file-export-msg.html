@@ -1,0 +1,24 @@
+﻿<div class="modal-header">
+  <div class="modal-title">{{ '导出文件下载'| translate }}</div>
+</div>
+<div style="height:150px">
+  <div style="margin:5px auto;text-align: center;font-size: 16px;">
+    <div style="position: relative;display: inline-block">
+      <nz-progress [nzPercent]="progressPercent" nzType="circle" [nzStatus]="progressStatus"></nz-progress>
+      <img
+        *ngIf="!isDone"
+        src="{{spokesmanImgSrc}}"
+        style="width: 277px; height:155px; position: absolute;left: -4px; top: -23px;"
+      />
+    </div>
+    <div style="margin:10px auto" *ngIf="showDownloadUrl">如果文件5秒内没有自动下载，点击 <a href="{{fileDownloadUrl}}">{{ '这里'|
+      translate }}</a> 进行下载
+    </div>
+    <div style="margin:10px auto" *ngIf="!showDownloadUrl">{{msgTips}}</div>
+  </div>
+</div>
+<div class="modal-footer">
+  <button nz-button type="button" (click)="close()">
+    {{ '关闭' | translate }}
+  </button>
+</div>

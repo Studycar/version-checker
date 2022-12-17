@@ -1,0 +1,14 @@
+<ng-container *ngIf="registryList!==null;else elseBlock">
+  <a nz-dropdown nzTrigger="click" [nzDropdownMenu]="menu">
+    点击查看({{registryList.length}})
+    <i nz-icon nzType="down"></i>
+  </a>
+  <nz-dropdown-menu #menu="nzDropdownMenu">
+    <ul nz-menu>
+      <li nz-menu-item *ngFor="let address of registryList">{{address}}</li>
+    </ul>
+  </nz-dropdown-menu>
+</ng-container>
+<ng-template #elseBlock>无</ng-template>
+
+

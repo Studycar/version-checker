@@ -1,0 +1,50 @@
+<div class="modal-header">
+  <div class="modal-title">{{ (editDto.Id !== undefined ? '编辑信息' : '新增信息') | translate}}</div>
+</div>
+<div style=" margin:2px auto;">
+  <button style="float: right;" nz-button nzType="dashed" (click)="clear()">
+    {{ '重置' | translate}}</button>
+  <div style="clear: both;"></div>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="3" [labelWidth]=140>
+    <se label="{{ '工厂' | translate}}" required>
+      <nz-select #select [(ngModel)]="editDto.plantCode" nzShowSearch name="plantCode" required
+        (ngModelChange)="plantChange($event)">
+        <nz-option *ngFor="let o of plantCodeList" [nzValue]="o.value" [nzLabel]="o.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '资源' | translate}}" required>
+      <nz-select #select [(ngModel)]="editDto.resourceCode" nzShowSearch name="resourceCode" required>
+        <nz-option *ngFor="let o of resourceList" [nzValue]="o.value" [nzLabel]="o.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '最长持续时间(H)' | translate}}" required>
+      <nz-input-number [(ngModel)]="editDto.maxDuration" [nzPrecision]="1" [nzStep]="1" [nzMin]="0" name="maxDuration"
+        required>
+      </nz-input-number>
+    </se>
+    <se label="{{ '停产处理时间(H)' | translate}}" required>
+      <nz-input-number [(ngModel)]="editDto.dealTime" [nzPrecision]="1" [nzStep]="1" [nzMin]="0" name="dealTime"
+        required>
+      </nz-input-number>
+    </se>
+    <se label="{{ '停产处理方式' | translate}}">
+      <input type="text" nz-input [(ngModel)]="editDto.dealMethod" name="dealMethod">
+    </se>
+    <se label="{{ '停产处理成本' | translate}}">
+      <nz-input-number [(ngModel)]="editDto.dealCost" [nzPrecision]="2" [nzStep]="1" [nzMin]="0" name="dealCost">
+      </nz-input-number>
+    </se>
+    <se label="{{ '是否有效' | translate}}" required>
+      <nz-select #select [(ngModel)]="editDto.enableFlag" nzShowSearch name="enableFlag" required>
+        <nz-option *ngFor="let o of yesOrNoList" [nzValue]="o.value" [nzLabel]="o.label"></nz-option>
+      </nz-select>
+    </se>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save()" [disabled]="f.invalid || !f.dirty"
+    [nzLoading]="http.loading"> {{ '保存' | translate}}</button>
+  <button nz-button type="button" (click)="close()"> {{ '关闭' | translate}}</button>
+</div>

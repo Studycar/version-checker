@@ -1,0 +1,114 @@
+<div class="modal-header">
+    <div class="modal-title">{{ ('批量修改') | translate}} </div>
+</div>
+<style type="text/css">
+    .relative {
+        position: relative;
+        margin-bottom: 15px;
+    }
+
+    .group-title {
+        position: absolute;
+        top: -10px;
+        left: 10px;
+        background-color: white;
+        padding: 0px 5px;
+    }
+
+    .group {
+        border: solid 1px #DCDCDC;
+        margin: 0px auto;
+        padding: 5px;
+    }
+</style>
+<div class="relative">
+    <div class="group-title">{{ '修改区' | translate}}</div>
+    <div class="group">
+        <form nz-form #f1="ngForm" se-container="2" [labelWidth]="110">
+            <se label="{{ '修改日期范围' | translate}}" required>
+                <nz-range-picker [(ngModel)]="i.dateRange" name="datetimeform" required nzFormat="yyyy-MM-dd">
+                </nz-range-picker>
+            </se>
+            <se label="">
+                <label nz-checkbox [(ngModel)]="i.isMoreDays" name="isMoreDays">{{'跨天班次'| translate}}
+                </label>
+            </se>
+            <!-- <se label="{{ '修改时间从' | translate}}" required>
+                <nz-time-picker [(ngModel)]="i.SHOW_START_TIME" name="SHOW_START_TIME" required></nz-time-picker>
+            </se> -->
+            <se label="{{ '开动率%' | translate}}" required>
+                <nz-input-number [(ngModel)]="i.efficency" [nzPrecision]="0" [nzMin]="0" name="efficency" required>
+                </nz-input-number>
+            </se>
+            <!-- <se label="{{ '至' | translate}}" required>
+                <nz-time-picker [(ngModel)]="i.SHOW_END_TIME" name="SHOW_END_TIME" required></nz-time-picker>
+            </se> -->
+            <se label="">
+                <div>
+                    <button nz-button type="button" (click)="modify()" [nzType]="'primary'"
+                        [disabled]="f1.invalid||selectionKeys.length === 0">{{'确定'| translate}}
+                    </button>
+                    <button nz-button type="button" (click)="close()" class="mx-sm">{{'关闭'| translate}}</button>
+                </div>
+            </se>
+        </form>
+        <!-- <div style="text-align:right;margin-bottom: 5px;">
+            <button nz-button type="button" (click)="modify()" [nzType]="'primary'"
+                [disabled]="f1.invalid">{{'确定'| translate}}
+            </button>
+            <button nz-button type="button" (click)="close()" class="mx-sm">{{'关闭'| translate}}</button>
+        </div> -->
+    </div>
+</div>
+<!-- <custom-formquery [queryParams]="queryParams" [context]="context" (event1)="regionChange($event)"
+  (event2)="plantChange($event)" (event3)="groupChange($event)" [labelWidth]="100"></custom-formquery> -->
+<div>
+    <!-- <button nz-button (click)="expandForm=!expandForm" nzType="default">
+        <i nz-icon [nzType]="expandForm?'anticon-up':'anticon-down'"></i> {{ '搜索' | translate}}
+    </button> -->
+    <form nz-form #f2="ngForm" se-container="3" labelWidth="100">
+        <se label="事业部" *ngIf="expandForm" required>
+            <nz-select nzShowSearch [(ngModel)]="queryParams.values.scheduleRegionCode"
+                name="scheduleRegionCode" (ngModelChange)="regionChange($event)">
+                <nz-option *ngFor="let option of regionOptions" [nzLabel]="option.label" [nzValue]="option.value">
+                </nz-option>
+            </nz-select>
+        </se>
+        <se label="工厂" *ngIf="expandForm" >
+            <nz-select nzShowSearch  [(ngModel)]="queryParams.values.plantCode" name="plantCode"
+                (ngModelChange)="plantChange($event)" >
+                <nz-option *ngFor="let option of plantOptions" [nzLabel]="option.label" [nzValue]="option.value">
+                </nz-option>
+            </nz-select>
+        </se>
+        <se label="计划组" *ngIf="expandForm">
+            <nz-select nzShowSearch nzAllowClear [(ngModel)]="queryParams.values.scheduleGroupCode"
+                name="scheduleGroupCode" (ngModelChange)="groupChange($event)">
+                <nz-option *ngFor="let option of groupOptions" [nzLabel]="option.label" [nzValue]="option.value">
+                </nz-option>
+            </nz-select>
+        </se>
+        <se label="资源" *ngIf="expandForm">
+            <nz-select nzShowSearch nzAllowClear [(ngModel)]="queryParams.values.resourceCode"
+                name="resourceCode">
+                <nz-option *ngFor="let option of lineOptions" [nzLabel]="option.label" [nzValue]="option.value">
+                </nz-option>
+            </nz-select>
+        </se>
+        <se *ngIf="expandForm">
+            <button nz-button type="submit" [nzType]="'primary'" (click)="query()">查询</button>
+            <button nz-button type="reset" class="mx-sm" (click)="clear()">重置</button>
+        </se>
+    </form>
+</div>
+&nbsp;
+<!-- <nz-card> -->
+<ag-grid-angular #agGrid [class]="themeClass" [style.height.px]="gridHeight" [rowData]="gridData"
+    [columnDefs]="columns" [gridOptions]="gridOptions" (selectionChanged)="onSelectionChanged($event)"
+    [myAgGridRowKey]="{tb:'PS_RESOURCE'}" [myAgGridState]="'batchmodify'">
+</ag-grid-angular>
+<custom-pager [height]="pagerHeight" [context]="context" [view]='context.view' [(pageSize)]="_pageSize"
+    [(pageNo)]="_pageNo" (pageChangeEvent)="onPageChanged($event)" [fixed]="false"></custom-pager>
+
+    
+<!-- </nz-card> -->

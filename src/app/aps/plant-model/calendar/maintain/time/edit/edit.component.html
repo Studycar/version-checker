@@ -1,0 +1,54 @@
+<div class="modal-header">
+  <div class="modal-title">{{ (isModify?'编辑信息':'新增信息') | translate}} </div>
+</div>
+<div style=" margin:2px auto;">
+  <button style="float: right;" nz-button nzType="dashed" (click)="clear()">
+    <i class="anticon anticon-delete"></i>{{ '重置' | translate}}</button>
+  <div style="clear: both;"></div>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="2" [labelWidth]="200">
+    <se label="{{ '日历编码' | translate}}" required>
+      <nz-select nzShowSearch [(ngModel)]="i.calendarCode" (ngModelChange)="calendarChange($event)"
+        name="calendarCode" [nzDisabled]="isModify" required>
+        <nz-option *ngFor="let option of calendarOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '车间班次' | translate}}" required>
+      <nz-select nzShowSearch [(ngModel)]="i.shiftCode" name="shiftCode" [nzDisabled]="isModify" required>
+        <nz-option *ngFor="let option of shiftOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '班次' | translate}}" required>
+      <nz-select nzShowSearch [(ngModel)]="i.shiftIntervalCode" name="shiftIntervalCode"
+        [nzDisabled]="isModify" required>
+        <nz-option *ngFor="let option of shiftIntervalOptions" [nzLabel]="option.label" [nzValue]="option.value">
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '开始时间' | translate}}" required>
+      <nz-time-picker [(ngModel)]="i.startTime" name="startTime" required></nz-time-picker>
+    </se>
+    <se label="{{ '结束时间' | translate}}" required>
+      <nz-time-picker [(ngModel)]="i.endTime" name="endTime" required></nz-time-picker>
+    </se>
+    <se label="{{ '休息时间（小时）' | translate}}" required>
+      <nz-input-number [(ngModel)]="i.restTime" [nzPrecision]="2" [nzMin]="0" name="restTime" required>
+      </nz-input-number>
+    </se>
+    <se label="{{ '借用能力（小时）' | translate}}" required>
+      <nz-input-number [(ngModel)]="i.lendCapacity" [nzPrecision]="2" [nzMin]="0" name="lendCapacity" required>
+      </nz-input-number>
+    </se>
+    <se label="{{ '开动率' | translate}}" required>
+      <nz-input-number [(ngModel)]="i.efficency" [nzPrecision]="2" [nzMin]="0" name="efficency" required>
+      </nz-input-number>
+    </se>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="button" (click)="close()">{{ '关闭' | translate}}</button>
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save(f.value)" [disabled]="f.invalid"
+    [nzLoading]="http.loading">{{
+    '保存' | translate}}</button>
+</div>

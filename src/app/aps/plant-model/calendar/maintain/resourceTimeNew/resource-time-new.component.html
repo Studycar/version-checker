@@ -1,0 +1,123 @@
+<div class="modal-header">
+  <div class="modal-title">登记日历</div>
+</div>
+<div>
+  <nz-steps nzType="navigation" nzSize="small" [nzCurrent]="index" (nzIndexChange)="onIndexChange($event)">
+    <nz-step *ngFor="let step of steps" [nzTitle]="step.title" [nzStatus]="step.status" nzDisabled></nz-step>
+  </nz-steps>
+  <div *ngIf="index === 0" style="margin-top: 20px;">
+    <div style="display: flex;">
+      <form nz-form #f="ngForm" se-container="3" labelWidth="100" style="flex: 2;margin-right: 25px;">
+        <!-- <se label="事业部" required>
+          <nz-select nzShowSearch [(ngModel)]="queryParams.values.scheduleRegionCode" name="scheduleRegionCode"
+            (ngModelChange)="regionChange($event)" nzAllowClear required>
+            <nz-option *ngFor="let option of regionOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+          </nz-select>
+        </se> -->
+        <se label="工厂" required>
+          <nz-select nzShowSearch [(ngModel)]="queryParams.values.plantCode" name="plantCode"
+            (ngModelChange)="plantChange($event)" nzAllowClear>
+            <nz-option *ngFor="let option of plantOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+          </nz-select>
+        </se>
+        <se label="计划组">
+          <nz-select nzShowSearch [(ngModel)]="queryParams.values.scheduleGroupCode" name="scheduleGroupCode"
+            (ngModelChange)="groupChange($event)" nzAllowClear>
+            <nz-option *ngFor="let option of groupOptions" [nzLabel]="option.label+'('+option.descriptions+')'" [nzValue]="option.value"></nz-option>
+          </nz-select>
+        </se>
+        <se label="资源">
+          <nz-select nzShowSearch [(ngModel)]="queryParams.values.resourceCode" name="resourceCode"
+            (ngModelChange)="lineChange($event)" nzAllowClear>
+            <nz-option *ngFor="let option of lineOptions" [nzLabel]="option.resourceCode+'('+option.descriptions+')'" [nzValue]="option.resourceCode">
+            </nz-option>
+          </nz-select>
+        </se>
+      </form>
+      <button nz-button nzType="dashed" (click)="clear()" style="margin-top:4px;">{{ '重置' | translate}}</button>
+    </div>
+    <!-- <nz-card> -->
+      <custom-tree-view #treeView [dataTree]="treeDataTable " [columns]="treeNodeColumns " [keyField]="keyField "
+        [selectionRef]="selection" [expandRef]="this.queryParams.values.expand" [valueField]="valueField "
+        [valueLevel]="valueLevel " [valueObject]="this.queryParams.values">
+      </custom-tree-view>
+    <!-- </nz-card> -->
+  </div>
+  <div *ngIf="index === 1" style="margin-top: 20px;">
+    <div class="relative">
+      <div class="group-title">{{ '日' | translate}}</div>
+      <div class="group">
+        <form nz-form #f1="ngForm" se-container="3" [labelWidth]="100">
+          <se label="{{ '工作日' | translate }}">
+            <custom-tree-select [dataTree]="dtDate" [columns]="columnDateType" keyField="isWork" valueField="isWork"
+              [valueLevel]="treeLevel" [valueObject]="dataField" valueObjectField="isWork"
+              [selectionRef]="dtDateTypeSelect">
+            </custom-tree-select>
+          </se>
+          <se label="{{ '开始时间' | translate}}" required>
+            <nz-date-picker nzShowTime nzFormat="yyyy-MM-dd HH:mm:ss" [(ngModel)]="queryParams.values.showStartTime"
+              name="showStartTime" nzAllowClear>
+            </nz-date-picker>
+          </se>
+          <se label="{{ '结束时间' | translate}}" required>
+            <nz-date-picker nzShowTime nzFormat="yyyy-MM-dd HH:mm:ss" [(ngModel)]="queryParams.values.showEndTime"
+              name="showEndTime" nzAllowClear>
+            </nz-date-picker>
+          </se>
+          <se style="float: right; text-align: right;">
+            <button nz-button nzType="dashed" (click)="clearThree()">重置</button>
+          </se>
+        </form>
+      </div>
+    </div>
+    <div class="relative">
+      <div class="group-title">{{ '选择班次' | translate}}</div>
+      <div class="group">
+        <form nz-form #f="ngForm" se-container="3" labelWidth="100">
+          <se label="日历编码" required>
+            <nz-select nzShowSearch [(ngModel)]="queryParams.values.calendarCode" name="calendarCode"
+              (ngModelChange)="calendarChange($event)" nzAllowClear>
+              <nz-option *ngFor="let option of calendarOptions" [nzLabel]="option.label" [nzValue]="option.value">
+              </nz-option>
+            </nz-select>
+          </se>
+          <se label="车间班次" required>
+            <nz-select nzShowSearch [(ngModel)]="queryParams.values.shiftCode" name="shiftCode"
+              (ngModelChange)="shiftChange($event)" nzAllowClear>
+              <nz-option *ngFor="let option of shiftOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+            </nz-select>
+          </se>
+          <se style="float: right; text-align: right;">
+            <button nz-button type="submit" [nzType]="'primary'" (click)="query()">查询</button>
+            <button nz-button nzType="dashed" (click)="clearTwo()">重置</button>
+          </se>
+        </form>
+        <nz-card>
+          <ag-grid-angular #agGrid id="resourceTimeNew" [class]="themeClass" [style.height.px]="gridHeight"
+            [rowData]="view.data" [columnDefs]="columns" [gridOptions]="gridOptions"
+            (selectionChanged)="onSelectionChanged($event)" [myAgGridRowKey]="{tb:'PS_CALENDAR_SHIFT_TEMPLATE'}"
+            [myAgGridState]="'resourcetime'" (virtualColumnsChanged)="onVirtualColumnsChanged($event)"
+            [frameworkComponents]="frameworkComponents">
+          </ag-grid-angular>
+          <div style="margin-bottom:-10px;">
+            <custom-pager [height]="pagerHeight" [fixed]="false" [context]="context" [view]='context.view'
+            [(pageSize)]="_pageSize" [(pageNo)]="_pageNo" (pageChangeEvent)="onPageChanged($event)"></custom-pager>
+          </div>
+        </nz-card>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+  <div class="steps-action">
+    <button nz-button nzType="default" (click)="pre()" *ngIf="index > 0">
+      <span>上一步</span>
+    </button>
+    <button nz-button nzType="default" (click)="next()" *ngIf="index < 1">
+      <span>下一步</span>
+    </button>
+    <button nz-button nzType="primary" (click)="save()" *ngIf="index === 1">
+      <span>保存</span>
+    </button>
+  </div>
+</div>

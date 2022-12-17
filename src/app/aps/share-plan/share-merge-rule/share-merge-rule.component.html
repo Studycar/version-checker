@@ -1,0 +1,21 @@
+<div class="alain-default__content-title">
+  <form nz-form #f="ngForm" se-container="4">
+    <se label="{{ '组织' | translate}}">
+      <nz-select #select style="width:180px;" [(ngModel)]="queryParams.strPlantCode" nzShowSearch name="strPlantCode">
+        <nz-option *ngFor="let option of organizationids" [nzLabel]="option.PLANT_CODE" [nzValue]="option.PLANT_CODE"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '来源类型' | translate}}">
+      <input type="text" nz-input style="width:180px;" >
+    </se>
+    <se label="{{ '来源编码' | translate}}">
+      <input type="text" nz-input style="width:180px;" >
+    </se>
+    <se>
+      <button (click)="add()" nz-button nzType="primary">新建</button>
+    </se>
+  </form>
+</div>
+<nz-card>
+
+</nz-card>  

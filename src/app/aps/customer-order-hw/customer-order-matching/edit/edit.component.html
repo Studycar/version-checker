@@ -1,0 +1,32 @@
+<div class="modal-header">
+  <div class="modal-title">{{ isModify ? '编辑信息' : '新增信息' | translate }}</div>
+</div>
+<div style="position: relative; height: 32px" *ngIf="isModify">
+  <button nz-button nzType="dashed" style="position: absolute; right: 0;" (click)="clear()">{{'重置' | translate}}</button>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="2">
+    <se label="{{ '匹配维度' | translate }}" required>
+      <nz-select nzShowSearch name="matchingEssential" [(ngModel)]="i.matchingEssential" required>
+        <nz-option *ngFor="let op of matchingEssentialOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '产品大类' | translate }}" required>
+      <nz-select nzShowSearch name="productCategory" [(ngModel)]="i.productCategory" required>
+        <nz-option *ngFor="let op of productCategoryOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '优先级' | translate }}" required>
+      <nz-input-number name="priority" [(ngModel)]="i.priority" [nzMin]="1" [nzPrecision]="0" required></nz-input-number>
+    </se>
+    <se label="{{ '匹配类型' | translate }}" required>
+      <nz-select nzShowSearch name="matchingType" [(ngModel)]="i.matchingType" required>
+        <nz-option *ngFor="let op of matchingTypeOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="button" (click)="close()">{{ '取消' | translate }}</button>
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save(f.value)" [nzLoading]="http.loading" [disabled]="f.invalid || !f.dirty">{{'保存' | translate }}</button>
+</div>

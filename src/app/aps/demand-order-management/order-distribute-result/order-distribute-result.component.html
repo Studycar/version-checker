@@ -1,0 +1,102 @@
+<custom-formquery [queryParams]="queryParams" [context]="context">
+  <span>
+    <custom-button
+      text="{{ '导出' | translate }}"
+      (clickEvent)="export()"
+      [src]="'基础icon-导出'"
+    >
+    </custom-button>
+  </span>
+</custom-formquery>
+<nz-card>
+  <div>
+    <nz-tabset>
+      <nz-tab
+        *ngFor="let tab of tabs"
+        [nzTitle]="titleTemplate"
+        (nzSelect)="tabSelect(tab)"
+      >
+        <ng-template #titleTemplate>
+          <div style="height: 24px;">
+            {{ tab.name | translate }}
+            <span class="tag-triangle">
+              <i
+                class="anticon anticon-up"
+                *ngIf="tab.index === selectIndex"
+              ></i>
+            </span>
+          </div>
+        </ng-template>
+      </nz-tab>
+    </nz-tabset>
+
+    <ag-grid-angular
+      #agGrid
+      [class]="themeClass"
+      [style.height.px]="gridHeight"
+      [rowData]="gridData"
+      [columnDefs]="columns"
+      [gridOptions]="gridOptions"
+      [myAgGridRowKey]="{ tb: 'PP_CAPACITY_USED' }"
+      tabAggridState
+      [originState]="tabFirstFlag"
+      [stateKey]="'order-distribute-result'"
+      [tabSubject]="tabSubject"
+    >
+    </ag-grid-angular>
+    <div>{{ '总记录数：' | translate }}{{ gridData.length }}</div>
+    <custom-excelexport
+      [expColumns]="expColumns"
+      [expColumnsOptions]="expColumnsOptions"
+      [fileName]="exportFileName"
+      #excelexport
+    >
+    </custom-excelexport>
+  </div>
+</nz-card>
+<ng-template #customTemplate1 let-dataItem>
+  <span *ngIf="selectIndex === 2">
+    <nz-select
+      [(ngModel)]="dataItem.plantCode"
+      (ngModelChange)="Save(dataItem, 1)"
+      nzShowSearch
+      name="plantCode"
+      required
+    >
+      <nz-option
+        *ngFor="let o of plantList"
+        [nzValue]="o.value"
+        [nzLabel]="o.label"
+      ></nz-option>
+    </nz-select>
+  </span>
+  <span *ngIf="selectIndex !== 2">{{ dataItem.plantCode }}</span>
+</ng-template>
+<ng-template #customTemplate2 let-dataItem>
+  <span
+    style="display: inline-block;padding:2px 5px;"
+    [class.warnning]="
+      selectIndex === 2 && dataItem.distributionDate > dataItem.demandDate
+    "
+  >
+    <span *ngIf="selectIndex === 2">
+      <nz-date-picker
+        *ngIf="dataItem.distRibutionDateEdit"
+        nzSize="default"
+        [(ngModel)]="dataItem.distributionDate"
+        (ngModelChange)="Save(dataItem, 2)"
+        name="distributionDate"
+        nzAllowClear="false"
+        required
+      >
+      </nz-date-picker>
+      <span
+        *ngIf="!dataItem.distRibutionDateEdit"
+        (click)="onClick(dataItem)"
+        style="cursor: pointer;"
+        >{{ dataItem.distributionDate }}</span
+      >
+    </span>
+    <span *ngIf="selectIndex !== 2">{{ dataItem.distributionDate }}</span>
+  </span>
+</ng-template>

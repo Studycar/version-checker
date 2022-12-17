@@ -1,0 +1,35 @@
+<div class="modal-header">
+  <div class="modal-title">{{ (isModify?'编辑信息':'新增信息') | translate}} </div>
+</div>
+<div style=" margin:2px auto;" *ngIf="isModify">
+  <button style="float: right;" nz-button nzType="dashed" (click)="clear()">{{ '重置' | translate}}</button>
+  <div style="clear: both;"></div>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="2">
+    <se label="{{ '数据集大类编码' | translate}}" required>
+      <input type="text" nz-input [(ngModel)]="i.categoryCode" name="categoryCode" maxlength="15"
+      (change)="categoryCodeChange($event)" [class.disabled]="isModify" placeholder="仅输入字母或“_”，且仅可字母开头和结束，15个字符以内" required>
+    </se>
+    <se label="{{ '数据集大类名称' | translate}}" required>
+      <input type="text" nz-input [(ngModel)]="i.categoryName" name="categoryName" required>
+    </se>
+    <se label="{{ '数据集大类描述' | translate}}" required>
+      <input type="text" nz-input [(ngModel)]="i.categoryDescription" name="categoryDescription" required>
+    </se>
+    <se label="{{ '数据集大类英文简称' | translate}}" required>
+      <input type="text" nz-input [(ngModel)]="i.categoryShortName" name="categoryShortName" [class.disabled]=true required>
+    </se>
+    <se label="{{ '是否有效' | translate}}" required>
+      <nz-select nzShowSearch [(ngModel)]="i.activeFlag" name="activeFlag" required>
+        <nz-option *ngFor="let option of optionListEnable" [nzLabel]="option.label" [nzValue]="option.value">
+        </nz-option>
+      </nz-select>
+    </se>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save(f)"
+    [disabled]="!f.valid || !f.dirty">{{ '保存' | translate}}</button>
+  <button nz-button type="button" (click)="close()">{{ '关闭' | translate}}</button>
+</div>

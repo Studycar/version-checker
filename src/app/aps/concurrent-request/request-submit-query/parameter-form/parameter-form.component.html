@@ -1,0 +1,43 @@
+<div class="modal-header">
+  <div class="modal-title"> {{ '参数信息' | translate }} </div>
+</div>
+
+<div [ngStyle]="divStyle" align="center">
+  <div *ngFor="let param of params">
+    <table cellpadding=0 cellspacing=0 border=0 style="width:100%">
+      <tr>
+        <td style="width:200px;padding-right: 10px;padding-bottom:10px;" align="right">
+          <label [attr.for]="param.key">
+            <span style="color: red;" *ngIf="param.required">*</span>{{param.label}}
+          </label>
+        </td>
+        <td style="padding-bottom:10px;" align="left">
+          <div [ngSwitch]="param.controlType">
+            <input *ngSwitchCase="'textbox'" [id]="param.key" [(ngModel)]="param.value" [nzSize]="'default'"
+              [ngStyle]="param.controlStyle" [disabled]="param.disabled" nz-input>
+            <nz-input-number *ngSwitchCase="'inputnumber'" [id]="param.key" [(ngModel)]="param.value" [nzStep]="0.1"
+              [nzSize]="'default'" [ngStyle]="param.controlStyle" [nzDisabled]="param.disabled"></nz-input-number>
+            <nz-date-picker *ngSwitchCase="'date'" [nzFormat]="'yyyy-MM-dd'" [id]="param.key" [(ngModel)]="param.value"
+              [nzSize]="'default'" [nzStyle]="param.controlStyle" [nzDisabled]="param.disabled"></nz-date-picker>
+            <nz-date-picker *ngSwitchCase="'datetime'" nzShowTime [id]="param.key" [(ngModel)]="param.value"
+              [nzSize]="'default'" [nzStyle]="param.controlStyle" [nzDisabled]="param.disabled"></nz-date-picker>
+            <nz-month-picker *ngSwitchCase="'month'" [id]="param.key" [(ngModel)]="param.value" [nzSize]="'default'"
+              [nzStyle]="param.controlStyle" [nzDisabled]="param.disabled"></nz-month-picker>
+            <popup-select *ngSwitchCase="'dropdown'" [ID]="param.key" [nzStyle]="param.controlStyle"
+              [(Text)]="param.text" [(Value)]="param.value" [ValueField]="param.valueField"
+              [TextField]="param.textField" [gridView]="param.gridView" [columns]="param.columns"
+              [Disabled]="param.disabled" [readOnly]="false" (TextChanged)="onTextChanged($event)"
+              (SearchEvent)="onSearch($event)" (RowSelect)="onRowSelect($event)">
+            </popup-select>
+          </div>
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>
+<div align="center" style="padding-top:10px;">
+  <button nz-button type="button" (click)="Confrim()">
+    {{'确认' | translate}}</button>&nbsp;&nbsp;
+  <button nz-button type="button" (click)="close()">
+    {{'关闭' | translate}}</button>
+</div>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="32px" height="32px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.4 (67378) - http://www.bohemiancoding.com/sketch -->
+    <title>来源明细</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="补充的icon" transform="translate(-420.000000, -571.000000)">
+            <g id="来源明细" transform="translate(420.000000, 571.000000)">
+                <g id="交易明细" transform="translate(6.000000, 6.000000)">
+                    <rect id="矩形" fill="#000000" opacity="0" x="0" y="0" width="20" height="20"></rect>
+                    <path d="M17.7988,9.3621 L17.7988,1.0223 L2.2922,1.0223 L2.2922,9.362 L1,9.362 L1,17.8304 C1,18.4715 1.5169,18.9841 2.0339,18.9841 L17.9279,18.9841 C18.574,18.9841 18.9619,18.4715 18.9619,17.959 L18.9619,9.362 L17.7988,9.362 L17.7988,9.3621 Z M3.5844,3.3319 L16.5068,3.3319 L16.5068,9.3621 L3.5844,9.3621 L3.5844,3.3319 Z" id="形状" fill="#6D8290" fill-rule="nonzero"></path>
+                    <polygon id="路径" fill="#8BC34A" fill-rule="nonzero" points="4.6183 4.6153 15.3436 4.6153 15.3436 5.7701 4.6183 5.7701 4.6183 4.6153"></polygon>
+                    <polygon id="路径" fill="#8BC34A" fill-rule="nonzero" points="4.6183 7.0525 15.3436 7.0525 15.3436 8.2082 4.6183 8.2082 4.6183 7.0525"></polygon>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

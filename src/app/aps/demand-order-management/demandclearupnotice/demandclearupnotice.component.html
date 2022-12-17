@@ -1,0 +1,127 @@
+<custom-formquery [queryParams]="queryParams" [context]="context" (event1)="LoadPlantCodes($event)"
+  (event2)="searchItemsFrom($event)" (event3)="searchItemsTo($event)" (event4)="ClearItemCodes($event)">
+  <span>
+    <custom-button text="{{ '新增' | translate}}" (clickEvent)="add()" [src]="'基础icon-新增'">
+    </custom-button>
+    <!-- <custom-button text="{{ '合并订单' | translate}}" (clickEvent)="mergeOrder()" [src]="'合并订单'">
+    </custom-button> -->
+    <!-- <custom-button text="{{ '生成工单' | translate}}" (clickEvent)="setMakeOrder()" [src]="'创建工单'">
+    </custom-button> -->
+    <custom-button text="{{ '生成派单号' | translate}}" (clickEvent)="setMakeOrder()" [src]="'创建工单'">
+    </custom-button>
+    <!-- <custom-button text="{{ '锁料推送' | translate}}" (clickEvent)="submitRequest('lockMaterSendMes')" [src]="'发布'">
+    </custom-button>-->
+    <custom-button text="{{ '批量锁料' | translate}}" (clickEvent)="batchLockMaterForMes()" [src]="'发布'">
+    </custom-button>
+    <custom-button text="{{ '批量解锁' | translate}}" (clickEvent)="batchUnLockMaterForMes()" [src]="'批量释放'">
+    </custom-button>
+    <custom-button text="{{ '导入' | translate}}" (clickEvent)="importData()" [src]="'基础icon-导入'"
+      [loading]="optionsLoading">
+    </custom-button>
+    <custom-button text="{{ '导出' | translate}}" (clickEvent)="export()" [src]="'基础icon-导出'">
+    </custom-button>
+    <!-- <custom-button text="{{ '色标指引' | translate}}" [src]="'色标指引'" [isPopover]="true" 
+      nzPopoverTitle="色标指引" [popoverContent]="popoverContent"></custom-button> -->
+  </span>
+  <custom-button text="{{ '关闭' | translate }}" [src]="'取消订单-2'" (clickEvent)="close()"></custom-button>
+  <custom-button text="{{ '绑定' | translate }}" [src]="'绑定'" (clickEvent)="bind()"></custom-button>
+  <custom-button text="{{ '解绑' | translate }}" [src]="'解绑'" (clickEvent)="unbind()"></custom-button>
+  <custom-button text="{{ '补全制造路径' | translate }}" [src]="'文件刷新'" (clickEvent)="submitRequest('route')"></custom-button>
+  <custom-button text="{{ '批量修改制造路径' | translate }}" [src]="'文件刷新'" (clickEvent)="batchChooseRoute()"></custom-button>
+  <ng-template #popoverContent>
+    <div se-container="2" style="width:300px;" [style.height]="this.colors.length / 2 * 40 + 20">
+      <se label="{{ data.meaning | translate}}" *ngFor="let data of colors" [labelWidth]=100>
+        <div style="width:60px; height:40px;" [style.background]="data.value"></div>
+      </se>
+    </div>
+  </ng-template>
+</custom-formquery>
+<nz-card>
+  <div>
+    <nz-tabset>
+      <nz-tab *ngFor="let tab of tabs" [nzTitle]="titleTemplate" (nzSelect)="tabSelect(tab)">
+        <ng-template #titleTemplate>
+          <div style="height: 24px;">
+            {{ tab.name | translate}}
+            <span class="tag-triangle">
+              <i class="anticon anticon-up" *ngIf="tab.index===selectIndex" style="margin-right: 0;"></i>
+            </span>
+          </div>
+        </ng-template>
+      </nz-tab>
+    </nz-tabset>
+    <ag-grid-angular #agGrid [class]="themeClass" [style.height.px]="gridHeight" [rowData]="gridData"
+      [columnDefs]="columns" [getRowStyle]="getRowStyle" [gridOptions]="gridOptions"
+      [myAgGridRowKey]="{tb:'PP_REQ_ORDERS'}" [myAgGridState]="'ppReqOrders'" tabAggridState
+      [originState]="tabFirstFlag" [stateKey]="stateKey" [tabSubject]="tabSubject"
+      (selectionChanged)="onSelectionChanged($event)" (filterChanged)="onFilterChanged($event)">
+    </ag-grid-angular>
+
+    <custom-pager [height]="pagerHeight" [context]="context" [view]='context.view'
+      [moCompletedQuantity]="extra.moCompletedQuantity" [demandQuantity]="extra.demandQuantity"
+      [meterNumQuantity]="extra.meterNumQuantity" [(pageSize)]="_pageSize" [(pageNo)]="_pageNo"
+      (pageChangeEvent)="onPageChanged($event)"></custom-pager>
+    <custom-excelexport [expColumns]='expColumns' [expColumnsOptions]='expColumnsOptions'
+      fileName="{{'需求工作台' | translate}}" #excelexport>
+    </custom-excelexport>
+  </div>
+</nz-card>
+<ng-template #customTemplate let-dataItem>
+  <div style="display: inline;" *ngIf="dataItem.standardFlag==='N'">
+    <span title="{{'非标需求' | translate}}" (click)="nonStdReq(dataItem)">
+      <i class="anticon anticon-layout"></i>
+    </span>
+    <nz-divider nzType="vertical"></nz-divider>
+  </div>
+  <div style="display: inline;" *ngIf="dataItem.splitFlag!=='Y' 
+  && dataItem.source==='MANUAL'  
+  && dataItem.combinationFlag!=='Y'   
+  && dataItem.status!=='CANCELLED'   
+  && (dataItem.moFlag===null|| dataItem.moFlag===''|| dataItem.moFlag==='N')  ">
+    <span title="{{'取消订单' | translate}}" (click)="cancelOrder(dataItem)">
+      <i class="anticon anticon-info-circle-o"></i>
+    </span>
+    <nz-divider nzType="vertical"></nz-divider>
+  </div>
+  <div style="display: inline;" *ngIf="checkEditValid(dataItem)">
+    <span title="{{ '编辑' | translate}}" (click)="modifyData(dataItem)">
+      <i class="anticon anticon-edit"></i>
+    </span>
+    <nz-divider nzType="vertical"></nz-divider>
+  </div>
+  <!-- 只有“未完成”状态订单才允许复制 -->
+  <div style="display: inline;" *ngIf="dataItem.orderStatus==='W'||dataItem.orderStatus==='J'">
+    <span *ngIf="!dataItem.isCopying" nz-popover
+      (click)="copyData(dataItem)"
+      title="{{ '复制' | translate}}" >
+      <i class="anticon anticon-copy"></i>
+    </span>
+    <span *ngIf="dataItem.isCopying" title="{{ '复制中' | translate}}" class="pointer">
+      <i class="anticon anticon-loading"></i>
+    </span>
+    <nz-divider nzType="vertical"></nz-divider>
+  </div>
+  <div style="display: inline;">
+    <span title="{{ '查看原料' | translate}}" (click)="showRaw(dataItem)">
+      <i class="anticon anticon-profile"></i>
+    </span>
+    <nz-divider nzType="vertical"></nz-divider>
+  </div>
+  <div style="display: inline;" *ngIf="dataItem.scheduleRegionCode!=='合计'">
+    <span title="{{'订单历史' | translate}}" (click)="searchOrderHistory(dataItem)">
+      <i class="anticon anticon-book"></i>
+    </span>
+  </div>
+
+</ng-template>
+<nz-modal [(nzVisible)]="isVisible" [nzTitle]="modalTitle" [nzFooter]="modalFooter" (nzOnCancel)="handleCancel()">
+  <form #f="ngForm" se-container="1">
+    <se label="{{ '原因' | translate }}" required>
+      <input nz-input type="text" name="cancelComments" placeholder="请填写原因" [(ngModel)]="cancelComments" required>
+    </se>
+  </form>
+  <ng-template #modalFooter>
+    <button nz-button nzType="default" (click)="handleCancel()">取消</button>
+    <button nz-button nzType="primary" [disabled]="f.invalid" (click)="handleOk()" [nzLoading]="http.loading">确认</button>
+  </ng-template>
+</nz-modal>

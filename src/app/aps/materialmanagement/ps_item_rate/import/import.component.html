@@ -1,0 +1,17 @@
+<div class="modal-header">
+  <div class="modal-title">{{ '产品速率数据导入'| translate }}</div>
+</div>
+<div style="height:150px">
+  <div style="margin:5px auto;text-align: center;font-size: 16px;">
+    <a href="../../../../../assets/tmp/template/产品速率数据导入模板.xlsx">{{ '下载模板'| translate }}</a>
+    
+  </div>
+  <div style="margin:50px 150px;">
+    <custom-xlsxfile-select [impColumns]='impColumns' (excelDataProcessEvent)="excelDataProcess($event)"></custom-xlsxfile-select>
+    <span style="display: inline-block; width: 60px;"></span>
+    <button nz-button (click)="close()" [nzType]="'default'">
+      <i class="anticon anticon-logout"></i> {{ '关闭' | translate}}
+    </button>
+  </div>
+</div>
+<custom-excelexport [expColumns]='expColumns' [expColumnsOptions]='expColumnsOptions' fileName='Error' #excelexport></custom-excelexport>

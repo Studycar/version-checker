@@ -1,0 +1,48 @@
+<div class="modal-header">
+  <div class="modal-title">{{ title }} 信息</div>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="2">
+    <se label="{{ '事业部' | translate}}" required>
+      <nz-select [(ngModel)]="i.buCode" name="buCode" [disabled]="readOnly" required
+        (ngModelChange)="LoadPlant($event)">
+        <nz-option *ngFor="let option of regionOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '工厂' | translate}}" required>
+      <nz-select [(ngModel)]="i.plantCode" name="plantCode" [disabled]="readOnly" required
+        (ngModelChange)="plantChange($event)">
+        <nz-option *ngFor="let option of plantOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '物料编码' | translate}}" required>
+      <nz-select nzShowSearch [(ngModel)]="i.itemId" name="itemId" nzServerSearch
+        (nzScrollToBottom)="onScroll($event)" (nzOnSearch)="onSearch($event)" [disabled]="readOnly" required>
+        <nz-option *ngFor=" let option of itemOptions" [nzLabel]="option.label" [nzValue]="option.value">
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '销售价格' | translate}}" required>
+      <nz-input-number [(ngModel)]="i.price" [nzPrecision]="2" [nzStep]="1" [nzMin]="0" name="price" required>
+      </nz-input-number>
+    </se>
+    <se label="{{ '毛利率(%)' | translate}}">
+      <nz-input-number [(ngModel)]="i.grossMargin" [nzPrecision]="2" [nzStep]="1" [nzMin]="0" name="grossMargin">
+      </nz-input-number>
+    </se>
+    <se label="{{ '库存成本(元)' | translate}}">
+      <nz-input-number [(ngModel)]="i.onhandCost" [nzPrecision]="2" [nzStep]="1" [nzMin]="0" name="onhandCost">
+      </nz-input-number>
+    </se>
+    <se label="{{ '生产成本(元)' | translate}}">
+      <nz-input-number [(ngModel)]="i.productionCost" [nzPrecision]="2" [nzStep]="1" [nzMin]="0"
+        name="productionCost">
+      </nz-input-number>
+    </se>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save()" [disabled]="!f.valid || !f.dirty"
+    [nzLoading]="http.loading">{{ '保存' | translate}}</button>
+  <button nz-button type="button" (click)="close()">{{ '关闭' | translate}}</button>
+</div>

@@ -1,0 +1,46 @@
+<div class="modal-header">
+    <div class="modal-title">{{ title | translate }}</div>
+</div>
+<div style="position: relative; height: 32px" *ngIf="i.Id">
+    <button nz-button nzType="dashed" style="position: absolute; right: 0;" (click)="clear()">{{'重置' | translate}}</button>
+</div>
+<div>
+    <form nz-form #f="ngForm" se-container="2">
+        <se label="{{'工厂' | translate}}" required>
+            <nz-select [(ngModel)]="i.plantCode" nzShowSearch name="plantCode" required>
+                <nz-option *ngFor="let option of plantOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+            </nz-select>
+        </se>
+        <se label="{{'库存计划模式' | translate}}" required>
+            <nz-select [(ngModel)]="i.invPlanModel" name="invPlanModel" required>
+                <nz-option *ngFor="let option of inventoryModeOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+            </nz-select>
+        </se>
+        <se label="{{'库存分类' | translate}}" required>
+            <nz-select
+                [(ngModel)]="i.categoryCode"
+                [nzServerSearch]="true"
+                (nzScrollToBottom)="onCategoryScroll()"
+                (nzOnSearch)="onCategorySearch($event)"
+                nzShowSearch
+                name="categoryCode"
+                [nzDropdownRender]="renderTemplate"
+                required>
+                <nz-option *ngFor="let option of categoryOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+            </nz-select>
+        </se>
+        <se label="{{'是否启用' | translate}}" required>
+            <nz-select [(ngModel)]="i.enableFlag" name="enableFlag" required>
+                <nz-option *ngFor="let option of whetherOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+            </nz-select>
+        </se>
+    </form>
+</div>
+<div class="modal-footer">
+    <button nz-button type="submit" [nzType]="'primary'" [disabled]="!f.valid || !f.dirty" [nzLoading]="http.loading" (click)="save()">{{'保存' | translate}}</button>
+    <button nz-button type="button" (click)="close()">{{'关闭' | translate}}</button>
+</div>
+
+<ng-template #renderTemplate>
+    <nz-spin *ngIf="isLoading"></nz-spin>
+</ng-template>

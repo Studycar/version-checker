@@ -1,0 +1,41 @@
+<custom-formquery [queryParams]="queryParams" [context]="context"
+  (event1)="buCodeOptionsChange($event)"
+  (event2)="organizationOptionsChange($event)"
+  (event3)="searchItems($event)"
+  (event4)="rowSelectItems($event)"
+  (event5)="salesCategoryBigChange($event)"
+>
+  <span>
+    <custom-button text="{{ '导出' | translate}}" (clickEvent)="export()" [src]="'基础icon-导出'">
+    </custom-button>
+  </span>
+  <span name="afterSearch">
+    <span class="after-search-label">维度选择: </span><nz-checkbox-group [(ngModel)]="dimensionOptions" (ngModelChange)="chooseDimension($event)"></nz-checkbox-group>
+  </span>
+</custom-formquery>
+<nz-card>
+  <ag-grid-angular
+    #agGrid
+    [class]="themeClass"
+    [style.height.px]="gridHeight"
+    [rowData]="gridData"
+    [columnDefs]="columns"
+    [gridOptions]="gridOptions"
+    [myAgGridRowKey]="{tb:''}"
+    [myAgGridState]="'platformProgressReport'">
+  </ag-grid-angular>
+  <custom-pager
+    [height]="pagerHeight"
+    [context]="context"
+    [view]='context.view'
+    [(pageSize)]="_pageSize"
+    [(pageNo)]="_pageNo"
+    (pageChangeEvent)="onPageChanged($event)">
+  </custom-pager>
+  <custom-excelexport [expColumns]="expColumns" [expColumnsOptions]="expColumnsOptions" fileName="平台进度报表" #excelexport>
+  </custom-excelexport>
+</nz-card>
+
+<ng-template #clickBtn let-dataItem let-field="params.field">
+  <div style="text-decoration: underline; cursor: pointer;" (click)="showChartsDialog(dataItem, type)" class="pointer">{{ dataItem[field] }}</div>
+</ng-template>

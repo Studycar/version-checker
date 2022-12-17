@@ -1,0 +1,30 @@
+<div class="modal-header">
+  <div class="title">{{ (isModify ? '编辑' : '新增') | translate }}</div>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="2">
+    <se label="{{ '预警层级' | translate}}" required>
+      <nz-select nzShowSearch [(ngModel)]="i.warnLevel" name="warnLevel" required>
+        <nz-option *ngFor="let option of warnLevelOptions" [nzLabel]="option.label" [nzValue]="option.value">
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '用户名' | translate}}" required>
+      <nz-select nzShowSearch [(ngModel)]="i.userName" name="userName" required (ngModelChange)="userNameChange($event)">
+        <nz-option *ngFor="let option of userNameOptions" [nzLabel]="option.label" [nzValue]="option.value">
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '用户说明' | translate}}">
+      <input type="text" nz-input [(ngModel)]="i.userDesc" name="userDesc" disabled/>
+    </se>
+    <se label="{{ '邮件地址' | translate}}">
+      <input type="text" nz-input [(ngModel)]="i.msgAccount" name="msgAccount" disabled/>
+    </se>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save(f)"
+  [disabled]="!f.valid || !f.dirty">{{ '保存' | translate}}</button>
+  <button nz-button type="button" (click)="close()">{{ '关闭' | translate}}</button>
+</div>

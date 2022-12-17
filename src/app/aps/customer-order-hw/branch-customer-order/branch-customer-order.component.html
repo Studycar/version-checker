@@ -1,0 +1,41 @@
+<custom-formquery [queryParams]="queryParams" [context]="context" >
+  <custom-button text="{{ '导出' | translate }}" [src]="'基础icon-导出'" (clickEvent)="export()"></custom-button>
+  <custom-button text="{{ '订单下发' | translate }}" [src]="'批量下达'" (clickEvent)="orderPublish()"></custom-button>
+  <custom-button text="{{ '订单排序' | translate }}" [src]="'排序'" (clickEvent)="orderSort()"></custom-button>
+  <custom-button text="{{ '系统分单' | translate }}" [src]="'创建工单'" (clickEvent)="orderBranch()"></custom-button>
+  <custom-button text="{{ '匹配现货' | translate }}" [src]="'匹配'" (clickEvent)="matchingOnhand()"></custom-button>
+  <custom-button text="{{ '手动分单' | translate }}" [src]="'工单指定'" (clickEvent)="orderBranchManual()"></custom-button>
+  <custom-button text="{{ '绑定' | translate }}" [src]="'绑定'" (clickEvent)="bind()"></custom-button>
+  <custom-button text="{{ '解绑' | translate }}" [src]="'解绑'" (clickEvent)="unbind()"></custom-button>
+  <custom-button text="{{ '刷新订单状态' | translate }}" [loading]="refreshStateLoading" [src]="'基础icon-刷新'" (clickEvent)="refreshState()"></custom-button>
+  <custom-button text="{{ '刷新交货量' | translate }}" [src]="'基础icon-刷新'" (clickEvent)="refresh()"></custom-button>
+  <custom-button text="{{ '尾数清零' | translate }}" [src]="'清除'" (clickEvent)="clearMantissa()"></custom-button>
+  <custom-button text="{{ '尾数恢复' | translate }}" [src]="'重置-清除'" (clickEvent)="resetMantissa()"></custom-button>
+</custom-formquery>
+<nz-card>
+  <ag-grid-angular #agGrid [class]="themeClass" [style.height.px]="gridHeight" [rowData]="gridData"
+    [columnDefs]="columns" [gridOptions]="gridOptions" [myAgGridState]="'hw-branch-customer-order'" multiSortKey='ctrl'
+    [myAgGridRowKey]="{tb:'PS_BRANCH_CUS_ORDER'}" (filterChanged)="onFilterChanged($event)">
+  </ag-grid-angular>
+  <custom-pager [height]="pagerHeight" [context]="context" [view]='context.view' [(pageSize)]="_pageSize"
+    [(pageNo)]="_pageNo" (pageChangeEvent)="onPageChanged($event)"></custom-pager>
+  <custom-excelexport [expColumns]='expColumns' [expColumnsOptions]='expColumnsOptions' fileName='分行客户订单' #excelexport></custom-excelexport>
+</nz-card>
+<nz-modal [(nzVisible)]="isVisible" [nzTitle]="modalTitles[type]" [nzFooter]="modalFooter" (nzOnCancel)="handleCancel()">
+  <form #f="ngForm" se-container="1">
+    <se label="{{ '产品大类' | translate }}" *ngIf="type !== 'orderBranchManual'" required>
+      <nz-select nzShowSearch name="productCategory" [(ngModel)]="productCategory" required>
+        <nz-option *ngFor="let op of productCategoryOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '工厂' | translate }}" *ngIf="type === 'orderBranchManual' || type === 'refresh'" required>
+      <nz-select nzShowSearch name="plantCode" [(ngModel)]="plantCode" required>
+        <nz-option *ngFor="let op of plantOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se>
+  </form>
+  <ng-template #modalFooter>
+    <button nz-button nzType="default" (click)="handleCancel()">取消</button>
+    <button nz-button nzType="primary" [disabled]="f.invalid" (click)="handleOk()" [nzLoading]="http.loading">确认</button>
+  </ng-template>
+</nz-modal>

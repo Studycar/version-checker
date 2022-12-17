@@ -1,0 +1,91 @@
+<div class="modal-header">
+  <div class="modal-title">{{ isModify ? '编辑信息' : '新增信息' | translate }}</div>
+</div>
+<div style="position: relative; height: 32px" *ngIf="isModify">
+  <button nz-button nzType="dashed" style="position: absolute; right: 0;" (click)="clear()">{{'重置' | translate}}</button>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="2">
+    <se label="{{ '工厂' | translate }}" required>
+      <nz-select nzShowSearch name="plantCode" [nzDisabled]="isModify" [(ngModel)]="i.plantCode" required>
+        <nz-option *ngFor="let op of plantOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '产品大类' | translate }}" required>
+      <nz-select nzShowSearch name="productCategory" [nzDisabled]="isModify" [(ngModel)]="i.productCategory" required>
+        <nz-option *ngFor="let op of productCategoryOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '钢种' | translate }}" required>
+      <nz-select nzShowSearch name="steelType" [nzDisabled]="isModify" [(ngModel)]="i.steelType" required>
+        <nz-option *ngFor="let op of steelTypeOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '厚度(>=)' | translate }}" required>
+      <nz-input-number name="thicknessDown" [nzDisabled]="isModify" [(ngModel)]="i.thicknessDown" [nzFormatter]="formatterPrecision" required></nz-input-number>
+    </se>
+    <se label="{{ '厚度(\<)' | translate }}" required>
+      <nz-input-number name="thicknessUp" [nzDisabled]="isModify" [(ngModel)]="i.thicknessUp" [nzFormatter]="formatterPrecision" required></nz-input-number>
+    </se>
+    <se label="{{ '宽度(>=)' | translate }}" required>
+      <nz-input-number name="widthDown" [nzDisabled]="isModify" [(ngModel)]="i.widthDown" required></nz-input-number>
+    </se>
+    <se label="{{ '宽度(\<)' | translate }}" required>
+      <nz-input-number name="widthUp" [nzDisabled]="isModify" [(ngModel)]="i.widthUp" required></nz-input-number>
+    </se>
+    <se label="{{ '0.5及以下薄料加价' | translate }}">
+      <nz-input-number name="belowFive" [(ngModel)]="i.belowFive"></nz-input-number>
+    </se>
+    <se label="{{ '0.4及以下薄料加价' | translate }}">
+      <nz-input-number name="belowFour" [(ngModel)]="i.belowFour"></nz-input-number>
+    </se>
+    <se label="{{ '形式' | translate }}" required>
+      <nz-select nzShowSearch name="prodType" [nzDisabled]="isModify" [(ngModel)]="i.prodType" required>
+        <nz-option *ngFor="let op of prodTypeOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '受托加工' | translate }}" required>
+      <nz-select nzShowSearch name="entrustedProcessing" [nzDisabled]="isModify" [(ngModel)]="i.entrustedProcessing" required>
+        <nz-option *ngFor="let op of yesOrNoOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '厚度加价' | translate }}">
+      <nz-input-number name="thicknessMarkup" [(ngModel)]="i.thicknessMarkup"></nz-input-number>
+    </se>
+    <se label="{{ '宽度加价' | translate }}">
+      <nz-input-number name="widthMarkup" [(ngModel)]="i.widthMarkup"></nz-input-number>
+    </se>
+    <se label="{{ '垫纸加价' | translate }}">
+      <nz-input-number name="paperMarkup" [(ngModel)]="i.paperMarkup"></nz-input-number>
+    </se>
+    <se label="{{ '下差' | translate }}">
+      <nz-input-number name="lowerDifference" [(ngModel)]="i.lowerDifference"></nz-input-number>
+    </se>
+    <se label="{{ '厚度基础加价' | translate }}">
+      <nz-input-number name="thicknessBaseMarkup" [(ngModel)]="i.thicknessBaseMarkup"></nz-input-number>
+    </se>
+    <se label="{{ '平板加价' | translate }}">
+      <nz-input-number name="flatMarkup" [(ngModel)]="i.flatMarkup"></nz-input-number>
+    </se>
+    <se label="{{ '重卷加价' | translate }}">
+      <nz-input-number name="rewindingMarkup" [(ngModel)]="i.rewindingMarkup"></nz-input-number>
+    </se>
+    <!-- <se label="{{ '规则状态' | translate }}" required>
+      <nz-select nzShowSearch name="markupElementState" [nzDisabled]="isModify" [(ngModel)]="i.markupElementState" required>
+        <nz-option *ngFor="let op of markupStateOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se> -->
+    <se label="{{ '生效日期' | translate }}" required>
+      <nz-date-picker nzFormat="yyyy-MM-dd" [(ngModel)]="i.startDate" name="startDate" required>
+      </nz-date-picker>
+    </se>
+    <se label="{{ '失效日期' | translate }}" required>
+      <nz-date-picker nzFormat="yyyy-MM-dd" [(ngModel)]="i.endDate" name="endDate" required>
+      </nz-date-picker>
+    </se>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="button" (click)="close()">{{ '取消' | translate }}</button>
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save(f.value)" [nzLoading]="http.loading" [disabled]="f.invalid || !f.dirty">{{'保存' | translate }}</button>
+</div>

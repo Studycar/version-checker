@@ -1,0 +1,57 @@
+<div class="modal-header">
+  <div class="modal-title">{{ '发起客诉整改' | translate }}</div>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="2">
+    <se label="{{ '客户编码' | translate }}">
+      <input nz-input type="text" name="cusCode" [(ngModel)]="i.cusCode" disabled />
+    </se>
+    <se label="{{ '客户名称' | translate }}">
+      <input nz-input type="text" name="cusName" [(ngModel)]="i.cusName" disabled />
+    </se>
+    <se label="{{ '钢卷号' | translate }}">
+      <input nz-input type="text" name="batchNum" [(ngModel)]="i.batchNum" disabled />
+    </se>
+    <se label="{{ '钢卷规格' | translate }}">
+      <input nz-input type="text" name="standardsType" [(ngModel)]="i.standardsType" disabled />
+    </se>
+    <se label="{{ '钢卷净重' | translate }}">
+      <nz-input-number name="weigthKg" nzDisabled [(ngModel)]="i.weigthKg" disabled></nz-input-number>
+    </se>
+    <se label="{{ '缺陷描述' | translate }}">
+      <input nz-input type="text" name="qxms" [(ngModel)]="i.qxms" disabled />
+    </se>
+    <se label="{{ '售后处理意见' | translate }}">
+      <input nz-input type="text" name="pfmssm" [(ngModel)]="i.pfmssm" disabled />
+    </se>
+    <se label="{{ '投诉问题类型' | translate }}" required>
+      <input nz-input type="text" name="correctiveType" [(ngModel)]="i.correctiveType" required />
+    </se>
+    <se label="{{ '整改责任人' | translate }}" required>
+      <nz-select-server
+        [value]="i.userResponsility" 
+        name="userResponsility"
+        labelField="description"
+        valueField="userName"
+        (ngModelChangeEvent)="onUserChange($event)"
+        [searchFunction]="getUserList"
+        isSelectedShowValue
+        required
+      ></nz-select-server>
+    </se>
+    <se label="{{ '期望完成时间' | translate }}" required>
+      <nz-date-picker
+        [(ngModel)]="i.planDate"
+        name="planDate"
+        nzFormat="yyyy-MM-dd"
+        nzPlaceHolder="请选择日期"
+        [nzDisabledDate]="disabledStartDate"
+        required
+      ></nz-date-picker>
+    </se>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="button" (click)="close()">{{ '取消' | translate }}</button>
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save(f.value)" [nzLoading]="http.loading" [disabled]="f.invalid">{{'提交' | translate }}</button>
+</div>

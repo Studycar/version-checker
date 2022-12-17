@@ -1,0 +1,101 @@
+<style type="text/css">
+  .container {
+    position: relative;
+  }
+
+  .button {
+    cursor: pointer;
+    background-color: rgb(24, 144, 255);
+    color: white;
+    border: none;
+    text-align: center;
+    margin: 5px 2px;
+  }
+
+  .button:hover {
+    background-color: rgb(64, 169, 255);
+  }
+
+  .pointer {
+    cursor: pointer;
+  }
+
+  /*为勾选对其，扩展图标位置占位  */
+  .span_action {
+    display: inline-block;
+    width: 14px;
+  }
+
+  .checkbox {
+    margin: auto 5px;
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
+  }
+
+  /* table th/td自定义样式  */
+  .th {
+    /* padding: 10px !important; */
+    padding-left: 0px;
+    padding-right: 0px;
+    background-color: rgb(246, 246, 246);
+  }
+
+  .td {
+    /* padding: 10px !important; */
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+
+  /* td属性 [nzIndentSize]="i===0?item.level*30:0" ，该属性产生换行用span代替*/
+  .td_Indent {
+    display: inline-block;
+  }
+</style>
+<!-- <input #anchor type="text" [ngStyle]="ngStyle" (click)="toggle()" nz-input [(ngModel)]="valueObject[valueObjectField]" name="{{valueObjectField}}"
+  placeholder="{{'请选择'| translate}}" readonly="true"> -->
+<input #anchor type="text" (click)="toggle()" nz-input [(ngModel)]="valueObject[valueObjectField]"
+  name="{{valueObjectField}}" readonly="true" [required]="required">
+<kendo-popup [anchor]="anchor" #popup *ngIf="show">
+  <div class="container" [style.width.px]="width">
+    <input class="button" (click)="select()" type="button" value="{{'确定'|translate}}">
+    <input class="button" (click)="toggle()" type="button" value="{{'关闭'|translate}}">
+    <input type="text" nz-input [(ngModel)]="searchText" placeholder="{{'请输入过滤内容'| translate}}">
+    <nz-table [nzData]="dataTree" [nzScroll]="scroll" [nzFrontPagination]="false" [nzShowPagination]="false"
+      [nzBordered]="true" #nzTable nzSize="small">
+      <thead>
+        <tr>
+          <th *ngFor="let col of columns;let i=index;" class="th" [nzWidth]="i===columns.length-1?'auto':col.width">
+            <input class="checkbox" *ngIf="showCheckBox&&i===0" type="checkbox" [checked]="allChecked"
+              (click)="allCheckChange($event)" />
+            <span>{{col.title|translate}}</span>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-template ngFor let-data [ngForOf]="nzTable.data">
+          <ng-template ngFor let-item [ngForOf]="expandDataCache[data[keyField]]">
+            <tr *ngIf="((item.parent&&item.parent.expand)||!(item.parent))&&isMatchSearch(item)">
+              <td *ngFor="let col of columns;let i=index;" class="td">
+                <span *ngIf="i===0" class="td_Indent" [style.width.px]="item.level>0?20:0"></span>
+                <span *ngIf="!!item.children&&item.children.length>0&&i===0" class="pointer"
+                  (click)="collapse(expandDataCache[data[keyField]],item,!item.expand)">
+                  <i nz-icon [nzType]="expandForm?'anticon-up':'anticon-down'"></i>
+                </span>
+                <span *ngIf="i===0&&(!item.children||item.children.length===0)" class="span_action"></span>
+                <input class="checkbox" *ngIf="showCheckBox&&i===0" type="checkbox" [checked]="item.checked"
+                  (click)="checkChange(expandDataCache[data[keyField]],item,!item.checked,$event)" />
+                <span *ngIf="i===0" title="{{item[col.field]}}">{{item[col.field]|translate}}</span>
+                <nz-tooltip *ngIf="i!==0" [nzTitle]="item[col.field]">
+                  <ellipsis [lines]="1">
+                    <span nz-tooltip>{{item[col.field]|translate}}</span>
+                  </ellipsis>
+                </nz-tooltip>
+              </td>
+            </tr>
+          </ng-template>
+        </ng-template>
+      </tbody>
+    </nz-table>
+  </div>
+</kendo-popup>

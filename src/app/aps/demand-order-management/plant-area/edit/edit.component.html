@@ -1,0 +1,59 @@
+<div class="modal-header">
+  <div class="modal-title">{{ (isModify ? '编辑信息' : '新增信息') | translate}}</div>
+</div>
+<div *ngIf="isModify" style=" margin:2px auto;">
+  <button style="float: right;" nz-button nzType="dashed" (click)="clear()">
+    {{ '重置' | translate}}</button>
+  <div style="clear: both;"></div>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="3" [labelWidth]=140>
+    <se label="{{ '事业部' | translate}}" required>
+      <nz-select #select [(ngModel)]="editDto.scheduleRegionCode" (ngModelChange)="regionChange()" nzShowSearch
+        name="scheduleRegionCode" [nzDisabled]="isModify" required>
+        <nz-option *ngFor="let o of regionList" [nzValue]="o.value" [nzLabel]="o.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '销售公司' | translate}}" required>
+      <nz-select #select [(ngModel)]="editDto.salesRegion" (ngModelChange)="salesRegionChange()" nzShowSearch
+        name="salesRegion" [nzDisabled]="isModify" required>
+        <nz-option *ngFor="let o of salesRegionList" [nzValue]="o.value" [nzLabel]="o.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '业务区域' | translate}}">
+      <nz-select #select [(ngModel)]="editDto.salesArea" (ngModelChange)="salesAreaChange()" nzShowSearch
+        name="salesArea" [nzDisabled]="isModify">
+        <nz-option *ngFor="let o of salesAreaList" [nzValue]="o.value" [nzLabel]="o.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '客户' | translate}}">
+      <nz-select nzShowSearch [(ngModel)]="editDto.customerNumber" name="customerNumber"
+        [nzServerSearch]="true" (nzScrollToBottom)="downScroll($event)" (nzOnSearch)="downSearch($event)">
+        <nz-option *ngFor=" let option of customerList" [nzLabel]="option.label" [nzValue]="option.value">
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '工厂' | translate}}" required>
+      <nz-select #select [(ngModel)]="editDto.plantCode" nzShowSearch name="plantCode" required>
+        <nz-option *ngFor="let o of plantList" [nzValue]="o.value" [nzLabel]="o.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '物流距离' | translate}}">
+      <nz-input-number [(ngModel)]="editDto.distance" [nzPrecision]="2" [nzStep]="1" [nzMin]="0" name="distance">
+      </nz-input-number>
+    </se>
+    <se label="{{ '物流单价' | translate}}">
+      <nz-input-number [(ngModel)]="editDto.pricePer" [nzPrecision]="2" [nzStep]="1" [nzMin]="0" name="pricePer">
+      </nz-input-number>
+    </se>
+    <se label="{{ '优先级' | translate}}">
+      <nz-input-number [(ngModel)]="editDto.priority" [nzPrecision]="0" [nzStep]="1" [nzMin]="0" name="priority">
+      </nz-input-number>
+    </se>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save()" [disabled]="f.invalid || !f.dirty"
+    [nzLoading]="http.loading"> {{ '保存' | translate}}</button>
+  <button nz-button type="button" (click)="close()"> {{ '关闭' | translate}}</button>
+</div>

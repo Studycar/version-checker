@@ -1,0 +1,211 @@
+<div id="mountNode">
+  <div id="editor" class="editor">
+    <!-- 缩略图 DOM 结构规约参考 Minimap API -->
+    <div id="toolbar" class="toolbar">
+      <link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_598462_3xve1872wizzolxr.css" />
+      <i data-command="undo" class="command iconfont icon-undo" title="撤销"></i>
+      <!--<i data-command="redo" class="iconfont icon-redo" nz-popconfirm nzTitle="是否确认要重做?" (nzOnConfirm)="ReWrite()"
+        title="重做"></i>
+      <span class="separator"></span>-->
+
+      <i data-command="paste" class="command iconfont icon-paster-o" title="粘贴"></i>
+      <i data-command="delete" class="command iconfont icon-delete-o" title="删除"></i>
+      <span class="separator"></span>
+      <i data-command="zoomIn" class="command iconfont icon-zoom-in-o" title="放大"></i>
+      <i data-command="zoomOut" class="command iconfont icon-zoom-out-o" title="缩小"></i>
+      <i data-command="autoZoom" class="command iconfont icon-fit" title="适应画布"></i>
+      <i data-command="resetZoom" class="command iconfont icon-actual-size-o" title="实际尺寸"></i>
+      <i data-command="multiSelect" class="command iconfont icon-select" title="多选"></i>
+      <span class="separator"></span>
+      <!--<i data-command="addGroup" class="command iconfont icon-group" title="成组"></i>
+      <i data-command="unGroup" class="command iconfont icon-ungroup" title="解组"></i>
+      <span class="separator"></span>
+      <i data-command="toBack" class="command iconfont icon-to-back" title="层级后置"></i>
+      <i data-command="toFront" class="command iconfont icon-to-front" title="层级前置"></i>-->
+      &nbsp;
+      <button (click)="ChangeCode()">
+        <i data-command="redo" class="anticon anticon-search" style="cursor: Pointer" title="切换物料"></i>
+      </button>
+      &nbsp;&nbsp;&nbsp;
+      <button nz-popconfirm nzTitle="确定重做?" (nzOnConfirm)="ReWrite()">
+        <i data-command="redo" class="anticon anticon-rollback" style="cursor: Pointer" title="重做"></i>
+      </button>
+      &nbsp;&nbsp;&nbsp;
+      <button (click)="copyprocess()">
+        <i data-command="copy" class="anticon anticon-copy" style="cursor: Pointer" title="复制"></i>
+      </button>
+      &nbsp;&nbsp;&nbsp;
+      <button nz-popconfirm nzTitle="确定保存数据?" (nzOnConfirm)="confirm()">
+        <i data-command="save" class="anticon anticon-save" style="cursor: Pointer" title="保存"></i>
+      </button>
+      &nbsp;&nbsp;<strong>当前物料：{{ITEM_CODE}}</strong>&nbsp;&nbsp;
+
+      <!--<popup-select style="height:12;width:20;" [(SelectValue)]="ITEM_CODE" [(SelectText)]='ITEM_CODE' [ValueField]="'ITEM_CODE'" [TextField]="'ITEM_CODE'"
+        [gridView]="gridView" [columns]="columns" (SearchEvent)="search($event)" (TextChanged)="change($event)"
+        required>
+      </popup-select>-->
+      <strong>工艺版本：</strong>&nbsp;&nbsp;
+      <nz-select #select style="width:200px;" [(ngModel)]="TECH_VERSION" nzShowSearch name="TECH_VERSION"   (ngModelChange)="onChangeVersion($event)" nzAllowClear>
+        <nz-option *ngFor="let o of optionVersion" [nzValue]="o.value" [nzLabel]="o.label"></nz-option>
+        <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+          <i class="anticon anticon-loading anticon-spin loading-icon"></i> Loading Data...
+        </nz-option>
+      </nz-select>
+    </div>
+    <!-- 工具栏 DOM 结构规约参考 Toolbar API -->
+    <div style="height:42px"></div>
+    <div class="bottom-container">
+      <div id="contextmenu" class="contextmenu">
+        <div data-status="node-selected" class="menu">
+          <div data-command="copy" class="command">
+            <span>复制</span> <span>copy</span>
+          </div>
+          <div data-command="delete" class="command">
+            <span>删除</span> <span>delete</span>
+          </div>
+        </div>
+        <div data-status="edge-selected" class="menu">
+          <div data-command="delete" class="command">
+            <span>删除</span> <span>delete</span>
+          </div>
+        </div>
+        <div data-status="group-selected" class="menu">
+          <div data-command="copy" class="command">
+            <span>复制</span> <span>copy</span>
+          </div>
+          <div data-command="delete" class="command">
+            <span>删除</span> <span>delete</span>
+          </div>
+          <div data-command="unGroup" class="command">
+            <span>解组</span> <span>unGroup</span>
+          </div>
+        </div>
+        <div data-status="canvas-selected" class="menu">
+          <div data-command="undo" class="command">
+            <span>撤销</span> <span>undo</span>
+          </div>
+          <div data-command="redo" class="command">
+            <span>重做</span> <span>redo</span>
+          </div>
+          <div data-command="pasteHere" class="command">
+            <span>粘贴</span> <span>pasteHere</span>
+          </div>
+        </div>
+        <div data-status="multi-selected" class="menu">
+          <div data-command="copy" class="command">
+            <span>复制</span> <span>copy</span>
+          </div>
+          <div data-command="paste" class="command">
+            <span>粘贴</span> <span>paste</span>
+          </div>
+          <div data-command="addGroup" class="command">
+            <span>归组</span> <span>addGroup</span>
+          </div>
+          <div data-command="delete" class="command">
+            <span>删除</span> <span>delete</span>
+          </div>
+        </div>
+      </div>
+      <div id="itempannel" class="itempannel">
+        <div>
+          <img draggable="false" src="https://gw.alipayobjects.com/zos/rmsportal/ZnPxbVjKYADMYxkTQXRi.svg" data-type="node"
+            data-shape="flow-circle" data-size="72*72" data-color="#FA8C16" data-label="结束" class="getItem" />
+          <img draggable="false" src="https://gw.alipayobjects.com/zos/rmsportal/wHcJakkCXDrUUlNkNzSy.svg" data-type="node"
+            data-shape="flow-rect" data-size="80*48" data-color="#1890FF" data-label="常规节点" class="getItem" />
+          <!--<img draggable="false" src="https://gw.alipayobjects.com/zos/rmsportal/SnWIktArriZRWdGCnGfK.svg" data-type="node"
+            data-shape="flow-rhombus" data-size="80*72" data-color="#13C2C2" data-label="分叉节点" class="getItem" />
+          <img draggable="false" src="https://gw.alipayobjects.com/zos/rmsportal/rQMUhHHSqwYsPwjXxcfP.svg" data-type="node"
+            data-shape="flow-capsule" data-size="80*48" data-color="#722ED1" data-label="模型节点" class="getItem" />
+          <br />
+          <br />-->
+
+        </div>
+      </div>
+      <div id="detailpannel" class="detailpannel">
+        <div data-status="node-selected" class="pannel">
+          <div class="pannel-title">节点</div>
+          <div class="block-container">
+            <div class="p">
+              名称：
+              <!--<input nz-input [nzSize]="'small'" class="input name-input" [(ngModel)]="inputingLabel" (ngModelChange)="changeLabel($event)"/>-->
+              <nz-select *ngIf="inputingLabel !== '结束'" id="ng-select" style="text-align: center;" [nzSize]="'small'"
+                [(ngModel)]="inputingLabel" name="inputingLabel" (ngModelChange)="changeLabel($event)" [nzShowSearch]=true>
+                <nz-option *ngFor="let option of processoptions" [nzLabel]="option.label" [nzValue]="option.value"
+                  required>
+                </nz-option>
+              </nz-select>
+            </div>
+            <div class="p">
+              尺寸：
+              <nz-input-number [nzSize]="'small'" [(ngModel)]="width" class="input
+            width-input"
+                (ngModelChange)="changeWidth($event)"></nz-input-number>
+              <nz-input-number [nzSize]="'small'" [(ngModel)]="height" class="input
+            width-input"
+                (ngModelChange)="changeHeight($event)"></nz-input-number>
+            </div>
+            <div>
+              描述：<br />
+              <strong>{{getDesByProCode()?.tag}}</strong>
+            </div>
+          </div>
+        </div>
+        <div data-status="edge-selected" class="pannel" id="edge_detailpanel">
+          <div class="pannel-title">边</div>
+          <div class="block-container">
+            <div class="p">
+              单位用量：
+              <input nz-input [nzSize]="'small'" class="input name-input" [(ngModel)]="inputingOther" (ngModelChange)="otherLableChange($event)" />
+            </div>
+            <div class="p">
+              提前期-相关性-有效(如1-AA-Y)：
+              <input nz-input [nzSize]="'small'" class="input name-input" [(ngModel)]="inputingLabel" (ngModelChange)="EdgeLableChange($event)" />
+            </div>
+            <div class="p">
+              描述：<br />
+              <strong [innerHTML]="getTimeAndType()"></strong>
+            </div>
+            <div class="p">
+              工序相关性：<br />
+              <strong [innerHTML]="getRelationRemark"></strong>
+            </div>
+            <!--<div class="p">
+              是否有效：<br />
+              <strong [innerHTML]="getEnable"></strong>
+            </div>-->
+          </div>
+        </div>
+        <div data-status="group-selected" class="pannel" id="group_detailpanel">
+          <div class="pannel-title">组</div>
+          <div class="block-container">
+            <div class="p">
+              名称：
+              <input nz-input [nzSize]="'small'" class="input name-input" [(ngModel)]="inputingLabel" (ngModelChange)="changeLabel($event)" />
+            </div>
+          </div>
+        </div>
+        <div data-status="canvas-selected" class="pannel" id="canvas_detailpanel">
+          <div class="pannel-title">画布</div>
+          <div class="block-container">
+            <label nz-checkbox [(ngModel)]="isShowGrid" (ngModelChange)="toggleGrid($event)">网格对齐</label>
+          </div>
+        </div>
+        <div data-status="multi-selected" class="pannel" id="multi_detailpanel">
+          <div class="pannel-title">多选</div>
+          <div class="block-container">
+            <!-- {colorInput} -->
+          </div>
+        </div>
+      </div>
+      <div id="navigator">
+        <div class="pannel-title">导航器</div>
+        <div id="minimap"></div>
+        <div id="zoom-slider">
+          <nz-slider [nzDefaultValue]="curZoom" [nzMax]="maxZoom" [nzMin]="minZoom" (nzOnAfterChange)="changeZoom($event)"
+            [nzMarks]="marks"></nz-slider>
+        </div>
+      </div>
+      <div id="page" class="page"></div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,44 @@
+<form nz-form #f="ngForm" se-container="2">
+  <se label="{{ '客户编码' | translate }}">
+    <input nz-input type="text" name="cusCode" [(ngModel)]="formData.cusCode" disabled>
+  </se>
+  <se label="{{ '客户名称' | translate }}">
+    <input nz-input type="text" name="cusName" [(ngModel)]="formData.cusName" disabled />
+  </se>
+  <se label="{{ '客户简称' | translate }}">
+    <input nz-input type="text" name="cusAbbreviation" [(ngModel)]="formData.cusAbbreviation" disabled />
+  </se>
+  <se label="{{ '所属客户' | translate }}">
+    <input nz-input type="text" name="affiliatedCus" [(ngModel)]="formData.affiliatedCus" disabled />
+  </se>
+  <se label="{{ '客户级别' | translate }}">
+    <nz-select [(ngModel)]="formData.cusGrade" name="cusGrade" nzDisabled>
+      <nz-option *ngFor="let op of cusGradeOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+    </nz-select>
+  </se>
+  <se label="{{ '客户类型' | translate }}">
+    <nz-select [(ngModel)]="formData.cusType" name="cusType" nzDisabled>
+      <nz-option *ngFor="let op of cusTypeOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+    </nz-select>
+  </se>
+  <se label="{{ '税号' | translate }}">
+    <input nz-input type="text" name="taxNum" [(ngModel)]="formData.taxNum" disabled>
+  </se>
+  <se label="{{ '联系人' | translate }}">
+    <input nz-input type="text" name="contact" [(ngModel)]="formData.contact" disabled />
+  </se>
+  <se label="{{ '地区分类' | translate }}">
+    <nz-select nzShowSearch name="region" [(ngModel)]="formData.region" nzDisabled>
+      <nz-option *ngFor="let op of regionOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+    </nz-select>
+  </se>
+  <se label="{{ '地址' | translate }}">
+    <input nz-input type="text" name="address" [(ngModel)]="formData.address" disabled />
+  </se>
+  <se label="{{ '联系电话' | translate }}">
+    <input nz-input type="text" name="telNum" [(ngModel)]="formData.telNum" disabled />
+  </se>
+  <se label="{{ '变更原因' | translate }}">
+    <textarea nz-input name="changeReason" [(ngModel)]="formData.changeReason" nzAutosize disabled></textarea>
+  </se>
+</form>

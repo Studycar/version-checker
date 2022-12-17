@@ -1,0 +1,41 @@
+<!--<div class="modal-header">
+  <div class="modal-title">{{ '技改明细编辑' | translate}}</div>
+</div>-->
+<custom-formquery [queryParams]="queryParams" [context]="context" [showExpandIcon]="showExpand">
+  <span>
+    <custom-button text="{{ '保存' | translate}}" (clickEvent)="save()" [src]="'保存'">      
+    </custom-button>
+    <custom-button text="{{ '导出' | translate}}" (clickEvent)="export()" [src]="'基础icon-导出'">
+    </custom-button>
+  </span>
+</custom-formquery>
+<nz-card>
+  <ag-grid-angular #agGrid id="dnGridTech" [class]="themeClass" [style.height.px]="gridHeight" [rowData]="gridData" [columnDefs]="columns"
+    [gridOptions]="gridOptions" [myAgGridRowKey]="{tb:'PS_TECHNICAL_MODIFY'}" [myAgGridState]="'PS_TECHNICAL_MODIFY'" (virtualColumnsChanged)="onVirtualColumnsChanged()"
+    (cellValueChanged)="onCellValueChanged($event)">
+  </ag-grid-angular>
+  <div>{{ '总记录数：' | translate}}{{gridData.length}}</div>
+  <custom-excelexport [expColumns]='expColumns' [expColumnsOptions]='expColumnsOptions' fileName='技术更改' #excelexport></custom-excelexport>
+</nz-card>
+
+<ng-template #customTemplate let-dataItem>
+  <nz-divider nzType="vertical"></nz-divider>
+  <span title="{{ '物料选择' | translate}}" (click)="itemSelect(dataItem)" class="pointer" *ngIf="dataRowEdit(dataItem)"><i class="anticon anticon-bars"></i>
+  </span>
+</ng-template>
+
+<!--<ng-template #customTemplateItem let-dataItem>
+  <span>
+    <input type="text" nz-input [(ngModel)]="dataItem.afterItemCode" name="afterItemCode" required [disabled]="!dataRowEdit(dataItem)" (TextChanged)="itemChange($event)">
+    <popup-select #selMater1 [(SelectValue)]="dataItem.afterItemId" [(SelectText)]='dataItem.afterItemCode' [ValueField]="'itemId'"
+        [TextField]="'itemCode'" [gridView]="gridView1" [columns]="columns1" (SearchEvent)="search1($event)" (RowSelect)="onRowSelect($event)"
+        (TextChanged)="change1($event)" required [Disabled]="!dataRowEdit(dataItem)">
+      </popup-select>
+  </span>
+</ng-template>
+
+<ng-template #customTemplateUsage let-dataItem>
+  <span>
+    <input type="number" nz-input [(ngModel)]="dataItem.afterUsage" name="afterUsage" required [disabled]="!dataRowEdit(dataItem)">
+  </span>
+</ng-template>-->

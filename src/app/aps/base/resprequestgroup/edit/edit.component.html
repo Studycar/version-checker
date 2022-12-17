@@ -1,0 +1,23 @@
+<div class="modal-header">
+  <div class="modal-title">{{ (isModify?'编辑信息':'新增信息') | translate}}</div>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="2">
+    <se label="{{ '请求组名称' | translate}}" required>
+      <nz-select [(ngModel)]="i.id" nzShowSearch name="id" (ngModelChange)="onRequestGroup()" nzAllowClear required>
+        <nz-option *ngFor="let o of requestgroupnames" [nzValue]="o.value" [nzLabel]="o.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '应用模块' | translate}}" required>
+      <input type="text" nz-input [(ngModel)]="i.applicationName" name="applicationName" [readonly]="true" required>
+    </se>   
+
+  </form>
+</div>
+
+<div class="modal-footer">
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save()" [disabled]="f.invalid || !f.dirty" [nzLoading]="http.loading">
+    {{ '保存' | translate}}</button>
+  <button nz-button type="button" (click)="close()">
+    {{ '关闭' | translate}}</button>
+</div>

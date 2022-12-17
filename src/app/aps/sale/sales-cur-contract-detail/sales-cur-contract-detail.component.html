@@ -1,0 +1,106 @@
+<custom-formquery [queryParams]="queryParams" [context]="context" >
+  <ng-container *ngIf="verifyEdit()">
+    <custom-button text="{{ '新增' | translate }}" [src]="'基础icon-新增'" (clickEvent)="add()"></custom-button>
+    <custom-button text="{{ '删除' | translate }}" [src]="'基础icon-删除'" (clickEvent)="remove()"></custom-button>
+    <custom-button text="{{ '保存' | translate }}" [src]="'btn_save'" [srcDisabled]="'btn_save_disabled'" [disabled]="f.invalid" (clickEvent)="save()"></custom-button>
+    <custom-button text="{{ '取消' | translate }}" [src]="'btn_cancel'" [srcDisabled]="'btn_cancel_disabled'" (clickEvent)="cancel()"></custom-button>
+    <custom-button *ngIf="!isChanging" text="{{ '提交审批' | translate }}" [src]="'提交审核'" [srcDisabled]="'提交审核_disabled'" (clickEvent)="applyAudit()" 
+      [disabled]="verifySubmit(f) || isGridDataChange"></custom-button>
+  </ng-container>
+  <ng-container *ngIf="['30'].includes(salesCurContract.contractState) && !isChanging && !['40'].includes(salesCurContract.contractType)">
+    <custom-button text="{{ '合同变更' | translate }}" [src]="'变更'" [srcDisabled]="'变更_disabled'" (clickEvent)="change()"></custom-button>
+  </ng-container>
+  <custom-button text="{{ '导出' | translate }}" [src]="'基础icon-导出'" (clickEvent)="export()"></custom-button>
+</custom-formquery>
+<nz-card>
+  <div style="margin-bottom: 10px;">
+    <nz-spin [nzSpinning]="loading">
+      <form nz-form #f="ngForm" se-container="4">
+        <se label="{{ '合同模板' | translate }}" required>
+          <nz-select #select nzShowSearch name="attachInfoId" [nzDisabled]="!verifyEdit()" [(ngModel)]="salesCurContract.attachInfoId" (ngModelChange)="attachChange($event)" required>
+            <nz-option *ngFor="let op of attachInfoList" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+          </nz-select>
+        </se>
+        <se label="{{ '合同编码' | translate }}" required>
+          <input nz-input type="text" disabled name="contractCode" [(ngModel)]="salesCurContract.contractCode">
+        </se>
+        <se label="{{ '合同状态' | translate }}" required>
+          <nz-select #select nzShowSearch name="contractState" [(ngModel)]="salesCurContract.contractState" nzDisabled required>
+            <nz-option *ngFor="let op of contractStateOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+          </nz-select>
+        </se>
+        <se label="{{ '合同类型' | translate }}" required>
+          <nz-select #select nzShowSearch name="contractType" nzDisabled [(ngModel)]="salesCurContract.contractType" required>
+            <nz-option *ngFor="let op of contractTypeOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+          </nz-select>
+        </se>
+        <se label="{{ '所属合同' | translate }}">
+          <input nz-input type="text" disabled name="affiliatedContract" [(ngModel)]="salesCurContract.affiliatedContract">
+        </se>
+        <se label="{{ '客户编码' | translate }}" required>
+          <popup-select [Value]="salesCurContract.cusCode" [ValueField]="'cusCode'" [Disabled]="!verifyEdit()"
+            [Text]="salesCurContract.cusCode" [TextField]="'cusCode'" required [options]="customersOptions"
+            [gridView]="gridViewCustoms" [columns]="columnsCustoms" (TextChanged)="onPopupSelectTextChanged($event)"
+            (SearchEvent)="searchCustoms($event)" (RowSelect)="onRowSelectCustoms($event)">
+          </popup-select>
+        </se>
+        <se label="{{ '客户简称' | translate }}">
+          <input nz-input type="text" disabled name="cusAbbreviation" [(ngModel)]="salesCurContract.cusAbbreviation">
+        </se>
+        <se label="{{ '供方' | translate }}" required>
+          <nz-select #select nzShowSearch name="plantCode" nzDisabled [(ngModel)]="salesCurContract.plantCode" required>
+            <nz-option *ngFor="let op of plantOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+          </nz-select>
+        </se>
+        <se label="{{ '签订日期' | translate }}" required>
+          <nz-date-picker nzFormat="yyyy-MM-dd" [nzDisabled]="!verifyEdit()" [(ngModel)]="salesCurContract.signingDate" name="signingDate" required>
+          </nz-date-picker>
+        </se>
+        <se label="{{ '合同所属月份' | translate }}" required>
+          <nz-month-picker nzFormat="yyyy-MM" [nzDisabled]="!verifyEdit()" [(ngModel)]="salesCurContract.affiliatedMonth" name="affiliatedMonth" required>
+          </nz-month-picker>
+        </se>
+        <se label="{{ '交货地点' | translate }}">
+          <input nz-input type="text" name="deliveryPlace" [disabled]="!verifyEdit()" [(ngModel)]="salesCurContract.deliveryPlace">
+        </se>
+        <se label="{{ '交货日期' | translate }}">
+          <nz-date-picker nzFormat="yyyy-MM-dd" [nzDisabled]="!verifyEdit()" [(ngModel)]="salesCurContract.deliveryDate" name="deliveryDate">
+          </nz-date-picker>
+        </se>
+        <se label="{{ '客户合同号' | translate }}">
+          <input nz-input type="text" name="cusContractCode" [disabled]="!verifyEdit()" [(ngModel)]="salesCurContract.cusContractCode">
+        </se>
+        <se label="{{ '签订地点' | translate }}">
+          <input nz-input type="text" name="signPlace" [disabled]="!verifyEdit()" [(ngModel)]="salesCurContract.signPlace">
+        </se>
+        <se label="{{ '驳回原因' | translate }}">
+          <input nz-input type="text" disabled="true" name="reason" [(ngModel)]="salesCurContract.reason">
+        </se>
+        <se label="{{ '计价日期' | translate }}">
+          <nz-date-picker nzFormat="yyyy-MM-dd" nzDisabled [(ngModel)]="salesCurContract.priceTime" name="priceTime">
+          </nz-date-picker>
+        </se>
+      </form>
+    </nz-spin>
+  </div>
+  <ag-grid-angular id="digitalGrid" #agGrid [class]="themeClass" [style.height.px]="gridHeight" [rowData]="gridData"
+    [columnDefs]="columns" [gridOptions]="gridOptions" [myAgGridState]="'ps-contract-stock-detail'"
+    [myAgGridRowKey]="{tb:'PS_CONTRACT_STOCK_DETAIL'}" (virtualColumnsChanged)="onVirtualColumnsChanged($event)" (filterChanged)="onFilterChanged($event)">
+  </ag-grid-angular>
+  <custom-excelexport [expColumns]='expColumns' [expColumnsOptions]='expColumnsOptions' [fileName]="'现货合同-'+queryParams.values.contractCode+'-明细表'" #excelexport></custom-excelexport>
+</nz-card>
+<nz-modal [(nzVisible)]="isVisible" [nzTitle]="'新增'" [nzFooter]="modalFooter" (nzOnCancel)="handleCancel()">
+  <form #g="ngForm" se-container="1">
+    <se label="{{ '批号' | translate }}" required>
+      <popup-select [Value]="newDetail.batchCode" [ValueField]="'batchCode'"
+        [Text]="newDetail.batchCode" [TextField]="'batchCode'" required [options]="salesDistCursOptions"
+        [gridView]="gridViewSalesDistCurs" [columns]="columnsSalesDistCurs" (TextChanged)="onSalesDistCursTextChanged($event)"
+        (SearchEvent)="searchSalesDistCurs($event)" (RowSelect)="onRowSelectSalesDistCurs($event)">
+      </popup-select>
+    </se>
+  </form>
+  <ng-template #modalFooter>
+    <button nz-button nzType="default" (click)="handleCancel()">取消</button>
+    <button nz-button nzType="primary" [disabled]="g.invalid" (click)="handleOk()" [nzLoading]="http.loading">确认</button>
+  </ng-template>
+</nz-modal>

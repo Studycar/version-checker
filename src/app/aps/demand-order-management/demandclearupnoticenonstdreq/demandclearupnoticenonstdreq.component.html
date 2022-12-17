@@ -1,0 +1,116 @@
+<style type="text/css">
+  .div_title {
+    border: solid 0.5px rgba(115, 112, 117, 0.349);
+    margin: 2px auto 8px;
+    padding: 2px;
+    background-color: rgb(250, 251, 252);
+  }
+
+  .disable_background {
+    background-color: rgb(245, 245, 245);
+  }
+</style>
+<div class="div_title">
+  <form nz-form #f="ngForm" se-container="3">
+    <se label="{{'需求订单号' | translate}}">
+      <input type="text" nz-input [(ngModel)]="i.reqNumber" class="disable_background" readonly="readonly" name="REQ_NUMBER">
+    </se>
+    <se label="{{'需求订单行号' | translate}}">
+      <input type="text" nz-input [(ngModel)]="i.reqLineNum" class="disable_background" readonly="readonly" name="REQ_LINE_NUM">
+    </se>
+    <se label="{{'订单数量' | translate}}">
+      <input type="text" nz-input [(ngModel)]="i.reqQty" class="disable_background" readonly="readonly" name="REQ_QTY">
+    </se>
+    <se label="{{'需求日期' | translate}}">
+      <input type="text" nz-input [(ngModel)]="i.reqDate" class="disable_background" readonly="readonly" name="REQ_DATE">
+    </se>
+  </form>
+</div>
+<div></div>
+<div class="div_title">
+  <div>
+    <form nz-form #f="ngForm" se-container="3">
+      <se label="{{'组件编码' | translate}}" required>
+        <popup-select #selMater1 [ID]="'selMater1'" [Value]="i.itemId" [Text]='i.itemCode' [ValueField]="'itemId'" [TextField]="'itemCode'"
+          [Disabled]="IsDisable" [gridView]="gridView1" [columns]="Columns"
+          (TextChanged)="change1($event)"   (SearchEvent)="onSearchMaterial($event)" (RowSelect)="onRowSelect($event)" required>
+        </popup-select>
+      </se>
+      <se label="{{ '数量' | translate}}" required>
+        <nz-input-number [(ngModel)]="i.quantity" name="QUANTITY" [nzMin]="1" required></nz-input-number>
+      </se>
+      <se label="{{ 'MRP净值标识' | translate}}" required>
+        <nz-select #select [(ngModel)]="i.mrpNetFlag" nzShowSearch (nzScrollToBottom)="loadYesNO()" name="MRP_NET_FLAG" required>
+          <nz-option *ngFor="let o of applicationYesNo" [nzValue]="o.value" [nzLabel]="o.label"></nz-option>
+        </nz-select>
+      </se>
+      <se label="{{'供应子库' | translate}}">
+        <nz-select #select [(ngModel)]="i.supplySubinventory" nzShowSearch (nzScrollToBottom)="loadYesNO()" name="SUPPLY_SUBINVENTORY">
+          <nz-option *ngFor="let o of SupplySubinventorys" [nzValue]="o.value" [nzLabel]="o.label"></nz-option>
+        </nz-select>
+      </se>
+      <se label="{{'单位' | translate}}">
+        <input type="text" nz-input [(ngModel)]="i.unitOfMeasure" class="disable_background" readonly="readonly" name="UNIT">
+      </se>
+      <se label="{{'供应类型' | translate}}" >
+        <input type="text" nz-input [(ngModel)]="i.supplyTypeName" class="disable_background" readonly="readonly" name="SUPPLY_TYPE_NAME">
+      </se>
+      <se label="{{'组件描述' | translate}}">
+        <textarea rows="2" nz-input [(ngModel)]="i.descriptions" name="DESCRIPTIONS" class="disable_background" readonly="readonly"></textarea>
+      </se>
+      <se>
+        <input type="hidden" nz-input [(ngModel)]="i.supplyType" width="0" name="SUPPLY_TYPE">
+      </se>
+      <se>
+        <button nz-button style="display:none;">
+        </button>
+        <button nz-button style="display:none;width:310px">
+        </button>
+        <button nz-button (click)="save()" type="submit"  [disabled]="f.invalid || !f.dirty" [nzType]="'primary'">
+          {{ '保存' | translate}}
+        </button>
+        <button nz-button type="reset" (click)="clear()" class="mx-sm"> {{ '重置' | translate}}</button>
+      </se>
+    </form>
+  </div>
+</div>
+
+<nz-card>
+  <kendo-grid #grid [data]="view | async" [height]="200" [pageSize]="gridState.take" [skip]="gridState.skip" [sort]="gridState.sort"
+    [pageable]="true" [sortable]="true" (dataStateChange)="onStateChange($event)" [resizable]="true" [kendoGridSelectBy]="'id'"
+    [selectable]="true">
+    <kendo-grid-messages pagerPage="{{'分页' | translate}}" pagerOf="{{'的' | translate}}" pagerItems="{{'总数' | translate}}" pagerItemsPerPage="{{'页项' | translate}}" groupPanelEmpty="Drag here to group"
+      noRecords="{{'没有数据' | translate}}">
+    </kendo-grid-messages>
+    <kendo-grid-command-column title="{{'操作' | translate}}" width="100" [locked]="true" [style]="{'border-bottom': '1px solid #d9d9d9'}">
+      <ng-template kendoGridCellTemplate let-isNew="isNew" let-dataItem="dataItem">
+        <span title="{{ '点编辑后点右上方保存' | translate}}" (click)="modifydata(dataItem)">
+          <i class="anticon anticon-edit"></i>
+        </span>
+        <nz-divider nzType="vertical"></nz-divider>
+        <span title="{{ '删除' | translate}}" nz-popconfirm nzTitle="{{'是否确认删除该记录?' | translate}}" (nzOnConfirm)="remove(dataItem);">
+          <i class="anticon anticon-delete"></i>
+        </span>
+      </ng-template>
+    </kendo-grid-command-column>
+    <kendo-grid-column field="componentLineNum" title="{{'组件需求行号' | translate}}" width="120" [style]="{'border-bottom': '1px solid #d9d9d9'}"></kendo-grid-column>
+    <kendo-grid-column field="itemCode" title="{{'组件编码' | translate}}" width="150" [style]="{'border-bottom': '1px solid #d9d9d9'}"></kendo-grid-column>
+    <kendo-grid-column field="supplyType" title="{{'供应类型' | translate}}" width="100" [style]="{'border-bottom': '1px solid #d9d9d9'}">
+      <ng-template kendoGridCellTemplate let-dataItem>
+        {{optionsFind(dataItem.supplyType,1)?.label}}
+      </ng-template>
+    </kendo-grid-column>
+    <kendo-grid-column field="supplySubinventory" title="{{'供应子库' | translate}}" width="280" [style]="{'border-bottom': '1px solid #d9d9d9'}">
+      <ng-template kendoGridCellTemplate let-dataItem>
+        {{optionsFind(dataItem.supplySubinventory,3)?.label}}
+      </ng-template>
+    </kendo-grid-column>
+    <kendo-grid-column field="unitOfMeasure" title="{{'单位' | translate}}" width="70" [style]="{'border-bottom': '1px solid #d9d9d9'}"></kendo-grid-column>
+    <kendo-grid-column field="quantity" title="{{'数量' | translate}}" width="80" [style]="{'border-bottom': '1px solid #d9d9d9'}"></kendo-grid-column>
+    <kendo-grid-column field="mrpNetFlag" title="{{'MRP净值标识' | translate}}" width="200" [style]="{'border-bottom': '1px solid #d9d9d9'}">
+      <ng-template kendoGridCellTemplate let-dataItem>
+        {{optionsFind(dataItem.mrpNetFlag,2)?.label}}
+      </ng-template>
+    </kendo-grid-column>
+  </kendo-grid>
+</nz-card>

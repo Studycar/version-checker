@@ -1,0 +1,37 @@
+<div class="modal-header">
+  <div class="modal-title">{{ (Istrue?'编辑信息':'新增信息') | translate}}</div>
+</div>
+<div *ngIf="Istrue" style=" margin:2px auto;">
+  <button style="float: right;" nz-button nzType="dashed" (click)="clear()">
+    {{ '重置' | translate}}</button>
+  <div style="clear: both;"></div>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="2">
+    <se label="{{ '工厂' | translate}}" required>
+      <nz-select [(ngModel)]="i.plantCode" name="plantCode" [disabled]="Istrue" nzShowSearch>
+        <nz-option *ngFor="let option of plantOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '物料' | translate}}" required>
+      <popup-select #selMater1 [(SelectValue)]="i.itemId" [(SelectText)]='i.itemId' [ValueField]="'itemId'"
+        [TextField]="'itemId'" [gridView]="gridView1" [columns]="columns1" (SearchEvent)="search1($event)"
+        (TextChanged)="change1($event)" required [Disabled]="Istrue">
+      </popup-select>
+    </se>
+    <se label="{{ '供应商' | translate}}" required>
+      <popup-select #selMater1 [(SelectValue)]="i.vendorNumber" [(SelectText)]='i.vendorNumber'
+        [ValueField]="'vendorNumber'" [TextField]="'vendorNumber'" [gridView]="gridView2" [columns]="columns2"
+        (SearchEvent)="search2($event)" (TextChanged)="change2($event)" [Disabled]="Istrue" required>
+      </popup-select>
+    </se>
+    <se label="{{ '库存数量' | translate}}" required>
+      <input nz-input type="text" [(ngModel)]="i.stockQty" name="stockQty" required>
+    </se>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save()" [disabled]="!f.valid || !f.dirty"
+    [nzLoading]="http.loading">保存</button>
+  <button nz-button type="button" (click)="close()">关闭</button>
+</div>

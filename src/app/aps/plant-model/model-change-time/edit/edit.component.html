@@ -1,0 +1,100 @@
+<div class="modal-header">
+  <div class="modal-title">{{ title }}{{ '信息' | translate}}</div>
+</div>
+<div style="position: relative; height: 32px" *ngIf="i.Id">
+  <button nz-button nzType="dashed" style="position: absolute; right: 0;" (click)="clear()">重置</button>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="2">
+    <se label="{{ '工厂' | translate}}" required>
+      <nz-select [(ngModel)]="i.plantCode" name="plantCode" [nzShowSearch]="true" (ngModelChange)="plantChange()" [nzDisabled]="isModify" required>
+        <nz-option *ngFor="let option of PlantCodeOptions" [nzLabel]="option.label" [nzValue]="option.value">
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '计划组' | translate}}" required>
+      <nz-select nzShowSearch [(ngModel)]="i.scheduleGroupCode" (ngModelChange)="groupChange($event)"
+        name="scheduleGroupCode" [nzDisabled]="isModify" required>
+        <nz-option *ngFor="let option of groupOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '资源' | translate}}" required>
+      <nz-select nzShowSearch [(ngModel)]="i.resourceCode" name="resourceCode" [nzDisabled]="isModify"
+        required>
+        <nz-option *ngFor="let option of lineOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '换型类型' | translate}}" required>
+      <nz-select [(ngModel)]="i.category" name="category" (ngModelChange)="catChange()"
+        [nzShowSearch]="true" [nzDisabled]="isModify" required>
+        <nz-option *ngFor="let option of catOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+    <!-- 钢种切换 -->
+    <ng-container *ngIf="i.category === '1'">
+      <se label="{{ '因子(前)' | translate}}" required>
+        <!--<input type="text" nz-input [(ngModel)]="i.objectFrom" name="objectFrom" required>-->
+        <nz-select  [(ngModel)]="i.objectFrom" name="objectFrom" [nzDisabled]="isModify" required>
+          <nz-option *ngFor="let option of steelTypeOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+        </nz-select>
+      </se>
+      <se label="{{ '因子(后)' | translate}}" required>
+        <!--<input type="text" nz-input [(ngModel)]="i.objectTo" name="objectTo" required>-->
+        <nz-select  [(ngModel)]="i.objectTo" name="objectTo" [nzDisabled]="isModify" required>
+          <nz-option *ngFor="let option of steelTypeOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+        </nz-select>
+      </se>
+    </ng-container>
+    <!-- 存货编码切换 -->
+    <ng-container *ngIf="i.category === '2'">
+      <se label="{{ '因子(前)' | translate}}" required>
+        <popup-select [Value]="i.objectFrom" [Text]='i.objectFrom' [ValueField]="'stockCode'" [TextField]="'stockCode'"
+          [gridView]="gridViewStock1" [columns]="columnsStock" name="objectFromStock" (SearchEvent)="searchPsProduction($event, 1)"
+          (TextChanged)="onTextChangedStock($event, 'From', 1)" (RowSelect)="onRowSelect($event, 'From')" [Disabled]="isModify" required>
+        </popup-select>
+      </se>
+      <se label="{{ '因子(后)' | translate}}" required>
+        <popup-select [Value]="i.objectTo" [Text]='i.objectTo' [ValueField]="'stockCode'" [TextField]="'stockCode'"
+          [gridView]="gridViewStock2" [columns]="columnsStock" name="objectToStock" (SearchEvent)="searchPsProduction($event, 2)"
+          (TextChanged)="onTextChangedStock($event, 'To', 2)" (RowSelect)="onRowSelect($event, 'To')" [Disabled]="isModify" required>
+        </popup-select>
+      </se>
+    </ng-container>
+    <!-- 产线切换 -->
+    <ng-container *ngIf="i.category === '3'">
+      <se label="{{ '因子(前)' | translate}}" required>
+        <input type="text" nz-input [(ngModel)]="i.objectFrom" name="objectFrom" required>
+      </se>
+      <se label="{{ '因子(后)' | translate}}" required>
+        <input type="text" nz-input [(ngModel)]="i.objectTo" name="objectTo" required>
+      </se>
+    </ng-container>
+    <!-- 其他切换 -->
+    <ng-container *ngIf="i.category > 3">
+      <se label="{{ '因子(前)' | translate}}" required>
+        <nz-input-number [(ngModel)]="i.objectFrom" [nzMin]="0" name="objectFrom" required style="width: 100%"></nz-input-number>
+      </se>
+      <se label="{{ '因子(后)' | translate}}" required>
+        <nz-input-number [(ngModel)]="i.objectTo" [nzMin]="0" name="objectTo" required style="width: 100%"></nz-input-number>
+      </se>
+    </ng-container>
+    <se label="{{ '换型时间(分钟)' | translate}}" required>
+      <!--<input type="text" nz-input [(ngModel)]="i.switchTime" name="switchTime" required>-->
+      <nz-input-number [(ngModel)]="i.switchTime" [nzMin]="0" [nzStep]="0.1" name="switchTime" required style="width: 100%"></nz-input-number>
+    </se>
+    <se label="{{ '是否有效' | translate}}" required>
+      <nz-select #select [(ngModel)]="i.enableFlag" name="enableFlag" required>
+        <nz-option *ngFor="let option of enableOptions" [nzLabel]="option.label" [nzValue]="option.value" required>
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '备注' | translate}}" col="1">
+      <input nz-input type="text" [(ngModel)]="i.remark" name="remark">
+    </se>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="submit" [nzType]="'primary'" (click)="confirm(f)" [disabled]="f.invalid || !f.dirty"
+    [nzLoading]="http.loading">{{'保存' | translate}}</button>
+  <button nz-button type="button" (click)="close()">{{ '关闭' | translate}}</button>
+</div>

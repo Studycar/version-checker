@@ -1,0 +1,46 @@
+<div class="modal-header">
+  <div class="modal-title">{{ isModify ? '编辑信息' : '新增信息' | translate }}</div>
+</div>
+<div style="position: relative; height: 32px" *ngIf="isModify">
+  <button nz-button nzType="dashed" style="position: absolute; right: 0;" (click)="clear()">{{'重置' | translate}}</button>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="2">
+    <se label="{{ '工厂' | translate }}" required>
+      <nz-select nzShowSearch name="plantCode" [nzDisabled]="isModify" [(ngModel)]="i.plantCode" required>
+        <nz-option *ngFor="let op of plantOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '产地' | translate }}" required>
+      <input nz-input type="text" name="place" [(ngModel)]="i.place" required>
+    </se>
+    <se label="{{ '钢种' | translate }}" required>
+      <nz-select nzShowSearch name="steelType" [nzDisabled]="isModify" [(ngModel)]="i.steelType" required>
+        <nz-option *ngFor="let op of steelTypeOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '冷热加价' | translate }}">
+      <nz-input-number name="lrMarkup" [(ngModel)]="i.lrMarkup"></nz-input-number>
+    </se>
+    <se label="{{ '黑白皮加价' | translate }}">
+      <nz-input-number name="hbpMarkup" [(ngModel)]="i.hbpMarkup"></nz-input-number>
+    </se>
+    <!-- <se label="{{ '规则状态' | translate }}" required>
+      <nz-select nzShowSearch name="markupElementState" nzDisabled [(ngModel)]="i.markupElementState" required>
+        <nz-option *ngFor="let op of markupStateOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se> -->
+    <se label="{{ '生效日期' | translate }}" required>
+      <nz-date-picker nzFormat="yyyy-MM-dd" [nzDisabled]="isModify" [(ngModel)]="i.startDate" name="startDate" required>
+      </nz-date-picker>
+    </se>
+    <se label="{{ '失效日期' | translate }}" required>
+      <nz-date-picker nzFormat="yyyy-MM-dd" [nzDisabled]="isModify" [(ngModel)]="i.endDate" name="endDate" required>
+      </nz-date-picker>
+    </se>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="button" (click)="close()">{{ '取消' | translate }}</button>
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save(f.value)" [nzLoading]="http.loading" [disabled]="f.invalid || !f.dirty">{{'保存' | translate }}</button>
+</div>

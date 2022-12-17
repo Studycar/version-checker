@@ -1,0 +1,19 @@
+<div class="modal-header" style="padding-top:10px;padding-bottom:10px;margin-bottom:1px;">
+  <div class="modal-title">{{'查看日志' | translate}}</div>
+</div>
+
+<div style="margin:0px;padding:0px;width:100%;height:100%;" align="center">
+  <table border=0 cellpadding=0 cellspacing=0 style="width:100%;height:100%;padding:0;margin:0">
+    <tr>
+      <td style="height:25px;padding-bottom: 5px;" align="left">
+        <span style="cursor:pointer;margin-right: 10px;" (click)="refreshLog()"><i class="anticon anticon-reload"></i>&nbsp;{{'刷新' | translate}}</span>
+        <span style="cursor:pointer;" (click)="SaveLog()"><i class="anticon anticon-check-circle"></i>&nbsp;{{'保存' | translate}}</span>
+      </td>
+    </tr>
+    <tr>
+      <td style="width:100%;height:100%;">
+        <textarea nz-input style="width:100%;height:600px" [nzSize]="'small'" [(ngModel)]="LogText" readonly="true"></textarea>
+      </td>
+    </tr>
+  </table>
+</div>

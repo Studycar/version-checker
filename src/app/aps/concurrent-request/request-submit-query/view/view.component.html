@@ -1,0 +1,85 @@
+
+<div style="padding: 0;margin:0;">
+    <table cellpadding=0 cellspacing=0 border=1>
+      <tr>
+        <td valign="top">{{'物料' | translate}}</td>
+        <td valign="top">
+          <popup-select #selMater [Value]="'value'" [Text]="'text'" [ID]="'txtProduct1'" [ValueField]="'ProductID'"
+            [TextField]="'ProductName'" [nzStyle]="{'width':'200px','border':'1px solid red'}" [gridView]="gridView"
+            [columns]="Columns" (TextChanged)="onTextChanged($event)" (SearchEvent)="onSearch($event)" (RowSelect)="onRowSelect($event)"></popup-select>
+        </td>
+        <td>
+          <button (click)="Get()">Get</button>
+          <button (click)="Set()">Set</button>
+        </td>
+      </tr>
+      <tr>
+          <td valign="top">{{'物料' | translate}}</td>
+          <td valign="top">
+            <popup-select #selMater [Value]="'value'" [Text]="'text'" [ID]="'txtProduct2'" [ValueField]="'ProductID'"
+              [TextField]="'ProductName'" [nzStyle]="{'width':'200px','border':'1px solid red'}" [gridView]="gridView"
+              [columns]="Columns" (TextChanged)="onTextChanged($event)" (SearchEvent)="onSearch($event)" (RowSelect)="onRowSelect($event)"></popup-select>
+          </td>
+          <td>
+            <button (click)="Get()">Get</button>
+            <button (click)="Set()">Set</button>
+          </td>
+        </tr>
+      <tr>
+        <td valign="top">{{'采购员' | translate}}</td>
+        <td valign="top">
+          <grid-lookup #selLookUp 
+            [ID]="'txtPurchase1'" 
+            [Text]="'text'"
+            [Value]="'value'"
+            [ValueField]="'ProductID'"
+            [TextField]="'ProductName'" 
+            [nzStyle]="{'width':'200px','border':'1px solid red'}" 
+            [columns]="Columns"></grid-lookup>
+        </td>
+        <td>
+            <button (click)="GetLookup()">Get</button>
+            <button (click)="SetLookUp()">Set</button>
+        </td>
+      </tr>
+      <tr>
+          <td valign="top">{{'采购员' | translate}}</td>
+          <td valign="top">
+            <grid-lookup #selLookUp 
+              [ID]="'txtPurchase2'" 
+              [Text]="'text'"
+              [Value]="'value'"
+              [ValueField]="'ProductID'"
+              [TextField]="'ProductName'" 
+              [nzStyle]="{'width':'200px','border':'1px solid red'}" 
+              [columns]="Columns"></grid-lookup>
+          </td>
+          <td>
+              <button (click)="GetLookup()">Get</button>
+              <button (click)="SetLookUp()">Set</button>
+          </td>
+        </tr>
+    </table>
+  </div>
+<kendo-grid #grid [data]="view | async" [height]="533" [pageSize]="gridState.take" [skip]="gridState.skip" [sort]="gridState.sort"
+  [pageable]="true" [sortable]="true" (dataStateChange)="onStateChange($event)" (cellClick)="cellClickHandler($event)"
+  (cellClose)="cellCloseHandler($event)" (cancel)="cancelHandler($event)" (save)="saveHandler($event)" (remove)="removeHandler($event)"
+  (add)="addHandler($event)" [navigable]="true">
+  <ng-template kendoGridToolbarTemplate>
+    <button kendoGridAddCommand>Add new</button>
+    <button class='k-button' [disabled]="!editService.hasChanges()" (click)="saveChanges(grid);">Save Changes</button>
+    <button class='k-button' [disabled]="!editService.hasChanges()" (click)="cancelChanges(grid);">Cancel Changes</button>
+  </ng-template>
+  <kendo-grid-column field="ProductName" title="Product Name"></kendo-grid-column>
+  <kendo-grid-column field="UnitPrice" editor="numeric" title="Price"></kendo-grid-column>
+  <kendo-grid-column field="Discontinued" editor="boolean" title="Discontinued"></kendo-grid-column>
+  <kendo-grid-column field="UnitsInStock" editor="numeric" title="Units In Stock"></kendo-grid-column>
+  <kendo-grid-command-column title="command" width="220">
+    <ng-template kendoGridCellTemplate let-isNew="isNew">
+      <button kendoGridRemoveCommand>Remove</button>
+      <button kendoGridSaveCommand>save</button>
+      <button kendoGridCancelCommand>Cancel</button>
+    </ng-template>
+  </kendo-grid-command-column>
+</kendo-grid>
+

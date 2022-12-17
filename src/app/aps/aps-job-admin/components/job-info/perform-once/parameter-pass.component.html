@@ -1,0 +1,29 @@
+<div class="modal-header">
+  <div class="modal-title"> {{ '参数信息' | translate }}</div>
+</div>
+
+<div>
+  <form nz-form #f="ngForm" se-container="1">
+    <se [label]="param.label" *ngFor="let param of selectParameter" [hidden]="param.readonly">
+      <ng-container [ngSwitch]="param.type">
+
+        <!--text-->
+        <input nz-input *ngSwitchCase="'text'" type="text" [(ngModel)]="this[param.ngModel]" [name]="param.ngModel"/>
+
+        <!--select-->
+        <nz-select *ngSwitchCase="'select'" nzShowSearch nzAllowClear [(ngModel)]="this[param.ngModel]" [name]="param.ngModel">
+          <nz-option *ngFor="let option of param.options" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+        </nz-select>
+      </ng-container>
+    </se>
+  </form>
+</div>
+
+<div align="center" style="padding-top:10px;">
+  <button nz-button type="button" (click)="confirm()">
+    {{'确认' | translate}}
+  </button>&nbsp;&nbsp;
+  <button nz-button type="button" (click)="close()">
+    {{'关闭' | translate}}
+  </button>
+</div>

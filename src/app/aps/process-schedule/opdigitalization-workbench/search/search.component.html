@@ -1,0 +1,45 @@
+<div class="modal-header">
+  <div class="modal-title">{{ ('查询') | translate}} </div>
+</div>
+<div style=" text-align:right;">
+  <button nz-button nzType="dashed" (click)="clear()">
+    <i></i>{{ '重置' | translate}}</button>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="2" [labelWidth]=100>
+    <se label="{{ '事业部' | translate}}" required>
+      <nz-select [nzLoading]="loading" nzShowSearch required [(ngModel)]="i.regionCode"
+        (ngModelChange)="regionChange($event)" name="regionCode">
+        <nz-option *ngFor="let option of regionOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '工厂' | translate}}" required>
+      <nz-select [nzLoading]="loading" nzShowSearch required [(ngModel)]="i.plantCode"
+        (ngModelChange)="plantChange($event)" name="plantCode">
+        <nz-option *ngFor="let option of plantOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '计划组' | translate}}">
+      <nz-select [nzLoading]="loading"  nzShowSearch nzAllowClear [(ngModel)]="i.groupCode"
+        (ngModelChange)="groupChange($event)" name="groupCode">
+        <nz-option *ngFor="let option of groupOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '日期范围' | translate}}" required>
+      <nz-range-picker [(ngModel)]="i.dateRange" (ngModelChange)="onDateRangeChange($event)" name="dateRange">
+      </nz-range-picker>
+    </se>
+  </form>
+  <div style="text-align:right;margin-bottom: 5px;">
+    <button nz-button type="submit " (click)="confirm() " [nzType]=" 'primary' " [disabled]="f.invalid ">{{ '确定' |
+      translate}}</button>
+    <button nz-button type=" button " (click)="close() ">{{ '关闭' | translate}}</button>
+  </div>
+</div>
+<nz-card>
+  <!-- <nz-spin [nzSpinning]="loading"> -->
+  <custom-tree-view #treeView [dataTree]="treeDataTable" [columns]="treeNodeColumns" [keyField]="keyField"
+    [selectionRef]="i.selection" [expandRef]="i.expand" [valueField]="valueField" [valueLevel]="valueLevel"
+    [valueObject]="i" [valueObjectField]="'lineIdsStr'"></custom-tree-view>
+  <!-- </nz-spin> -->
+</nz-card>

@@ -1,0 +1,42 @@
+<form nz-form #f="ngForm" se-container="2">
+  <!-- <se label="{{ '当日开盘价+返利加价' | translate}}">
+    <input type="text" nz-input [value]="realPrice" name="realPrice" disabled />
+  </se> -->
+  <se label="{{ '供方' | translate}}">
+    <nz-select name="plantCode" [(ngModel)]="formData.plantCode" name="plantCode" nzDisabled>
+      <nz-option *ngFor="let op of plantOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+    </nz-select>
+  </se>
+  <se label="{{ '客户编码' | translate}}">
+    <input type="text" nz-input [(ngModel)]="formData.cusCode" name="cusCode" disabled />
+  </se>
+  <se label="{{ '客户名称' | translate}}">
+    <input type="text" nz-input [(ngModel)]="formData.cusName" name="cusName" disabled />
+  </se>
+  <se label="{{ '合同编号' | translate}}">
+    <input type="text" nz-input [(ngModel)]="formData.contractCode" name="contractCode" disabled />
+  </se>
+  <se label="{{ '合同基价/单价' | translate}}">
+    <input type="text" nz-input [(ngModel)]="formData.basePrice" name="basePrice" disabled />
+  </se>
+  <se label="{{ '合同重量' | translate}}">
+    <input type="text" nz-input [(ngModel)]="formData.weightTon" name="weightTon" disabled />
+  </se>
+  <se label="{{ '合同金额' | translate}}">
+    <input type="text" nz-input [(ngModel)]="formData.money" name="money" disabled />
+  </se>
+  <se label="{{ '钢种' | translate}}">
+    <input type="text" nz-input [(ngModel)]="formData.steelType" name="steelType" disabled />
+  </se>
+  <se label="{{ '厚/薄料' | translate}}">
+    <nz-select name="material" [(ngModel)]="formData.material" name="material" nzDisabled>
+      <nz-option *ngFor="let op of materialOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+    </nz-select>
+  </se>
+  <se label="{{ '表体备注（锁价备注）' | translate}}">
+    <textarea nz-input name="remarks" [(ngModel)]="formData.remarks" nzAutosize disabled></textarea>
+  </se>
+  <se label="{{ '变更备注' | translate}}">
+    <input type="text" nz-input [(ngModel)]="formData.changeRemarks" name="changeRemarks" disabled />
+  </se>
+</form>

@@ -1,0 +1,76 @@
+<div>
+  <button nz-button nzType="primary" (click)="init()">初始化</button>
+  <button nz-button nzType="danger" (click)="removeBatch()"><i nz-icon type="anticon-delete"
+      theme="outline"></i>删除</button>
+  <form nz-form #f="ngForm" se-container="3" labelWidth="100">
+    <se label="事业部" required>
+      <nz-select [nzShowSearch]=true [(ngModel)]="queryParams.values.scheduleRegionCode"
+        name="scheduleRegionCode" (ngModelChange)="regionChange($event)" required>
+        <nz-option *ngFor="let option of regionOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+    <se label="工厂" required>
+      <nz-select nzShowSearch [(ngModel)]="queryParams.values.plantCode" name="plantCode"
+        (ngModelChange)="plantChange($event)">
+        <nz-option *ngFor="let option of plantOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+    <se label="计划组" required>
+      <nz-select nzShowSearch [(ngModel)]="queryParams.values.scheduleGroupCode" name="scheduleGroupCode"
+        (ngModelChange)="groupChange($event)">
+        <nz-option *ngFor="let option of groupOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+    <se label="资源" required>
+      <nz-select nzShowSearch [(ngModel)]="queryParams.values.resourceCode" name="resourceCode"
+        (ngModelChange)="resourceChange($event)">
+        <nz-option *ngFor="let option of lineOptions" [nzLabel]="option.resourceCode" [nzValue]="option.resourceCode">
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="日历编码" required>
+      <!-- <input nz-input [(ngModel)]="queryParams.values.calendarCode" name="calendarCode"> -->
+      <nz-select nzShowSearch [(ngModel)]="queryParams.values.calendarCode" name="calendarCode"
+        (ngModelChange)="calendarChange($event)">
+        <nz-option *ngFor="let option of calendarOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+    <se label="车间班次" required>
+      <nz-select nzShowSearch [(ngModel)]="queryParams.values.shiftCode" name="shiftCode"
+        (ngModelChange)="shiftChange($event)">
+        <nz-option *ngFor="let option of shiftOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '星期' | translate }}">
+      <custom-tree-select [dataTree]="dtDate" [columns]="columnDateType" keyField="isWork" valueField="IS_WORK_V"
+        [valueLevel]="treeLevel" [valueObject]="dataField" valueObjectField="isWork" [selectionRef]="dtDateTypeSelect">
+      </custom-tree-select>
+    </se>
+    <!-- <se *ngIf="expandForm">
+      <label nz-checkbox [(ngModel)]="queryParams.values.IS_SATURDAY_WORK" name="IS_SATURDAY_WORK">设置周六为工作日</label>
+    </se> -->
+    <se label="{{ '开始时间' | translate}}" required>
+      <nz-date-picker nzShowTime nzFormat="yyyy-MM-dd HH:mm:ss" [(ngModel)]="queryParams.values.showStartTime"
+        name="showStartTime">
+      </nz-date-picker>
+    </se>
+    <se label="{{ '结束时间' | translate}}" required>
+      <nz-date-picker nzShowTime nzFormat="yyyy-MM-dd HH:mm:ss" [(ngModel)]="queryParams.values.showEndTime"
+        name="showEndTime">
+      </nz-date-picker>
+    </se>
+    <se>
+      <button nz-button type="submit" [nzType]="'primary'" (click)="query()">查询</button>
+      <button nz-button nzType="default" (click)="clear()">重置</button>
+    </se>
+  </form>
+</div>
+&nbsp;
+<nz-card>
+  <ag-grid-angular #agGrid [class]="themeClass" [style.height.px]="gridHeight" [rowData]="view.data"
+    [columnDefs]="columns" [gridOptions]="gridOptions" (selectionChanged)="onSelectionChanged($event)"
+    [myAgGridRowKey]="{tb:'PS_CALENDAR_SHIFT_TEMPLATE'}" [myAgGridState]="'resourcetime'">
+  </ag-grid-angular>
+  <custom-pager [height]="pagerHeight" [fixed]="false" [context]="context" [view]='context.view'
+    [(pageSize)]="_pageSize" [(pageNo)]="_pageNo" (pageChangeEvent)="onPageChanged($event)"></custom-pager>
+</nz-card>

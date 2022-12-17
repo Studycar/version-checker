@@ -1,0 +1,53 @@
+<custom-formquery [queryParams]="queryParams" [context]="context">
+  <button nz-button (click)="add()" [nzType]="'primary'">
+    <i class="anticon anticon-plus-circle-o"></i>{{ '新增' | translate}}
+  </button>
+  <!-- <button (click)="removeBatch()" nz-button [nzType]="'danger'">
+        <i class="anticon anticon-delete"></i>{{ '删除' | translate}}
+      </button> -->
+  <button nz-button (click)="export()">
+    <i class="anticon anticon-export"></i> {{ '导出' | translate}}
+  </button>
+</custom-formquery>
+<nz-card>
+  <nz-tabset *ngIf="showTab">
+    <nz-tab *ngFor="let tab of tabs" [nzTitle]="titleTemplate" (nzSelect)="tabSelect(tab)">
+      <ng-template #titleTemplate>
+        {{ tab.name | translate }}
+      </ng-template>
+    </nz-tab>
+  </nz-tabset>
+  <kendo-grid #grid [data]="viewAsync | async" [height]="gridHeight" [pageSize]="gridState.take" [skip]="gridState.skip" [sort]="gridState.sort"
+    [sortable]="true" (dataStateChange)="dataStateChange($event)" [filter]="gridState.filter" filterable="menu" [resizable]="true"
+    [selectable]="selectableSettings" [kendoGridSelectBy]="selectBy" [selectedKeys]="selectionKeys" [columnMenu]="true" [reorderable]="true"
+    [pageable]="pageable" [loading]="loading" [myGridRowKey]="{tb:'PS_SCHEDULE_REGION'}" [myGridState]="'schedule-manager'">
+    <kendo-grid-messages pagerPage="{{ '分页' | translate}}" pagerOf="{{ '的' | translate}}" pagerItems="{{ '总数' | translate}}"
+      pagerItemsPerPage="{{ '页项' | translate}}" groupPanelEmpty="Drag here to group" noRecords="{{ '没有数据' | translate}}">
+    </kendo-grid-messages>
+    <kendo-grid-command-column title="{{ '操作' | translate}}" width="80" [locked]="true">
+      <ng-template kendoGridCellTemplate let-isNew="isNew" let-dataItem="dataItem">
+        <span title="{{ '编辑' | translate}}" (click)="add(dataItem)" [ngStyle]="pointer">
+          <i class="anticon anticon-edit"></i>
+        </span>
+        <!-- <nz-divider nzType="vertical"></nz-divider>
+        <span title="{{ '删除' | translate}}" nz-popconfirm nzTitle="{{ '是否确认删除该记录?' | translate}}" (nzOnConfirm)="remove(dataItem);" [ngStyle]="pointer">
+          <i class="anticon anticon-delete"></i>
+        </span> -->
+      </ng-template>
+    </kendo-grid-command-column>
+    <!-- <kendo-grid-checkbox-column [width]="60" showSelectAll="true" [locked]="true"></kendo-grid-checkbox-column> -->
+    <kendo-grid-column *ngFor="let col of columns" [locked]="col.locked" [field]="col.field" [title]="col.title| translate" [width]="col.width"
+      [hidden]="hiddenColumns.indexOf(col.field) > -1" [filter]="col.filter?col.filter:''" [style]="gridLineStyle">
+      <ng-template kendoGridCellTemplate let-dataItem *ngIf="col.ui?.type === 'select'">
+        {{optionsFind(dataItem[col.field],col.ui.index)?.label}}
+      </ng-template>
+      <ng-template kendoGridCellTemplate let-dataItem *ngIf="col.ui?.tooltip">
+        <ellipsis lines="{{col.ui?.tooltip}}">
+          <span nz-tooltip [nzTitle]="dataItem[col.field]">{{dataItem[col.field]}}</span>
+        </ellipsis>
+      </ng-template>
+    </kendo-grid-column>
+  </kendo-grid>
+  <custom-excelexport [expColumns]='expColumns' [hiddenColumns]='hiddenColumns' [expColumnsOptions]='expColumnsOptions' fileName='事业部'
+    #excelexport></custom-excelexport>
+</nz-card>

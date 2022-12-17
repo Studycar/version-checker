@@ -1,0 +1,45 @@
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  width: 100%;
+  .container-action {
+    text-align: right;
+  }
+  .title-list {
+    height: 30px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    .title-item {
+      width: calc(100% / 7);
+      height: 30px;
+      line-height: 30px;
+      text-align: center;
+    }
+  }
+  .date-list {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    .date-item {
+      width: calc(100% / 7);
+      font-size: 15px;
+      font-weight: bold;
+      padding: 5px;
+      cursor: pointer;
+      div {
+        height: 40px;
+        line-height: 40px;
+        text-align: center;
+      }
+      .checked {
+        background-color: rgba(0, 162, 216, 0.24);
+      }
+    }
+  }
+}

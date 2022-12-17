@@ -1,0 +1,33 @@
+<div class="modal-header">
+    <div class="modal-title">{{ title | translate}}</div>
+</div>
+<div style="position: relative; height: 32px" *ngIf="params.Id">
+    <button nz-button nzType="dashed" style="position: absolute; right: 0;" (click)="clear()">重置</button>
+</div>
+<div>
+    <form nz-form #f="ngForm" se-container="2" [labelWidth]="140">
+        <se label="{{ '工厂' | translate}}" required>
+            <nz-select [(ngModel)]="params.plantCode" (ngModelChange)="onPlantChange($event)" nzShowSearch name="plantCode" required>
+                <nz-option *ngFor="let o of plantOptions" [nzLabel]="o.label" [nzValue]="o.value"></nz-option>
+            </nz-select>
+        </se>
+        <se label="{{'工厂描述' | translate}}">
+            <input nz-input type="text" [(ngModel)]="params.plantDesc" name="plantDesc" disabled>
+        </se>
+        <se label="{{'开始日期' | translate}}" required>
+            <nz-date-picker [(ngModel)]="params.startDate" [nzAllowClear]="false" name="startDate" required></nz-date-picker>
+        </se>
+        <se label="{{'结束日期' | translate}}" required>
+            <nz-date-picker [(ngModel)]="params.endDate" [nzAllowClear]="false" name="endDate" required></nz-date-picker>
+        </se>
+        <se label="{{'周工作天数' | translate}}" required>
+            <nz-input-number [(ngModel)]="params.weekWorkDays" [nzMin]="0" [nzStep]="0.1" [nzMax]="7" name="weekWorkDays" required></nz-input-number>
+        </se>
+    </form>
+</div>
+<div class="modal-footer">
+    <button nz-button type="submit" [nzType]="'primary'" (click)="save()" [disabled]="f.invalid || !f.dirty" [nzLoading]="http.loading">
+        {{ '保存' | translate}}</button>
+    <button nz-button type="button" (click)="close()">
+        {{ '关闭' | translate}}</button>
+</div>

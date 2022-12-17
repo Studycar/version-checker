@@ -1,0 +1,54 @@
+<div class="modal-header">
+  <div class="modal-title">{{ title }} 信息</div>
+</div>
+<div style=" margin:2px auto;">
+  <button style="float: right;" nz-button nzType="dashed" (click)="clear()">
+    {{ '重置' | translate}}</button>
+  <div style="clear: both;"></div>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="2">
+    <se label="{{ '工厂' | translate}}" required>
+      <nz-select [(ngModel)]="i.plantCode" nzShowSearch name="plantCode" required
+        (ngModelChange)="plantChange($event)">
+        <nz-option *ngFor="let option of plantOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '事业部' | translate}}" required>
+      <input type="text" nz-input [(ngModel)]="i.businessUnitCode" name="businessUnitCode" disabled required>
+    </se>
+    <se label="{{ '库存维度' | translate}}" required>
+      <nz-select [(ngModel)]="i.onhandLevel" name="onhandLevel" required (ngModelChange)="onhandLevelChange($event)">
+        <nz-option *ngFor="let option of onhandLevelOptions" [nzLabel]="option.label" [nzValue]="option.value">
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '维度值' | translate}}" required>
+      <!--<input type="text" nz-input [(ngModel)]="i.levelValue" name="levelValue" required>-->
+      <popup-select #selMaterItem [ID]="'selMaterItem'" [Value]="i.levelValue" [Text]='i.levelValue' [ValueField]="'itemCode'" [TextField]="'itemCode'"
+        *ngIf="i.onhandLevel === 'ITEM'" [gridView]="gridViewItems" [columns]="columnsItems" (TextChanged)="onTextChanged($event)"
+        (SearchEvent)="searchItems($event)" (RowSelect)="onRowSelect($event)" required>
+      </popup-select>
+
+      <nz-select [(ngModel)]="i.levelValue" nzShowSearch name="levelValue" required *ngIf="i.onhandLevel !== 'ITEM'">
+        <nz-option *ngFor="let option of categoryOptions" [nzLabel]="option.label" [nzValue]="option.value">
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '计算方式' | translate}}" required>
+      <nz-select [(ngModel)]="i.onhandType" name="onhandType" required>
+        <nz-option *ngFor="let option of onhandTypeOptions" [nzLabel]="option.label" [nzValue]="option.value">
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '策略值' | translate}}" required>
+      <nz-input-number [(ngModel)]="i.onhandValue" name="onhandValue" required></nz-input-number>
+    </se>
+
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save()" [disabled]="!f.valid || !f.dirty"
+    [nzLoading]="http.loading">{{ '保存' | translate}}</button>
+  <button nz-button type="button" (click)="close()">{{ '关闭' | translate}}</button>
+</div>

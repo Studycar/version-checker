@@ -1,0 +1,57 @@
+<div class="modal-header">
+  <div class="modal-title">{{ (isModify ? '编辑信息' : '新增信息') | translate}}</div>
+</div>
+<div *ngIf="isModify" style=" margin:2px auto;">
+  <button style="float: right;" nz-button nzType="dashed" (click)="clear()">{{ '重置' | translate}}</button>
+  <div style="clear: both;"></div>
+  </div>
+  <div>
+    <form nz-form #f="ngForm" se-container="2" [labelWidth]=140>
+      <se label="{{ '工厂' | translate}}" required>
+        <nz-select #select [(ngModel)]="editDto.plantCode" nzShowSearch name="plantCode" [nzDisabled]="isModify" required (ngModelChange)="plantChange($event)">
+          <nz-option *ngFor="let o of plantList" [nzValue]="o.value" [nzLabel]="o.label"></nz-option>
+        </nz-select>
+      </se>
+      <se label="{{ '月份' | translate}}" required>
+        <nz-month-picker name="{currentMonth}" [(ngModel)]="editDto.currentMonth" [nzFormat]="'yyyy-MM'" [nzDisabled]="isModify"
+          required></nz-month-picker>
+      </se>
+      <se label="{{ '物料编码' | translate}}" required>
+        <popup-select #selMater1 [ID]="'selMater1'" [Value]="editDto.itemId" [Text]='editDto.itemCode' [ValueField]="'itemId'" [TextField]="'itemCode'"
+          [readOnly]="isModify" [Disabled]="isModify" [gridView]="gridViewItems" [columns]="columnsItems" (TextChanged)="onTextChanged($event)"
+          (SearchEvent)="searchItems($event)" (RowSelect)="onRowSelect($event)">
+        </popup-select>
+      </se>
+      <se label="{{ '物料描述' | translate}}">
+        <input type="text" nz-input [(ngModel)]="editDto.itemDesc" name="itemDesc" readonly="true">
+      </se>
+      <se label="{{ '供应商编码' | translate}}" required>
+        <nz-select #select [(ngModel)]="editDto.vendorNumber" nzShowSearch name="vendorNumber" [nzDisabled]="isModify" required (ngModelChange)="vendorChange($event)">
+          <nz-option *ngFor="let o of aslList" [nzValue]="o.value" [nzLabel]="o.label"></nz-option>
+        </nz-select>
+      </se>
+      <se label="{{ '供应商名称' | translate}}">
+        <input type="text" nz-input [(ngModel)]="editDto.vendorName" name="vendorName" readonly="true">
+      </se>
+      <se label="{{ '供货比例(%)' | translate}}">
+        <input type="text" nz-input [(ngModel)]="editDto.percent" name="percent" readonly="true">
+      </se>
+
+      <se label="{{ '模具数量' | translate}}" required>
+        <nz-input-number [(ngModel)]="editDto.mouldNum" [nzPrecision]="0" [nzStep]="1" [nzMin]="0" name="mouldNum" required>
+        </nz-input-number>
+      </se>
+      <se label="{{ '日产能(模具)' | translate}}" required>
+        <nz-input-number [(ngModel)]="editDto.capacity" [nzPrecision]="0" [nzStep]="1" [nzMin]="0" name="capacity" required>
+        </nz-input-number>
+      </se>
+      <se label="{{ '月开工天数' | translate}}" required>
+        <nz-input-number [(ngModel)]="editDto.workDay" [nzPrecision]="0" [nzStep]="1" [nzMin]="0" name="workDay" required>
+        </nz-input-number>
+      </se>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button nz-button type="submit" [nzType]="'primary'" (click)="save()" [disabled]="f.invalid || !f.dirty" [nzLoading]="http.loading"> {{ '保存' | translate}}</button>
+    <button nz-button type="button" (click)="close()"> {{ '关闭' | translate}}</button>
+  </div>

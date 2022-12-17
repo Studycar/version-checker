@@ -1,0 +1,36 @@
+<div id="pagerWidth" #pagerWidth style="width: 100%;"></div>
+<div id="pagerContainer" class="pagerContainer" [class.fixed]="fixed" [style.height.px]="height"
+  [style.width]="width" [ngStyle]="backgroundStyle">
+  <div class="page-info">
+    <nz-pagination style="display: inline-block;" [(nzPageIndex)]="pageNo" [(nzTotal)]="total" nzShowSizeChanger 
+      [(nzPageSize)]="pageSize" [nzShowTotal]="totalTemplate" nzShowQuickJumper [nzPageSizeOptions]="pageSizes"
+      (nzPageSizeChange)="onPageSizeChange($event)" (nzPageIndexChange)="onPageChange($event)" [nzSize]="size">
+      <!-- <nz-select class="ant-pagination-options-size-changer">
+        <nz-option *ngFor="let option of pageSizes" [nzLabel]="option + '条/页'" [nzValue]="option"></nz-option>
+      </nz-select> -->
+    </nz-pagination>
+    <ng-template #totalTemplate let-total>{{'共'|translate}} {{ total }} {{'条'|translate}}</ng-template>
+    <div class="page-size-input-span" [ngStyle]="pageSizeInputStyle">
+      <div style="padding-right:5px">{{'页项输入'|translate}}</div>
+      <nz-input-number [(ngModel)]="pageSize_custom" [nzSize]="size" (ngModelChange)="onPageSizeChange_custom($event)" [nzPrecision]="0"
+        [nzMin]="1" [nzMax]="100000" name="pageSize_custom">
+      </nz-input-number>
+    </div>
+  </div>
+  <div class="info">
+    <ng-container *ngIf="moCompletedQuantity!==false">
+      <span>{{'累计完工数量'|translate}}： </span>
+      <span>{{moCompletedQuantity}}</span>
+      <span>&nbsp;&nbsp;&nbsp;</span>
+    </ng-container>
+    <ng-container *ngIf="demandQuantity!==false">
+      <span>{{'累计需求数量'|translate}}： </span>
+      <span>{{demandQuantity}}</span>
+    </ng-container>
+    <ng-container *ngIf="meterNumQuantity!==false">
+      <span>{{'累计米数'|translate}}： </span>
+      <span>{{meterNumQuantity}}</span>
+    </ng-container>
+    <ng-content select="[name=info]"></ng-content>
+  </div>
+</div>

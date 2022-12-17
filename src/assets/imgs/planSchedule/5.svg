@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="32px" height="32px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 51.2 (57519) - http://www.bohemiancoding.com/sketch -->
+    <title>集约选线</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="1-01数据化排产" transform="translate(-631.000000, -112.000000)">
+            <g id="1" transform="translate(181.000000, 98.000000)">
+                <g id="top">
+                    <g id="4" transform="translate(450.000000, 14.000000)">
+                        <g id="集约选线">
+                            <rect id="Rectangle-2" x="0" y="0" width="32" height="32" rx="2"></rect>
+                            <g id="Group-14" transform="translate(7.000000, 7.000000)">
+                                <polygon id="Path-3" fill="#D8D8D8" points="12.7627987 11 14.125768 12.4636648 8.42620021 17.7711204 5 14.227779 6.43778001 12.8375313 8.4996303 14.9698759"></polygon>
+                                <path d="M0,0 L18,0 L18,2 L0,2 L0,0 Z M0,5 L18,5 L18,7 L0,7 L0,5 Z M0,10 L10,10 L10,12 L0,12 L0,10 Z" id="Combined-Shape" fill="#6D8290"></path>
+                                <polygon id="Path-5" fill="#8BC34A" fill-rule="nonzero" points="15.3224877 8.60864438 16.690373 10.067716 8.43092992 17.8109756 5.00715925 14.2029487 6.45793188 12.8262648 8.51331906 14.9922662"></polygon>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

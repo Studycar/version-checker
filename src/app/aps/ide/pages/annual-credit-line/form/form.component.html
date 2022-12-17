@@ -1,0 +1,30 @@
+<form nz-form #f="ngForm" se-container="2">
+  <se label="{{ '客户编码' | translate}}">
+      <input nz-input [(ngModel)]="formData.cusCode" name="cusCode" disabled />
+  </se>
+  <se label="{{ '客户名称' | translate}}">
+      <input nz-input [(ngModel)]="formData.cusName" name="cusName" disabled />
+  </se>
+  <se label="{{ '客户等级' | translate}}">
+    <nz-select name="cusGrade" [(ngModel)]="formData.cusGrade" name="cusGrade" nzDisabled>
+      <nz-option *ngFor="let op of cusGradeOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+    </nz-select>
+  </se>
+  <se label="{{ '客户所属公司' | translate}}">
+    <nz-select name="plantCode" [(ngModel)]="formData.plantCode" name="plantCode" nzDisabled>
+      <nz-option *ngFor="let op of plantOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+    </nz-select>
+  </se>
+  <se label="{{ '当前年度信用额度' | translate}}">
+    <input nz-input [(ngModel)]="formData.credit" name="credit" disabled />
+  </se>
+  <se label="{{ '当前额度申请时间' | translate}}">
+    <input nz-input [(ngModel)]="formData.annualCreditApplyDate" name="annualCreditApplyDate" disabled />
+  </se>
+  <se label="{{ '申请年度信用额度' | translate}}">
+    <input nz-input [(ngModel)]="formData.annualCreditApply" name="annualCreditApply" disabled />
+  </se>
+  <se label="{{ '备注' | translate}}">
+    <textarea nz-input name="attribute1" [(ngModel)]="formData.attribute1" nzAutosize disabled></textarea>
+  </se>
+</form>

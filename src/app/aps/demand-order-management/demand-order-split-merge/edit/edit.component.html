@@ -1,0 +1,46 @@
+<div class="modal-header">
+  <div class="modal-title">{{ title | translate }}</div>
+</div>
+<div style="position: relative; height: 32px" *ngIf="i.id">
+  <button nz-button nzType="dashed" style="position: absolute; right: 0;" (click)="clear()">{{'重置' | translate}}</button>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="2">
+    <se label="{{ '工厂' | translate}}">
+      <nz-select [(ngModel)]="i.plantCode" name="PLANT_CODE" [nzShowSearch]="true"
+        (ngModelChange)="onPlantChange($event)">
+        <nz-option *ngFor="let option of plantOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '类别' | translate}}" required>
+      <nz-select [(ngModel)]="i.sourceType" name="modify" [nzShowSearch]="true"
+        (ngModelChange)="typeChange($event)" [disabled]="Istrue" required="required">
+        <nz-option [nzLabel]="'物料'" [nzValue]="'1'"></nz-option>
+        <nz-option [nzLabel]="'排程分类'" [nzValue]="'2'"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '类别值' | translate}}" required>
+      <nz-select style="width: 100%;" [(ngModel)]="i.sourceCode" name="strSOURCE_CODE"
+        (nzScrollToBottom)="loadMore()" nzShowSearch [nzServerSearch]="true" (nzOnSearch)="onSearch($event)" required>
+        <nz-option *ngFor="let o of sourcetypeoptions" [nzValue]="o.label" [nzLabel]="o.value"></nz-option>
+      </nz-select>
+    </se>
+    <!-- <se label="{{ '拆分基数' | translate}}">
+      <nz-input-number [(ngModel)]="i.splitQty" [nzMin]="0" name="strSPLIT_QTY" [nzStep]="1"></nz-input-number>
+    </se> -->
+    <se label="{{ '拆分合并基数' | translate}}">
+      <nz-input-number [(ngModel)]="i.mergeQty" [nzMin]="0" name="strMERGE_QTY" [nzStep]="1"></nz-input-number>
+    </se>
+    <se label="{{ '拆分允差（%）' | translate}}">
+      <nz-input-number [(ngModel)]="i.splitTolerance" [nzMin]="0" [nzMax]="100" [nzPlaceHolder]="'范围：0-100'" name="strSPLIT_TOLERANCE" [nzStep]="1"></nz-input-number>
+    </se>
+    <se label="{{ '交期弹性小时数' | translate}}">
+      <nz-input-number [(ngModel)]="i.deliveryTime" [nzMin]="0" name="DELIVERY_TIME" [nzStep]="1" [nzPrecision]="1"></nz-input-number>
+    </se>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save()" [disabled]="!f.valid || !f.dirty"
+    [nzLoading]="http.loading">{{ '保存' | translate}}</button>
+  <button nz-button type="button" (click)="close()">{{ '关闭' | translate}}</button>
+</div>

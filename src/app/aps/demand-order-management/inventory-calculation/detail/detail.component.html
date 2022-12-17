@@ -1,0 +1,41 @@
+<div class="modal-header">
+    <div class="modal-title">{{ '库存检查' | translate }}</div>
+</div>
+<div>
+    <div se-container="2">
+        <se label="{{'检查维度' | translate}}">
+            <nz-select [(ngModel)]="type" (ngModelChange)="onTypeChange($event)" style="width: 100%;">
+                <nz-option *ngFor="let option of typeOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+            </nz-select>
+        </se>
+    </div>
+    <div [class.hidden]="type === undefined">
+        <nz-card>
+            <ag-grid-angular
+              #agGrid
+              [class]="themeClass"
+              [style.height.px]="350"
+              [rowData]="gridData"
+              [columnDefs]="columns"
+              [gridOptions]="gridOptions"
+              [rowClassRules]="rowClass"
+              [pagination]="false"
+              [myAgGridRowKey]="{tb:'INVENTORY_CHECK'}"
+              [myAgGridState]="'inventoryCheck'"
+              (cellClicked)="onGridCellClick($event)"
+            ></ag-grid-angular>
+            <!--<custom-pager
+                [height]="pagerHeight"
+                [context]="context"
+                [view]='context.view'
+                [(pageSize)]="_pageSize"
+                [(pageNo)]="_pageNo"
+                [fixed]="false"
+                (pageChangeEvent)="onPageChanged($event)">
+            </custom-pager>-->
+        </nz-card>
+        <nz-card>
+            <div class="chart-view" echarts [options]="chartOptions"></div>
+        </nz-card>
+    </div>
+</div>

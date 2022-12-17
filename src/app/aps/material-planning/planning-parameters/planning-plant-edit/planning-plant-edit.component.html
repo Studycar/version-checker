@@ -1,0 +1,20 @@
+<div class="modal-header">
+    <div class="modal-title">{{ '新增信息' | translate }}</div>
+</div>
+<div>
+    <form nz-form #f="ngForm" se-container="2">
+        <se label="{{ '工厂' | translate }}" required>
+<!--            <input type="text" nz-input [(ngModel)]="params.PLANT_CODE" name="PLANT_CODE" required>-->
+            <nz-select [(ngModel)]="params.plantCode" (ngModelChange)="onPlantChange($event)" nzShowSearch name="plantCode" required>
+                <nz-option *ngFor="let option of plantOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+            </nz-select>
+        </se>
+        <se label="{{'工厂描述' | translate}}">
+            <input type="text" nz-input [(ngModel)]="params.plantDesc" name="plantDesc" disabled>
+        </se>
+    </form>
+</div>
+<div class="modal-footer">
+    <button nz-button type="submit" [nzType]="'primary'" [disabled]="!f.valid || !f.dirty" [nzLoading]="http.loading" (click)="save()">{{'保存' | translate}}</button>
+    <button nz-button type="button" (click)="close()">{{'关闭' | translate}}</button>
+</div>

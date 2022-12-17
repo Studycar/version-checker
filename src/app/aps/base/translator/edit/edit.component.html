@@ -1,0 +1,30 @@
+<div class="modal-header">
+  <div class="modal-title">{{ title }} {{ '信息' | translate}}</div>
+</div>
+<div style="position: relative; height: 32px" *ngIf="i.ID">
+  <button nz-button nzType="dashed" style="position: absolute; right: 0;" (click)="clear()">重置</button>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="2" >
+    <se label="{{ '语言代码' | translate}}" required>
+      <nz-select #select  [(ngModel)]="i.languageCode" name="languageCode"  [nzDisabled]="isModify"
+      required>
+        <nz-option *ngFor="let option of CODEOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '原文' | translate}}" required>
+      <input type="text" nz-input [(ngModel)]="i.devLanguageRd" name="devLanguageRd" [readonly] = "isModify" required>
+    </se>
+    <se label="{{ '译文' | translate}}">
+      <input type="text" nz-input [(ngModel)]="i.translatedText" name="translatedText">
+    </se>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save(f)" [disabled]="f.invalid || !f.dirty" [nzLoading]="http.loading">{{
+    '保存' | translate}}
+  </button>
+  <button nz-button type="button" (click)="close()">
+    {{ '关闭' | translate}}
+  </button>
+</div>

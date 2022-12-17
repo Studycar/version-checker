@@ -1,0 +1,24 @@
+<div class="modal-header">
+  <div class="modal-title">{{ title | translate}}</div>
+</div>
+<nz-card>
+  <!-- <kendo-grid #grid [data]="view" [height]="gridHeight" [pageSize]="gridState.take" [skip]="gridState.skip" [sort]="gridState.sort"
+    [sortable]="true" (dataStateChange)="dataStateChange($event)" [filter]="gridState.filter" filterable="menu" [resizable]="true"
+    [columnMenu]="true" [reorderable]="true" [pageable]="pageable" [loading]="commonQueryService.http.loading"
+    [myGridRowKey]="myGridRowKey" [myGridState]="'SharePlanShareIssuedViewDetial'">
+
+    <kendo-grid-messages pagerPage="{{ '分页' | translate}}" pagerOf="{{ '的' | translate}}" pagerItems="{{ '总数' | translate}}"
+      pagerItemsPerPage="{{ '页项' | translate}}" groupPanelEmpty="Drag here to group" noRecords="{{ '没有数据' | translate}}">
+    </kendo-grid-messages>
+
+    <kendo-grid-column *ngFor="let col of extendColumns" [field]="col.field" [title]="col.title" [locked]="col.locked" [width]="col.width"
+      [filter]="col.filter?col.filter:''" [style]="gridRowStyle">
+    </kendo-grid-column>
+  </kendo-grid> -->
+  <ag-grid-angular #agGrid [class]="themeClass" [style.height.px]="gridHeight" [rowData]="view.data"
+    [columnDefs]="extendColumns" [gridOptions]="gridOptions"
+    [myAgGridRowKey]="{tb:'myGridRowKey'}" [myAgGridState]="'SharePlanShareIssuedViewDetial'">
+  </ag-grid-angular>
+  <custom-pager [height]="pagerHeight" [fixed]="false" [context]="context" [view]='context.view' [(pageSize)]="_pageSize"
+    [(pageNo)]="_pageNo" (pageChangeEvent)="onPageChanged($event)"></custom-pager>
+</nz-card>

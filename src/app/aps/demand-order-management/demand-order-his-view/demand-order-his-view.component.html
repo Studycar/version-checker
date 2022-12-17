@@ -1,0 +1,16 @@
+<nz-timeline>
+  <div [ngStyle]="http.loading?loadingStyle:loadingHideStyle">
+    <nz-spin [nzSize]="'large'"></nz-spin>
+  </div>
+
+  <ng-container *ngFor="let item of hisData">
+    <nz-timeline-item nzColor="green">
+      【{{item.creationDate}}】{{item.changeTypeName}}，{{item.attribute1}}
+    </nz-timeline-item>
+  </ng-container>
+
+  <ng-container *ngIf="!http.loading && hasLoadData && hisData.length === 0">
+    {{ '无数据' | translate}}
+  </ng-container>
+
+</nz-timeline>

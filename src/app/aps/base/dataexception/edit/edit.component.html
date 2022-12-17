@@ -1,0 +1,43 @@
+<div class="modal-header">
+  <div class="modal-title">{{ (isModify?'编辑信息':'新增信息') | translate}} </div>
+</div>
+<div *ngIf="isModify" style=" margin:2px auto;">
+  <button style="float: right;" nz-button nzType="dashed" (click)="clear()">
+    <i class="anticon anticon-delete"></i>{{ '重置' | translate}}</button>
+  <div style="clear: both;"></div>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="2" [labelWidth]=100>
+    <se label="{{ '模块' | translate}}" required>
+      <nz-select nzShowSearch [(ngModel)]="record.applicationCode" name="applicationCode" [nzDisabled]="isModify" required>
+        <nz-option *ngFor="let option of applicationCodeOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '检查类型' | translate}}" required>
+      <input type="text" nz-input [(ngModel)]="record.exceptionType" name="exceptionType" [readonly]="isModify" [class.disabled]="isModify"
+        required>
+    </se>
+    <se label="{{ '描述' | translate}}">
+      <input type="text" nz-input [(ngModel)]="record.description" name="description">
+    </se>
+    <se label="{{ '显示优先级' | translate}}">
+      <nz-input-number [(ngModel)]="record.orderByCode" [nzPrecision]="0" [nzMin]="0" name="orderByCode"></nz-input-number>
+    </se>
+    <se label="{{ '是否有效' | translate}}" required>
+      <nz-select nzShowSearch [(ngModel)]="record.enableFlag" name="enableFlag" required>
+        <nz-option *ngFor="let option of isEnabledOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '例外数量' | translate}}">
+      <input type="text" optional="(仅显示)" nz-input [(ngModel)]="record.exceptionQty" name="exceptionQty" [readonly]=true [class.disabled]=true>
+    </se>
+    <se label="{{ '检查时间' | translate}}">
+      <input type="text" optional="(仅显示)" nz-input [(ngModel)]="record.lastCheckDate" name="lastCheckDate" [readonly]=true
+        [class.disabled]=true>
+    </se>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save(f.value)" [disabled]="f.invalid || !f.dirty" [nzLoading]="http.loading">{{ '保存' | translate}}</button>
+  <button nz-button type="button" (click)="close()">{{ '关闭' | translate}}</button>
+</div>

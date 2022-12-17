@@ -1,0 +1,46 @@
+<custom-formquery [queryParams]="queryParams" [context]="context"
+  (event1)="businessUnitCodeOptionsChange($event)"
+>
+</custom-formquery>
+<nz-card>
+  <ag-grid-angular
+    #agGrid
+    [class]="themeClass"
+    [style.height.px]="gridHeight"
+    [rowData]="gridData"
+    [columnDefs]="columns"
+    [gridOptions]="gridOptions"
+    [myAgGridRowKey]="{tb:''}"
+    [myAgGridState]="'PSIList'">
+  </ag-grid-angular>
+  <custom-pager
+    [height]="pagerHeight"
+    [context]="context"
+    [view]='context.view'
+    [(pageSize)]="_pageSize"
+    [(pageNo)]="_pageNo"
+    (pageChangeEvent)="onPageChanged($event)">
+  </custom-pager>
+</nz-card>
+
+<ng-template #customTemplate let-dataItem>
+  <span title="{{ '预览' | translate}}" (click)="showPsi(dataItem)" class="pointer">
+    <i nz-icon nzType="search" nzTheme="outline"></i>
+  </span>
+  <nz-divider nzType="vertical"></nz-divider>
+  <span *ngIf="+dataItem.psiType !== 3 && dataItem.isMerge !== 1">
+    <span title="{{ '修改' | translate}}" (click)="edit(dataItem)" class="pointer">
+      <i nz-icon nzType="edit" nzTheme="outline"></i>
+    </span>
+    <nz-divider nzType="vertical"></nz-divider>
+  </span>
+  <span *ngIf="+dataItem.psiType === 3 && +dataItem.psiStatus === 0">
+    <span title="{{ '发布' | translate}}" (click)="release(dataItem)" class="pointer">
+      <i nz-icon nzType="play-circle" nzTheme="outline"></i>
+    </span>
+    <nz-divider nzType="vertical"></nz-divider>
+  </span>
+  <span title="{{ '指标查看' | translate}}" (click)="toKpi(dataItem)" class="pointer">
+    <i nz-icon nzType="eye" nzTheme="outline"></i>
+  </span>
+</ng-template>

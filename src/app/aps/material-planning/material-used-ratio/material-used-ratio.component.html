@@ -1,0 +1,28 @@
+<custom-formquery [queryParams]="queryParams" [context]="context" ></custom-formquery>
+
+<nz-card>
+  <div style="display: flex; flex-direction: row; justify-content: space-between; flex-wrap: nowrap;">
+    <ag-grid-angular
+      #agGrid
+      style="width: 60%;"
+      [class]="themeClass"
+      [style.height.px]="gridHeight"
+      [rowData]="gridData"
+      [columnDefs]="columns"
+      [columnTypes]="columnTypes"
+      [suppressRowTransform]="true"
+      (cellClicked)="onCellClick($event)"
+      [gridOptions]="gridOptions"
+      [myAgGridRowKey]="{tb:'PS_MO_REQUIREMENT'}">
+    </ag-grid-angular>
+    <div style="width: 40%; border: 1px solid #bdc3c7; border-left: none;" echarts [options]="pieOption"></div>
+</div>
+    <custom-pager
+        [height]="pagerHeight"
+        [context]="context"
+        [view]='context.view'
+        [(pageSize)]="_pageSize"
+        [(pageNo)]="_pageNo"
+        (pageChangeEvent)="onPageChanged($event)">
+    </custom-pager>
+</nz-card>

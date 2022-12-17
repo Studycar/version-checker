@@ -1,0 +1,66 @@
+<div class="modal-header" title="">
+  <div class="modal-title"> {{ param.operType |translate }} 信息</div>
+</div>
+<div style="position: relative; height: 32px" *ngIf="param.operType === '编辑'">
+  <button nz-button nzType="dashed" style="position: absolute; right: 0;" (click)="clear()">重置</button>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="2">
+    <se label="{{ '程序' | translate}}" required>
+      <input type="text" nz-input [(ngModel)]="i.userConcurrentProgramName" name="USER_CONCURRENT_PROGRAM_NAME"
+        required [disabled]="IsRequestSet">
+    </se>
+    <se label="{{ '启用' | translate}}">
+      <input type="checkbox" nz-input [(ngModel)]="i.enabledFlag" name="ENABLED_FLAG" [disabled]="IsRequestSet">
+    </se>
+    <se label="{{ '简称' | translate}}" required>
+      <input type="text" nz-input [(ngModel)]="i.concurrentProgramName" name="CONCURRENT_PROGRAM_NAME" required
+        [disabled]="prgDisable">
+    </se>
+    <se label="{{ '应用模块' | translate}}" required>
+      <nz-select #select [(ngModel)]="i.applicationId" name="APPLICATION_ID" required nzShowSearch
+        [nzDisabled]="IsRequestSet">
+        <nz-option *ngFor="let option of applicationArray" [nzLabel]="option.label" [nzValue]="option.value">
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '执行名称' | translate}}" required>
+      <nz-select #select  [(ngModel)]="i.executableId" name="EXECUTABLE_ID" required nzShowSearch
+        [nzDisabled]="IsRequestSet">
+        <nz-option *ngFor="let option of executableArray" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '优先级' | translate}}" required>
+      <nz-input-number [(ngModel)]="i.requestPriority" name="REQUEST_PRIORITY" required></nz-input-number>
+      <!-- <input type="text" nz-input [(ngModel)]="i.REQUEST_PRIORITY" name="REQUEST_PRIORITY" required
+        [disabled]="IsRequestSet"> -->
+    </se>
+    <se label="{{ '请求类型' | translate}}" required>
+      <nz-select #select  [(ngModel)]="i.concurrentClassId" name="CONCURRENT_CLASS_ID" nzShowSearch required>
+        <nz-option *ngFor="let option of concurrentArray" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '输出格式' | translate}}" required>
+      <nz-select #select [(ngModel)]="i.outputFileType" required name="OUTPUT_FILE_TYPE" nzShowSearch
+        [nzDisabled]="IsRequestSet">
+        <nz-option *ngFor="let option of outPutFileTypeArray" [nzLabel]="option.label" [nzValue]="option.value">
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '说明' | translate}}">
+      <input type="text" nz-input [(ngModel)]="i.description" name="DESCRIPTION" [disabled]="IsRequestSet">
+    </se>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save()" [disabled]="f.invalid"
+    [nzLoading]="http.loading">{{'保存' | translate}}</button>
+  <button nz-button type="button" (click)="close()">{{ '关闭' | translate}}</button>
+</div>
+<!-- <nz-spin *ngIf="!i" class="modal-spin"></nz-spin>
+<sf *ngIf="i" #sf mode="edit" [schema]="schema" [ui]="ui" [formData]="i" button="none">
+  <div class="modal-footer">
+    <button nz-button type="button" (click)="close()">关闭</button>
+    <button nz-button type="submit" [nzType]="'primary'" (click)="save(sf.value)" [disabled]="!sf.valid" [nzLoading]="http.loading">保存</button>
+  </div>
+</sf> -->

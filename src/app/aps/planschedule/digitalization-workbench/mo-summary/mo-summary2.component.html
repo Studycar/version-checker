@@ -1,0 +1,19 @@
+<div class="modal-header">
+  <div class="modal-title">{{ 'MO总结' | translate}}</div>
+</div>
+<div class="operatable-area">
+<custom-formquery [queryParams]="queryParams" [context]="context" [showExpandIcon]="false">
+  <custom-button text="{{ '导出' | translate}}" (clickEvent)="export()" [src]="'基础icon-导出'">
+  </custom-button> 
+</custom-formquery>
+
+</div>
+<ag-grid-angular #agGrid [class]="themeClass" [style.height.px]="gridHeight-200" [rowData]="gridData"
+  [columnDefs]="columns" [gridOptions]="gridOptions" [myAgGridState]="'PsMakeOrder'"
+  [myAgGridRowKey]="{tb:' PS_MAKE_ORDER'}">
+</ag-grid-angular>
+<custom-pager [fixed]="false" [height]="pagerHeight" [context]="context" [view]='context.view' [(pageSize)]="_pageSize"
+  [(pageNo)]="_pageNo" (pageChangeEvent)="onPageChanged($event)"></custom-pager>
+<custom-excelexport [expColumns]='expColumns' [expColumnsOptions]='expColumnsOptions' fileName='MO总结'
+  #excelexport>
+</custom-excelexport>

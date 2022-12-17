@@ -1,0 +1,33 @@
+<div class="modal-header">
+  <div class="modal-title">{{ (readOnly?'编辑信息':'新增信息') | translate}} </div>
+</div>
+<div style=" margin:2px auto;" *ngIf="readOnly">
+  <button style="float: right;" nz-button nzType="dashed" (click)="clear()">{{ '重置' | translate}}</button>
+  <div style="clear: both;"></div>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="2" [labelWidth]=120>
+    <se label="{{'业务类型' | translate}}" required>
+      <nz-select [(ngModel)]="i.busType" name="busType" nzDisabled nzShowSearch >
+        <nz-option *ngFor="let option of busTypeOptions" [nzLabel]="option.label" [nzValue]="option.value" required></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{'备注' | translate}}">
+      <input nz-input type="text" name="remarks" [(ngModel)]="i.remarks">
+    </se>
+    <se label="{{'模板类型' | translate}}" required>
+      <nz-select [(ngModel)]="i.contractTemplate" name="contractTemplate" nzShowSearch required>
+        <nz-option *ngFor="let option of contractTemplates" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+
+    <se label="{{ '上传文件' | translate}}" col="1" required>
+      <common-upload #commonUpload [fileTypes]="fileTypes" [annexs]="annexs"></common-upload>
+    </se>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save(f)" [disabled]="verifyAttach(f)" [nzLoading]="http.loading">{{ '保存' | translate}}</button>
+  <button nz-button type="button" (click)="close()">{{ '关闭' | translate}}</button>
+</div>
+

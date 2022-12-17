@@ -1,0 +1,15 @@
+<div class="content-title">
+  <button nz-button nzType="default" (click)="export()">
+    <i nz-icon [nzType]="'export'" theme="outline"></i>{{'导出' | translate}}</button>
+</div>
+<div>
+<nz-card>
+  <ag-grid-angular #agGrid [class]="themeClass" [style.height.px]="gridHeight" [rowData]="gridData" [columnDefs]="columns"
+    [gridOptions]="gridOptions" [myAgGridRowKey]="{tb:'PP_MTS_PEGGING1'}" [myAgGridState]="'peggingDetail'">
+  </ag-grid-angular>
+   <custom-pager [height]="pagerHeight" [context]="context" [view]='context.view' [fixed]="false" [(pageSize)]="_pageSize" (pageChangeEvent)="onPageChanged($event)"
+    [(pageNo)]="_pageNo"></custom-pager>
+  <custom-excelexport [expColumns]='expColumns' [expColumnsOptions]='expColumnsOptions' fileName="{{'MTS计划明细' | translate}}" #excelexport>
+  </custom-excelexport>
+</nz-card>
+</div>

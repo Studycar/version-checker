@@ -1,0 +1,52 @@
+<ng-template #sideTpl>
+  <nz-sider *ngIf="!inApp"
+            [nzTrigger]="null" [nzCollapsible]="true" [nzCollapsed]="isMobile ? false : pro.collapsed"
+            [nzWidth]="pro.width"
+            [nzCollapsedWidth]="pro.widthInCollapsed" class="alain-pro__sider"
+            [ngClass]="{ 'alain-pro__sider-fixed': pro.fixSiderbar }">
+    <layout-pro-logo [collapsed]="pro.collapsed" class="alain-pro__sider-logo"></layout-pro-logo>
+    <div class="alain-pro__side-nav" style="padding: 16px 0; width: 100%;">
+      <layout-pro-menu class="alain-pro__side-nav-wrap"></layout-pro-menu>
+    </div>
+  </nz-sider>
+</ng-template>
+<div class="ant-layout ant-layout-has-sider">
+  <ng-container *ngIf="pro.menu === 'side' || isMobile">
+    <nz-drawer *ngIf="isMobile" [nzWidth]="pro.width" nzWrapClassName="alain-pro__drawer" [nzVisible]="!pro.collapsed"
+               [nzClosable]="false" nzPlacement="left" (nzOnClose)="pro.setCollapsed(true)">
+      <ng-template [ngTemplateOutlet]="sideTpl"></ng-template>
+    </nz-drawer>
+    <ng-container *ngIf="!isMobile">
+      <ng-template [ngTemplateOutlet]="sideTpl"></ng-template>
+    </ng-container>
+  </ng-container>
+  <div class="ant-layout" style="min-height: 100vh;" [ngStyle]="getLayoutStyle" >
+    <!-- <div id="layoutHeader">
+      <layout-pro-header></layout-pro-header>reuse-tab
+      <reuse-tab *ngIf="showBreadcrumbTab"></reuse-tab>
+      <div style="width: 30%; height: 50px; border-bottom: 1px solid #d9d9d9; display: flex;flex-direction: row;justify-content: flex-end;">
+        <div layout-pro-header-widget></div>
+      </div>
+    </div> -->
+    <div
+      *ngIf="!inApp"
+      style="display: flex; flex-direction: row; width: 100%; background-color: #fff;border-bottom: 1px solid #d9d9d9;">
+      <header-left>
+        <div class="alain-pro__header-item alain-pro__header-trigger" (click)="pro.setCollapsed()">
+          <i nz-icon [nzType]="pro.collapsed ? 'menu-unfold' : 'menu-fold'" [title]="pro.collapsed ? '展开':'收缩'"></i>
+        </div>
+      </header-left>
+      <reuse-tab id="reuseBlock" style="width: calc(100% - 500px)" (change)="handleReuseTabChange()"></reuse-tab>
+      <div
+        style="flex:1; height: 55px;  display: flex;flex-direction: row;justify-content: flex-end;">
+        <div layout-pro-header-widget></div>
+      </div>
+    </div>
+    <div class="ant-layout-content" [ngStyle]="getContentStyle" id="layoutContent">
+      <nz-spin [nzSpinning]="isFetching">
+        <router-outlet></router-outlet>
+      </nz-spin>
+    </div>
+  </div>
+</div>
+<ng-template #settingHost></ng-template>

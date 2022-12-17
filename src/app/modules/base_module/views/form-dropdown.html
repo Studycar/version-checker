@@ -1,0 +1,7 @@
+﻿<nz-form-label nzSpan="{{ labelGridWidth }}">{{ translatedDisplayName }}</nz-form-label>
+<nz-form-control nzSpan="{{ fieldGridWidth }}" [formGroup]="formGroup">
+  <nz-select [formControlName]="fieldName" [nzPlaceHolder]="translatedPlaceHolder" [nzShowSearch]="true">
+    <nz-option *ngFor="let d of options" [nzLabel]="d.text" [nzValue]="d.value"></nz-option>
+  </nz-select>
+  <m-form-validation-messages [formGroup]="formGroup" [fieldName]="fieldName" [displayName]="displayName" [validationMessages]="validationMessages"></m-form-validation-messages>
+</nz-form-control>

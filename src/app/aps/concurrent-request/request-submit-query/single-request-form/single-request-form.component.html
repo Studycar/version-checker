@@ -1,0 +1,86 @@
+<form class="k-form">
+  <div class="modal-header" style="padding-top:10px;padding-bottom:10px;margin-bottom:10px;">
+    <div class="modal-title">{{'提交单个请求' | translate}}</div>
+  </div>
+  <div style="margin:0px;padding:0px;width:100%;height:100%;" align="center">
+    <table border=0 cellpadding=0 cellspacing=0 style="width:100%;height:100%;">
+      <tr>
+        <td>
+          <fieldset>
+            <legend>
+              {{'运行此请求' | translate}}
+            </legend>
+            <table border=0 cellpadding=0 cellspacing=0 style="width:100%;height:100%;">
+              <tr style="height: 40px;">
+                <td style="padding-right: 10px;width:100px;" align="right">
+                  {{'名称' | translate}}
+                </td>
+                <td>
+                  <nz-select style="width: 350px; background-color:yellow;" [(ngModel)]="programCode" [nzSize]="'small'" [ngModelOptions]="{standalone: true}"
+                    nzShowSearch [nzDisabled]="false" (ngModelChange)="onSelectProgram($event)">
+                    <nz-option *ngFor="let option of listOfProgram" nzCustomContent [nzLabel]="option.label" [nzValue]="option.value">
+                      <nz-tooltip [nzTitle]="option.label">
+                        <ellipsis lines="1">
+                          <span nz-tooltip>{{option.label}}</span>
+                        </ellipsis>
+                      </nz-tooltip>
+                    </nz-option>
+                  </nz-select>
+                </td>
+                <td style="padding-left: 10px;width:100px;" align="left">
+                  <button nz-button type="button" (click)="Copy()">
+                    {{'复制' | translate}}</button>
+                </td>
+              </tr>
+              <tr style="height: 40px;">
+                <td style="padding-right: 10px;width:100px;" align="right">
+                  {{'参数' | translate}}
+                </td>
+                <td>
+                  <input style="width: 350px;" [nzSize]="'small'" [(ngModel)]="argumentText" [ngModelOptions]="{standalone: true}" readonly="true"
+                    nz-input>
+                </td>
+                <td style="padding-left: 10px;width:100px;" align="left">
+                  <button nz-button type="button" (click)="Argument()">
+                    {{'参数' | translate}}</button>
+                </td>
+              </tr>
+            </table>
+          </fieldset>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <fieldset>
+            <legend>
+              {{'在以下情况' | translate}}
+            </legend>
+            <table border=0 cellpadding=0 cellspacing=0 style="width:100%;height:100%;">
+              <tr style="height: 40px;">
+                <td style="padding-right: 10px;width:100px;" align="right">
+                  {{' 运行任务' | translate}}
+                </td>
+                <td>
+                  <input style="width: 350px;" [nzSize]="'small'" [(ngModel)]="planText" [ngModelOptions]="{standalone: true}" readonly="true"
+                    nz-input>
+                </td>
+                <td style="padding-left: 10px;width:100px;" align="left">
+                  <button nz-button type="button" (click)="Plan()">
+                    {{'计划' | translate}}</button>
+                </td>
+              </tr>
+            </table>
+          </fieldset>
+        </td>
+      </tr>
+      <tr style="height: 40px;padding-top:5px;">
+        <td align="center">
+          <button nz-button type="button" (click)="Confrim()" [disabled]="Disabled">
+            {{'确认' | translate}}</button>&nbsp;&nbsp;
+          <button nz-button type="button" (click)="close()">
+            {{'关闭' | translate}}</button>
+        </td>
+      </tr>
+    </table>
+  </div>
+</form>

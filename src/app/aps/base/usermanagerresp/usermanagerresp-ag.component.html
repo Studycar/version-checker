@@ -1,0 +1,22 @@
+<div class="modal-header">
+  <div class="modal-title">{{ '用户职责' | translate}}</div>
+</div>
+<nz-card>
+  <div class="mb-md">
+    <button nz-button nzType="primary" (click)="add()"><i nz-icon type="plus-circle" theme="outline"></i>新增</button>
+    <button nz-button nzType="default" (click)="export()"><i nz-icon [nzType]="'export'" theme="outline"></i>导出</button>
+  </div>
+  <ag-grid-angular #agGrid [class]="themeClass" [style.height.px]="gridHeight" [rowData]="gridData"
+    [columnDefs]="columns" [gridOptions]="gridOptions" [myAgGridRowKey]="{tb:'BASE_USER_RESPS'}"
+    [myAgGridState]="'usermanagerresp'">
+  </ag-grid-angular>
+  <custom-pager [height]="pagerHeight" [fixed]="false" [context]="context" [view]='context.view'
+    [(pageSize)]="_pageSize" [(pageNo)]="_pageNo" (pageChangeEvent)="onPageChanged($event)"></custom-pager>
+  <custom-excelexport [expColumns]='expColumns' [expColumnsOptions]='expColumnsOptions' fileName='用户职责' #excelexport>
+  </custom-excelexport>
+</nz-card>
+<ng-template #customTemplate let-dataItem>
+<span title="{{ '编辑' | translate}}" (click)="add(dataItem)" class="pointer">
+                            <i class="anticon anticon-edit"></i>
+                          </span>
+</ng-template>

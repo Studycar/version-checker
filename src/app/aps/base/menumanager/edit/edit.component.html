@@ -1,0 +1,72 @@
+<div class="modal-header">
+  <div class="modal-title">{{ (isModify?'编辑信息':'新增信息') | translate}} </div>
+</div>
+<div style=" margin:2px auto;" *ngIf="isModify">
+  <button style="float: right;" nz-button nzType="dashed" (click)="clear()">{{ '重置' | translate}}</button>
+  <div style="clear: both;"></div>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="2" [labelWidth]=100>
+    <se label="{{ '菜单名称' | translate}}" required>
+      <input type="text" nz-input [(ngModel)]="i.menuName" name="menuName" required>
+    </se>
+    <se label="{{ '应用模块' | translate}}" required>
+      <nz-select nzShowSearch [(ngModel)]="i.applicationId" name="applicationId" [nzDisabled]="isModify"
+        required>
+        <nz-option *ngFor="let option of applicationOptions" [nzLabel]="option.label" [nzValue]="option.value">
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '语言' | translate}}" required>
+      <nz-select nzShowSearch [(ngModel)]="i.language" name="language" [nzDisabled]="isModify" required>
+        <nz-option *ngFor="let option of languageOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '功能' | translate}}">
+      <nz-select nzShowSearch nzAllowClear [(ngModel)]="i.functionId" name="functionId">
+        <nz-option *ngFor="let option of functionOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '描述' | translate}}">
+      <input type="text" nz-input [(ngModel)]="i.description" name="description">
+    </se>
+    <se label="{{ '菜单编码' | translate}}" required>
+      <input type="text" nz-input [(ngModel)]="i.menuCode" name="menuCode" required [readonly]="isModify"
+        [class.disabled]="isModify">
+    </se>
+    <se label="{{ '菜单类型' | translate}}" required>
+      <nz-select nzShowSearch [(ngModel)]="i.menuType" name="menuType" required>
+        <nz-option *ngFor="let option of menuTypeOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '窗口类型' | translate}}" required>
+      <nz-select nzShowSearch [(ngModel)]="i.windowType" name="windowType" required>
+        <nz-option *ngFor="let option of windowTypeOptions" [nzLabel]="option.label" [nzValue]="option.value">
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '图片' | translate}}">
+      <input type="text" nz-input [(ngModel)]="i.attribute1" name="attribute1">
+    </se>
+    <se label="{{ '生效日期' | translate}}" required>
+      <nz-date-picker nzFormat="yyyy-MM-dd" [(ngModel)]="i.startDate" name="startDate" [nzAllowClear]="false" required>
+      </nz-date-picker>
+    </se>
+    <se label="{{ '失效日期' | translate}}">
+      <nz-date-picker nzFormat="yyyy-MM-dd" [(ngModel)]="i.endDate" name="endDate">
+      </nz-date-picker>
+    </se>
+    <se label="{{ '菜单顺序' | translate}}">
+      <nz-input-number [(ngModel)]="i.menuSequence" [nzPrecision]="0" [nzMin]="0" name="menuSequence">
+      </nz-input-number>
+    </se>
+    <se label="{{ '系统参数' | translate}}">
+      <input type="text" nz-input [(ngModel)]="i.parameters" name="parameters">
+    </se>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save(f.value)" [disabled]="f.invalid || !f.dirty"
+    [nzLoading]="http.loading">{{'保存' | translate}}</button>
+  <button nz-button type="button" (click)="close()">{{ '关闭' | translate}}</button>
+</div>

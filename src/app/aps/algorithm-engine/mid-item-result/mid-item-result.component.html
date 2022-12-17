@@ -1,0 +1,19 @@
+<custom-formquery [queryParams]="queryParams" [context]="context">
+  <span>
+    <custom-button text="{{ '审核' | translate}}" (clickEvent)="reviewed()" [src]="'工单例外'">
+    </custom-button>
+    <custom-button text="{{ '导出' | translate}}" (clickEvent)="export()" [src]="'基础icon-导出'">
+    </custom-button>
+  </span>
+</custom-formquery>
+<nz-card>
+  <ag-grid-angular #agGrid [class]="themeClass" [style.height.px]="gridHeight" [rowData]="gridData"
+    [columnDefs]="columns" [gridOptions]="gridOptions" (selectionChanged)="onSelectionChanged($event)"
+    [myAgGridRowKey]="{tb:'AI_MID_PRE_ITEM_RESULT_DETAIL_H'}" [myAgGridState]="'register'">
+  </ag-grid-angular>
+  <custom-pager [height]="pagerHeight" [context]="context" [view]='context.view' [(pageSize)]="_pageSize"
+    [(pageNo)]="_pageNo" (pageChangeEvent)="onPageChanged($event)"></custom-pager>
+  <custom-excelexport [expColumns]='expColumns' [expColumnsOptions]='expColumnsOptions' fileName='物料属性维护推荐结果展示' #excelexport>
+  </custom-excelexport>
+</nz-card>
+

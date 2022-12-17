@@ -1,0 +1,49 @@
+<div class="modal-header">
+  <div class="modal-title">{{ (isModify?'编辑信息':'新增信息') | translate}}</div>
+</div>
+<div style="position: relative; height: 32px" *ngIf="isModify">
+  <button nz-button nzType="dashed" style="position: absolute; right: 0;" (click)="clear()">重置</button>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="2">
+    <se label="{{ '功能名称' | translate}}" required>
+      <input type="text" nz-input [(ngModel)]="i.functionName" name="functionName" required="required">
+    </se>
+    <se label="{{ '功能代码' | translate}}" required>
+      <input type="text" nz-input [(ngModel)]="i.functionCode" name="functionCode" [disabled]="readOnly" required="required">
+    </se>
+    <se label="{{ '应用模块' | translate}}" required>
+      <nz-select [(ngModel)]="i.applicationCode" name="applicationCode" [nzShowSearch]=true required="required">
+        <nz-option *ngFor="let option of applications" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '功能路径' | translate}}" required>
+      <input type="text" nz-input [(ngModel)]="i.functionPath" name="functionPath" required>
+    </se>
+    <se label="{{ '功能类型' | translate}}" required>
+      <nz-select [(ngModel)]="i.functionType" name="functionType" required="required">
+        <nz-option *ngFor="let option of functiontypes" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '有效' | translate}}" required>
+      <nz-select [(ngModel)]="i.enabledFlag" name="enabledFlag" required="required">
+        <nz-option *ngFor="let option of enabledflags" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '描述' | translate}}">
+      <input type="text" nz-input [(ngModel)]="i.description" name="description">
+    </se>
+    <se label="{{ '语言' | translate}}" required>
+      <nz-select [(ngModel)]="i.language" name="language" [nzDisabled]="readOnly" required>
+        <nz-option *ngFor="let option of languages" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '引用' | translate}}">
+      <input type="text" nz-input [(ngModel)]="i.attribute1" name="attribute1" [disabled]="readOnly">
+    </se>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save()" [disabled]="!f.valid || !f.dirty" [nzLoading]="http.loading">{{ '保存' | translate}}</button>
+  <button nz-button type="button" (click)="close()">{{ '关闭' | translate}}</button>
+</div>

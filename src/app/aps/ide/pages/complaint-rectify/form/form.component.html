@@ -1,0 +1,23 @@
+<form nz-form #f="ngForm" se-container="2">
+    <se label="{{ '客户名称' | translate}}">
+        <input nz-input [(ngModel)]="formData.cusCode" name="cusCode" disabled />
+    </se>
+    <se label="{{ '钢卷号' | translate}}">
+        <input nz-input [(ngModel)]="formData.batchNum" name="batchNum" disabled />
+    </se>
+    <se label="{{ '钢卷规格' | translate}}">
+        <input nz-input [(ngModel)]="formData.standardsType" name="standardsType" disabled />
+    </se>
+    <se label="{{ '钢卷净重' | translate}}">
+        <input nz-input [(ngModel)]="formData.weigthKg" name="weigthKg" disabled />
+    </se>
+    <se label="{{ '投诉问题类型' | translate}}">
+        <input nz-input [(ngModel)]="formData.correctiveType" name="correctiveType" disabled />
+    </se>
+    <se label="{{ '售后处理意见' | translate}}">
+        <input nz-input [(ngModel)]="formData.pfmssm" name="pfmssm" disabled />
+    </se>
+    <se label="{{ '附件' | translate}}">
+        <common-upload #commonUpload [annexs]="fileList" [showUpload]="false" [Disabled]="true"></common-upload>
+    </se>
+</form>

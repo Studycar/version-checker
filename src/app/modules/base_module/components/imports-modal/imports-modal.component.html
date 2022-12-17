@@ -1,0 +1,30 @@
+<nz-spin nzTip="{{ 'Loading...' | translate }}" nzSpinning="{{downloading || doingUpload}}">
+  <div class="modal-header">
+    <div class="modal-title">{{ i.TITLE | translate }}</div>
+  </div>
+  <div>
+    <div style="margin:2px auto;">
+      <a (click)="downloadTemplateFile()">{{ '下载模板' | translate }}</a>
+    </div>
+    <div style="clear: both;"></div>
+    <div>
+      <button nz-button [nzType]="'primary'" [nzLoading]="uploading" (click)="handleUpload()"
+        [disabled]="fileList.length == 0 || uploading" style="margin-top: 16px">
+        {{ uploading ? '上传中...' : '开始上传' }}
+      </button>
+      <span style="width: 30px;">&nbsp;</span>
+      <nz-upload [(nzFileList)]="fileList" [nzBeforeUpload]="beforeUpload" [nzLimit]="1">
+        <button nz-button [disabled]="uploading"><i nz-icon nzType="upload"></i><span>选择文件</span></button>
+      </nz-upload>
+    </div>
+    <div style="height:150px" *ngIf="startShowProgress">
+      <div style="margin:5px auto;text-align: center;font-size: 16px;">
+        <nz-progress [nzPercent]="progressPercent" nzType="circle" [nzStatus]="progressStatus"></nz-progress>
+        <div style="margin:10px auto">{{msgTips}}</div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button nz-button type="button" (click)="close()">{{ '关闭' | translate }}</button>
+  </div>
+</nz-spin>

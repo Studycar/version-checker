@@ -1,0 +1,18 @@
+<div class="modal-header">
+  <div class="modal-title">{{ '选择原料' | translate}}    </div>
+</div>
+<div style="margin-top:-10px;margin:0px;padding:0px 20px 3px 0">
+  <span><label nz-checkbox [(ngModel)]="gradeR" name="gradeR"><b>{{'R等级' | translate}}</b></label></span>
+  <button nz-button type="button" (click)="search(this.gradeR)">{{ '查询' | translate}}</button>
+</div> 
+<nz-card>
+  <ag-grid-angular #agGrid [class]="themeClass" [style.height.px]="gridHeight-200" [rowData]="gridData"
+    [columnDefs]="columns" [gridOptions]="gridOptions" [myAgGridState]="'pi_lock_order_materials'"
+    [myAgGridRowKey]="{tb:'PI_LOCK_ORDER_MATERIALS'}">
+  </ag-grid-angular>
+</nz-card>
+<div class="modal-footer">
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save()" [disabled]="!checkValid()"
+    [nzLoading]="http.loading">{{ '保存' | translate}}</button>
+  <button nz-button type="button" (click)="close()">{{ '关闭' | translate}}</button>
+</div>

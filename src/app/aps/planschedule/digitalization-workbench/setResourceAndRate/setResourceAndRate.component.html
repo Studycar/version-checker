@@ -1,0 +1,42 @@
+<div class="modal-header">
+  <div class="modal-title">{{ ('工单指定') | translate}} </div>
+</div>
+<!-- <div style=" text-align:right;">
+  <button nz-button nzType="dashed" (click)="clear()"> {{ '重置' | translate}}</button>
+</div> -->
+<div>
+  <div>
+    <form nz-form #f="ngForm" se-container="2" [labelWidth]='80'>
+      <se label="{{ '计划组' | translate}}" required>
+        <nz-select #select [(ngModel)]="i.SCHEDULE_GROUP_CODE" nzShowSearch (ngModelChange)="onChangeGroup($event)"
+          name="SCHEDULE_GROUP_CODE" required>
+          <nz-option *ngFor="let o of optionListPlantGroup" [nzValue]="o.value" [nzLabel]="o.label"></nz-option>
+        </nz-select>
+      </se>
+      <se label="{{ '资源' | translate}}" required>
+        <nz-select #select [(ngModel)]="i.RESOURCE_CODE" nzShowSearch name="RESOURCE_CODE" required>
+          <nz-option *ngFor="let o of optionListProductLine" [nzValue]="o.value" [nzLabel]="o.label">
+          </nz-option>
+        </nz-select>
+      </se>
+      <se label="{{ '速率类型' | translate}}" required>
+        <nz-select #select [(ngModel)]="i.RATE_TYPE" nzShowSearch name="RATE_TYPE" required>
+          <nz-option *ngFor="let o of applicationRateType" [nzValue]="o.value" [nzLabel]="o.label"></nz-option>
+        </nz-select>
+      </se>
+      <se label="{{ '速率' | translate}}" required>
+        <nz-input-number [(ngModel)]="i.RATE" [nzMin]="0" name="RATE" required></nz-input-number>
+      </se>
+    </form>
+  </div>
+  <div>
+    <ag-grid-angular [class]="themeClass" [style.height.px]="gridHeight" [rowData]="gridData" [columnDefs]="columns"
+      [gridOptions]="gridOptions" [pagination]="false" (selectionChanged)="onSelectionChanged($event)">
+    </ag-grid-angular>
+  </div>
+</div>
+<div class="modal-footer">
+  <button nz-button type="submit" (click)="confirm()" [nzType]="'primary'"
+    [disabled]="f.invalid||this.selectionKeys.length===0">{{ '保存' | translate}}</button>
+  <button nz-button type="button" (click)="close()">{{ '关闭' | translate}}</button>
+</div>

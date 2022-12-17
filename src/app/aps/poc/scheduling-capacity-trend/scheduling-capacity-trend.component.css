@@ -1,0 +1,10 @@
+:host ::ng-deep .show-cell {
+    background: white;
+    border-left: 0.5px lightgrey solid !important;
+    border-right: 0.5px lightgrey solid !important;
+    border-bottom: 0.5px lightgrey solid !important;
+}
+
+:host ::ng-deep .color-red {
+    color: red !important;
+}

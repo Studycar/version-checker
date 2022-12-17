@@ -1,0 +1,66 @@
+<div class="modal-header">
+  <div class="modal-title">{{ title }}信息</div>
+</div>
+<div style="position: relative; height: 32px" *ngIf="i.Id">
+  <button nz-button nzType="dashed" style="position: absolute; right: 0;" (click)="clear()">重置</button>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="2">
+    <se label="{{ '工厂' | translate}}" required>
+      <nz-select [(ngModel)]="i.plantCode" name="plantCode" required [disabled]="readOnly"
+        (ngModelChange)="plantChange($event)">
+        <nz-option *ngFor="let o of plantOptions" [nzValue]="o.plantCode" [nzLabel]="o.plantCode"></nz-option>
+        <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+          <i class="anticon anticon-loading anticon-spin loading-icon"></i> Loading Data...
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{'物料' | translate}}" required>
+      <popup-select #selItem [ID]="'selItem'" [Value]="i.itemId" [Text]='i.itemId' [ValueField]="'itemId'"
+        [TextField]="'itemId'" [Disabled]="readOnly" [gridView]="gridViewItem" [columns]="itemColumns"
+        (TextChanged)="changeItem($event)" (SearchEvent)="onSearchItem($event)" (RowSelect)="onRowSelect($event)"
+        required>
+      </popup-select>
+    </se>
+    <se label="{{'模具' | translate}}" required>
+      <popup-select #selMould [ID]="'selMould'" [Value]="i.resourceCode" [Text]='i.resourceCode'
+        [ValueField]="'mouldCode'" [TextField]="'mouldCode'" [Disabled]="readOnly" [gridView]="gridViewMould"
+        [columns]="mouldColumns" (TextChanged)="changeMould($event)" (SearchEvent)="onSearchMould($event)"
+        (RowSelect)="onRowSelectMould($event)" required>
+      </popup-select>
+    </se>
+
+    <se label="{{ '模具优先级' | translate}}" required>
+      <nz-input-number nz-input [(ngModel)]="i.itemMouldPriority" [nzMin]="0" name="itemMouldPriority">
+      </nz-input-number>
+    </se>
+
+    <se label="{{ '单位小时产出' | translate}}" required>
+      <nz-input-number nz-input [(ngModel)]="i.uph" [nzMin]="0" name="uph"></nz-input-number>
+    </se>
+
+    <se label="{{ '是否有效' | translate}}" required>
+      <nz-select [(ngModel)]="i.enableFlag" name="enableFlag" required>
+        <nz-option *ngFor="let option of yesOrNo" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '参与S&OP' | translate}}" required>
+      <nz-select #select [(ngModel)]="i.sopFlag" name="sopFlag" required>
+        <nz-option *ngFor="let option of yesOrNo" [nzLabel]="option.label" [nzValue]="option.value"
+          [nzDisabled]="option.disabled"></nz-option>
+      </nz-select>
+    </se>
+
+    <se label="{{ '是否参与排产' | translate}}" required>
+      <nz-select #select [(ngModel)]="i.scheduleFlag" name="scheduleFlag" required>
+        <nz-option *ngFor="let option of yesOrNo" [nzLabel]="option.label" [nzValue]="option.value"
+          [nzDisabled]="option.disabled"></nz-option>
+      </nz-select>
+    </se>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save()" [disabled]="!f.valid || !f.dirty"
+    [nzLoading]="http.loading">保存</button>
+  <button nz-button type="button" (click)="close()">关闭</button>
+</div>

@@ -1,0 +1,27 @@
+<div class="div_menu">
+  <span class="span_menu">
+    <custom-function-button text="{{ '排产发布' | translate}}" (clickEvent)="planRelease()" [src]="Img['计划发布']">
+    </custom-function-button>
+    <span nz-tooltip>
+      <span>
+        排产模拟:
+      </span>
+      <span style="padding: 0px 5px 0px 5px;display: inline-block;text-align: center;cursor: pointer">
+        <nz-select nzShowSearch [(ngModel)]="simulationVideoInfo.simulationVideoPath" name="fullPath" (ngModelChange)="changeVideo($event)">
+          <nz-option *ngFor="let o of psVideo" [nzLabel]="o.version" [nzValue]="o.path"></nz-option>
+        </nz-select>
+      </span>
+    </span>
+    <custom-function-button text="{{ '例外' | translate}}" (clickEvent)="moException()" [src]="Img['工单例外']">
+    </custom-function-button>
+    <custom-function-button text="{{ '全屏' | translate}}" (clickEvent)="fullScreen()" [src]="Img['全部展开']">
+    </custom-function-button>
+  </span>
+</div>
+
+<div class="video-fullyscreen" [style.display]="fullyVideoShow?'block':'inline'" *ngIf="simulationVideoInfo.IsVideo">
+  <i nz-icon [nzType]="'close'" (click)="closeFullyVideo()"></i>
+  <video width="100%" height="100%" #fullyVideo [src]="simulationVideoInfo.simulationVideoPath"  (click)="playOrPause()">
+    <source [src]="simulationVideoInfo.simulationVideoPath" muted preload="auto">
+  </video>
+</div>

@@ -1,0 +1,18 @@
+<div class="modal-header">
+  <div class="modal-title">{{ ('置尾单') | translate}} </div>
+</div>
+<div style="text-align:right; margin-bottom: 5px;">
+  <button nz-button nzType="dashed" (click)="clear()"> {{ '重置' | translate}}</button>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="1" [labelWidth]=100>
+    <se label="{{ '置尾原因' | translate}}" required>
+      <textarea rows="4" nz-input [(ngModel)]="i.REASON" name="REASON" required></textarea>
+    </se>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="button" (click)="close()">{{ '关闭' | translate}}</button>
+  <button nz-button type="submit" (click)="confirm()" [nzType]="'primary'"
+    [disabled]="f.invalid">{{ '确定' | translate}}</button>
+</div>

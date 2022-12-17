@@ -1,0 +1,38 @@
+<div class="modal-header">
+  <div class="modal-title">{{ title }} 信息</div>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="2">
+    <se label="{{ '工厂' | translate}}" required>
+      <nz-select [(ngModel)]="i.PLANT_CODE" name="txtPLANT_CODE" [disabled]="readOnly" required
+        (ngModelChange)="plantChange($event)">
+        <nz-option *ngFor="let option of plantoptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '预测来源' | translate}}" required>
+      <nz-select [(ngModel)]="i.SALES_TYPE" name="SALES_TYPE" [disabled]="readOnly" required>
+        <nz-option *ngFor="let option of sourceoptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '预测类型' | translate}}" required>
+      <nz-select [(ngModel)]="i.FORECAST_TYPE" name="FORECAST_TYPE" [disabled]="readOnly" required
+        (ngModelChange)="plantChange($event)">
+        <nz-option *ngFor="let option of typeoptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '需求月份' | translate}}">
+      <input type="number" nz-input [(ngModel)]="i.MONTHS" name="MONTHS" (ngModelChange)="monthChange($event)">
+    </se>
+    <se label="{{ '预测集' | translate}}" required>
+      <input type="text" nz-input [(ngModel)]="i.FORECAST_SETS" name="FORECAST_SETS" required>
+    </se>
+    <se label="{{ '预测名' | translate}}" required>
+      <input type="text" nz-input [(ngModel)]="i.FORECAST_NAME" name="FORECAST_NAME" required>
+    </se>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save()" [disabled]="!f.valid || !f.dirty"
+    [nzLoading]="http.loading">{{ '保存' | translate}}</button>
+  <button nz-button type="button" (click)="close()">{{ '关闭' | translate}}</button>
+</div>

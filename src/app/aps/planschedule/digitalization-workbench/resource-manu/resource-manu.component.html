@@ -1,0 +1,13 @@
+<div class="modal-header">
+  <div class="modal-title">产线调整</div>
+</div>
+<div style="position: relative; height: 32px">
+  <button nz-button type="submit" [nzType]="'primary'" style="position: absolute; right: 0;" (click)="save()" [nzLoading]="http.loading" [disabled]="!isChange">{{'保存' | translate }}</button>
+</div>
+<nz-card>
+  <ag-grid-angular #agGrid [class]="themeClass" [style.height.px]="gridHeight-200" [rowData]="gridData"
+    [columnDefs]="columns" [gridOptions]="gridOptions" [myAgGridState]="'hw-workbench-resource-manu'" rowSelection="single"
+    (selectionChanged)="onSelectionChanged($event)"
+    >
+  </ag-grid-angular>
+</nz-card>

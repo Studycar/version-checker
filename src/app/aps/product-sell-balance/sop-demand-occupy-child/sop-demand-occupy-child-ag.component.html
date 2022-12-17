@@ -1,0 +1,16 @@
+<custom-formquery [queryParams]="queryParams" [context]="context"  [showExpandIcon]="false" [showResetButton]="false" [showExpandButton]="false">
+  <span>
+        <button nz-button (click)="export()">
+            <i class="anticon anticon-export"></i> {{ '导出' | translate}}
+          </button>
+  </span>
+</custom-formquery>
+<nz-card>
+  <ag-grid-angular #agGrid [class]="themeClass" [style.height.px]="gridHeight" [rowData]="gridData" [columnDefs]="columns"
+    [gridOptions]="gridOptions" (selectionChanged)="onSelectionChanged($event)" [myAgGridRowKey]="{tb:'SOP_DEMAND_RESOURCE_OCCUPY'}"
+    [myAgGridState]="'sopdemandoccupychild'">
+  </ag-grid-angular>
+  <custom-pager [height]="pagerHeight" [context]="context" [fixed]="false" [view]='context.view' [(pageSize)]="_pageSize"
+    [(pageNo)]="_pageNo" (pageChangeEvent)="onPageChanged($event)"></custom-pager>
+  <custom-excelexport [expColumns]='expColumns' fileName='关键资源检视汇总明细' #excelexport></custom-excelexport>
+</nz-card>

@@ -1,0 +1,74 @@
+<custom-formquery [queryParams]="queryParams" [context]="context"
+  (event1)="businessUnitCodeOptionsChange($event)"
+>
+</custom-formquery>
+<nz-card>
+  <nz-spin [nzSpinning]="loading">
+    <div class="choose-container clearfix">
+      <div class="col col-1">
+        <div class="info">
+          <div class="info-left">待选区</div>
+          <div class="info-right"></div>
+        </div>
+        <ag-grid-angular
+          #agGrid
+          [class]="themeClass"
+          [style.height.px]="gridHeight"
+          [rowData]="mainTable"
+          [columnDefs]="columns"
+          [gridOptions]="gridOptions"
+          rowSelection="multiple"
+          (gridReady)="onGridReadyMainTable($event)">
+        </ag-grid-angular>
+        <div style="height: 10px;"></div>
+        <custom-pager
+          [fixed]="false"
+          [height]="pagerHeight"
+          [context]="context"
+          [view]='context.view'
+          [(pageSize)]="_pageSize"
+          [(pageNo)]="_pageNo"
+          (pageChangeEvent)="onPageChanged($event)">
+        </custom-pager>
+      </div>
+      <div class="col col-2 op-col">
+        <span style="margin-bottom: 10px;">
+          <button nz-button nzType="primary" (click)="handleRightMove()" nz-tooltip nzTooltipTitle="右移"><i nz-icon nzType="right" nzTheme="outline"></i></button>
+        </span>
+        <span style="margin-bottom: 10px;">
+          <button nz-button nzType="primary" (click)="handleRightMoveAll()" nz-tooltip nzTooltipTitle="右全移"><i nz-icon nzType="double-right" nzTheme="outline"></i></button>
+        </span>
+        <span style="margin-bottom: 10px;">
+          <button nz-button nzType="primary" (click)="handleLeftMove()" nz-tooltip nzTooltipTitle="左移"><i nz-icon nzType="left" nzTheme="outline"></i></button>
+        </span>
+        <span>
+          <button nz-button nzType="primary" (click)="handleLeftMoveAll()" nz-tooltip nzTooltipTitle="左全移"><i nz-icon nzType="double-left" nzTheme="outline"></i></button>
+        </span>
+      </div>
+      <div class="col col-3">
+        <div class="info">
+          <div class="info-left">合并区<span *ngIf="!!selectTable.length">(已选择品类: {{ selectMarketCategoryStr }})</span></div>
+          <div class="info-right">
+            <button nz-button nzType="primary" (click)="save()" [disabled]="!!!selectTable.length" [nzLoading]="saveLoading">保存</button>
+          </div>
+        </div>
+        <ag-grid-angular
+          #agGrid2
+          [class]="themeClass"
+          [style.height.px]="gridHeight"
+          [rowData]="selectTable"
+          [columnDefs]="columns"
+          [gridOptions]="gridOptions"
+          rowSelection="multiple"
+          (gridReady)="onGridReadySelectTable($event)">
+        </ag-grid-angular>
+      </div>
+    </div>
+  </nz-spin>
+</nz-card>
+
+<ng-template #customTemplate let-dataItem>
+  <span title="{{ '预览' | translate}}" (click)="showPsi(dataItem)" class="pointer">
+    <i nz-icon nzType="search" nzTheme="outline"></i>
+  </span>
+</ng-template>

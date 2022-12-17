@@ -1,0 +1,10 @@
+<div class="alain-pro__header-item" nz-dropdown [nzDropdownMenu]="menu" [nzPlacement]="placement">
+  <i nz-icon [nzType]="'global'" class="alain-pro__header-item-icon"></i>
+</div>
+<nz-dropdown-menu #menu="nzDropdownMenu">
+  <div nz-menu class="width-sm">
+    <li nz-menu-item *ngFor="let item of langs"
+      [nzSelected]="item.code === settings.layout.lang"
+      (click)="change(item.code)"><span role="img" [attr.aria-label]="item.text">{{item.abbr}}</span> {{item.text}}</li>
+  </div>
+</nz-dropdown-menu>

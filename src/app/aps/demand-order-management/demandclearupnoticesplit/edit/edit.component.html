@@ -1,0 +1,41 @@
+<div class="modal-header">
+  <div class="modal-title">{{ '订单历史' | translate}}  </div>
+</div>
+<form nz-form #f="ngForm"  se-container="3">
+    <se label="">
+      <input type="hidden" nz-input [(ngModel)]="queryParams.REQ_NUMBER" width="0" name="REQ_NUMBER">
+    </se>
+<se label="">
+      <input type="hidden" nz-input [(ngModel)]="queryParams.REQ_LINE_NUM" width="0" name="REQ_LINE_NUM">
+    </se>
+  </form>
+<div></div>
+<div class="content-title">
+<nz-card>
+  <div class="mb-md">
+    <button nz-button (click)="export()" class="mx-sm">
+      {{ '导出' | translate}}
+    </button>
+  </div>
+  <kendo-grid #grid [data]="view | async" [height]="kendoHeight" [pageSize]="gridState.take" [skip]="gridState.skip" [sort]="gridState.sort"
+    [sortable]="true" (dataStateChange)="onStateChange($event)" [navigable]="true" [filter]="gridState.filter" filterable="menu"
+    [resizable]="true" [selectable]="true" [kendoGridSelectBy]="'MENUGROUPNAME'" [selectedKeys]="mySelection" [columnMenu]="true"
+    [reorderable]="true" [pageable]="{
+      buttonCount: 10,
+      info: true,
+      pageSizes: true,
+      previousNext: true
+    }">
+    <kendo-grid-messages pagerPage="分页" pagerOf="的" pagerItems="总数" pagerItemsPerPage="页项" groupPanelEmpty="Drag here to group"
+      noRecords="没有数据">
+    </kendo-grid-messages>
+    <kendo-grid-column field="REQ_NUMBER" title="需求订单号" width="130" [style]="{'border-bottom': '1px solid #d9d9d9'}"></kendo-grid-column>
+    <kendo-grid-column field="REQ_LINE_NUM" title="需求订单行号" width="130" [style]="{'border-bottom': '1px solid #d9d9d9'}"></kendo-grid-column>
+   <kendo-grid-column field="CHANGE_FIELD" title="变更字段" width="130" [style]="{'border-bottom': '1px solid #d9d9d9'}"></kendo-grid-column>
+   <kendo-grid-column field="BEFORE_OF_CHANGE" title="变更前" width="130" [style]="{'border-bottom': '1px solid #d9d9d9'}"></kendo-grid-column>
+   <kendo-grid-column field="AFTER_OF_CHANGE" title="变更后" width="130" [style]="{'border-bottom': '1px solid #d9d9d9'}"></kendo-grid-column>
+   <kendo-grid-column field="CHANGE_REASON" title="变更原因" width="130" [style]="{'border-bottom': '1px solid #d9d9d9'}"></kendo-grid-column>
+   </kendo-grid>
+</nz-card>
+</div>
+<custom-excelexport [expColumns]='expColumns'  fileName='export' #excelexport></custom-excelexport>

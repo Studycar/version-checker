@@ -1,0 +1,87 @@
+<div class="modal-header">
+  <div class="modal-title">{{ ('工作时段模板') | translate}}</div>
+</div>
+<div>
+  <button nz-button nzType="primary" (click)="add()"><i nz-icon type="plus-circle" theme="outline"></i>新增</button>
+  <button nz-button (click)="expandForm=!expandForm" nzType="default">
+    <i nz-icon [nzType]="expandForm?'anticon-up':'anticon-down'"></i> {{ '搜索' | translate}}
+  </button>
+  <form nz-form #f="ngForm" se-container="3" labelWidth="100">
+    <se label="日历编码" *ngIf="expandForm">
+      <nz-select nzShowSearch nzAllowClear [(ngModel)]="queryParams.values.calendarCode" name="calendarCode"
+        (ngModelChange)="calendarChange($event)">
+        <nz-option *ngFor="let option of calendarOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+    <se label="车间班次" *ngIf="expandForm">
+      <nz-select nzShowSearch nzAllowClear [(ngModel)]="queryParams.values.shiftCode" name="shiftCode">
+        <nz-option *ngFor="let option of shiftOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+    <se *ngIf="expandForm">
+      <button nz-button type="submit" [nzType]="'primary'" (click)="query()">查询</button>
+      <button nz-button nzType="default" (click)="clear()">重置</button>
+    </se>
+  </form>
+</div>
+&nbsp;
+<nz-card>
+  <!-- <custom-formquery [queryParams]="queryParams" [context]="context" (event1)="calendarChange($event)"
+    [showExpandIcon]="false" [labelWidth]="100">
+    <custom-button text="{{ '新增' | translate}}" (clickEvent)="add()" [src]="'基础icon-新增'">
+    </custom-button>
+    <custom-button text="{{ '删除' | translate}}" (clickEvent)="removeBatch()" [src]="'基础icon-删除'">
+    </custom-button>
+  </custom-formquery> -->
+  <!-- <kendo-grid #grid [data]="view" [height]="gridHeight" [pageSize]="gridState.take" [skip]="gridState.skip"
+    [sort]="gridState.sort" [sortable]="true" (dataStateChange)="dataStateChange($event)" [filter]="gridState.filter"
+    [resizable]="true" [selectable]="selectableSettings" [kendoGridSelectBy]="selectBy" [selectedKeys]="selectionKeys"
+    [columnMenu]="true" [reorderable]="true" [pageable]="pageable" [loading]="loading"
+    [myGridRowKey]="{tb:'PS_CALENDAR_SHIFT_TEMPLATE'}" [myGridState]="'time'">
+    <kendo-grid-messages pagerPage="{{ '分页' | translate}}" pagerOf="{{ '的' | translate}}"
+      pagerItems="{{ '总数' | translate}}" pagerItemsPerPage="{{ '页项' | translate}}" groupPanelEmpty="Drag here to group"
+      noRecords="{{ '没有数据' | translate}}">
+    </kendo-grid-messages>
+    <kendo-grid-command-column title="{{ '操作' | translate}}" width="80" [locked]="true">
+      <ng-template kendoGridCellTemplate let-isNew="isNew" let-dataItem="dataItem">
+        <span title="{{ '编辑' | translate}}" (click)="add(dataItem)" [ngStyle]="pointer">
+          <i class="anticon anticon-edit"></i>
+        </span>
+        <nz-divider nzType="vertical"></nz-divider>
+        <span title="{{ '删除' | translate}}" nz-popconfirm nzTitle="{{ '是否确认删除该记录?' | translate}}"
+          (nzOnConfirm)="remove(dataItem);" [ngStyle]="pointer">
+          <i class="anticon anticon-delete"></i>
+        </span>
+      </ng-template>
+    </kendo-grid-command-column>
+    <kendo-grid-checkbox-column [width]="60" showSelectAll="true" [locked]="true"></kendo-grid-checkbox-column>
+    <kendo-grid-column *ngFor="let col of columns" [field]="col.field" [title]="col.title| translate"
+      [locked]="col.locked" [width]="col.width" [filter]="col.filter?col.filter:''" [style]="gridLineStyle">
+      <ng-template kendoGridCellTemplate let-dataItem *ngIf="col.ui?.type === 'select'">
+        {{optionsFind(dataItem[col.field],col.ui.index)?.label}}
+      </ng-template>
+      <ng-template kendoGridCellTemplate let-dataItem *ngIf="col.ui?.tooltip">
+        <ellipsis lines="{{col.ui?.tooltip}}">
+          <span nz-tooltip [nzTitle]="dataItem[col.field]">{{dataItem[col.field]}}</span>
+        </ellipsis>
+      </ng-template>
+    </kendo-grid-column>
+  </kendo-grid> -->
+  <ag-grid-angular #agGrid [class]="themeClass" [style.height.px]="gridHeight" [rowData]="view.data"
+    [columnDefs]="columns" [gridOptions]="gridOptions" (selectionChanged)="onSelectionChanged($event)"
+    [myAgGridRowKey]="{tb:'PS_CALENDAR_SHIFT_TEMPLATE'}" [myAgGridState]="'time'">
+  </ag-grid-angular>
+  <custom-pager [height]="pagerHeight" [fixed]="false" [context]="context" [view]='context.view'
+    [(pageSize)]="_pageSize" [(pageNo)]="_pageNo" (pageChangeEvent)="onPageChanged($event)"></custom-pager>
+</nz-card>
+
+<ng-template #customTemplate let-dataItem>
+  <span title="{{ '编辑' | translate}}" (click)="add(dataItem)" [ngStyle]="pointer">
+    <i class="anticon anticon-edit"></i>
+  </span>
+  <nz-divider nzType="vertical"></nz-divider>
+  <span title="{{ '删除' | translate}}" nz-popconfirm nzTitle="{{ '是否确认删除该记录?' | translate}}"
+    (nzOnConfirm)="remove(dataItem);" [ngStyle]="pointer">
+    <i class="anticon anticon-delete"></i>
+  </span>
+</ng-template>

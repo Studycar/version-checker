@@ -1,0 +1,54 @@
+<custom-formquery [queryParams]="queryParams" [context]="context"
+  (event1)="buCodeOptionsChange($event)"
+>
+  <span>
+    <custom-button text="{{ '新增' | translate}}" (clickEvent)="add()" [src]="'基础icon-新增'">
+    </custom-button>
+    <custom-button text="{{ '复制' | translate}}" (clickEvent)="copy()" [src]="'工作日历复制'">
+    </custom-button>
+    <custom-button text="{{ '历史比率计算' | translate}}" (clickEvent)="historyRateCalculate()" [src]="'自动计算'">
+    </custom-button>
+    <custom-button text="{{ '导入' | translate}}" (clickEvent)="imports()" [src]="'基础icon-导入'" [loading]="optionsLoading">
+    </custom-button>
+    <custom-button text="{{ '导出' | translate}}" (clickEvent)="export()" [src]="'基础icon-导出'">
+    </custom-button>
+  </span>
+</custom-formquery>
+
+<nz-card>
+  <ag-grid-angular
+    #agGrid
+    [class]="themeClass"
+    [style.height.px]="gridHeight"
+    [rowData]="gridData"
+    [columnDefs]="columns"
+    [gridOptions]="gridOptions"
+    [myAgGridRowKey]="{tb:'SOP_P_MONTH_PSI_S_RATE'}"
+    [myAgGridState]="'monthlyDistribution'">
+  </ag-grid-angular>
+  <custom-pager
+    [height]="pagerHeight"
+    [context]="context"
+    [view]='context.view'
+    [(pageSize)]="_pageSize"
+    [(pageNo)]="_pageNo"
+    (pageChangeEvent)="onPageChanged($event)">
+  </custom-pager>
+  <custom-excelexport [expColumns]="expColumns" [expColumnsOptions]="expColumnsOptions" fileName="月度分销比例维护" #excelexport>
+  </custom-excelexport>
+</nz-card>
+
+<ng-template #customTemplate let-dataItem>
+  <span title="编辑" (click)="add(dataItem)" class="pointer">
+    <i nz-icon nzType="edit"></i>
+  </span>
+  <nz-divider nzType="vertical"></nz-divider>
+  <span title="{{ '删除' | translate}}" nz-popconfirm nzTitle="是否确认删除该记录?" nzOkText="是" nzCancelText="否" (nzOnConfirm)="delete(dataItem)" class="pointer">
+    <i nz-icon nzType="delete"></i>
+  </span>
+</ng-template>
+
+<ng-template #valueTemplate let-dataItem let-field="params.field">
+  <span *ngIf="dataItem[field] < 0" style="color: red;" nzTooltipTitle="数据有误" nz-tooltip>{{ dataItem[field] }}</span>
+  <span *ngIf="dataItem[field] >= 0">{{ dataItem[field] }}</span>
+</ng-template>

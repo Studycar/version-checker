@@ -1,0 +1,32 @@
+<div class="modal-header">
+  <div class="modal-title">{{ title }} 信息</div>
+</div>
+<!--<div style=" margin:1px auto;">
+  <button style="float: right;" nz-button nzType="dashed" (click)="clear()">
+    <i class="anticon anticon-delete"></i>{{ '重置' | translate}}</button>
+  <div style="clear: both;"></div>
+</div>-->
+<div>
+  <form nz-form #f="ngForm" se-container="1" [labelWidth]="200">
+    <se label="{{ '颜色选择' | translate}}" required>
+      <input style="width: 40px;height: 30px; cursor: pointer; border: none" required [(colorPicker)]="i.colorValue" [style.background]="i.colorValue"
+      />
+    </se>
+    <se label="{{ '颜色编码' | translate}}" required>
+      <input #f1 type="text" nz-input [(ngModel)]="i.colorName" name="colorName" [ngStyle]="itemStyle" required>
+    </se>
+    <se label="{{ '颜色名称' | translate}}" required>
+      <input #f1 type="text" nz-input [(ngModel)]="i.meaning" name="meaning" [ngStyle]="itemStyle" required>
+    </se>
+    <se label="{{ '所属模块' | translate}}" required>
+      <nz-select required [ngStyle]="itemStyle" [(ngModel)]="i.headerId" name="headerId" [nzShowSearch]="true">
+        <nz-option *ngFor="let option of ColorHeadOption" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="submit" [nzType]="'primary'" (click)="confirm()" [disabled]="f.invalid || !f.dirty" [nzLoading]="http.loading">{{
+    '保存' | translate}}</button>
+  <button nz-button type="button" (click)="close()">{{ '关闭' | translate}}</button>
+</div>

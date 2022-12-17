@@ -1,0 +1,28 @@
+<div class="modal-header">
+  <div class="modal-title">{{ '需求汇总导入'| translate }}</div>
+</div>
+
+<div>
+  <form nz-form #f="ngForm" se-container="2">
+    <se label="{{ '月份' | translate}}" required>
+      <nz-month-picker [(ngModel)]="dateFrom" (ngModelChange)="onDateRangeChange($event)" name="dateRange1" [nzDisabledDate]='disabledDateFrom'>
+      </nz-month-picker>
+    </se>
+    <se label="{{ '至' | translate}}" required>
+      <nz-month-picker [(ngModel)]="dateTo" (ngModelChange)="onDateRangeChange($event)" name="dateRange2" [nzDisabledDate]='disabledDateTo'>
+      </nz-month-picker>
+    </se>
+  </form>
+</div>
+
+<div class="modal-footer">
+  <a (click)="downMold()">{{ '下载模板'| translate }}</a>
+  <span style="display: inline-block; width: 20px;"></span>
+  <custom-xlsxfile-select [impColumns]='impColumns' (excelDataProcessEvent)="excelDataProcess($event)"></custom-xlsxfile-select>
+  <span style="display: inline-block; width: 20px;"></span>
+  <button nz-button (click)="close()" [nzType]="'default'">
+      <i class="anticon anticon-logout"></i> {{ '关闭' | translate}}
+    </button>
+</div>
+
+<custom-excelexport [expColumns]='expColumns' [fileName]='fileName' #excelexport></custom-excelexport>

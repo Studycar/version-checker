@@ -1,0 +1,75 @@
+<div class="modal-header">
+    <div class="modal-title">{{ title }}信息</div>
+</div>
+<div style="position: relative; height: 32px" *ngIf="i.Id">
+    <button nz-button nzType="dashed" style="position: absolute; right: 0;" (click)="clear()">
+    {{ '重置' | translate }}
+  </button>
+</div>
+<div>
+    <form nz-form #f="ngForm" se-container="2">
+        <se label="{{ '资源维度' | translate }}" required>
+            <nz-select [(ngModel)]="i.resourceDimension" name="resourceDimension" [nzDisabled]="readOnly" required (ngModelChange)="dimenChange($event)">
+                <nz-option [nzLabel]="'资源'" [nzValue]="'1'"></nz-option>
+                <nz-option [nzLabel]="'计划组'" [nzValue]="'2'"></nz-option>
+            </nz-select>
+        </se>
+        <se label="{{ '计划区域' | translate }}" required>
+            <nz-select [(ngModel)]="i.scheduleRegionCode" name="scheduleRegionCode" [nzDisabled]="readOnly" (ngModelChange)="regionChange($event)" required>
+                <nz-option *ngFor="let option of regionoptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+            </nz-select>
+        </se>
+        <se label="{{ '上游工厂(子)' | translate }}" required>
+            <nz-select [(ngModel)]="i.upstreamPlantCode" name="upplantcode" [nzDisabled]="plantok" (ngModelChange)="upplantChange($event)" required>
+                <nz-option *ngFor="let option of plantoptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+            </nz-select>
+        </se>
+        <se label="{{ '上游资源值' | translate }}" required>
+            <nz-select nzShowSearch [(ngModel)]="i.upstreamValues" name="upstreamValues" [nzDisabled]="upzyok" required>
+                <nz-option *ngFor="let option of upresourcevalue" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+            </nz-select>
+        </se>
+        <se label="{{ '下游工厂(父)' | translate }}" required>
+            <nz-select [(ngModel)]="i.downstreamPlantCode" name="downstreamPlantCode" [nzDisabled]="plantok" (ngModelChange)="downplantChange($event)" required>
+                <nz-option *ngFor="let option of plantoptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+            </nz-select>
+        </se>
+        <se label="{{ '下游资源值' | translate }}" required>
+            <nz-select nzShowSearch [(ngModel)]="i.downstreamValues" name="downstreamValues" [nzDisabled]="downzyok" required>
+                <nz-option *ngFor="let option of downresourcevalue" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+            </nz-select>
+        </se>
+        <se label="{{ '值类别' | translate }}" required>
+            <nz-select [(ngModel)]="i.category" name="category" [nzDisabled]="readOnly" (ngModelChange)="categorychange($event)" required>
+                <nz-option [nzLabel]="'物料编码'" [nzValue]="'1'"></nz-option>
+                <nz-option [nzLabel]="'库存分类'" [nzValue]="'2'"></nz-option>
+            </nz-select>
+        </se>
+        <se label="{{ '类别值' | translate }}" required>
+            <nz-select style="width: 100%;" [(ngModel)]="i.categoryValues" name="categoryValues" (nzScrollToBottom)="loadMore()" nzShowSearch [nzServerSearch]="true" (nzOnSearch)="onSearch($event)" required>
+                <nz-option *ngFor="let o of categoryvalue" [nzValue]="o" [nzLabel]="o"></nz-option>
+                <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+                    <i nz-icon [nzType]="'loading'" class="loading-icon"></i> Loading Data...
+                </nz-option>
+            </nz-select>
+        </se>
+        <se label="{{ '是否跟单' | translate }}">
+            <nz-select [(ngModel)]="i.orderBaseFlag" name="orderBaseFlag" nzAllowClear>
+                <nz-option *ngFor="let option of yesnoOptions" [nzLabel]="option.label" [nzValue]="option.value">
+                </nz-option>
+            </nz-select>
+        </se>
+        <se label="{{ '是否有效' | translate }}" required>
+            <nz-select [(ngModel)]="i.enableFlag" name="enableFlag" required="required">
+                <nz-option *ngFor="let option of yesnoOptions" [nzLabel]="option.label" [nzValue]="option.value">
+                </nz-option>
+            </nz-select>
+        </se>
+    </form>
+</div>
+<div class="modal-footer">
+    <button nz-button type="submit" [nzType]="'primary'" (click)="save()" [disabled]="!f.valid || !f.dirty" [nzLoading]="http.loading">
+    保存
+  </button>
+    <button nz-button type="button" (click)="close()">关闭</button>
+</div>

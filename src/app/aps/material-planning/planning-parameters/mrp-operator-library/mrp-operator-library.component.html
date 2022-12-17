@@ -1,0 +1,22 @@
+<div class="modal-header" style="margin-bottom: 0;">
+    <div class="modal-title">{{ '参与MRP运算子库' | translate }}</div>
+</div>
+<div>
+    <ag-grid-angular
+      #agGrid
+      [class]="themeClass"
+      [style.height.px]="gridHeight"
+      [rowData]="gridData"
+      [columnDefs]="columns"
+      [gridOptions]="gridOptions"
+      [pagination]="false"
+      [frameworkComponents]="frameworkComponents"
+      [myAgGridRowKey]="{tb:'MRP_OPERATOR_LIBRARY'}"
+      [myAgGridState]="'mrpOperatorLibrary'">
+    </ag-grid-angular>
+</div>
+<div class="modal-footer" style="margin-top: 0;">
+    <button nz-button type="button" (click)="useDefaultValue()">{{'使用默认值' | translate}}</button>
+    <button nz-button [nzType]="'primary'" (click)="save()">{{'保存' | translate}}</button>
+<!--    <button nz-button (click)="close()">{{'关闭' | translate}}</button>-->
+</div>

@@ -1,0 +1,124 @@
+<div class="modal-header">
+  <div class="modal-title">合同取消</div>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="2">
+    <se label="{{ '合同模板' | translate }}">
+      <nz-select #select nzShowSearch name="fileId" [(ngModel)]="i.fileId" nzDisabled>
+        <nz-option *ngFor="let op of attachInfoList" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '合同编码' | translate }}">
+      <input nz-input type="text" name="contractCode" [(ngModel)]="i.contractCode" disabled>
+    </se>
+    <se label="{{ '合同状态' | translate }}">
+      <nz-select #select nzShowSearch name="contractState" nzDisabled [(ngModel)]="i.contractState">
+        <nz-option *ngFor="let op of contractStateOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '合同类型' | translate }}">
+      <nz-select #select nzShowSearch name="contractType" nzDisabled [(ngModel)]="i.contractType">
+        <nz-option *ngFor="let op of contractTypeOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '规格' | translate }}">
+      <input nz-input type="text" name="standards" [(ngModel)]="i.standards" disabled>
+    </se>
+    <se label="{{ '所属合同' | translate }}">
+      <input nz-input type="text" name="affiliatedContract" disabled [(ngModel)]="i.affiliatedContract" disabled>
+      <!-- <popup-select #selMater1 [ID]="'selMater1'" [Value]="i.affiliatedContract" [ValueField]="'affiliatedContract'"
+        [Text]="i.contractCode" [TextField]="'contractCode'"
+        [gridView]="gridViewContracts" [columns]="columnsContracts" (TextChanged)="onPopupSelectTextChanged($event)"
+        (SearchEvent)="searchContracts($event)" (RowSelect)="onRowSelectContracts($event)" (SelectTextChange)="OnSelectTextChange($event)">
+      </popup-select> -->
+    </se>
+    <se label="{{ '客户编码' | translate }}">
+      <popup-select #selMater1 [ID]="'selMater1'" [Value]="i.cusCode" [ValueField]="'cusCode'"
+        [Text]="i.cusCode" [TextField]="'cusCode'" [options]="customersOptions" [Disabled]="true"
+        [gridView]="gridViewCustoms" [columns]="columnsCustoms" (TextChanged)="onPopupSelectTextChanged($event)"
+        (SearchEvent)="searchCustoms($event)" (RowSelect)="onRowSelectCustoms($event)" (SelectTextChange)="OnSelectTextChange($event)">
+      </popup-select>
+    </se>
+    <se label="{{ '签订日期' | translate }}">
+      <nz-date-picker nzFormat="yyyy-MM-dd" [(ngModel)]="i.signingDate" name="signingDate" nzDisabled>
+      </nz-date-picker>
+    </se>
+    <se label="{{ '合同所属月份' | translate }}">
+      <nz-month-picker nzFormat="yyyy-MM" [(ngModel)]="i.affiliatedMonth" name="affiliatedMonth" nzDisabled>
+      </nz-month-picker>
+    </se>
+    <se label="{{ '钢种' | translate }}">
+      <nz-select #select nzShowSearch name="steelType" [(ngModel)]="i.steelType" nzDisabled>
+        <nz-option *ngFor="let op of contractSteelTypeOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '表面' | translate }}">
+      <nz-select #select nzShowSearch name="surface" [(ngModel)]="i.surface" nzDisabled>
+        <nz-option *ngFor="let op of contractSurfaceOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '基价' | translate }}">
+      <nz-input-number [(ngModel)]="i.basePrice" [nzMin]="0" (ngModelChange)="generateMoney()" name="basePrice" nzDisabled></nz-input-number>
+    </se>
+    <se label="{{ '数量（张）' | translate }}">
+      <nz-input-number [(ngModel)]="i.quantity" [nzMin]="0" (ngModelChange)="generateMoney()" name="quantity" nzDisabled></nz-input-number>
+    </se>
+    <se label="{{ '金额' | translate }}">
+      <nz-input-number [(ngModel)]="i.money" nzDisabled name="money" nzDisabled></nz-input-number>
+    </se>
+    <se label="{{ '锁价备注' | translate }}">
+      <input nz-input type="text" name="remarks" [(ngModel)]="i.remarks" disabled>
+    </se>
+    <se label="{{ '定金比例（%）' | translate }}">
+      <nz-input-number [(ngModel)]="i.depositRatio" name="depositRatio" (ngModelChange)="generateDeposit()" nzDisabled></nz-input-number>
+    </se>
+    <se label="{{ '锁价定金' | translate }}">
+      <nz-input-number [(ngModel)]="i.deposit" nzDisabled name="deposit" nzDisabled></nz-input-number>
+    </se>
+    <se label="{{ '供方' | translate }}">
+      <nz-select #select nzShowSearch name="plantCode" nzDisabled [(ngModel)]="i.plantCode" nzDisabled>
+        <nz-option *ngFor="let op of plantOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '产品名称' | translate }}">
+      <nz-select nzShowSearch name="prodName" [(ngModel)]="i.prodName" nzAllowClear nzDisabled>
+        <nz-option *ngFor="let op of prodNameOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '合同已分货量' | translate }}">
+      <nz-input-number nzDisabled [(ngModel)]="i.quantityDj" name="quantityDj" nzDisabled></nz-input-number>
+    </se>
+    <se label="{{ '合同待分货量' | translate }}">
+      <nz-input-number nzDisabled [(ngModel)]="i.quantitySy" name="quantitySy" nzDisabled></nz-input-number>
+    </se>
+    <se label="{{ '表面状态' | translate }}">
+      <input nz-input type="text" name="surfaceState" [(ngModel)]="i.surfaceState" disabled>
+    </se>
+    <se label="{{ '交货日期' | translate }}">
+      <nz-date-picker nzFormat="yyyy-MM-dd" [(ngModel)]="i.deliveryDate" name="deliveryDate" nzDisabled>
+      </nz-date-picker>
+    </se>
+    <se label="{{ '交货地点' | translate }}">
+      <input nz-input type="text" name="deliveryPlace" [(ngModel)]="i.deliveryPlace" disabled>
+    </se>
+    <se label="{{ '客户合同号' | translate }}">
+      <input nz-input type="text" name="cusContractCode" [(ngModel)]="i.cusContractCode" disabled>
+    </se>
+    <!-- <se label="{{ '返利' | translate }}">
+      <nz-input-number [(ngModel)]="i.rebate" name="rebate"></nz-input-number>
+    </se> -->
+    <se label="{{ '厚/薄料' | translate }}">
+      <nz-select nzShowSearch name="material" [(ngModel)]="i.material" nzDisabled>
+        <nz-option *ngFor="let op of materialOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '变更备注' | translate }}" required>
+      <textarea nz-input name="changeRemarks" [(ngModel)]="i.changeRemarks" nzAutosize required></textarea>
+    </se>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="button" (click)="close()">{{ '取消' | translate }}</button>
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save(f.value)" [nzLoading]="http.loading" [disabled]="verifySave(f)">{{'保存' | translate }}</button>
+  <button nz-button type="submit" [nzType]="'primary'" (click)="submit(f.value)" [nzLoading]="http.loading" [disabled]="verifySubmit(f)">{{'生成合同并提交' | translate }}</button>
+</div>

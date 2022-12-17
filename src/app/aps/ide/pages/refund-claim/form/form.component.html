@@ -1,0 +1,145 @@
+<form nz-form #f="ngForm" se-container="2">
+  <se label="{{ '付款公司' | translate }}">
+    <input
+      type="text"
+      nz-input
+      [(ngModel)]="formData.plantName"
+      name="plantName"
+      disabled
+    />
+  </se>
+  <!-- <se label="{{ '付款账号' | translate }}">
+    <input
+      type="text"
+      nz-input
+      [(ngModel)]="formData.payAccountNo"
+      name="payAccountNo"
+    />
+  </se>
+  <se label="{{ '付款方式' | translate }}">
+    <nz-select nzShowSearch [(ngModel)]="formData.payType" name="payType">
+      <nz-option
+        *ngFor="let option of payTypeOptions"
+        [nzLabel]="option.label"
+        [nzValue]="option.value"
+      >
+      </nz-option>
+    </nz-select>
+  </se> -->
+  <se label="{{ '付款金额' | translate }}">
+    <nz-input-number
+      type="text"
+      nz-input
+      [(ngModel)]="formData.payAmount"
+      name="payAmount"
+      nzDisabled
+    ></nz-input-number>
+  </se>
+  <se label="{{ '币种' | translate }}">
+    <nz-select nzShowSearch [(ngModel)]="formData.currency" name="currency" nzDisabled>
+      <nz-option
+        *ngFor="let option of currencyOptions"
+        [nzLabel]="option.label"
+        [nzValue]="option.value"
+      >
+      </nz-option>
+    </nz-select>
+  </se>
+  <se label="{{ '收款客户编码' | translate }}">
+    <input
+      type="text"
+      nz-input
+      [(ngModel)]="formData.cusCode"
+      name="cusCode"
+      disabled
+    />
+  </se>
+  <se label="{{ '收款客户名称' | translate }}">
+    <input
+      type="text"
+      nz-input
+      [(ngModel)]="formData.cusName"
+      name="cusName"
+      disabled
+    />
+  </se>
+  <se label="{{ '收款方账号' | translate }}">
+    <input
+      type="text"
+      nz-input
+      [(ngModel)]="formData.receiveAccountNo"
+      name="receiveAccountNo"
+      disabled
+    />
+  </se>
+  <se label="{{ '收款方账户户名' | translate }}">
+    <input
+      type="text"
+      nz-input
+      [(ngModel)]="formData.receiveAccountName"
+      name="receiveAccountName"
+      disabled
+    />
+  </se>
+  <!-- <se label="{{ '收款方联行号' | translate }}">
+    <input
+      type="text"
+      nz-input
+      [(ngModel)]="formData.receiveCnaps"
+      name="receiveCnaps"
+    />
+  </se> -->
+  <se label="{{ '收款方银行名称' | translate }}">
+    <input
+      type="text"
+      nz-input
+      [(ngModel)]="formData.receiveBankName"
+      name="receiveBankName"
+      disabled
+    />
+  </se>
+  <se label="{{ '申请日期' | translate }}">
+    <input
+      type="text"
+      nz-input
+      [(ngModel)]="formData.endData"
+      name="endData"
+      disabled
+    />
+  </se>
+  <!-- <se label="{{ '收款方省' | translate }}">
+    <input type="text" nz-input [(ngModel)]="formData.prov" name="prov" />
+  </se>
+  <se label="{{ '收款方市' | translate }}">
+    <input type="text" nz-input [(ngModel)]="formData.city" name="city" />
+  </se>
+  <se label="{{ '对公标识' | translate }}">
+    <nz-select nzShowSearch [(ngModel)]="formData.personnel" name="personnel">
+      <nz-option
+        *ngFor="let option of personnelOptions"
+        [nzLabel]="option.label"
+        [nzValue]="option.value"
+      >
+      </nz-option>
+    </nz-select>
+  </se>
+  <se label="{{ '是否加急' | translate }}">
+    <nz-select nzShowSearch [(ngModel)]="formData.urgent" name="urgent">
+      <nz-option
+        *ngFor="let option of yesNoOptions"
+        [nzLabel]="option.label"
+        [nzValue]="option.value"
+      >
+      </nz-option>
+    </nz-select>
+  </se>
+  <se label="{{ '摘要' | translate }}" col="1">
+    <textarea
+      nz-input
+      rows="3"
+      [(ngModel)]="formData.remark"
+      name="remark"
+      required
+    ></textarea>
+  </se> -->
+</form>

@@ -1,0 +1,75 @@
+<div class="modal-header">
+  <div class="modal-title">{{ isModify ? '编辑' : '生成合同' }}</div>
+</div>
+<div style="position: relative; height: 32px" *ngIf="isModify">
+  <button nz-button nzType="dashed" style="position: absolute; right: 0;" (click)="clear()">{{'重置' | translate}}</button>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="2">
+    <se label="{{ '合同模板' | translate }}" *ngIf="!isModify" required>
+      <nz-select #select nzShowSearch name="attachInfoId" [(ngModel)]="i.attachInfoId" (ngModelChange)="attachChange($event)" required>
+        <nz-option *ngFor="let op of attachInfoList" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '合同编码' | translate }}" required>
+      <input nz-input type="text" disabled name="contractCode" [(ngModel)]="i.contractCode">
+    </se>
+    <se label="{{ '合同状态' | translate }}" required>
+      <nz-select #select nzShowSearch name="contractState" [(ngModel)]="i.contractState" nzDisabled required>
+        <nz-option *ngFor="let op of contractStateOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '合同类型' | translate }}" required>
+      <nz-select #select nzShowSearch name="contractType" nzDisabled [(ngModel)]="i.contractType" required>
+        <nz-option *ngFor="let op of contractTypeOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '所属合同' | translate }}">
+      <input nz-input type="text" disabled name="affiliatedContract" [(ngModel)]="i.affiliatedContract">
+    </se>
+    <se label="{{ '客户编码' | translate }}" required>
+      <popup-select [Value]="i.cusCode" [ValueField]="'cusCode'" [Disabled]="true"
+        [Text]="i.cusCode" [TextField]="'cusCode'" required [options]="customersOptions"
+        [gridView]="gridViewCustoms" [columns]="columnsCustoms" (TextChanged)="onPopupSelectTextChanged($event)"
+        (SearchEvent)="searchCustoms($event)" (RowSelect)="onRowSelectCustoms($event)" (SelectTextChange)="OnSelectTextChange($event)">
+      </popup-select>
+    </se>
+    <se label="{{ '客户简称' | translate }}">
+      <input nz-input type="text" disabled name="cusAbbreviation" [(ngModel)]="i.cusAbbreviation">
+    </se>
+    <se label="{{ '供方' | translate }}" required>
+      <nz-select #select nzShowSearch name="plantCode" nzDisabled [(ngModel)]="i.plantCode" (ngModelChange)="generateContractCode('plantCode')" required>
+        <nz-option *ngFor="let op of plantOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '签订日期' | translate }}" required>
+      <nz-date-picker nzFormat="yyyy-MM-dd" [(ngModel)]="i.signingDate" name="signingDate" (ngModelChange)="generateContractCode('signingDate')" required>
+      </nz-date-picker>
+    </se>
+    <se label="{{ '合同所属月份' | translate }}" required>
+      <nz-month-picker nzFormat="yyyy-MM" [(ngModel)]="i.affiliatedMonth" name="affiliatedMonth" required>
+      </nz-month-picker>
+    </se>
+    <se label="{{ '交货地点' | translate }}">
+      <input nz-input type="text" name="deliveryPlace" [(ngModel)]="i.deliveryPlace">
+    </se>
+    <se label="{{ '交货日期' | translate }}">
+      <nz-date-picker nzFormat="yyyy-MM-dd" [(ngModel)]="i.deliveryDate" name="deliveryDate">
+      </nz-date-picker>
+    </se>
+    <se label="{{ '客户合同号' | translate }}">
+      <input nz-input type="text" name="cusContractCode" [(ngModel)]="i.cusContractCode">
+    </se>
+    <se label="{{ '签订地点' | translate }}">
+      <input nz-input type="text" name="signPlace" [(ngModel)]="i.signPlace">
+    </se>
+    <se label="{{ '驳回原因' | translate }}" *ngIf="isModify">
+      <input nz-input type="text" disabled="true" name="reason" [(ngModel)]="i.reason">
+    </se>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="button" (click)="close()">{{ '取消' | translate }}</button>
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save(f)" [nzLoading]="http.loading" [disabled]="verifySave(f)">{{'保存' | translate }}</button>
+  <!-- <button nz-button type="submit" [nzType]="'primary'" (click)="submit(f)" [nzLoading]="http.loading" [disabled]="verifySubmit(f)">{{'生成合同并提交' | translate }}</button> -->
+</div>

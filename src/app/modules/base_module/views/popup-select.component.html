@@ -1,0 +1,70 @@
+<!--
+ * @Author: Zwh
+ * @contact: zhangweika@outlook.com
+ * @Date: 2019-07-15 15:09:04
+ * @LastEditors: Zwh
+ * @LastEditTime: 2019-09-09 17:59:40
+ * @Note: ...
+ -->
+<!-- <nz-input-group [nzSuffix]="suffixIconSearch" [ngStyle]="nzStyle">
+  <input type="text" #selectedValue="ngModel" #anchor nz-input [(ngModel)]="SelectText" [ngModelOptions]="{standalone: true}"
+         (change)="onChange($event)"
+         [disabled]="Disabled" [readOnly]="readOnly" (keyup)="onAnchorKeyup($event)" required="required" (blur)="onBlur()" (focus)="onFocus()">
+</nz-input-group>
+<ng-template #suffixIconSearch>
+  <i nz-icon nzType="close-circle" *ngIf="SelectText" [nzTheme]="'fill'" class="ant-input-clear-icon"></i>
+  <i nz-icon nzType="search" *ngIf="SelectText" ></i>
+</ng-template> -->
+<nz-input-group nzSearch [nzAddOnAfter]="suffixIconSearch" [ngStyle]="nzStyle">
+  <input type="text" nz-input #selectedValue="ngModel" #anchor [(ngModel)]="SelectText" [ngModelOptions]="{standalone: true}"
+        (change)="onChange($event)" [placeholder]="placeHolder" [name]="name"
+        [disabled]="Disabled" [readOnly]="readOnly" (keyup)="onAnchorKeyup($event)" [required]="required">
+</nz-input-group>
+<ng-template #suffixIconSearch>
+  <span>
+    <span
+      style="position: absolute; left:-22px; top:50%; transform: translateY(-50%);cursor: pointer; z-index: 9;">
+      <i nz-icon nzType="close-circle" *ngIf="SelectText && !Disabled" class="ant-input-clear-icon" [nzTheme]="'fill'" title="清空" (click)="ClearValue()"></i>
+    </span>
+    <!-- button 需要添加 type 属性，防止其他控件的回车事件影响 -->
+    <button nz-button nzType="primary" nzSearch type="button" (click)="SelectPopup($event)" [nzLoading]="nzLoading">
+      <i class="anticon anticon-search"></i>
+    </button>
+  </span>
+</ng-template>
+<kendo-popup [anchor]="anchor" #popup [anchorAlign]="anchorAlign" [popupAlign]="popupAlign"
+             (anchorViewportLeave)="show = false"
+             *ngIf="show">
+  <div style="border:1px solid #c0c0c0;">
+    <table cellpadding=0 cellSpacing=0 border=0>
+      <tr>
+        <td style="padding:10px;height:30px;margin:0px;width:260px;" colspan="2">
+          <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
+            <input type="text" nz-input [ngModelOptions]="{standalone: true}" (keydown)="keyDown($event)" [(ngModel)]="SearchValue" [disabled]="Disabled"
+                   style="padding-right: 36px;">
+          </nz-input-group>
+          <ng-template #suffixIconButton>
+            <span>
+              <span
+                style="position: absolute; left:-22px; top:50%; transform: translateY(-50%);cursor: pointer; z-index: 9;">
+                <i class="anticon anticon-close-circle" *ngIf="SelectText && !Disabled" title="清空" (click)="Clear()"></i>
+              </span>
+            <button nz-button nzType="primary" type="button" nzSearch (click)="Search()" [nzLoading]="nzLoading">
+              <i class="anticon anticon-search"></i>
+            </button>
+            </span>
+          </ng-template>
+        </td>
+      </tr>
+      <tr>
+        <td style="padding:10px;margin:0px;border-top:1px solid #c0c0c0;" colspan=2>
+          <ag-grid-angular #agGrid [class]="themeClass" [style.height.px]="kendoHeight" [rowData]="gridView.data"
+            [columnDefs]="columns" (rowSelected)="onRowSelected($event)" [gridOptions]="gridOptions">
+          </ag-grid-angular>
+          <custom-pager #pager [height]="28" [total]="gridView.total" [(pageSize)]="_pageSize" [(pageNo)]="_pageNo" [size]="'small'"
+            [width]="width + 'px'" [fixed]="false" (pageChangeEvent)="onPageChanged($event)" [backgroundStyle]="{ 'background-color': 'rgb(245,247,247)' }"></custom-pager>
+        </td>
+      </tr>
+    </table>
+  </div>
+</kendo-popup>

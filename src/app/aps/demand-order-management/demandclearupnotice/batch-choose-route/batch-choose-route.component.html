@@ -1,0 +1,24 @@
+<!-- 头部 -->
+<div class="modal-header">
+  <div class="modal-title">{{ '批量修改制造路径' | translate}}</div>
+</div>
+<!-- 内容 -->
+<div>
+  <form nz-form #f="ngForm" se-container="2">
+    <se label="{{ '制造路径' | translate}}" required>
+      <popup-select #selRoute1 name="manufRoute" [ID]="'selRoute1'" [Value]="i.routeId" [Text]='i.manufRoute' [ValueField]="'routeId'" [TextField]="'routeName'"
+        [gridView]="gridViewRoute" [columns]="columnsRoute" (TextChanged)="onTextChangedRoute($event)" name="manufRoute" required
+        (SearchEvent)="searchRoute($event)" (RowSelect)="onRowSelectRoute($event)">
+      </popup-select>
+    </se>
+    <se>
+      <button nz-button type="submit" [nzType]="'primary'" (click)="save(f)"
+      [disabled]="!f.valid || !f.dirty" [nzLoading]="http.loading">{{ '保存' | translate}}</button>
+    </se>
+  </form>
+</div>
+<div>
+  <ag-grid-angular #agGrid [class]="themeClass" [style.height.px]="400" [rowData]="gridData"
+    [columnDefs]="columns" [gridOptions]="gridOptions" rowSelection="single" (selectionChanged)="onSelectionChanged($event)">
+  </ag-grid-angular>
+</div>

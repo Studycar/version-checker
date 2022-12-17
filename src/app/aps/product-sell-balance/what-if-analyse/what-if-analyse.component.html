@@ -1,0 +1,32 @@
+<custom-formquery [queryParams]="queryParams" [context]="context" [columnCount]="3"
+                  [labelWidth]="80"></custom-formquery>
+<nz-card>
+  <ag-grid-angular
+    #agGrid
+    [class]="themeClass"
+    [style.height.px]="gridHeight"
+    [rowData]="gridData"
+    [columnDefs]="columns"
+    [gridOptions]="gridOptions"
+    [myAgGridRowKey]="{tb:'TASK_CENTER'}"
+    [myAgGridState]="'TaskCenter'">
+  </ag-grid-angular>
+</nz-card>
+
+<nz-card>
+  <div class="EChart-box">
+    <div class="left">
+      <div echarts class="chart-content" [options]="option"></div>
+    </div>
+    <div class="right">
+      <div echarts class="chart-content" [options]="orderCompletionRateOptions"></div>
+      <div echarts class="chart-content" [options]="orderCompletionRateOptions2"></div>
+    </div>
+  </div>
+</nz-card>
+
+<!--<ng-template #customTemplate let-dataItem>-->
+<!--<span title="{{ '执行日志' | translate}}" (click)="edit(dataItem)" class="pointer">-->
+<!--<i nz-icon nzType="caret-right"></i>-->
+<!--</span>-->
+<!--</ng-template>-->

@@ -1,0 +1,41 @@
+<div nz-row>
+    <div nz-col nzSpan="12">
+        <nz-descriptions [nzTitle]="'工单完工进度' | translate">
+        </nz-descriptions>
+        <div style="display: flex;">
+            <nz-progress [nzPercent]="rate" nzType="circle" style="margin: 0 auto;" [nzWidth]="200"></nz-progress>
+        </div>
+        <div nz-row>
+            <div nz-col nzSpan="8">
+            </div>
+            <div nz-col nzSpan="14">
+                <nz-descriptions nzTitle=" ">
+                    <nz-descriptions-item [nzTitle]="'工单数量' | translate">{{moQty}}</nz-descriptions-item>
+                    <nz-descriptions-item [nzTitle]="'完成数量' | translate">{{completedQty}}</nz-descriptions-item>
+                </nz-descriptions>
+                <nz-descriptions>
+                    <nz-descriptions-item [nzTitle]="'工单完成时间' | translate">{{completedDate}}</nz-descriptions-item>
+                </nz-descriptions>
+            </div>
+        </div>
+    </div>
+    <div nz-col nzSpan="12">
+        <nz-descriptions [nzTitle]="'订单齐套情况' | translate"></nz-descriptions>
+        <div style="display: flex;">
+            <nz-progress [nzPercent]="rate1" nzType="circle" style="margin: 0 auto;" [nzWidth]="200"></nz-progress>
+        </div>
+        <div nz-row>
+            <div nz-col nzSpan="8">
+            </div>
+            <div nz-col nzSpan="14">
+                <nz-descriptions nzTitle=" ">
+                    <nz-descriptions-item [nzTitle]="'工单行数量' | translate">{{orderCount}}</nz-descriptions-item>
+                    <nz-descriptions-item [nzTitle]="'订单行完成数量' | translate">{{orderCompletedCount}}</nz-descriptions-item>
+                </nz-descriptions>
+                <nz-descriptions>
+                    <nz-descriptions-item [nzTitle]="'订单齐套时间' | translate">{{kitTime}}</nz-descriptions-item>
+                </nz-descriptions>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,142 @@
+<div class="modal-header" style="padding-top:10px;padding-bottom:10px;margin-bottom:10px;">
+  <div class="modal-title">{{'查找请求' | translate}}</div>
+</div>
+<div style="margin:0px;padding:10px;width:400px;height:470px;" align="center">
+  <table border=0 cellpadding=0 cellspacing=0 style="width:100%;height:100%;">
+    <tr>
+      <td style="padding-left:20px;">
+        <nz-radio-group [(ngModel)]="this.i.Params.radioValue" [nzSize]="'small'" (ngModelChange)="radChange($event)">
+          <label nz-radio [ngStyle]="radStyle" nzValue="C">{{'已完成个人请求' | translate}}</label>
+          <label nz-radio [ngStyle]="radStyle" nzValue="R">{{'正在处理的个人请求' | translate}}</label>
+          <label nz-radio [ngStyle]="radStyle" nzValue="A">{{'所有个人请求' | translate}}</label>
+          <label nz-radio [ngStyle]="radStyle" nzValue="T">{{'特定请求' | translate}}</label>
+        </nz-radio-group>
+      </td>
+    </tr>
+    <tr style="height: 280px;">
+      <td style="border: 1px solid #c0c0c0;" align="center">
+        <table border=0 cellpadding=0 cellspacing=0 style="width:100%;height:100%;">
+          <tr>
+            <td style="width:40%;padding-right:10px;" align="right">{{'父请求编号' | translate}}</td>
+            <td>
+              <input style="width: 150px;" [nzSize]="'small'" [(ngModel)]="this.i.Params.parentRequestId"
+                [disabled]="this.i.othersDisable" nz-input>
+            </td>
+          </tr>
+          <tr>
+            <td style="width:40%;padding-right:10px;" align="right">{{'请求编号' | translate}}</td>
+            <td>
+              <input style="width: 150px;" [nzSize]="'small'" [(ngModel)]="this.i.Params.requestId"
+                [disabled]="this.i.othersDisable" nz-input>
+            </td>
+          </tr>
+          <tr>
+            <td style="width:40%;padding-right:10px;" align="right">{{'名称' | translate}}</td>
+            <td>
+              <nz-select style="width: 150px;" [(ngModel)]="this.i.Params.programId" [nzSize]="'small'" nzShowSearch
+                [nzDisabled]="this.i.othersDisable" [nzDropdownMatchSelectWidth]="false" [nzDropdownStyle]="selStyle"
+                nzAllowClear>
+                <nz-option *ngFor="let option of listOfProgram" nzCustomContent [nzLabel]="option.label"
+                  [nzValue]="option.value">
+                  <nz-tooltip [nzTitle]="option.label">
+                    <ellipsis lines="1">
+                      <span nz-tooltip>{{option.label | translate}}</span>
+                    </ellipsis>
+                  </nz-tooltip>
+                </nz-option>
+              </nz-select>
+            </td>
+          </tr>
+          <tr>
+            <td style="width:40%;padding-right:10px;" align="right">{{'提交时间' | translate}}</td>
+            <td>
+              <nz-date-picker style="width: 150px;" [(ngModel)]="this.i.Params.requestDate"
+                [nzDisabled]="this.i.othersDisable" [nzSize]="'small'" (ngModelChange)="RequestDate($event)">
+              </nz-date-picker>
+            </td>
+          </tr>
+          <tr>
+            <td style="width:40%;padding-right:10px;" align="right">{{'完成时间' | translate}}</td>
+            <td>
+              <nz-date-picker style="width: 150px;" [(ngModel)]="this.i.Params.actualCompDate"
+                [nzDisabled]="this.i.othersDisable" [nzSize]="'small'" (ngModelChange)="ActualDate($event)">
+              </nz-date-picker>
+            </td>
+          </tr>
+          <tr>
+            <td style="width:40%;padding-right:10px;" align="right">{{'状态' | translate}}</td>
+            <td>
+              <nz-select style="width: 150px;" [(ngModel)]="this.i.Params.statusCode" [nzSize]="'small'" nzAllowClear
+                nzShowSearch [nzDisabled]="this.i.othersDisable">
+                <nz-option *ngFor="let option of listOfStatus" [nzLabel]="option.label" [nzValue]="option.value">
+                </nz-option>
+              </nz-select>
+            </td>
+          </tr>
+          <tr>
+            <td style="width:40%;padding-right:10px;" align="right">{{'阶段' | translate}}</td>
+            <td>
+              <nz-select style="width: 150px;" [(ngModel)]="this.i.Params.phaseCode" [nzSize]="'small'" nzAllowClear
+                nzShowSearch [nzDisabled]="this.i.othersDisable">
+                <nz-option *ngFor="let option of listOfPhase" [nzLabel]="option.label" [nzValue]="option.value">
+                </nz-option>
+              </nz-select>
+            </td>
+          </tr>
+          <tr>
+            <td style="width:40%;padding-right:10px;" align="right">{{'申请人' | translate}}</td>
+            <td>
+              <nz-select style="width: 150px;" [(ngModel)]="this.i.Params.userId" [nzSize]="'small'" nzAllowClear
+                nzShowSearch [nzDisabled]="this.i.othersDisable">
+                <nz-option *ngFor="let option of listOfUser" [nzLabel]="option.label" [nzValue]="option.value">
+                </nz-option>
+              </nz-select>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr style="height: 40px;">
+      <td align="center">
+        <table border=0 cellpadding=0 cellspacing=0 style="width:100%;height:100%;">
+          <tr>
+            <td style="width:40%;padding-right:10px;" align="right">{{'选择要查看的天数' | translate}}</td>
+            <td>
+              <nz-input-number style="width: 150px;" [nzDisabled]="this.i.daysDisable" [(ngModel)]="this.i.Params.days"
+                [nzSize]="'small'" [nzMin]="0" [nzStep]="1">
+              </nz-input-number>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <!-- <tr style="height: 40px;padding-top:5px;">
+      <td align="center">
+        <button nz-button type="button" (click)="SubmitRequest()">
+          {{'提交新请求' | translate}}
+        </button>
+        &nbsp;&nbsp;
+        <button nz-button type="button" (click)="Confrim()">
+          {{'确认' | translate}}
+        </button>
+        &nbsp;&nbsp;
+        <button nz-button type="button" (click)="close()">
+          {{'关闭' | translate}}
+        </button>
+      </td>
+    </tr> -->
+  </table>
+</div>
+<div class="modal-footer">
+  <button nz-button type="button" (click)="SubmitRequest()">
+    {{'提交新请求' | translate}}
+  </button>
+  &nbsp;&nbsp;
+  <button nz-button type="button" (click)="Confrim()">
+    {{'确认' | translate}}
+  </button>
+  &nbsp;&nbsp;
+  <button nz-button type="button" (click)="close()">
+    {{'关闭' | translate}}
+  </button>
+</div>

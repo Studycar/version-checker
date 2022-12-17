@@ -1,0 +1,53 @@
+<custom-formquery [queryParams]="queryParams" [context]="context"
+  (event1)="buCodeOptionsChange($event)"
+  (event2)="planPeriodMonthChange($event)"
+  (event3)="categoryOptionsChange($event)"
+>
+  <span>
+    <custom-button text="{{ '保存' | translate}}" (clickEvent)="save()" [src]="'保存'">
+    </custom-button>
+    <custom-button text="{{ '模拟' | translate}}" (clickEvent)="simulation()" [src]="'建立模型'">
+    </custom-button>
+
+  </span>
+</custom-formquery>
+
+<nz-card>
+  <ag-grid-angular
+    id="intelligentSimulation"
+    #agGrid
+    [class]="themeClass"
+    [style.height.px]="gridHeight"
+    [rowData]="gridData"
+    [columnDefs]="columns"
+    [gridOptions]="gridOptions"
+    [myAgGridRowKey]="{tb:'SOP_PSI_YEAR_PARAM'}"
+    [myAgGridState]="'intelligentSimulation'"
+    (cellValueChanged)="onCellValueChanged($event)"
+    (virtualColumnsChanged)="onVirtualColumnsChanged($event)">
+  </ag-grid-angular>
+</nz-card>
+
+<ng-template #invSalesRatioTemplate let-dataItem>
+  <nz-input-group nzAddOnAfter="%">
+    <nz-input-number [(ngModel)]="dataItem['invSalesRatio']" nzPlaceHolder="请输入1-150" [nzMin]="1" [nzMax]="150" style="width: 100%;"></nz-input-number>
+  </nz-input-group>
+</ng-template>
+
+<ng-template #invRevolveDaysTemplate let-dataItem let-field="params.field">
+  <nz-input-number [(ngModel)]="dataItem['invRevolveMinDays']" style="width: 80px;"></nz-input-number>
+  -
+  <nz-input-number [(ngModel)]="dataItem['invRevolveMaxDays']" style="width: 80px;"></nz-input-number>
+</ng-template>
+
+<ng-template #prodFluSdTemplate let-dataItem>
+  <nz-input-group nzAddOnBefore="<">
+    <nz-input-number [(ngModel)]="dataItem['prodFluSd']" nzPlaceHolder="请输入0.1-8" [nzMin]="0.1" [nzMax]="8" style="width: 100%;"></nz-input-number>
+  </nz-input-group>
+</ng-template>
+
+<ng-template #monthFluRatioTemplate let-dataItem>
+  <nz-input-group nzAddOnAfter="%">
+    <nz-input-number [(ngModel)]="dataItem['monthFluRatio']" nzPlaceHolder="请输入1-50" [nzMin]="1" [nzMax]="50" style="width: 100%;"></nz-input-number>
+  </nz-input-group>
+</ng-template>

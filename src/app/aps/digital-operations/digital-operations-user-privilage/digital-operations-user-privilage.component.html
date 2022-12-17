@@ -1,0 +1,51 @@
+<nz-spin [nzSpinning]="loading">
+  <nz-collapse>
+    <nz-collapse-panel nzHeader="{{'用户区域'|translate}}" [nzActive]="true" [nzDisabled]="true">
+      <form id="kpi_division_form" nzLayout="inline" nz-form #kpi_division_form="ngForm" se-container>
+        <se label="{{'用户名'| translate}}" error="请填写" required>
+          <nz-select [(ngModel)]="selectedUserName" [nzSize]="240" (ngModelChange)="onChangePlant($event)"
+            name="selected_userName" nzShowSearch [nzAllowClear]="false" required>
+            <nz-option *ngFor="let option of users" [nzLabel]="option.label" [nzValue]="option.value">
+            </nz-option>
+          </nz-select>
+        </se>
+        <se>
+          <button nz-button nzType="primary" (click)="saveKpiUserPrivilage()"
+            [disabled]="kpi_division_form.invalid||this.selectedPlant===''||this.selectedDivision===''">
+            {{'保存'| translate}}
+          </button>
+        </se>
+      </form>
+    </nz-collapse-panel>
+    <nz-collapse-panel nzHeader="{{'用户权限选择区域'|translate}}" [nzActive]="true" [nzDisabled]="true">
+      <table style="width: 100%;">
+        <tr>
+          <td style="width: 33%;padding-right: 50px;">
+            <ag-grid-angular #agGrid [class]="themeClass" [style.height.px]="gridHeight"
+              [rowData]="gridOptions_plants.rowData" [columnDefs]="kpi_plants_cols" [gridOptions]="gridOptions_plants"
+              [myAgGridRowKey]="{ tb: 'KPI_FORMS' }" [myAgGridState]="'digital-operations-forms'">
+            </ag-grid-angular>
+          </td>
+          <td style="width: 33%;padding-right: 50px;">
+            <ag-grid-angular #agGrid2 [class]="themeClass" [style.height.px]="gridHeight"
+              [columnDefs]="kpi_division_cols" [rowData]="gridOptions_division.rowData"
+              [gridOptions]="gridOptions_division" [myAgGridRowKey]="{ tb: 'KPI_DIVISION' }"
+              [myAgGridState]="'digital-operations-division'">
+            </ag-grid-angular>
+          </td>
+          <td style="width: 33%;padding-right: 50px;">
+            <ag-grid-angular #agGrid2 [class]="themeClass" [style.height.px]="gridHeight"
+              [columnDefs]="kpi_user_privilage_cols" [rowData]="gridOptions_userPrivilage.rowData"
+              [gridOptions]="gridOptions_userPrivilage" [myAgGridRowKey]="{ tb: 'KPI_DIVISION' }"
+              [myAgGridState]="'digital-operations-report'">
+            </ag-grid-angular>
+          </td>
+        </tr>
+      </table>
+    </nz-collapse-panel>
+  </nz-collapse>
+</nz-spin>
+<ng-template #customTemplate1 let-dataItem>
+  <!-- <input type="checkbox" [(checked)]="dataItem.CHECKED" /> -->
+  <label nz-checkbox [(ngModel)]="dataItem.checked"></label>
+</ng-template>

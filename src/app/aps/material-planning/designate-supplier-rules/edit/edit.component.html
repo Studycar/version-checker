@@ -1,0 +1,63 @@
+<div class="modal-header">
+    <div class="modal-title">{{ title | translate }}</div>
+</div>
+<div style="position: relative; height: 32px" *ngIf="params.id">
+    <button nz-button nzType="dashed" style="position: absolute; right: 0;" (click)="clear()">重置</button>
+</div>
+<div>
+    <form nz-form #f="ngForm" se-container="2">
+        <se label="{{'工厂' | translate}}" required>
+            <nz-select [(ngModel)]="params.plantCode" name="plantCode" [disabled]="editDisabled" required>
+                <nz-option *ngFor="let option of plantOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+            </nz-select>
+        </se>
+        <se label="{{'项目号' | translate}}">
+            <input type="text" nz-input [(ngModel)]="params.projectNumber" name="projectNumber">
+        </se>
+        <se label="{{'上阶物料编码' | translate }}" required>
+            <popup-select
+            [(SelectText)]="params.assemblyItemId"
+            [TextField]="'itemCode'"
+            [ValueField]="'itemCode'"
+            [gridView]="itemOptions"
+            [columns]="columnsItems"
+            (SearchEvent)="searchItems($event)" 
+            required>
+            </popup-select>
+        </se>
+        <se label="{{'替代项' | translate}}">
+            <input type="text" nz-input [(ngModel)]="params.alternateBomDesignator" name="alternateBomDesignator">
+        </se>
+        <se label="{{'物料编码' | translate }}" required>
+            <popup-select
+            [(SelectText)]="params.itemId"
+            [TextField]="'itemCode'"
+            [ValueField]="'itemCode'"
+            [gridView]="itemOptions"
+            [columns]="columnsItems"
+            (SearchEvent)="searchItems($event)"
+            required>
+            </popup-select>
+        </se>
+        <se label="{{'bom版本' | translate}}" >
+            <input type="text" nz-input [(ngModel)]="params.bomVersion" name="bomVersion" >
+        </se>
+        <se label="{{'供应商编码' | translate}}" >
+            <popup-select
+            [(SelectText)]="params.vendorNumber"
+            [TextField]="'vendorNumber'"
+            [ValueField]="'vendorNumber'"
+            [gridView]="vendorOptions"
+            [columns]="columnsVendor"
+            (SearchEvent)="searchVendor($event)">
+            </popup-select>
+        </se>
+        <se label="{{'品牌编码' | translate}}" >
+            <input type="text" nz-input [(ngModel)]="params.brandNumber" name="brandNumber" >
+        </se>
+    </form>
+</div>
+<div class="modal-footer">
+    <button nz-button type="submit" [nzType]="'primary'" [disabled]="!params.plantCode || !params.itemId || !params.assemblyItemId" [nzLoading]="http.loading" (click)="save()">{{'保存' | translate}}</button>
+    <button nz-button type="button" (click)="close()">{{'关闭' | translate}}</button>
+</div>

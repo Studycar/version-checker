@@ -1,0 +1,55 @@
+.div-container {
+  padding: 5px 0;
+  background: #ffffff;
+}
+.verticalField {
+  width: 320px;
+  height: 230px;
+  se {
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+  }
+  ::ng-deep .se__horizontal{
+    margin:0 !important;
+  }
+}
+
+[controlclass=verticalTitle] {
+  display: block !important;
+  ::ng-deep .ant-form-item-label {
+    line-height: 16px;
+    .se__label {
+      justify-content: flex-start;
+    }
+    & > label::after {
+      content: '';
+    }
+  }
+}
+
+.verticalBtn {
+  padding: 0 8px;
+  display: flex;
+  justify-content: space-between;
+  div {
+    flex: 1;
+    &:last-child {
+      text-align: right;
+    }
+  }
+}
+
+.form-css {
+  margin-top: 0;
+  border-top: solid 5px rgb(217, 217, 217);
+  background-color: rgb(248, 248, 2);
+}
+
+.content-title {
+  border-style: none;
+  background-color: rgb(248, 248, 248);
+}
+
+:host ::ng-deep .ant-calendar-picker {
+  width: 100% !important;
+}

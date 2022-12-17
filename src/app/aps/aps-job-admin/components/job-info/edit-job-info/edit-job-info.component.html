@@ -1,0 +1,97 @@
+<div class="modal-header">
+  <div class="modal-title"> {{ '参数信息' | translate }}</div>
+</div>
+
+<div>
+  <form nz-form #f="ngForm" se-container="2">
+    <se label="任务">
+      <nz-select nzShowSearch nzAllowClear [(ngModel)]="parameter.executorHandler" (ngModelChange)="executorHandlerOnChange($event)" name="executorHandler">
+        <nz-option *ngFor="let option of executorHandlers" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+    <se label="执行器">
+      <input type="text" nz-input [(ngModel)]="parameter.jobGroup" name="jobGroup" disabled>
+    </se>
+    <se label="任务描述">
+      <input type="text" nz-input [(ngModel)]="parameter.jobDesc" name="jobDesc" disabled>
+    </se>
+    <se label="路由策略">
+      <nz-select nzShowSearch nzAllowClear [(ngModel)]="parameter.executorRouteStrategy" name="executorRouteStrategy">
+        <nz-option *ngFor="let option of executorRouteStrategies" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+    <se label="Cron">
+      <input type="text" nz-input [(ngModel)]="parameter.jobCron" name="jobCron">
+    </se>
+    <se label="运行模式" hidden="true">
+      <input type="text" nz-input [(ngModel)]="parameter.glueType" name="glueType">
+    </se>
+    <se label="阻塞处理策略" hidden="true">
+      <input type="text" nz-input [(ngModel)]="parameter.executorBlockStrategy" name="executorBlockStrategy">
+    </se>
+    <se label="子任务ID" hidden="true">
+      <input type="text" nz-input [(ngModel)]="parameter.childJobId" name="childJobId">
+    </se>
+    <se label="任务超时时间" hidden="true">
+      <input type="text" nz-input [(ngModel)]="parameter.executorTimeout" name="executorTimeout">
+    </se>
+    <se label="失败重试次数">
+      <input type="text" nz-input [(ngModel)]="parameter.executorFailRetryCount" name="executorFailRetryCount">
+    </se>
+    <se label="负责人">
+      <input type="text" nz-input [(ngModel)]="parameter.author" name="author" disabled>
+    </se>
+    <se label="报警邮件">
+      <input type="text" nz-input [(ngModel)]="parameter.alarmEmail" name="alarmEmail">
+    </se>
+    <se label="立即启动">
+      <label nz-checkbox [(ngModel)]="parameter.startImmediately" name="startImmediately"></label>
+    </se>
+    <nz-divider></nz-divider>
+    <!--MRP-->
+    <ng-container *ngIf="executorHandlerType===0">
+      <se label="计划名称">
+        <nz-select nzShowSearch nzAllowClear [(ngModel)]="parameter.executorParam[0].planName" name="planName">
+          <nz-option *ngFor="let option of planNames" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+        </nz-select>
+      </se>
+    </ng-container>
+
+    <!--pc齐套-->
+    <ng-container *ngIf="executorHandlerType===1">
+      <se label="工厂组织">
+        <nz-select nzShowSearch nzAllowClear [(ngModel)]="parameter.executorParam[1].plantCode" name="plantCode">
+          <nz-option *ngFor="let option of organizationId" [nzLabel]="option.label"
+                     [nzValue]="option.value"></nz-option>
+        </nz-select>
+      </se>
+    </ng-container>
+
+    <!--pc备料-->
+    <ng-container *ngIf="executorHandlerType===2">
+      <se label="工厂组织">
+        <nz-select nzShowSearch nzAllowClear [(ngModel)]="parameter.executorParam[2].plantCode" name="plantCode">
+          <nz-option *ngFor="let option of organizationId" [nzLabel]="option.label"
+                     [nzValue]="option.value"></nz-option>
+        </nz-select>
+      </se>
+      <se label="采购员">
+        <nz-select nzShowSearch nzAllowClear [(ngModel)]="parameter.executorParam[2].buyer" name="buyer">
+          <nz-option *ngFor="let option of buyers" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+        </nz-select>
+      </se>
+      <se label="物料号">
+        <input type="text" nz-input [(ngModel)]="parameter.executorParam[2].listItem" name="listItem">
+      </se>
+    </ng-container>
+  </form>
+</div>
+
+<div align="center" style="padding-top:10px;">
+  <button nz-button type="button" (click)="save()">
+    {{'保存' | translate}}
+  </button>&nbsp;&nbsp;
+  <button nz-button type="button" (click)="close()">
+    {{'取消' | translate}}
+  </button>
+</div>

@@ -1,0 +1,38 @@
+<div class="modal-header">
+  <div class="modal-title">{{ i.titleText | translate}} </div>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="2" [labelWidth]=100>
+
+
+    <se label="{{ '工厂' | translate}}" required>
+      <nz-select style="width:200px;" [(ngModel)]="i.plantCode" nzShowSearch name="plantCode" [nzDisabled]="Istrue"
+        (ngModelChange)="onChangePlant($event)" nzAllowClear required>
+        <nz-option *ngFor="let o of optionListPlant" [nzValue]="o.plantCode" [nzLabel]="o.plantCode"></nz-option>
+        <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+          <i nz-icon nzType="loading" nzTheme="outline"></i> Loading Data...
+        </nz-option>
+      </nz-select>
+    </se>
+
+    <se label="{{ '排产日期范围' | translate}}">
+      <nz-range-picker [(ngModel)]="dateRange" (ngModelChange)="onDateRangeChange($event)" name="dateRange">
+      </nz-range-picker>
+    </se>
+
+
+  </form>
+
+  <div style="text-align:right;margin-bottom: 5px;">
+    <button nz-button type="submit " (click)="confirm() " [nzType]=" 'primary' " [disabled]="f.invalid ">{{ '确定' |
+    translate}}</button>
+    <button nz-button type=" button " (click)="close() ">{{ '关闭' | translate}}</button>
+  </div>
+</div>
+
+<nz-card>
+  <ag-grid-angular #agGrid [class]="themeClass" [style.height.px]="gridHeight" [rowData]="gridData"
+    [columnDefs]="columns" [gridOptions]="gridOptions" (selectionChanged)="onSelectionChanged($event)"
+    [myAgGridState]="'digitalization11'">
+  </ag-grid-angular>
+</nz-card>

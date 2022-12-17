@@ -1,0 +1,19 @@
+<div class="modal-header">
+  <div class="modal-title">{{'密码规则' | translate}}</div>
+</div>
+<div class="pwdBox">
+  <div>
+    <label
+      nz-checkbox
+      [(ngModel)]="allChecked"
+      (ngModelChange)="updateAllChecked()"
+      [nzIndeterminate]="indeterminate">
+      全选
+    </label>
+  </div>
+  <br />
+  <nz-checkbox-group [(ngModel)]="ruleList" nzIndeterminate (ngModelChange)="updateSingleChecked()" ></nz-checkbox-group>
+</div>
+<div class="modal-footer">
+  <button nz-button nzType="primary" (click)="updatePasswordRule()" >更新密码规则</button>
+</div>

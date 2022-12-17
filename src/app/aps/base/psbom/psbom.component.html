@@ -1,0 +1,26 @@
+<custom-formquery
+  [queryParams]="queryParams"
+  [context]="context"
+  [labelWidth]="75"
+  (event1)="regionchange($event)"
+  (event2)="plantChange($event)"
+  (event3)="searchItems($event)"
+  (event4)="rowSelect($event)"
+>
+  <custom-button text="{{ '导出' | translate}}" (clickEvent)="export()" [src]="'基础icon-导出'">
+  </custom-button>
+</custom-formquery>
+<nz-card>
+  <ag-grid-angular #agGrid [class]="themeClass" [style.height.px]="gridHeight" [rowData]="gridData"
+    [columnDefs]="columns" [gridOptions]="gridOptions" (selectionChanged)="onSelectionChanged($event)"
+    [myAgGridRowKey]="{tb:'PS_BOM_COMPONENTS'}" [myAgGridState]="'psbom'">
+  </ag-grid-angular>
+  <custom-pager [height]="pagerHeight" [context]="context" [view]='context.view' [(pageSize)]="_pageSize"
+    [(pageNo)]="_pageNo" (pageChangeEvent)="onPageChanged($event)"></custom-pager>
+  <custom-excelexport [expColumns]='expColumns' fileName='BOM查询' #excelexport></custom-excelexport>
+</nz-card>
+<ng-template #customTemplate let-dataItem>
+  <span title="明细" (click)="add(dataItem)" style="cursor: Pointer">
+        <i class="anticon anticon-plus"></i>
+  </span>
+</ng-template>

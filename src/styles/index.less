@@ -1,0 +1,221 @@
+// 建议所有项目自定义样式放在该文件夹下
+@import './fix/index';
+
+.content-title {
+  // display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #929292;
+  padding: 8px;
+  padding-top: -4px;
+  padding-bottom: -4px;
+  // margin-right: -12px;
+  margin: 0 -12px;
+  margin-bottom: 12px;
+  background-color: #fafbfc;
+  border-bottom: 1px solid #efe3e5;
+}
+
+.content-title se {
+  margin-bottom: 0;
+}
+
+.ad-header-search {
+  display: block;
+  height: 32px;
+  line-height: 32px;
+  .anticon-search {
+    cursor: pointer;
+    font-size: 16px;
+  }
+  .input {
+    transition: width 0.3s, margin-left 0.3s;
+    width: 0;
+    background: transparent;
+    border-radius: 0;
+    color: #ced4d9;
+    .ant-select-selection {
+      background: transparent;
+      color: #ced4d9;
+      border: none;
+      box-shadow: none;
+      padding-left: 32px;
+    }
+    input {
+      color: #ced4d9;
+      border: 0;
+      padding-right: 0;
+      box-shadow: none !important;
+      &::placeholder {
+        color: #a3b1bf;
+      }
+    }
+    &,
+    &:hover,
+    &:focus {
+      border-bottom: 1px solid @border-color-base;
+    }
+    &.show {
+      width: 300px;
+      margin-left: 8px;
+    }
+  }
+  .ant-select-selection-selected-value ng-tns-c4-2 ng-star-inserted {
+    display: none;
+  }
+}
+
+/*add by jianl 用于控制ag-grid的单元格选中*/
+.agCellSelection {
+  -webkit-user-select: all !important;
+  -moz-user-select: all !important;
+  -ms-user-select: element !important;
+  user-select: all !important;
+  // background-color: lightgreen !important;
+}
+
+.agGridCellFont {
+  font-size: 13px;
+  font-family: "Chinese Quote", -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-variant: tabular-nums;
+  color: rgba(0, 0, 0, 0.65);
+}
+
+.agGridHeaderFont {
+  font-size: 13px;
+  font-family: "Chinese Quote", -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-variant: tabular-nums;
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.agGridCellSpan {
+  background-color: #ffffff;
+  border: solid 1px black;
+}
+
+.agGridShowCell {
+  background: white;
+  border-left: 1px solid lightgrey !important;
+  border-right: 1px solid lightgrey !important;
+  border-bottom: 1px solid lightgrey !important;
+}
+
+.agGridShowCell {
+  font-weight: bold;
+  text-align: center
+}
+
+.agGridCellNoField{
+  padding: auto;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.disabled {
+  background-color: rgb(245, 245, 245);
+}
+
+.spanStyle {
+  cursor: Pointer;
+  padding-left: 4px;
+  padding-right: 4px
+}
+
+/*add by chengf8 20190311 用于解决首页页签空隙大的问题*/
+.ant-tabs-nav .ant-tabs-tab {
+  display: inline-block;
+  height: 100%;
+  margin: 0 15px 0 0;
+  padding: 12px 16px;
+  box-sizing: border-box;
+  position: relative;
+  transition: color 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+  cursor: pointer;
+  text-decoration: none;
+}
+
+/*add by chengf8 20190309 用于解决首页搜索框显示不全的样式*/
+.alain-pro__header-item {
+  display: inline-flex;
+  justify-items: center;
+  align-items: center;
+  cursor: pointer;
+  padding: 0 12px;
+  position: relative;
+  transition: all 0.3s;
+  height: 29px;
+}
+
+.align-items-center {
+  justify-content: center;
+}
+
+//可拖动modal需要充设外围.dialog样式
+nz-modal {
+  display: block;
+}
+
+.resetModalDialog {
+  position: unset;
+  overflow: hidden;
+  left: auto;
+  right: auto;
+  top: auto;
+  bottom: auto;
+  .ant-modal-content {
+    border: 1px solid #e1e1e1;
+  }
+}
+
+// 控件长短一致样式
+form .ant-calendar-picker, form span.ant-calendar-picker, form .ant-time-picker, form .ant-input-number{
+  width: 100% !important;
+}
+
+
+.se__control {
+  overflow: hidden;
+}
+
+.ag-theme-balham .ag-selection-checkbox:not(.ag-hidden) ~ .ag-group-checkbox, .ag-theme-balham .ag-group-expanded:not(.ag-hidden) ~ .ag-group-checkbox, .ag-theme-balham .ag-group-contracted:not(.ag-hidden) ~ .ag-group-checkbox, .ag-theme-balham .ag-group-checkbox:not(.ag-invisible) ~ .ag-group-checkbox{
+  margin-left: 5px;
+}
+
+.ag-theme-balham .ag-ltr .ag-row-group-leaf-indent{
+  margin-left: 5px;
+}
+
+// 用于首页走马灯切换当前页凸显
+.slick-active .dot-template {
+  background-color: #333 !important;
+}
+
+// 用于修改表格列筛选框输入框聚焦颜色
+.ag-filter {
+  input:focus-visible {
+    outline: #1890ff auto 1px;
+  }
+}
+
+// 标签下三角图标
+.tag-triangle {
+  position: absolute;
+  margin-top: -6px;
+  display: block;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.tag-triangle i {
+  margin-right: 0 !important;
+}
+
+.after-search-label {
+  margin-right: 10px;
+}
+
+.operatecell > .ng-star-inserted {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

@@ -1,0 +1,26 @@
+<div class="modal-header" style="margin-bottom: 0;">
+  <div class="modal-title">{{ '库存现有量' | translate }}</div>
+</div>
+<custom-formquery [queryParams]="queryParams" [context]="context">
+  <span>
+    <custom-button text="{{ '导出' | translate }}" (clickEvent)="exportFile()" [src]="'基础icon-导出'"></custom-button>
+  </span>
+</custom-formquery>
+<form nz-form #f="ngForm" se-container="3">
+  <se label="{{'总数' | translate}}">
+    <span>{{ statisticsResult.totalCount }}</span>
+  </se>
+  <se label="{{'可净得合计' | translate}}">
+    <span>{{ statisticsResult.nettingTypeCount }}</span>
+  </se>
+  <se label="{{ '不可净得合计' | translate }}">
+    <span>{{ statisticsResult.notNettingTypeCount }}</span>
+  </se>
+</form>
+<nz-card>
+  <ag-grid-angular #agGrid [class]="themeClass" [style.height.px]="gridHeight" [rowData]="gridData" [columnDefs]="columns" [pagination]='false'
+    [gridOptions]="gridOptions" [myAgGridRowKey]="{tb:'MRP_ONHAND_QUANTITY'}" [myAgGridState]="'MRP_ONHAND_QUANTITY'">
+  </ag-grid-angular>
+  <custom-excelexport [expColumns]='expColumns' [expColumnsOptions]='expColumnsOptions' fileName='Mrp计划-库存现有量' #excelexport>
+  </custom-excelexport>
+</nz-card>

@@ -1,0 +1,42 @@
+<custom-formquery [queryParams]="queryParams" [context]="context" (event1)="searchItemsFrom($event)"
+  [labelWidth]="80">
+  <span>
+    <custom-button text="{{ '导出' | translate}}" (clickEvent)="export()" [src]="'基础icon-导出'">
+    </custom-button>
+
+    <custom-button text="{{ '净需求生成' | translate}}" (clickEvent)="setReqOrder()" [src]="'净需求生成'">
+    </custom-button>
+    <custom-button text="{{ '发布' | translate}}" (clickEvent)="publish()" [src]="'自动拆分合并'">
+    </custom-button>
+    <custom-button text="{{ '例外信息' | translate}}" (clickEvent)="otherInfo()" [src]="'引入需求工作台'">
+    </custom-button>
+<!--      <custom-button text="{{'库存检查' | translate}}" (clickEvent)="inventoryCheck()" [src]="'inventory-check'"></custom-button>-->
+  </span>
+</custom-formquery>
+<nz-card>
+  <ag-grid-angular
+    #agGrid
+    domLayout='normal'
+    [class]="themeClass"
+    [style.height.px]="gridHeight"
+    [rowData]="gridData"
+    [pagination]="false"
+    [columnDefs]="columns"
+    [columnTypes]="columnTypes"
+    [suppressRowTransform]="true"
+    [gridOptions]="gridOptions"
+    [myAgGridRowKey]="{tb:'PP_MTS_PEGGING'}"
+    (cellDoubleClicked)="onCellDoubleClicked($event)"
+  >
+  </ag-grid-angular>
+  <div>{{ '总记录数：' | translate}}{{gridData && gridData.length}}</div>
+  <!-- <custom-pager [height]="pagerHeight" [context]="context" [view]='context.view' [(pageSize)]="_pageSize"
+    [(pageNo)]="_pageNo" (pageChangeEvent)="onPageChanged($event)"></custom-pager> -->
+  <custom-excelexport [expColumns]='expColumns' [expColumnsOptions]='expColumnsOptions' fileName='MTS计划工作台' #excelexport></custom-excelexport>
+</nz-card>
+<ng-template #customTemplate let-dataItem>
+<div style="text-decoration:underline;">{{dataItem.beginning}}</div>
+</ng-template>
+<ng-template #customTemplate1 let-dataItem  let-str="params.str">
+  <div style="text-decoration:underline;">{{dataItem['COL' + str]}}</div>
+</ng-template>

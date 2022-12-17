@@ -1,0 +1,35 @@
+<custom-formquery [queryParams]="queryParams" [context]="context" (event1)="plantChange($event)" (event2)="itemCodeChange($event)"
+  (event3)="itemCodeChange($event)" (event4)="searchItemsFrom($event)">
+  <span>
+    <!--<custom-button text="{{ '保存' | translate}}" (clickEvent)="Save()" [src]="'btn_save'">
+    </custom-button>-->
+    <custom-button text="{{ '供需生成' | translate}}" (clickEvent)="setReqOrder()" [src]="'供需生成'">
+    </custom-button>
+    <!-- <custom-button text="{{ '数据刷新' | translate}}" (clickEvent)="refreshData()" [src]="'基础icon-刷新'">
+    </custom-button> -->
+    <custom-button text="{{ '下达' | translate}}" (clickEvent)="goDown()" [src]="'批量下达'">
+    </custom-button>
+    <custom-button text="{{ '单元格下达' | translate}}" (clickEvent)="oneGoDown()" [src]="'单元格下达'">
+    </custom-button>
+
+    <custom-button text="{{ '工艺路线' | translate}}" (clickEvent)="itemRoutings()" [src]="'工艺路线'">
+    </custom-button>
+    <custom-button text="{{ 'BOM组件' | translate}}" (clickEvent)="bomCompent()" [src]="'BOM组件'">
+    </custom-button>
+    <custom-button text="{{ '导出' | translate}}" (clickEvent)="export()" [src]="'基础icon-导出'">
+    </custom-button>
+    <custom-button text="{{'库存检查' | translate}}" (clickEvent)="inventoryCheck()" [src]="'inventory-check'"></custom-button>
+    <custom-button text="{{'计划单' | translate}}" (clickEvent)="createPlanOrder()" [src]="'计划发布'"></custom-button>
+  </span>
+</custom-formquery>
+<nz-card>
+  <ag-grid-angular #agGrid id="shareIssued" [class]="themeClass" [style.height.px]="gridHeight" [rowData]="gridData" [columnDefs]="columns"
+    [gridOptions]="gridOptions" (selectionChanged)="onSelectionChanged()" [components]="components" (cellValueChanged)="cellCloseHandler($event)"
+    [suppressRowTransform]="true" [myAgGridRowKey]="{tb:'PP_SHARE_PLAN_HEADER'}" [myAgGridState]="'SharePlanShareIssuedWorkbench'"
+    (virtualColumnsChanged)="onVirtualColumnsChanged($event)" [isRowSelectable]="isRowSelectable" [getRowClass]="getRowClass"
+    (cellClicked)="cellClickHandler($event)" [suppressRowClickSelection]="true">
+  </ag-grid-angular>
+  <custom-pager [height]="pagerHeight" [context]="context" [view]='context.view' [(pageSize)]="_pageSize" [(pageSizes)]='pageSizes'
+    [(pageNo)]="_pageNo" (pageChangeEvent)="onPageChanged($event)"></custom-pager>
+  <custom-excelexport [expColumns]='expColumns' fileName='共享件计划' #excelexport></custom-excelexport>
+</nz-card>

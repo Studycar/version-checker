@@ -1,0 +1,58 @@
+<nz-input-group nzSuffixIcon="anticon anticon-search" [ngStyle]="nzStyle" (click)="SelectPopup($event)" cdkOverlayOrigin
+  #trigger="cdkOverlayOrigin">
+  <input type="text" nz-input #anchor [(ngModel)]="SelectText" [ngModelOptions]="{standalone: true}"
+    (change)="onChange($event)" [disabled]="Disabled" [readOnly]="readOnly" required>
+</nz-input-group>
+
+<ng-template cdkConnectedOverlay [cdkConnectedOverlayOrigin]="trigger" [cdkConnectedOverlayFlexibleDimensions]="true"
+  [cdkConnectedOverlayOpen]="show" [cdkConnectedOverlayPositions]="positions" [cdkConnectedOverlayPush]="true"
+  [cdkConnectedOverlayScrollStrategy]="scrollStrategy" (overlayKeydown)="keydown($event)">
+  <div #popup style="border:1px solid #c0c0c0; background-color: #f8f8f8;">
+    <table cellpadding="0" cellSpacing="0" border="0">
+      <tr>
+        <td style="padding:10px; height:30px; margin:0; width:260px;" colspan="2">
+          <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
+            <input type="text" nz-input [ngModelOptions]="{standalone: true}" [(ngModel)]="SearchValue"
+              style="padding-right: 36px;">
+          </nz-input-group>
+          <ng-template #suffixIconButton>
+            <span>
+              <span
+                style="position: absolute; left: -22px; top: 50%; transform: translateY(-50%);cursor: pointer; z-index: 9;">
+                <i class="anticon anticon-close-circle" title="清空" (click)="Clear()"></i>
+              </span>
+              <button nz-button nzType="primary" nzSearch (click)="Search()" [nzLoading]="nzLoading">
+                <i class="anticon anticon-search"></i>
+              </button>
+            </span>
+          </ng-template>
+        </td>
+      </tr>
+      <tr>
+        <td style="padding:10px; margin:0; border-top:1px solid #c0c0c0;" colspan="2">
+          <kendo-grid [height]="kendoHeight" [ngStyle]="kendoStyle" [data]="gridView" [pageSize]="pageSize"
+            [skip]="skip" [sortable]="true" [sort]="sort" (sortChange)="sortChange($event)"
+            (pageChange)="pageChange($event)" [loading]="nzLoading"
+            [pageable]="{ buttonCount: 2, info: true, type: numeric, pageSizes: true, previousNext: true }"
+            [resizable]="true" [reorderable]="true" [selectable]="{'checkboxOnly': false,'mode': 'single'}"
+            [selectedKeys]="mySelection" (selectedKeysChange)="onSelectedKeysChange($event)"
+            [kendoGridSelectBy]="ValueField">
+            <kendo-grid-messages pagerPage="{{ '分页' | translate}}" pagerOf="{{ '的' | translate}}"
+              pagerItems="{{ '总数' | translate}}" pagerItemsPerPage="{{ '页项' | translate}}"
+              groupPanelEmpty="Drag here to group" noRecords="{{ '没有数据' | translate}}">
+            </kendo-grid-messages>
+            <kendo-grid-column *ngFor="let column of columns" [field]="column.field"
+              title="{{ column.title | translate}}" [width]="column.width" [hidden]="column.hidden">
+              <ng-template kendoGridHeaderTemplate let-column>
+                <span nz-tooltip [nzTitle]="column.title">{{column.title}}</span>
+              </ng-template>
+              <ng-template kendoGridCellTemplate let-dataItem>
+                <span nz-tooltip [nzTitle]="dataItem[column.field]">{{dataItem[column.field]}}</span>
+              </ng-template>
+            </kendo-grid-column>
+          </kendo-grid>
+        </td>
+      </tr>
+    </table>
+  </div>
+</ng-template>

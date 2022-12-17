@@ -1,0 +1,98 @@
+@import '~@angular/cdk/overlay-prebuilt.css';
+
+.modal-plus-container {
+  pointer-events: none !important;
+}
+
+.flexible-size {
+  transform-origin: center center 0;
+  pointer-events: auto;
+  min-width: 100px;
+  min-height: 100px;
+  max-width: 100vw;
+  max-height: 100vh;
+}
+
+.flexible-size .flexible-modal-header {
+  cursor: move;
+}
+
+.flexible-size.e-resize,
+.flexible-size.w-resize,
+.flexible-size.ne-resize,
+.flexible-size.nw-resize,
+.flexible-size.n-resize,
+.flexible-size.s-resize,
+.flexible-size.se-resize,
+.flexible-size.sw-resize {
+  user-select: none;
+}
+
+.flexible-size.e-resize,
+.flexible-size.e-resize .flexible-modal-header {
+  cursor: e-resize;
+}
+
+.flexible-size.w-resize,
+.flexible-size.w-resize .flexible-modal-header {
+  cursor: w-resize;
+}
+
+.flexible-size.ne-resize,
+.flexible-size.ne-resize .flexible-modal-header {
+  cursor: ne-resize;
+}
+
+.flexible-size.nw-resize,
+.flexible-size.nw-resize .flexible-modal-header {
+  cursor: nw-resize;
+}
+
+.flexible-size.n-resize,
+.flexible-size.n-resize .flexible-modal-header {
+  cursor: n-resize;
+}
+
+.flexible-size.s-resize,
+.flexible-size.s-resize .flexible-modal-header {
+  cursor: s-resize;
+}
+
+.flexible-size.se-resize,
+.flexible-size.se-resize .flexible-modal-header {
+  cursor: se-resize;
+}
+
+.flexible-size.sw-resize,
+.flexible-size.sw-resize .flexible-modal-header {
+  cursor: sw-resize;
+}
+
+/* 弹层初始化大小 */
+/* Small screen / tablet */
+@media (min-width: 576px) {
+  .modal-sm .ant-modal-aps {
+    width: 300px;
+  }
+}
+
+/* Medium screen / desktop */
+@media (min-width: 768px) {
+  .modal-md .ant-modal-aps {
+    width: 600px;
+  }
+}
+
+/* Large screen / wide desktop */
+@media (min-width: 992px) {
+  .modal-lg .ant-modal-aps {
+    width: 900px;
+  }
+}
+
+/* Extra large screen / large descktop */
+@media (min-width: 1600px) {
+  .modal-xl .ant-modal-aps {
+    width: 1200px;
+  }
+}

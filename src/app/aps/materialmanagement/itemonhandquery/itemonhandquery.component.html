@@ -1,0 +1,25 @@
+<custom-formquery [queryParams]="queryParams" [context]="context" (event1)="searchItems($event)" (event2)="plantChange($event)" (event3)="onItemsTextChanged($event)"
+(event4)="searchWares($event)"
+(event5)="onWaresSelect($event)"
+(event6)="onWaresTextChanged($event)"
+>
+  <span>
+    <custom-button text="{{ '导出' | translate}}" (clickEvent)="export()" [src]="'基础icon-导出'">
+    </custom-button>
+  </span>
+</custom-formquery>
+<nz-card>
+  <ag-grid-angular #agGrid [class]="themeClass" [style.height.px]="gridHeight" [rowData]="gridData"
+    [columnDefs]="columns" [gridOptions]="gridOptions" (selectionChanged)="onSelectionChanged($event)" (filterChanged)="onFilterChanged($event)"
+    [myAgGridRowKey]="{tb:'PS_ONHAND_QUANTITIES'}" [myAgGridState]="'itemonhand'">
+  </ag-grid-angular>
+  <custom-pager [height]="pagerHeight" [context]="context" [view]='context.view' [(pageSize)]="_pageSize"
+    [(pageNo)]="_pageNo" (pageChangeEvent)="onPageChanged($event)"></custom-pager>
+  <custom-excelexport [context]="context" [expColumns]='expColumns' [expColumnsOptions]="expColumnsOptions" fileName='现有量' #excelexport></custom-excelexport>
+</nz-card>
+
+<ng-template #customTemplate let-dataItem>
+<span title="{{ '明细' | translate}}"  (click)="detail(dataItem)" class="pointer" *ngIf="!dataItem.isBottomRowData">
+  <i class="anticon anticon-bars"></i>
+</span>
+</ng-template>

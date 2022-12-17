@@ -1,0 +1,119 @@
+<custom-formquery [queryParams]="queryParamsEx" [context]="context">
+  <span>
+    <custom-button text="{{ '新增' | translate }}" (clickEvent)="add()" [src]="'基础icon-新增'">
+    </custom-button>
+    <custom-button text="{{ '导出' | translate }}" (clickEvent)="export()" [src]="'基础icon-导出'">
+    </custom-button>
+  </span>
+</custom-formquery>
+<nz-card>
+  <!-- <kendo-grid #grid [data]="viewEx | async" [height]="gridHeight" [pageSize]="gridState.take" [skip]="gridState.skip"
+    [sort]="gridState.sort" [sortable]="true" (dataStateChange)="onStateChange($event)" [filter]="gridState.filter"
+    filterable="menu" [resizable]="true" [selectable]="true" [kendoGridSelectBy]="'FLEX_VALUE_SET_NAME'"
+    [selectedKeys]="mySelection" [columnMenu]="true" [reorderable]="true" [pageable]="{
+      buttonCount: 10,
+      info: true,
+      pageSizes: true,
+      previousNext: true
+    }">
+    <kendo-grid-messages pagerPage="分页" pagerOf="的" pagerItems="总数" pagerItemsPerPage="页项"
+      groupPanelEmpty="Drag here to group" noRecords="没有数据">
+    </kendo-grid-messages>
+    <kendo-grid-command-column title="操作" width="80" [locked]="true" [style]="{'border-bottom': '1px solid #d9d9d9'}">
+      <ng-template kendoGridCellTemplate let-isNew="isNew" let-dataItem="dataItem">
+        <span title="编辑" (click)="add(dataItem)" [ngStyle]="{'cursor': 'Pointer'}">
+          <i class="anticon anticon-edit"></i>
+        </span>
+        <nz-divider nzType="vertical"></nz-divider>
+        <span title="删除" nz-popconfirm nzTitle="是否确认删除该记录?" (nzOnConfirm)="remove(dataItem);"
+          [ngStyle]="{'cursor': 'Pointer'}">
+          <i class="anticon anticon-delete"></i>
+        </span>
+      </ng-template>
+    </kendo-grid-command-column>
+    <kendo-grid-column field="FLEX_VALUE_SET_ID" title="值集名" width="200"
+      [style]="{'border-bottom': '1px solid #d9d9d9'}">
+      <ng-template kendoGridCellTemplate let-dataItem>
+        {{flexValueSet(dataItem.FLEX_VALUE_SET_ID)?.FLEX_VALUE_SET_NAME}}
+      </ng-template>
+      <ng-template kendoGridEditTemplate let-dataItem="dataItem" let-column="column" let-formGroup="formGroup">
+        <kendo-dropdownlist [data]="flexValueSets" textField="FLEX_VALUE_SET_NAME" valueField="FLEX_VALUE_SET_ID"
+          [valuePrimitive]="true" [formControl]="formGroup.get('FLEX_VALUE_SET_ID')">
+        </kendo-dropdownlist>
+      </ng-template>
+    </kendo-grid-column>
+    <kendo-grid-column field="DESCRIPTION" title="说明" width="250" [style]="{'border-bottom': '1px solid #d9d9d9'}">
+      <ng-template kendoGridCellTemplate let-dataItem>
+        <ellipsis lines="1">
+          <span nz-tooltip [nzTitle]="dataItem.DESCRIPTION">{{dataItem.DESCRIPTION}}</span>
+        </ellipsis>
+      </ng-template>
+    </kendo-grid-column>
+    <kendo-grid-column field="FORMAT_TYPE" title="格式类型" width="150" [style]="{'border-bottom': '1px solid #d9d9d9'}">
+      <ng-template kendoGridCellTemplate let-dataItem>
+        {{formatType(dataItem.FORMAT_TYPE)?.FORMAT_NAME}}
+      </ng-template>
+      <ng-template kendoGridEditTemplate let-dataItem="dataItem" let-column="column" let-formGroup="formGroup">
+        <kendo-dropdownlist [data]="formatTypes" textField="FORMAT_NAME" valueField="FORMAT_TYPE"
+          [valuePrimitive]="true" [formControl]="formGroup.get('FORMAT_TYPE')">
+        </kendo-dropdownlist>
+      </ng-template>
+    </kendo-grid-column>
+    <kendo-grid-column field="MAXIMUM_SIZE" title="最大尺寸" width="120" [style]="{'border-bottom': '1px solid #d9d9d9'}">
+    </kendo-grid-column>
+    <kendo-grid-column field="NUMBER_PRECISION" title="精确度" width="120"
+      [style]="{'border-bottom': '1px solid #d9d9d9'}"></kendo-grid-column>
+    <kendo-grid-column field="NUMBER_ONLY_FLAG" title="仅限于数字(0-9)" editor="boolean" width="160"
+      [style]="{'border-bottom': '1px solid #d9d9d9'}">
+      <ng-template kendoGridCellTemplate let-dataItem>
+        <input type="checkbox" [checked]="dataItem.NUMBER_ONLY_FLAG" disabled />
+      </ng-template>
+    </kendo-grid-column>
+    <kendo-grid-column field="UPPERCASE_ONLY_FLAG" title="仅限于大写字母" editor="boolean" width="160"
+      [style]="{'border-bottom': '1px solid #d9d9d9'}">
+      <ng-template kendoGridCellTemplate let-dataItem>
+        <input type="checkbox" [checked]="dataItem.UPPERCASE_ONLY_FLAG" disabled />
+      </ng-template>
+    </kendo-grid-column>
+    <kendo-grid-column field="NUMERIC_MODE_ENABLED_FLAG" title="右对齐和填0编号" editor="boolean" width="160"
+      [style]="{'border-bottom': '1px solid #d9d9d9'}">
+      <ng-template kendoGridCellTemplate let-dataItem>
+        <input type="checkbox" [checked]="dataItem.NUMERIC_MODE_ENABLED_FLAG" disabled />
+      </ng-template>
+    </kendo-grid-column>
+    <kendo-grid-column field="MINIMUM_VALUE" title="最小值" width="200" [style]="{'border-bottom': '1px solid #d9d9d9'}">
+    </kendo-grid-column>
+    <kendo-grid-column field="MAXIMUM_VALUE" title="最大值" width="200" [style]="{'border-bottom': '1px solid #d9d9d9'}">
+    </kendo-grid-column>
+    <kendo-grid-column field="VALIDATION_TYPE" title="验证类型" width="120"
+      [style]="{'border-bottom': '1px solid #d9d9d9'}">
+      <ng-template kendoGridCellTemplate let-dataItem>
+        {{validationType(dataItem.VALIDATION_TYPE)?.VALIDATION_NAME}}
+      </ng-template>
+      <ng-template kendoGridEditTemplate let-dataItem="dataItem" let-column="column" let-formGroup="formGroup">
+        <kendo-dropdownlist [data]="validationTypes" textField="VALIDATION_NAME" valueField="VALIDATION_TYPE"
+          [valuePrimitive]="true" [formControl]="formGroup.get('VALIDATION_TYPE')">
+        </kendo-dropdownlist>
+      </ng-template>
+    </kendo-grid-column>
+  </kendo-grid> -->
+  <ag-grid-angular #agGrid [class]="themeClass" [style.height.px]="gridHeight" [rowData]="gridData"
+    [columnDefs]="columns" [gridOptions]="gridOptions" [rowSelection]="rowSelection"
+    [isRowSelectable]="isRowSelectable" [myAgGridRowKey]="{ tb: 'BASE_FLEX_VALUES_SETS' }"
+    [myAgGridState]="'BASE_FLEX_VALUES_SETS'">
+  </ag-grid-angular>
+  <custom-pager [height]="pagerHeight" [context]="context" [view]="context.view" [(pageSize)]="_pageSize"
+    [(pageNo)]="_pageNo" (pageChangeEvent)="onPageChanged($event)"></custom-pager>
+  <custom-excelexport [expColumns]="expColumns" [expColumnsOptions]="expColumnsOptions" fileName="export" #excelexport>
+  </custom-excelexport>
+</nz-card>
+
+<ng-template #customTemplate let-dataItem>
+  <span title="编辑" (click)="add(dataItem)" class="pointer">
+    <i class="anticon anticon-edit"></i>
+  </span>
+  <nz-divider nzType="vertical"></nz-divider>
+  <span title="删除" nz-popconfirm nzTitle="是否确认删除该记录?" (nzOnConfirm)="remove(dataItem)" class="pointer">
+    <i class="anticon anticon-delete"></i>
+  </span>
+</ng-template>

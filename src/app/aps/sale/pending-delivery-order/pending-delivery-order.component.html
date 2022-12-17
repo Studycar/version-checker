@@ -1,0 +1,58 @@
+<custom-formquery [queryParams]="queryParams" [context]="context" 
+  (event1)="searchWares($event)" (event2)="onWaresSelect($event)" (event3)="onWaresTextChanged($event)"
+  (event4)="searchPlaces($event)" (event5)="onPlacesSelect($event)" (event6)="onPlacesTextChanged($event)">
+  <custom-button text="{{ '更新列表' | translate }}" [src]="'文件刷新'" (clickEvent)="openModal('refresh')"></custom-button>
+  <!-- <custom-button text="{{ '开配送单' | translate }}" [src]="'创建工单'" (clickEvent)="openModal('generate')"></custom-button> -->
+  <custom-button text="{{ '确认' | translate }}" [src]="'确认订单'" (clickEvent)="batchConfirm()"></custom-button>
+  <custom-button text="{{ '导入' | translate }}" [src]="'基础icon-导入'" [loading]="optionsLoading" (clickEvent)="import()"></custom-button>
+  <custom-button text="{{ '导出' | translate }}" [src]="'基础icon-导出'" (clickEvent)="export()"></custom-button>
+</custom-formquery>
+<nz-card>
+  <ag-grid-angular #agGrid [class]="themeClass" [style.height.px]="gridHeight" [rowData]="gridData"
+    [columnDefs]="columns" [gridOptions]="gridOptions" [myAgGridState]="'hw-pending-delivery'"
+    [myAgGridRowKey]="{tb:'PS_PENDING_DELIVERY'}" (filterChanged)="onFilterChanged($event)">
+  </ag-grid-angular>
+  <custom-tb-select-sum [context]="context" [sumItems]="sumItems" [height]="sumHeight"></custom-tb-select-sum>
+  <custom-pager [height]="pagerHeight" [context]="context" [view]='context.view' [(pageSize)]="_pageSize" [fixed]="false"
+    [(pageNo)]="_pageNo" (pageChangeEvent)="onPageChanged($event)"></custom-pager>
+  <custom-excelexport [expColumns]='expColumns' [expColumnsOptions]='expColumnsOptions' fileName='待配送列表' #excelexport></custom-excelexport>
+</nz-card>
+<ng-template #customTemplate let-dataItem>
+  <ng-container *ngIf="!dataItem.isBottomRowData">
+    <ng-container *ngIf="dataItem.pendingState === '10' && !dataItem.returnFlag">
+      <span title="{{ '编辑' | translate}}" (click)="add(dataItem)" style="cursor: Pointer">
+        <i class="anticon anticon-edit"></i>
+      </span>
+      <nz-divider nzType="vertical"></nz-divider>
+      <span title="{{ '删除' | translate}}" nz-popconfirm nzTitle="{{ '是否确认删除该记录?' | translate}}"
+        (nzOnConfirm)="remove(dataItem);" class="pointer">
+        <i class="anticon anticon-delete"></i>
+      </span>
+      <nz-divider nzType="vertical"></nz-divider>
+    </ng-container>
+    <div style="display: inline;" *ngIf="dataItem.pendingState === '10' && !dataItem.returnFlag && (dataItem.place || '') !== ''">
+      <span title="{{ '确认' | translate}}" nz-popconfirm nzTitle="{{ '是否确认该记录?' | translate}}"
+      (nzOnConfirm)="confirm(dataItem);" style="cursor: Pointer">
+        <i class="anticon anticon-check"></i>
+      </span>
+      <nz-divider nzType="vertical"></nz-divider>
+    </div>
+  </ng-container>
+</ng-template>
+<nz-modal [(nzVisible)]="isVisible" [nzTitle]="typeMsg[type]" [nzFooter]="modalFooter" (nzOnCancel)="handleCancel()">
+  <form #f="ngForm" se-container="1">
+    <se *ngIf="type === 'refresh'" label="{{ '工厂' | translate }}" required>
+      <nz-select nzShowSearch name="plantCode" [(ngModel)]="plantCode" required>
+        <nz-option *ngFor="let op of plantOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se>
+    <se *ngIf="type === 'generate'" label="{{ '配送日期' | translate }}" required>
+      <nz-date-picker nzFormat="yyyy-MM-dd" [(ngModel)]="deliveryOrderDate" name="deliveryOrderDate" required>
+      </nz-date-picker>
+    </se>
+  </form>
+  <ng-template #modalFooter>
+    <button nz-button nzType="default" (click)="handleCancel()">取消</button>
+    <button nz-button nzType="primary" [disabled]="f.invalid" (click)="handleOk()" [nzLoading]="http.loading">确认</button>
+  </ng-template>
+</nz-modal>

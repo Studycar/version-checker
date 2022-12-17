@@ -1,0 +1,37 @@
+<div class="modal-header">
+  <div class="modal-title">{{ (isModify?'编辑信息':'新增信息') | translate}}</div>
+</div>
+<div *ngIf="isModify" style=" margin:2px auto;">
+  <button style="float: right;" nz-button nzType="dashed" (click)="clear()">
+    {{ '重置' | translate}}</button>
+  <div style="clear: both;"></div>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="2">
+    <se label="{{ '用户' | translate}}" required>
+      <nz-select-server
+        [value]="i.employeeNumber" 
+        name="employeeNumber"
+        labelField="description"
+        valueField="userName"
+        (ngModelChangeEvent)="employchange($event)"
+        [nzDisabled]="isModify"
+        [required]="true"
+        [isSelectedShowValue]="true"
+        [searchFunction]="getUserList">
+      </nz-select-server>
+    </se>
+    <se label="{{ '用户描述' | translate}}">
+      <input nz-input type="text" [(ngModel)]="i.fullName" name="fullname" disabled>
+    </se>
+    <se label="{{ '产品大类' | translate }}" required>
+      <nz-select nzShowSearch name="categoryCode" [(ngModel)]="i.categoryCode" (ngModelChange)="categoryChange($event)" required>
+        <nz-option *ngFor="let op of productCategoryOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save()" [disabled]="f.invalid || !f.dirty" [nzLoading]="http.loading">保存</button>
+  <button nz-button type="button" (click)="close()">关闭</button>
+</div>

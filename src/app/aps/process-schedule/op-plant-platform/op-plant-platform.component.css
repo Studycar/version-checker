@@ -1,0 +1,32 @@
+.div_menu {
+  display: inline-block;
+  margin: 0px auto;
+  background: #F7F9FA;
+  border: 0 solid #DFE3E6;
+  border-radius: 4px 4px 0 0;
+  width: 100%;
+  height: 50px;
+  padding: 9px 0px;
+}
+
+.custom_function_button{
+  margin: 0px 0px 0px 12px;
+}
+
+.div-p {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  width: 100%;
+  height: 100%;
+  background: black;
+  filter: alpha(Opacity=50);
+  -moz-opacity: 0.5;
+  opacity: 0.5
+}
+
+.div-c {
+  position: absolute;
+  left: 45%;
+  top: 45%;
+}

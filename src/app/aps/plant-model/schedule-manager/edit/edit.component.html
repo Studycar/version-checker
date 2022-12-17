@@ -1,0 +1,59 @@
+<div class="modal-header">
+  <div class="modal-title">{{ (isModify?'编辑信息':'新增信息') | translate}} </div>
+</div>
+<div style="position: relative; height: 32px" *ngIf="i.id">
+  <button nz-button nzType="dashed" style="position: absolute; right: 0;" (click)="clear()">重置</button>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="2">
+    <se label="{{ '事业部' | translate}}" required>
+      <input type="text" nz-input [(ngModel)]="i.scheduleRegionCode" name="scheduleRegionCode" required
+        [readonly]="isModify" [class.disabled]="isModify">
+    </se>
+    <se label="{{ '描述' | translate}}">
+      <input type="text" nz-input [(ngModel)]="i.descriptions" name="descriptions">
+    </se>
+    <se label="{{ '排产滚动开始时间' | translate}}" required>
+      <nz-date-picker nzFormat="yyyy-MM-dd HH:mm:ss" nzShowTime [(ngModel)]="i.planStartTime" name="planStartTime"
+        nzPlaceHolder="请选择日期" required>
+      </nz-date-picker>
+    </se>
+    <se label="{{ '排产滚动周期' | translate}}" required>
+      <nz-input-number [(ngModel)]="i.periodicTime" [nzPrecision]="0" [nzMin]="1" name="periodicTime" required>
+      </nz-input-number>
+    </se>
+    <se label="{{ '工作日历编码' | translate}}">
+      <input type="text" nz-input [(ngModel)]="i.calendarCode" name="calendarCode" [readonly]="true"
+        [class.disabled]="true">
+    </se>
+    <se label="{{ '是否有效' | translate}}" required>
+      <nz-select nzShowSearch [(ngModel)]="i.enableFlag" name="enableFlag" required>
+        <nz-option *ngFor="let option of enableOption" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '视频/图片路径' | translate}}">
+      <input type="text" nz-input [(ngModel)]="i.attribute1" name="attribute1" [readonly]="true"
+        [class.disabled]="true">
+      <div class="clearfix">
+        <nz-upload name="sb" nzAction="/api/admin/psscheduleregion/uploadVideoImg"
+          nzListType="picture-card" [(nzFileList)]="fileList" [nzShowButton]="fileList.length < 1"
+          [nzShowUploadList]="showUploadList" [nzPreview]="handlePreview" [nzBeforeUpload]="beforeUpload"
+          (nzChange)="handleChange($event)">
+          <i nz-icon nzType="plus"></i>
+          <div>Upload</div>
+        </nz-upload>
+        <nz-modal [nzVisible]="previewVisible" [nzContent]="modalContent" [nzFooter]="null"
+          (nzOnCancel)="previewVisible = false">
+          <ng-template #modalContent>
+            <img [src]="previewImage" [ngStyle]="{ width: '100%' }" />
+          </ng-template>
+        </nz-modal>
+      </div>
+    </se>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save(f.value)" [disabled]="f.invalid"
+    [nzLoading]="http.loading">{{'保存' | translate}}</button>
+  <button nz-button type="button" (click)="close()">{{ '关闭' | translate}}</button>
+</div>

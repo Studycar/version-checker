@@ -1,0 +1,28 @@
+<custom-formquery [queryParams]="queryParams" [context]="context" (event1)="searchItems($event)">
+  <custom-button text="{{ '数据保存' | translate}}" (clickEvent)="save()" [srcDisabled]="'btn_save_disabled'"
+    [disabled]="valueChangedItem.size===0" [src]="'btn_save'">
+  </custom-button>
+  <custom-button text="{{ '导出' | translate}}" (clickEvent)="export()" [src]="'基础icon-导出'">
+  </custom-button>
+  <custom-button text="{{ '导入' | translate}}" (clickEvent)="import()" [src]="'基础icon-导入'" [loading]="optionsLoading">
+  </custom-button>
+  <custom-button text="{{ '审批' | translate}}" (clickEvent)="approval()" [src]="'提交审核'">
+  </custom-button>
+  <custom-button text="{{ '取消审批' | translate}}" (clickEvent)="unApproval()" [src]="'提交审核'">
+  </custom-button>
+  <custom-button text="{{ '版本保存' | translate}}" (clickEvent)="saveVerdion()" [srcDisabled]="'btn_save_disabled'"
+    [disabled]="gridData.length===0" [src]="'btn_save'">
+  </custom-button>
+</custom-formquery>
+
+<nz-card>
+  <ag-grid-angular #agGrid [class]="themeClass" [style.height.px]="gridHeight" [rowData]="gridData"
+    [columnDefs]="columns" [gridOptions]="gridOptions2" [myAgGridRowKey]="{tb:'SOP_UNCSTR_FORECAST'}"
+    [myAgGridState]="gridStateKey" (cellValueChanged)="onCellValueChanged($event)"
+    (cellEditingStarted)="onCellEditingStarted($event)">
+  </ag-grid-angular>
+  <div>{{ '总记录数：' | translate}}{{gridData.length}}</div>
+  <custom-excelexport [expColumns]='expColumns' [expColumnsOptions]='expColumnsOptions'
+    fileName="{{'产品PSI调整' | translate}}" #excelexport>
+  </custom-excelexport>
+</nz-card>

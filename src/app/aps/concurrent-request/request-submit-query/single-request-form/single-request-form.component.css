@@ -1,0 +1,12 @@
+::ng-deep .k-form fieldset, .k-form-inline fieldset {
+    border-width: 1px 0 0;
+    border-style: solid;
+    margin: 32px 0;
+    padding: 0;
+    border-color: rgba(68,68,68,0.3);
+}
+
+/** legend 文字样式 */
+/* ::ng-deep .k-form fieldset legend, .k-form-inline fieldset legend {
+    color: #444;
+} */

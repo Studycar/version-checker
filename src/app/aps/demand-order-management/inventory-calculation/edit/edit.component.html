@@ -1,0 +1,112 @@
+<div class="modal-header">
+    <div class="modal-title">{{ title | translate }}</div>
+</div>
+<div style="position: relative; height: 32px" *ngIf="i.Id">
+    <button nz-button nzType="dashed" style="position: absolute; right: 0;" (click)="clear()">{{'重置' | translate}}</button>
+</div>
+<div>
+    <form nz-form #f="ngForm" se-container="2">
+        <ng-container *ngIf="selectIndex === 0">
+            <se label="{{'事业部' | translate}}" required>
+                <nz-select [(ngModel)]="i.SCHEDULE_REGION_CODE" (ngModelChange)="onDivisionChange($event)" nzShowSearch name="SCHEDULE_REGION_CODE" required>
+                    <nz-option *ngFor="let option of scheduleRegionOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+                </nz-select>
+            </se>
+            <se label="{{'工厂' | translate}}" required>
+                <nz-select [(ngModel)]="i.PLANT_CODE" nzShowSearch name="PLANT_CODE" required>
+                    <nz-option *ngFor="let option of plantOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+                </nz-select>
+            </se>
+            <se label="{{'库存计划模式' | translate}}" required>
+                <nz-select [(ngModel)]="i.INV_PLAN_MODEL" nzShowSearch name="INV_PLAN_MODEL" required>
+                    <nz-option *ngFor="let option of inventoryModeOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+                </nz-select>
+            </se>
+            <se label="{{'汇总时段' | translate}}" required>
+                <nz-select [(ngModel)]="i.TIME_FENCE" (ngModelChange)="onTimeFenceChange($event)" nzShowSearch name="TIME_FENCE" required>
+                    <nz-option *ngFor="let option of summaryPeriodOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+                </nz-select>
+            </se>
+            <se label="{{'汇总时段自定义' | translate}}" [required]="defineRequired">
+                <input nz-input type="text" [(ngModel)]="i.TIME_FENCE_DEFINION" name="TIME_FENCE_DEFINION" placeholder="如9:9:6:6" [required]="defineRequired" [disabled]="!defineRequired">
+            </se>
+        </ng-container>
+        <ng-container *ngIf="selectIndex === 1">
+            <se label="{{'工厂' | translate}}" required>
+                <nz-select [(ngModel)]="i.PLANT_CODE" (ngModelChange)="clearSourceCode($event, 'plantCode')" nzShowSearch name="PLANT_CODE" required>
+                    <nz-option *ngFor="let option of plantOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+                </nz-select>
+            </se>
+            <se label="{{'类别' | translate}}" required>
+                <nz-select [(ngModel)]="i.SOURCE_TYPE" (ngModelChange)="clearSourceCode($event, 'sourceCode')" nzShowSearch name="SOURCE_TYPE" required="">
+                    <nz-option *ngFor="let option of sourceTypeOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+                </nz-select>
+            </se>
+            <se *ngIf="i.SOURCE_TYPE === '物料'" label="{{'类别值' | translate}}" required>
+                <popup-select
+                  required
+                  [ID]="'material'"
+                  [(SelectValue)]="i.SOURCE_ID"
+                  [(SelectText)]="i.SOURCE_CODE"
+                  [ValueField]="'ITEM_ID'"
+                  [TextField]="'ITEM_CODE'"
+                  [gridView]="gridViewItems"
+                  [columns]="materialColumnsItems"
+                  (SearchEvent)="searchMaterialItems($event)"
+                  (RowSelect)="onMaterialRowSelect($event)">
+                </popup-select>
+            </se>
+            <se *ngIf="i.SOURCE_TYPE !== '物料'" label="{{'类别值' | translate}}" required>
+                <popup-select
+                  required
+                  [ID]="'category'"
+                  [(SelectValue)]="i.SOURCE_ID"
+                  [(SelectText)]="i.SOURCE_CODE"
+                  [ValueField]="'CATEGORY_CODE'"
+                  [TextField]="'CATEGORY_CODE'"
+                  [gridView]="gridViewItems"
+                  [columns]="categoryColumnsItems"
+                  (SearchEvent)="searchCategoryItems($event)"
+                  (RowSelect)="onCategoryRowSelect($event)">
+                </popup-select>
+            </se>
+            <se label="{{'描述' | translate}}">
+                <input nz-input type="text" [(ngModel)]="i.SOURCE_DESC" name="SOURCE_DESC">
+            </se>
+            <se label="{{'目标周转天数' | translate}}">
+                <nz-input-number [(ngModel)]="i.TARGET_TURNOVER_DAYS" [nzMin]="0" [nzStep]="1" name="TARGET_TURNOVER_DAYS"></nz-input-number>
+            </se>
+            <se label="{{'目标服务水平%' | translate}}">
+                <nz-input-number [(ngModel)]="i.TARGET_SVRVICE_LEVEL" [nzMin]="0" [nzStep]="1" name="TARGET_SVRVICE_LEVEL"></nz-input-number>
+            </se>
+            <se label="{{'经济批量' | translate}}">
+                <nz-input-number [(ngModel)]="i.ECONOMIC_BATCH" [nzMin]="0" [nzStep]="1" name="ECONOMIC_BATCH"></nz-input-number>
+            </se>
+            <se label="{{'最小生产批量' | translate}}">
+                <nz-input-number [(ngModel)]="i.MIN_PRODUCTION_BATCH" [nzMin]="0" [nzStep]="1" name="MIN_PRODUCTION_BATCH"></nz-input-number>
+            </se>
+            <se label="{{'质检周期' | translate}}">
+                <nz-input-number [(ngModel)]="i.QULITY_LEAD_TIME" [nzMin]="0" [nzStep]="1" name="QULITY_LEAD_TIME"></nz-input-number>
+            </se>
+            <se label="{{'波动系数' | translate}}">
+                <nz-input-number [(ngModel)]="i.FLUCTUATION_COEFFICIENT" [nzMin]="0" [nzStep]="1" name="FLUCTUATION_COEFFICIENT"></nz-input-number>
+            </se>
+            <se label="{{'工厂分配比例' | translate}}">
+                <nz-input-number [(ngModel)]="i.SPLIT_RATIO" [nzMin]="0" [nzStep]="1" name="SPLIT_RATIO"></nz-input-number>
+            </se>
+            <se label="{{'采购频次' | translate}}">
+                <nz-input-number [(ngModel)]="i.PURCHASE_FREQUENCY" [nzMin]="0" [nzStep]="1" name="PURCHASE_FREQUENCY"></nz-input-number>
+            </se>
+            <se label="{{'生效日期' | translate}}">
+                <nz-date-picker nzFormat="yyyy-MM-dd" [(ngModel)]="i.START_DATE" name="START_DATE"></nz-date-picker>
+            </se>
+            <se label="{{'失效日期' | translate}}">
+                <nz-date-picker nzFormat="yyyy-MM-dd" [(ngModel)]="i.END_DATE" name="END_DATE"></nz-date-picker>
+            </se>
+        </ng-container>
+    </form>
+</div>
+<div class="modal-footer">
+    <button nz-button type="submit" [nzType]="'primary'" [disabled]="!f.valid || !f.dirty" [nzLoading]="http.loading" (click)="save()">{{'保存' | translate}}</button>
+    <button nz-button type="button" (click)="close()">{{'关闭' | translate}}</button>
+</div>

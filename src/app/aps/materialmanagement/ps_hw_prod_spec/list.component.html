@@ -1,0 +1,35 @@
+<!-- 查询及头部按钮 -->
+<custom-formquery [queryParams]="queryParams" [context]="context"></custom-formquery>
+<nz-card>
+  <!-- 表格 -->
+  <ag-grid-angular
+    #agGrid
+    id=""
+    [class]="themeClass"
+    [style.height.px]="gridHeight"
+    [rowData]="gridData"
+    [columnDefs]="columns"
+    [gridOptions]="gridOptions"
+    [myAgGridState]=""
+    [myAgGridRowKey]="{ tb: 'PS_HW_PROD_SPEC' }"
+  >
+  </ag-grid-angular>
+  <!-- 分页系统 -->
+  <custom-pager
+    [height]="pagerHeight"
+    [context]="context"
+    [view]="context.view"
+    [(pageSize)]="_pageSize"
+    [(pageNo)]="_pageNo"
+    (pageChangeEvent)="onPageChanged($event)"
+  >
+  </custom-pager>
+<ng-template #customTemplate let-dataItem>
+  <span title="{{ '产品制造路径' | translate }}" (click)="prodRoute(dataItem)" style="cursor: Pointer">
+    <i class="anticon anticon-branches"></i>
+  </span>
+  <nz-divider nzType="vertical"></nz-divider>
+  <span title="{{ '产品规格尺寸' | translate }}" (click)="specIndexApply(dataItem)" style="cursor: Pointer">
+    <i class="anticon anticon-layout"></i>
+  </span>
+</ng-template>

@@ -1,0 +1,45 @@
+<div class="modal-header">
+  <div class="modal-title">{{ ('查询') | translate}} </div>
+</div>
+<div style=" text-align:right; margin:2px auto;">
+  <button nz-button nzType="dashed" (click)="clear()">
+    {{ '重置' | translate}}</button>
+</div>
+
+<div>
+  <form nz-form #f="ngForm" se-container="2" [labelWidth]='100'>
+    <se label="{{ '事业部' | translate}}" required>
+      <nz-select nzShowSearch required [(ngModel)]="scheduleGroupResourcesInputDto.ScheduleRegionCode"
+        (ngModelChange)="regionChange($event)" name="ScheduleRegionCode">
+        <nz-option *ngFor="let option of scheduleRegionCodes" [nzLabel]="option.label" [nzValue]="option.value">
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '工厂' | translate}}" required>
+      <nz-select nzShowSearch required [(ngModel)]="scheduleGroupResourcesInputDto.PlantCode"
+        (ngModelChange)="plantChange($event)" name="PlantCode">
+        <nz-option *ngFor="let option of plantCodes" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '计划组' | translate}}">
+      <nz-select nzShowSearch nzAllowClear [(ngModel)]="scheduleGroupResourcesInputDto.ScheduleGroupCode"
+        name="ScheduleGroupCode" (ngModelChange)="groupChange($event)">
+        <nz-option *ngFor="let option of groupCodes" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '日期范围' | translate}}" required>
+      <nz-range-picker [(ngModel)]="dateRange" name="dateRange" required [nzAllowClear]="false"></nz-range-picker>
+    </se>
+  </form>
+
+  <div style="text-align:right;margin-bottom: 5px;">
+    <button nz-button type="submit" nzType="primary" (click)="GetGraphicalWorkbenchData()" [(nzLoading)]="searchLoading"
+      [disabled]="f.invalid">{{ '确定' | translate}}</button>
+    <button nz-button type="button" (click)="close()">{{ '关闭' | translate}}</button>
+  </div>
+</div>
+
+<nz-card>
+  <custom-tree-view #treeView [dataTree]="treeDataTable" [columns]="treeNodeColumns" [keyField]="'ID'"
+    [valueField]="'CODE'" [valueLevel]="1" [selectionRef]="SelectResourceCodes"></custom-tree-view>
+</nz-card>

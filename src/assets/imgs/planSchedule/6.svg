@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="32px" height="32px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 51.2 (57519) - http://www.bohemiancoding.com/sketch -->
+    <title>排产刷新</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="1-01数据化排产" transform="translate(-243.000000, -112.000000)" fill="#8BC34A" fill-rule="nonzero">
+            <g id="1" transform="translate(181.000000, 98.000000)">
+                <g id="top">
+                    <g id="1" transform="translate(20.000000, 14.000000)">
+                        <g id="排产刷新" transform="translate(42.000000, 0.000000)">
+                            <path d="M23,10.3426657 L23,7 L25,7 L25,16 L16,16 L16,14 L22.7101213,14 C21.8495721,11.1085111 19.1710206,9 16,9 C12.1340068,9 9,12.1340068 9,16 C9,19.8659932 12.1340068,23 16,23 C17.616832,23 19.1445624,22.4526487 20.3781325,21.4622788 L21.6302295,23.021847 C20.0886288,24.2595188 18.1307887,25 16,25 C11.0294373,25 7,20.9705627 7,16 C7,11.0294373 11.0294373,7 16,7 C18.8272661,7 21.3500445,8.30366693 23,10.3426657 Z" id="Combined-Shape"></path>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

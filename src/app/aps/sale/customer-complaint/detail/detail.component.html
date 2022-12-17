@@ -1,0 +1,75 @@
+<div class="modal-header">
+  <div class="modal-title">{{ '客诉申请单明细信息' | translate }}</div>
+</div>
+<custom-formquery [queryParams]="queryParams" [context]="context">
+  <custom-button *ngIf="!isResolve" text="{{ '新增' | translate }}" [src]="'基础icon-新增'" (clickEvent)="add()">
+  </custom-button>
+  <custom-button text="{{ '导出' | translate }}" [src]="'基础icon-导出'" (clickEvent)="export()"></custom-button>
+</custom-formquery>
+<nz-card>
+  <ag-grid-angular #agGrid [class]="themeClass" [style.height.px]="gridHeight-200" [rowData]="gridData"
+    [columnDefs]="columns" [gridOptions]="gridOptions" [myAgGridState]="'hw-customer-complaint-detail'"
+    [myAgGridRowKey]="{tb:'PS_COMPLAINT_DETAIL'}" (filterChanged)="onFilterChanged($event)">
+  </ag-grid-angular>
+  <custom-pager [height]="pagerHeight" [context]="context" [view]='context.view' [(pageSize)]="_pageSize"
+    [fixed]="false" [(pageNo)]="_pageNo" (pageChangeEvent)="onPageChanged($event)"></custom-pager>
+  <custom-excelexport [expColumns]='expColumns' [expColumnsOptions]='expColumnsOptions' fileName='客诉申请明细' #excelexport>
+  </custom-excelexport>
+</nz-card>
+<ng-template #customTemplate let-dataItem>
+  <div *ngIf="!dataItem.isBottomRowData">
+    <!-- 客诉申请：已创建、已驳回可编辑、删除，客诉处理：已提交、驳回可编辑 -->
+    <ng-container
+      *ngIf="(!isResolve && ['10', '50'].includes(dataItem.state) && !dataItem.returnFlag) || 
+        (isResolve && ['20', '50'].includes(dataItem.state) && !dataItem.returnFlag)">
+      <span title="{{ '编辑' | translate}}" (click)="add(dataItem)" style="cursor: Pointer">
+        <i class="anticon anticon-edit"></i>
+      </span>
+      <nz-divider nzType="vertical"></nz-divider>
+    </ng-container>
+    <ng-container *ngIf="!isResolve && (dataItem.state === '10' || dataItem.state === '50') && !dataItem.returnFlag">
+      <span title="{{ '删除' | translate}}" nz-popconfirm nzTitle="{{ '是否确认删除该记录?' | translate}}"
+        (nzOnConfirm)="remove(dataItem);" class="pointer">
+        <i class="anticon anticon-delete"></i>
+      </span>
+      <nz-divider nzType="vertical"></nz-divider>
+    </ng-container>
+    <!-- 只有已提交状态可以同意或驳回 -->
+    <div *ngIf="isResolve && dataItem.state === '20'" style="display: inline;">
+      <span title="{{ '同意' | translate}}" nz-popconfirm nzTitle="{{ '是否确认同意该记录?' | translate}}"
+        (nzOnConfirm)="agree(dataItem);" class="pointer">
+        <i class="anticon anticon-check"></i>
+      </span>
+      <nz-divider nzType="vertical"></nz-divider>
+      <span title="{{ '驳回' | translate}}" nz-popconfirm nzTitle="{{ '是否确认驳回该记录?' | translate}}"
+        (nzOnConfirm)="reject(dataItem);" class="pointer">
+        <i class="anticon anticon-close"></i>
+      </span>
+      <nz-divider nzType="vertical"></nz-divider>
+    </div>
+    <!-- 只有售后已初审、驳回状态可以提交审批 -->
+    <div *ngIf="isResolve && ['40', '50'].includes(dataItem.state)" style="display: inline;">
+      <span title="{{ '提交审批' | translate}}" (click)="submitApproval(dataItem)" style="cursor: Pointer">
+        <i class="anticon anticon-audit"></i>
+      </span>
+      <nz-divider nzType="vertical"></nz-divider>
+    </div>
+    <span title="{{ '下载' | translate}}" (click)="batchDownload(dataItem)" style="cursor: Pointer">
+      <i class="anticon anticon-download"></i>
+    </span>
+    <nz-divider nzType="vertical"></nz-divider>
+    <span title="{{ '附件列表' | translate}}" (click)="showAnnex(dataItem)" style="cursor: Pointer">
+      <i nz-icon nzType="paper-clip" nzTheme="outline"></i>
+    </span>
+    <div *ngIf="isResolve && dataItem.jszg === '100'" style="display: inline;">
+      <nz-divider nzType="vertical"></nz-divider>
+      <span title="{{ '发起整改' | translate}}" (click)="submitRectify(dataItem)" style="cursor: Pointer">
+        <i class="anticon anticon-solution"></i>
+      </span>
+    </div>
+    <nz-divider nzType="vertical"></nz-divider>
+    <span title="{{ '修改记录' | translate}}" (click)="showHistoryRecord(dataItem)" style="cursor: Pointer">
+      <img src="/assets/icons/operate-icons/history.svg" />
+    </span>
+  </div>
+</ng-template>

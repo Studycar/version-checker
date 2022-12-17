@@ -1,0 +1,32 @@
+<form nz-form #f="ngForm" se-container="2">
+  <se label="{{ '钢种' | translate}}">
+      <input nz-input [(ngModel)]="formData.steelType" name="steelType" disabled />
+  </se>
+  <se label="{{ '规格尺寸' | translate}}">
+      <input nz-input [(ngModel)]="formData.steelStandart" name="steelStandart" disabled />
+  </se>
+  <se label="{{ '合同基价' | translate}}">
+      <input nz-input [(ngModel)]="formData.basePrice" name="basePrice" disabled />
+  </se>
+  <se label="{{ '销售订单号' | translate}}">
+      <input nz-input [(ngModel)]="formData.salesOrderCode" name="salesOrderCode" disabled />
+  </se>
+  <se label="{{ '合同号' | translate}}">
+      <input nz-input [(ngModel)]="formData.contractCode" name="contractCode" disabled />
+  </se>
+  <se label="{{ '系统加价' | translate}}">
+    <input nz-input [(ngModel)]="formData.markup" name="markup" disabled />
+  </se>
+  <se label="{{ '特殊加价' | translate}}">
+      <input nz-input [(ngModel)]="formData.specialMarkup" name="specialMarkup" disabled />
+  </se>
+  <se label="{{ '销售单价' | translate}}">
+      <input nz-input [(ngModel)]="formData.fixedPrice" name="fixedPrice" disabled />
+  </se>
+  <se *ngIf="!flowType || flowType === 'specialPrice'" label="{{ '提交备注（特殊加价）' | translate}}">
+    <textarea nz-input name="specialPriceReason" [(ngModel)]="formData.specialPriceReason" nzAutosize disabled></textarea>
+  </se>
+  <se *ngIf="!flowType || flowType === 'highPrice'" label="{{ '提交原因（高价先出）' | translate}}">
+    <textarea nz-input name="attribute2" [(ngModel)]="formData.attribute2" nzAutosize disabled></textarea>
+  </se>
+</form>

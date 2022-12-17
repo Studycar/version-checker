@@ -1,0 +1,171 @@
+<style type="text/css">
+  .container {
+    position: relative;
+  }
+
+  .button {
+    cursor: pointer;
+    background-color: rgb(24, 144, 255);
+    color: white;
+    border: none;
+    text-align: center;
+    margin: 5px 2px;
+  }
+
+  .button:hover {
+    background-color: rgb(64, 169, 255);
+  }
+
+  .pointer {
+    cursor: pointer;
+  }
+
+  /*为勾选对其，扩展图标位置占位  */
+  .span_action {
+    display: inline-block;
+    width: 14px;
+  }
+
+  .checkbox {
+    margin: auto 5px;
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
+  }
+
+  /* table th/td自定义样式  */
+  .th {
+    /* padding: 10px !important; */
+    padding-left: 0px;
+    padding-right: 0px;
+    background-color: rgb(246, 246, 246);
+  }
+
+  .td {
+    /* padding: 10px !important; */
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+
+  /* table th/td自定义样式  */
+  .th {
+    /* padding: 10px !important; */
+    padding-left: 0px;
+    padding-right: 0px;
+    background-color: rgb(246, 246, 246);
+  }
+
+  .td {
+    /* padding: 10px !important; */
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+
+  /* td属性 [nzIndentSize]="i===0?item.level*30:0" ，该属性产生换行用span代替*/
+  .td_Indent {
+    display: inline-block;
+  }
+
+  label {
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    line-height: 15px;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    /*改变复选框的边框颜色也可以不要边框*/
+  }
+
+  label.th-label {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+  }
+
+  label.td-parent-label {
+    position: absolute;
+    top: 12px;
+    left: 27px;
+  }
+
+  label.td-children-label {
+    position: absolute;
+    top: 12px;
+    left: 47px;
+  }
+
+  /*	隐藏CheckBox属性原来的样式*/
+  input[type=checkbox] {
+    /* visibility 属性规定元素是否可见*/
+    visibility: hidden !important;
+  }
+
+  .check-all:checked+label:before {
+    display: block;
+    /*	css3中的content字符编码; \2bc0(方形) \2713(勾) */
+    content: "\2713";
+    /*	复选框里面的&radic;居中*/
+    text-align: center;
+    /*	复选框里面的&radic;大小*/
+    font-size: 15px;
+    background-color: #0c92e0;
+    color: #fff;
+    line-height: 13px;
+  }
+
+  .check-some+label:before {
+    display: block;
+    /*	css3中的content字符编码; \2bc0(方形) \2713(勾) */
+    content: "\2bc0";
+    /*	复选框里面的&radic;居中*/
+    text-align: center;
+    /*	复选框里面的&radic;大小*/
+    font-size: 15px;
+    color: #0c92e0;
+    line-height: 13px;
+  }
+</style>
+<nz-table [nzData]="dataTree" [nzScroll]="scroll" [nzFrontPagination]="false" [nzShowPagination]="false"
+  [nzBordered]="true" #nzTable [nzSize]="rowSize" [nzLoading]="loading">
+  <thead>
+    <tr>
+      <th *ngFor="let col of columns;let i=index;" class="th" [nzWidth]="i===columns.length-1?'auto':col.width"
+        style="position: relative">
+        <input [id]="col.field" [ngClass]="{'check-all': allChecked, 'check-some': someChecked}" class="checkbox"
+          *ngIf="showCheckBox&&i===0" type="checkbox" [(ngModel)]="allChecked"
+          (ngModelChange)="allCheckChange($event)" />
+        <label class="th-label" *ngIf="showCheckBox && i===0" [for]="col.field"></label>
+        <span>{{col.title|translate}}</span>
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <ng-template ngFor let-data [ngForOf]="nzTable.data">
+      <ng-template ngFor let-item [ngForOf]="expandDataCache[data[keyField]]">
+        <tr *ngIf="(item.parent&&item.parent.expand)||!(item.parent)">
+          <td *ngFor="let col of columns;let i=index;" class="td" style="position: relative">
+            <span *ngIf="i===0" class="td_Indent" [style.width.px]="item.level>0?20:0"></span>
+            <span *ngIf="i===0&&!!item.children&&item.children.length>0" class="pointer"
+              (click)="collapse(expandDataCache[data[keyField]],item,!item.expand)">
+              <i nz-icon [nzType]="item.expand?'anticon-down':'anticon-right'"></i>
+            </span>
+            <span *ngIf="i===0&&(!item.children||item.children.length===0)" class="span_action"></span>
+            <input [id]="item[keyField]" [ngClass]="{'check-all': item.checked, 'check-some': item.someChecked}"
+              class="checkbox" *ngIf="showCheckBox&&i===0" type="checkbox" [(ngModel)]="item.checked"
+              (ngModelChange)="checkChange(expandDataCache[data[keyField]],item,item.checked,$event)" />
+            <label
+              [ngClass]="{'td-parent-label': i===0 && item.level === 0, 'td-children-label': i === 0 && item.level !== 0}"
+              *ngIf="showCheckBox && i===0" [for]="item[keyField]"></label>
+            <span *ngIf="i===0" title="{{item[col.field]}}">{{item[col.field]|translate}}</span>
+            <nz-tooltip *ngIf="i!==0" [nzTitle]="item[col.field]">
+              <ellipsis [lines]="1">
+                <!-- <span nz-tooltip>{{item[col.field]|translate}}</span> -->
+                <span nz-tooltip>{{item[col.field]}}</span>
+              </ellipsis>
+            </nz-tooltip>
+          </td>
+        </tr>
+      </ng-template>
+    </ng-template>
+  </tbody>
+</nz-table>

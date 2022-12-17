@@ -1,0 +1,39 @@
+<custom-formquery [queryParams]="queryParams" [context]="context">
+</custom-formquery>
+<nz-card>
+  <div>
+    <form nz-form #f="ngForm" se-container="4">
+      <se label="{{ '配送单号' | translate}}">
+        <input type="text" nz-input [(ngModel)]="orderDetail.deliveryOrderCode" name="deliveryOrderCode" readonly="true">
+      </se>
+      <se label="{{ '配送日期' | translate}}">
+        <input type="text" nz-input [(ngModel)]="orderDetail.deliveryOrderDate" name="deliveryOrderDate"  readonly="true">
+      </se>
+      <se label="{{ '车号' | translate}}">
+        <input type="text" nz-input [(ngModel)]="orderDetail.carNumber" name="carNumber"  readonly="true">
+      </se>
+      <se label="{{ 'APS备注' | translate}}">
+        <input type="text" nz-input [(ngModel)]="orderDetail.remarks" name="remarks"  readonly="true">
+      </se>
+      <se label="{{ '物流公司' | translate}}">
+        <input type="text" nz-input [(ngModel)]="orderDetail.logistics" name="logistics"  readonly="true">
+      </se>
+      <se label="{{ '收货时间' | translate}}">
+        <input type="text" nz-input [(ngModel)]="orderDetail.receiptTime" name="receiptTime"  readonly="true">
+      </se>
+      <se label="{{ '目的地' | translate}}">
+        <input type="text" nz-input [(ngModel)]="orderDetail.place" name="place"  readonly="true">
+      </se>
+      <se label="{{ '详细地址' | translate}}">
+        <input type="text" nz-input [(ngModel)]="orderDetail.detailAddress" name="detailAddress"  readonly="true">
+      </se>
+    </form>
+  </div>
+  <ag-grid-angular #agGrid [class]="themeClass" [style.height.px]="gridHeight" [rowData]="gridData"
+    [columnDefs]="columns" [gridOptions]="gridOptions" [myAgGridState]="'hw-delivery-order-detail'"
+    [myAgGridRowKey]="{tb:'PS_DELIVERY_ORDER_DETAILED'}" (filterChanged)="onFilterChanged($event)">
+  </ag-grid-angular>
+  <custom-pager [height]="pagerHeight" [context]="context" [view]='context.view' [(pageSize)]="_pageSize"
+    [(pageNo)]="_pageNo" (pageChangeEvent)="onPageChanged($event)"></custom-pager>
+</nz-card>
+

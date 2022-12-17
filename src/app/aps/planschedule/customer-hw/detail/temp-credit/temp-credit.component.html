@@ -1,0 +1,36 @@
+<!-- 头部 -->
+<div class="modal-header">
+  <div class="modal-title">{{ '申请临时信用额度' | translate}}</div>
+</div>
+<!-- 内容 -->
+<div>
+  <form nz-form #f="ngForm" se-container="2">
+    <se label="{{ '客户编码' | translate}}">
+      <input nz-input [(ngModel)]="i.cusCode" name="cusCode" disabled>
+    </se>
+    <se label="{{ '客户名称' | translate}}">
+      <input nz-input [(ngModel)]="i.cusName" name="cusName" disabled>
+    </se>
+    <se label="{{ '客户所属公司' | translate}}">
+      <input nz-input [(ngModel)]="i.plantCode" name="plantCode" disabled>
+    </se>
+    <se label="{{ '信用额度' | translate}}">
+      <input nz-input [(ngModel)]="i.credit" name="credit" disabled>
+    </se>
+    <se label="{{ '账户余额' | translate}}">
+      <input nz-input [(ngModel)]="i.balance" name="balance" disabled>
+    </se>
+    <se label="{{ '申请临时额度' | translate}}" required>
+      <nz-input-number [(ngModel)]="i.temCredit" [nzPrecision]="0" [nzMin]="0" name="temCredit" required></nz-input-number>
+    </se>
+    <se label="{{ '备注' | translate}}">
+      <input nz-input [(ngModel)]="i.attribute1" name="attribute1">
+    </se>
+  </form>
+</div>
+<!-- 底部 -->
+<div class="modal-footer">
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save()"
+    [disabled]="!f.valid || !f.dirty" [nzLoading]="http.loading">{{ '保存' | translate}}</button>
+  <button nz-button type="button" (click)="close()">{{ '关闭' | translate}}</button>
+</div>

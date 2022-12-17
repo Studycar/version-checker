@@ -1,0 +1,30 @@
+<div class="modal-header">
+  <div class="modal-title">{{ (isModify?'编辑信息':'新增信息') | translate}} </div>
+</div>
+<div style=" margin:2px auto;">
+  <button style="float: right;" nz-button nzType="dashed" (click)="clear()">
+    <i class="anticon anticon-delete"></i>{{ '重置' | translate}}</button>
+  <div style="clear: both;"></div>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="2" [labelWidth]="150">
+    <se label="{{ '车间班次编码' | translate}}" required>
+      <input type="text" nz-input [(ngModel)]="i.shiftCode" name="shiftCode" [readonly]="isModify"
+        [class.disabled]="isModify" required>
+    </se>
+    <se label="{{ '车间班次描述' | translate}}" required>
+      <input type="text" nz-input [(ngModel)]="i.descriptions" name="descriptions" required>
+    </se>
+    <se label="{{ '是否有效' | translate}}" required>
+      <nz-select nzShowSearch [(ngModel)]="i.enableFlag" name="enableFlag" required>
+        <nz-option *ngFor="let option of enableOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="button" (click)="close()">{{ '关闭' | translate}}</button>
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save(f.value)" [disabled]="f.invalid"
+    [nzLoading]="http.loading">{{
+    '保存' | translate}}</button>
+</div>

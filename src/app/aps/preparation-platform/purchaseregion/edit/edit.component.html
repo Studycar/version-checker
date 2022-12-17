@@ -1,0 +1,39 @@
+<div class="modal-header">
+    <div class="modal-title">{{ title }}信息</div>
+</div>
+<div style="position: relative; height: 32px" *ngIf="i.id">
+    <button nz-button nzType="dashed" style="position: absolute; right: 0;" (click)="clear()">重置</button>
+</div>
+<div>
+    <form nz-form #f="ngForm" se-container="2">
+        <se label="{{ '工厂' | translate}}" required>
+            <nz-select [(ngModel)]="i.plantCode" name="strPlantCode" [nzDisabled]="readOnly" required>
+                <nz-option *ngFor="let option of plantoptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+            </nz-select>
+        </se>
+        <se label="{{ '送货区域' | translate}}" required>
+            <input nz-input type="text" [(ngModel)]="i.deliveryRegionCode" name="strDELIVERY_REGION_CODE" [disabled]="readOnly" required>
+        </se>
+        <se label="{{ '送货区域说明' | translate}}" required>
+            <input nz-input type="text" [(ngModel)]="i.description" name="strDESCRIPTION" required>
+        </se>
+        <se label="{{ '送货区域地址' | translate}}" required>
+            <input nz-input type="text" [(ngModel)]="i.address" name="strAddress" required>
+        </se>
+        <se label="{{ '送货区域类型' | translate}}" required>
+            <nz-select [(ngModel)]="i.deliveryRegionType" name="strDELIVERY_REGION_TYPE" nzShowSearch required>
+                <nz-option *ngFor="let option of typeoptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+            </nz-select>
+        </se>
+        <se label="{{ '是否有效' | translate}}" required>
+            <nz-select [(ngModel)]="i.enableFlag" name="strEnableFlag" required>
+                <nz-option [nzLabel]="'是'" [nzValue]="'Y'"></nz-option>
+                <nz-option [nzLabel]="'否'" [nzValue]="'N'"></nz-option>
+            </nz-select>
+        </se>
+    </form>
+</div>
+<div class="modal-footer">
+    <button nz-button type="submit" [nzType]="'primary'" (click)="save()" [disabled]="!f.valid || !f.dirty" [nzLoading]="http.loading">保存</button>
+    <button nz-button type="button" (click)="close()">关闭</button>
+</div>

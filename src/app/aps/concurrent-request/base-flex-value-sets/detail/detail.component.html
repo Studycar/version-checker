@@ -1,0 +1,81 @@
+<div class="modal-header">
+  <div class="modal-title">{{'值集查询定义' | translate}}</div>
+</div>
+
+<div>
+  <form nz-form #f1="ngForm" se-container="1" [labelWidth]="80">
+    <!--{{i.APPLICATION_TABLE_NAME}}-->
+    <se label="{{'表名' | translate}}" required>
+      <nz-select [nzMaxMultipleCount]="1" nzMode="tags" nzAllowClear [(ngModel)]="i.applicationTableName"
+        name="applicationTableName" [nzShowSearch]="true" (ngModelChange)="applicationtablenamechange()" required="required">
+        <nz-option *ngFor="let applicationTableName of applicationTableNames" [nzLabel]="applicationTableName.label"
+          [nzValue]="applicationTableName.value"></nz-option>
+      </nz-select>
+    </se>
+  </form>
+</div>
+<!--<nz-divider nzText="表列" nzOrientation="left"></nz-divider>-->
+<div>
+  <form nz-form #f2="ngForm" se-container="3">
+    <se>{{'名称' | translate}}</se>
+    <se>{{'类型' | translate}}</se>
+    <se>{{'大小' | translate}}</se>
+  </form>
+</div>
+<div>
+  <form nz-form #f3="ngForm" se-container="3" [labelWidth]="80">
+    <se label="{{'值' | translate}}" required>
+      <nz-select [nzMaxMultipleCount]="1" nzMode="tags" nzAllowClear [(ngModel)]="i.valueColumnName"
+        name="valueColumnName" [nzShowSearch]="true" (ngModelChange)="valuecolumnnamechange()" required="required">
+        <nz-option *ngFor="let columnname of columnnames" [nzLabel]="columnname.label" [nzValue]="columnname.value"></nz-option>
+      </nz-select>
+    </se>
+    <se>
+      <nz-select nzAllowClear [(ngModel)]="i.valueColumnType" name="valueColumnType"
+        [nzShowSearch]="true" required="required">
+        <nz-option *ngFor="let columnType of columnTypes" [nzLabel]="columnType.label" [nzValue]="columnType.value"></nz-option>
+      </nz-select>
+    </se>
+    <se>
+      <input type="text" nz-input [(ngModel)]="i.valueColumnSize" name="valueColumnSize" (input)="numberChange($event, i.valueColumnSize, 'value')"
+        required>
+    </se>
+    <se label="{{'含义' | translate}}">
+      <nz-select [nzMaxMultipleCount]="1" nzMode="tags" nzAllowClear [(ngModel)]="i.meaningColumnName"
+        name="meaningColumnName" [nzShowSearch]="true" (ngModelChange)="meaningcolumnnamechange()">
+        <nz-option *ngFor="let columnname of columnnames" [nzLabel]="columnname.label" [nzValue]="columnname.value"></nz-option>
+      </nz-select>
+    </se>
+    <se>
+      <nz-select nzAllowClear [(ngModel)]="i.meaningColumnType" name="meaningColumnType" [nzShowSearch]="true">
+        <nz-option *ngFor="let columnType of columnTypes" [nzLabel]="columnType.label" [nzValue]="columnType.value"></nz-option>
+      </nz-select>
+    </se>
+    <se>
+      <input type="text" nz-input [(ngModel)]="i.meaningColumnSize" name="meaningColumnSize" (input)="numberChange($event, i.meaningColumnSize, 'meaning')">
+    </se>
+    <se label="{{'标识' | translate}}">
+      <nz-select [nzMaxMultipleCount]="1" nzMode="tags" nzAllowClear [(ngModel)]="i.idColumnName"
+        name="idColumnName" [nzShowSearch]="true" (ngModelChange)="idcolumnnamechange()">
+        <nz-option *ngFor="let columnname of columnnames" [nzLabel]="columnname.label" [nzValue]="columnname.value"></nz-option>
+      </nz-select>
+    </se>
+    <se>
+      <nz-select nzAllowClear [(ngModel)]="i.idColumnType" name="idColumnType" [nzShowSearch]="true">
+        <nz-option *ngFor="let columnType of columnTypes" [nzLabel]="columnType.label" [nzValue]="columnType.value"></nz-option>
+      </nz-select>
+    </se>
+    <se>
+      <input type="text" nz-input [(ngModel)]="i.idColumnSize" name="idColumnSize" (input)="numberChange($event, i.idColumnSize, 'flag')">
+    </se>
+    <se label="{{'where条件' | translate}}" col="1">
+      <textarea [nzAutosize]="{ minRows: 2, maxRows: 10 }" nz-input [(ngModel)]="i.additionalWhereClause" name="additionalWhereClause"> </textarea>
+    </se>
+  </form>
+</div>
+<!--<nz-divider nzText="Wherer/Order语句" nzOrientation="left"></nz-divider>-->
+<div class="modal-footer">
+  <button nz-button type="submit" [nzType]="'primary'" (click)="check()">{{'测试' | translate}}</button>
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save()" [disabled]="!f1.valid || !f3.valid" [nzLoading]="http.loading">{{'保存' | translate}}</button>
+  <button nz-button type="submit" (click)="close()">{{'关闭' | translate}}</button>
+</div>

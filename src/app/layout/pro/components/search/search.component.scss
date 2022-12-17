@@ -1,0 +1,22 @@
+$searchBorderBlue: #0b39a6;
+$searchBackBlue: #0c47ad;
+
+:host-context(.ant-layout-sider-collapsed) {
+  width: 60px;
+}
+
+:host {
+  width: 160px;
+  display: block;
+  margin: 0 auto;
+  > nz-input-group > input {
+    border-radius: 30px;
+  }
+}
+
+.sider-search-input {
+  background-color: $searchBackBlue;
+  border-color: $searchBorderBlue;
+  color: #fff;
+}
+

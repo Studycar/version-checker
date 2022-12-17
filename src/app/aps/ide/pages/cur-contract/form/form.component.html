@@ -1,0 +1,50 @@
+<form nz-form #f="ngForm" se-container="2">
+  <se label="{{ '供方' | translate}}">
+    <nz-select name="plantCode" [(ngModel)]="formData.plantCode" name="plantCode" nzDisabled>
+      <nz-option *ngFor="let op of plantOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+    </nz-select>
+  </se>
+  <se label="{{ '客户编码' | translate}}">
+    <input type="text" nz-input [(ngModel)]="formDataHead.cusCode" name="cusCode" disabled />
+  </se>
+  <se label="{{ '客户简称' | translate}}">
+    <input type="text" nz-input [(ngModel)]="formDataHead.cusAbbreviation" name="cusAbbreviation" disabled />
+  </se>
+  <se label="{{ '合同编号' | translate}}">
+    <input type="text" nz-input [(ngModel)]="formDataHead.contractCode" name="contractCode" disabled />
+  </se>
+  <se *ngIf="formDataHead.categoryCode !== '70'" label="{{ '合同重量' | translate}}">
+    <input type="text" nz-input [(ngModel)]="formDataHead.weight" name="weight" disabled />
+  </se>
+  <se *ngIf="formDataHead.categoryCode === '70'" label="{{ '数量（个）' | translate}}">
+    <input type="text" nz-input [(ngModel)]="formDataHead.quantity" name="quantity" disabled />
+  </se>
+  <se label="{{ '合同金额' | translate}}">
+    <input type="text" nz-input [(ngModel)]="formDataHead.money" name="money" disabled />
+  </se>
+  <se label="{{ '触发审批备注' | translate}}">
+    <textarea nz-input name="updateReason" [(ngModel)]="formData.updateReason" nzAutosize disabled></textarea>
+  </se>
+  <nz-table 
+    #basicTable 
+    [nzData]="formDataBody" 
+    [nzSize]="'small'" 
+    [nzBordered]="false"
+    [nzPageSize]="formDataBody.length"
+    [nzShowPagination]="false">
+    <thead>
+      <tr>
+        <th *ngFor="let col of tableColumns">{{col.headerName}}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of basicTable.data">
+        <td *ngFor="let col of tableColumns">{{data[col.field]}}</td>
+      </tr>
+    </tbody>
+  </nz-table>
+</form>
+<!-- <ag-grid-angular #agGrid [class]="'ag-theme-alpine'" [style.height.px]="gridHeight-200" [rowData]="gridData"
+  [columnDefs]="columns" [gridOptions]="gridOptions" [myAgGridState]="'ps-cur-contract'"
+  [myAgGridRowKey]="{tb:'PS_CUR_CONTRACT'}">
+</ag-grid-angular> -->

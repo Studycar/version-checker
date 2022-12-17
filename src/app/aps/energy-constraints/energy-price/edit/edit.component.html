@@ -1,0 +1,52 @@
+<div class="modal-header">
+    <div class="modal-title">{{ isModify ? '编辑信息' : '新增信息' }}</div>
+</div>
+<div style="position: relative; height: 32px" *ngIf="isModify">
+    <button nz-button nzType="dashed" style="position: absolute; right: 0;" (click)="clear()">{{'重置' | translate}}</button>
+</div>
+<div>
+    <form nz-form #f="ngForm" se-container="2">
+        <se label="{{ '工厂' | translate }}" required>
+            <nz-select #select nzShowSearch name="plantCode" [(ngModel)]="i.plantCode" required>
+                <nz-option *ngFor="let pc of plantCodeList" [nzValue]="pc.value" [nzLabel]="pc.label"></nz-option>
+            </nz-select>
+        </se>
+        <se label="{{ '价格类型' | translate }}" required>
+            <nz-select nzShowSearch name="planType" [(ngModel)]="i.planType" required (ngModelChange)="changePeakValleyStatus()">
+                <nz-option *ngFor="let pt of planTypeOptions" [nzValue]="pt.value" [nzLabel]="pt.label"></nz-option>
+            </nz-select>
+        </se>
+        <se label="{{ '能源类型' | translate }}" required>
+            <nz-select nzShowSearch name="energyType" [(ngModel)]="i.energyType" required (ngModelChange)="changeUnitSymbol()">
+                <nz-option *ngFor="let et of energyTypeOptions" [nzValue]="et.value" [nzLabel]="et.label"></nz-option>
+            </nz-select>
+        </se>
+        <se label="{{ '能源单位' | translate }}">
+            <input nz-input type="text" disabled="true" name="unitSymbol" [(ngModel)]="i.unitSymbol">
+        </se>
+        <se label="{{ '单价(元)' | translate}}" required>
+            <nz-input-number [(ngModel)]="i.priceResult" [nzPrecision]="2" [nzStep]="1" [nzMin]="0"
+              name="priceResult" required>
+            </nz-input-number>
+        </se>
+        <se label="{{ '峰平谷类型' | translate }}" [required]="isPeakValley">
+            <nz-select nzShowSearch name="rateNumber" [(ngModel)]="i.rateNumber" [nzDisabled]="!isPeakValley" [required]="isPeakValley" >
+                <nz-option *ngFor="let pvt of rateNumberOptions" [nzValue]="pvt.value" [nzLabel]="pvt.label"></nz-option>
+            </nz-select>
+        </se>
+        <se label="{{ '时间从' | translate}}" [required]="isPeakValley">
+            <nz-time-picker nzFormat="HH:mm:ss" [(ngModel)]="startTime" name="startTime" [nzDisabled]="!isPeakValley" [required]="isPeakValley"
+                (ngModelChange)="changeEndTime()">
+            </nz-time-picker>
+          </se>
+        <se label="{{ '时间至' | translate}}" [required]="isPeakValley">
+            <nz-time-picker nzFormat="HH:mm:ss" [(ngModel)]="endTime" name="endTime" [nzDisabled]="!isPeakValley" [required]="isPeakValley"
+                [nzDisabledHours]="disabledTimeToHour" [nzDisabledMinutes]="disabledTimeToMinute" [nzDisabledSeconds]="disabledTimeToSecond">
+            </nz-time-picker>
+        </se>
+    </form>
+</div>
+<div class="modal-footer">
+    <button nz-button type="submit" [nzType]="'primary'" (click)="save(f.value)" [nzLoading]="http.loading" [disabled]="f.invalid || !f.dirty">{{'保存' | translate }}</button>
+    <button nz-button type="button" (click)="close()">{{ '关闭' | translate }}</button>
+</div>

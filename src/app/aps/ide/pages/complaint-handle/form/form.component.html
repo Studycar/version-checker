@@ -1,0 +1,113 @@
+<form nz-form #f="ngForm" se-container="2">
+    <se label="{{ '客诉申请单号' | translate}}">
+        <input nz-input [(ngModel)]="formData.orno" name="orno" disabled />
+    </se>
+    <se label="{{ '客诉申请单序号' | translate}}">
+        <input nz-input [(ngModel)]="formData.pono" name="pono" disabled />
+    </se>
+    <se label="{{ '钢卷号' | translate}}">
+        <input nz-input [(ngModel)]="formData.batchNum" name="batchNum" disabled />
+    </se>
+    <se label="{{ '钢种' | translate}}">
+        <!-- <input nz-input [(ngModel)]="formData.steelType" name="steelType" disabled> -->
+        <nz-select name="steelType" nzDisabled [(ngModel)]="formData.steelType">
+            <nz-option *ngFor="let op of steelTypeOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+        </nz-select>
+    </se>
+    <se label="{{ '钢卷规格' | translate}}">
+        <input nz-input [(ngModel)]="formData.standardsType" name="standardsType" disabled />
+    </se>
+    <se label="{{ '表面类型' | translate}}">
+        <!-- <input nz-input [(ngModel)]="formData.surface" name="surface" disabled> -->
+        <nz-select name="surface" nzDisabled [(ngModel)]="formData.surface">
+            <nz-option *ngFor="let op of surfaceOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+        </nz-select>
+    </se>
+    <se label="{{ '钢卷状态' | translate}}">
+        <input nz-input [(ngModel)]="formData.gjlx" name="gjlx" disabled />
+    </se>
+    <se label="{{ '钢卷所在地' | translate}}">
+        <!-- <input nz-input [(ngModel)]="formData.gjszd" name="gjszd"> -->
+        <nz-select name="gjszd" nzDisabled [(ngModel)]="formData.gjszd">
+            <nz-option *ngFor="let op of gjszdOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+        </nz-select>
+    </se>
+    <se label="{{ '净重' | translate}}">
+        <input nz-input [(ngModel)]="formData.weigthKg" name="weigthKg" disabled />
+    </se>
+    <se label="{{ '不良量' | translate}}">
+        <input nz-input [(ngModel)]="formData.blp" name="blp" disabled />
+    </se>
+    <se label="{{ '缺陷描述' | translate}}">
+        <input nz-input [(ngModel)]="formData.qxms" name="qxms" disabled />
+    </se>
+    <se label="{{ '客户诉求' | translate}}">
+        <input nz-input [(ngModel)]="formData.qhsq" name="qhsq" disabled />
+    </se>
+    <se label="{{ '处理信息反馈' | translate}}">
+        <input nz-input [(ngModel)]="formData.clxxfk" name="clxxfk" disabled />
+    </se>
+    <se label="{{ '吨钢赔付（元/吨）' | translate}}">
+        <input nz-input [(ngModel)]="formData.dgpf" name="dgpf" disabled />
+    </se>
+    <se label="{{ '按张赔付（元/张）' | translate}}">
+        <input nz-input [(ngModel)]="formData.azpf" name="azpf" disabled />
+    </se>
+    <se label="{{ '不良重量/吨' | translate}}">
+        <input nz-input [(ngModel)]="formData.blpKg" name="blpKg" disabled />
+    </se>
+    <se label="{{ '赔偿金额' | translate}}">
+        <input nz-input [(ngModel)]="formData.pfje" name="pfje" disabled />
+    </se>
+    <se label="{{ '赔付描述说明' | translate}}">
+        <input nz-input [(ngModel)]="formData.pfmssm" name="pfmssm" disabled />
+    </se>
+    <se label="{{ '状态' | translate}}">
+        <!-- <input nz-input [(ngModel)]="formData.state" name="state"> -->
+        <nz-select name="state" nzDisabled [(ngModel)]="formData.state">
+            <nz-option *ngFor="let op of stateOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+        </nz-select>
+    </se>
+    <se label="{{ '财务赔付状态' | translate}}">
+        <!-- <input nz-input [(ngModel)]="formData.cwpf" name="cwpf"> -->
+        <nz-select name="cwpf" nzDisabled [(ngModel)]="formData.cwpf">
+            <nz-option *ngFor="let op of cwpfStateOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+        </nz-select>
+    </se>
+    <se label="{{ '技术整改状态' | translate}}">
+        <!-- <input nz-input [(ngModel)]="formData.jszg" name="jszg"> -->
+        <nz-select name="jszg" nzDisabled [(ngModel)]="formData.jszg">
+            <nz-option *ngFor="let op of jszgStateOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+        </nz-select>
+    </se>
+    <se label="{{ '退换货类型' | translate}}">
+        <!-- <input nz-input [(ngModel)]="formData.thType" name="thType"> -->
+        <nz-select name="thType" nzDisabled [(ngModel)]="formData.thType">
+            <nz-option *ngFor="let op of thTypeOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+        </nz-select>
+    </se>
+    <se label="{{ '材料类型' | translate}}">
+        <!-- <input nz-input [(ngModel)]="formData.cailiaoType" name="cailiaoType"> -->
+        <nz-select name="cailiaoType" nzDisabled [(ngModel)]="formData.cailiaoType" required>
+            <nz-option *ngFor="let op of cailiaoTypeOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+        </nz-select>
+    </se>
+    <se label="{{ '客户' | translate}}">
+        <input nz-input [(ngModel)]="formData.cusCode" name="cusCode" disabled />
+    </se>
+    <se label="{{ '代理商联系人' | translate}}">
+        <input nz-input [(ngModel)]="formData.dlslxr" name="dlslxr" disabled />
+    </se>
+    <se label="{{ '联系电话' | translate}}">
+        <input nz-input [(ngModel)]="formData.lxdh" name="lxdh" disabled />
+    </se>
+    <se label="{{ '客诉日期' | translate}}">
+        <input nz-input [(ngModel)]="formData.ksdt" name="ksdt" disabled />
+    </se>
+    <se label="{{ '工厂' | translate}}">
+        <input nz-input [(ngModel)]="formData.plantCode" name="plantCode" disabled />
+    </se>
+    <se label="{{ '附件' | translate}}">
+        <common-upload #commonUpload [annexs]="fileList" [showUpload]="false" [Disabled]="true"></common-upload>
+    </se>
+</form>

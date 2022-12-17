@@ -1,0 +1,11 @@
+{
+  "app": {
+    "name": "美云智数APS",
+    "description": "Ng-zorro admin panel front-end framework"
+  },
+  "user": {
+    "name": "Admin",
+    "avatar": "./assets/tmp/img/avatar.jpg",
+    "email": "8888888@qq.com"
+  }
+}

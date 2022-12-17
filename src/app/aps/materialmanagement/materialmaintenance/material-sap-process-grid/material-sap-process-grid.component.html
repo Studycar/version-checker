@@ -1,0 +1,13 @@
+<div class="modal-header">
+  <div class="modal-title">{{ 'SAP工序' | translate}}</div>
+</div>
+<custom-button text="{{ '同步' | translate}}" (clickEvent)="reload()" [iconStyle]="iconStyle" [src]="'基础icon-刷新'">
+</custom-button>
+<custom-button text="{{ '查询' | translate}}" (clickEvent)="queryCommon()" [iconStyle]="iconStyle" [src]="'基础icon-查询'">
+</custom-button>
+<nz-card>
+  <ag-grid-angular #agGrid [class]="themeClass" [style.height.px]="gridHeight" [rowData]="gridData"
+    [columnDefs]="columns" [gridOptions]="gridOptions" [myAgGridRowKey]="{tb:'PS_SAP_PROCESS'}"
+    [myAgGridState]="'PS_SAP_PROCESS'">
+  </ag-grid-angular>
+</nz-card>

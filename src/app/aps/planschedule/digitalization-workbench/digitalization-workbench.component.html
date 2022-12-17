@@ -1,0 +1,80 @@
+<div class="div_menu">
+  <span class="span_menu">
+    <custom-function-button text="{{ '查询' | translate}}" (clickEvent)="search()" [src]="Img['搜索']">
+    </custom-function-button>
+    <custom-function-button text="{{ '排产刷新' | translate}}" (clickEvent)="refresh()" [src]="Img['排产刷新']">
+    </custom-function-button>
+    <nz-divider nzType="vertical"></nz-divider>
+    <custom-function-button text="{{ '工作日历' | translate}}" (clickEvent)="openCalendar()" [src]="Img['工作日历']">
+    </custom-function-button>
+    <custom-function-button [text]="fixValues.buttonText| translate" (clickEvent)="fixMo()" [src]="Img['固定时间']">
+    </custom-function-button>
+    <custom-function-button text="{{ '置尾单' | translate}}" (clickEvent)="setEndMo()" [src]="Img['置尾单']">
+    </custom-function-button>
+    <nz-divider nzType="vertical"></nz-divider>
+    <custom-function-button text="{{ '批量资源调整' | translate}}" (clickEvent)="batchMove()" [src]="Img['批量资源调整']">
+    </custom-function-button>
+    <custom-function-button text="{{ '调整保存' | translate}}" [disabled]="!editService.hasChanges()" (clickEvent)="save()"
+      [src]="Img['调整保存']" [srcDisabled]="Img['调整保存_不可用']">
+    </custom-function-button> <!-- 按顺序调整 和 按资源调整 数据保存 -->
+    <custom-function-button text="{{ '产能平衡' | translate}}" (clickEvent)="calculateWorking()" [src]="Img['产能平衡']">
+    </custom-function-button>
+    <nz-divider nzType="vertical"></nz-divider>
+    <!--     <custom-function-button text="{{ '修改' | translate}}" (clickEvent)="openMoEdit()">
+      <i class="anticon anticon-edit"></i>
+    </custom-function-button> -->
+    <custom-function-button text="{{ '集约选线' | translate}}" (clickEvent)="chooseLine()" [src]="Img['集约选线']">
+    </custom-function-button>
+    <custom-function-button text="{{ '工单联动' | translate}}" (clickEvent)="moLink()" [src]="Img['工单联动']">
+    </custom-function-button>
+    <custom-function-button text="{{ '上层联动' | translate}}" (clickEvent)="moUpLink()" [src]="Img['上层联动']">
+    </custom-function-button>
+    <nz-divider nzType="vertical"></nz-divider>
+    <custom-function-button text="{{ '工单组件' | translate}}" (clickEvent)="openMoComponent()" [src]="Img['工单组件']">
+    </custom-function-button>
+    <custom-function-button text="{{ '工单簇' | translate}}" (clickEvent)="openMoLevel()" [src]="Img['工单族']">
+    </custom-function-button>
+    <custom-function-button text="{{ '备注保存' | translate}}" [disabled]="!editService.hasChanges()" (clickEvent)="remarkMo()"
+      [src]="Img['备注保存']" [srcDisabled]="Img['备注保存_不可用']">
+    </custom-function-button>
+    <nz-divider nzType="vertical"></nz-divider>
+    <custom-function-button text="{{ '计划发布' | translate}}" (clickEvent)="PlanRelease()" [src]="Img['计划发布']">
+    </custom-function-button>
+    <custom-function-button text="{{ '排产表' | translate}}" (clickEvent)="openSchedule()" [src]="Img['排产表']">
+    </custom-function-button>
+  </span>
+</div>
+<nz-card>
+  <kendo-grid #grid [data]="view" [height]="gridHeight" [pageSize]="gridState.take" [skip]="gridState.skip" [sort]="gridState.sort"
+    [sortable]="false" (dataStateChange)="dataStateChange($event)" (cellClick)="cellClickHandler($event)" (cellClose)="cellCloseHandler($event)"
+    (selectedKeysChange)="selectedKeysChange($event)" [filter]="gridState.filter" filterable="menu" [resizable]="true"
+    [selectable]="selectableSettings" [rowClass]="rowCallback" [kendoGridSelectBy]="selectBy" [selectedKeys]="selectionKeys"
+    [columnMenu]="true" [reorderable]="true" [pageable]="false" [loading]="loading" [myGridRowKey]="{tb:'PS_MAKE_ORDER'}"
+    [myGridState]="'digitalization-workbench'">
+    <kendo-grid-messages pagerPage="{{ '分页' | translate}}" pagerOf="{{ '的' | translate}}" pagerItems="{{ '总数' | translate}}"
+      pagerItemsPerPage="{{ '页项' | translate}}" groupPanelEmpty="Drag here to group" noRecords="{{ '没有数据' | translate}}">
+    </kendo-grid-messages>
+    <kendo-grid-checkbox-column [width]="80" showSelectAll="true" [locked]="true" [class]="{columnCss:true}">
+      <ng-template kendoGridFooterTemplate>
+        总数:{{view.data.length}}
+      </ng-template>
+    </kendo-grid-checkbox-column>
+    <kendo-grid-column *ngFor="let col of columns" [field]="col.field" [title]="col.title| translate" [locked]="col.locked"
+      [hidden]="!!col.hidden" [width]="col.width" [filter]="col.filter?col.filter:''" [style]="gridLineStyle" [class]="{columnCss:true,'no-padding':true}">
+      <ng-template kendoGridCellTemplate let-dataItem>
+        <a *ngIf="!!col.ui?.link" title="{{ '编辑' | translate}}" (dblclick)="openMoEditCommon(dataItem[selectBy])">
+          {{ dataItem[col.field] | translate}}
+        </a>
+        <ellipsis *ngIf="!col.ui?.link&&!!col.ui?.tooltip" lines="{{col.ui?.tooltip}}">
+          <span nz-tooltip [nzTitle]="dataItem[col.field]" nzPlacement="topLeft">{{dataItem[col.field]}}</span>
+        </ellipsis>
+        <span *ngIf="!col.ui?.link&&!col.ui?.tooltip">{{dataItem[col.field]}}</span>
+      </ng-template>
+      <ng-template kendoGridEditTemplate let-dataItem="dataItem" let-column="column" let-formGroup="formGroup" *ngIf="col.ui?.type === 'select'">
+        <kendo-dropdownlist popupAnchor [defaultItem]="{value: dataItem[col.field], label: dataItem[col.field]}" [data]="col.ui.data"
+          textField="label" valueField="value" [valuePrimitive]="true" [formControl]="formGroup.get(col.field)">
+        </kendo-dropdownlist>
+      </ng-template>
+    </kendo-grid-column>
+  </kendo-grid>
+</nz-card>

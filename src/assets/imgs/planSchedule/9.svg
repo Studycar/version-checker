@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="32px" height="32px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 51.2 (57519) - http://www.bohemiancoding.com/sketch -->
+    <title>备注保存</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="1-01数据化排产" transform="translate(-872.000000, -112.000000)">
+            <g id="1" transform="translate(181.000000, 98.000000)">
+                <g id="top">
+                    <g id="5" transform="translate(607.000000, 14.000000)">
+                        <g id="备注保存" transform="translate(84.000000, 0.000000)">
+                            <rect id="Rectangle-2" x="0" y="0" width="32" height="32" rx="2"></rect>
+                            <path d="M9,6 L17.586915,6 C17.8521657,6 18.1065496,6.10538399 18.2940917,6.29296314 L23.7071767,11.7071188 C23.8946703,11.8946495 24,12.1489734 24,12.4141556 L24,25 C24,25.5522847 23.5522847,26 23,26 L9,26 C8.44771525,26 8,25.5522847 8,25 L8,7 C8,6.44771525 8.44771525,6 9,6 Z M10,16 L10,17.5 L22,17.5 L22,16 L10,16 Z M10,20 L10,21.5 L22,21.5 L22,20 L10,20 Z M17.5,6.5 L17.5,12.5 L23.5,12.5 L17.5,6.5 Z" id="Combined-Shape" fill="#8BC34A"></path>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

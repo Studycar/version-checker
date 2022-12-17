@@ -1,0 +1,30 @@
+<div class="modal-header">
+  <div class="modal-title">{{ 'PSI明细调整' | translate}}</div>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="2">
+    <se label="{{ '品类' | translate}}" required>
+      <nz-select nzShowSearch [(ngModel)]="i.marketCategory" name="targetVersion" required (ngModelChange)="marketCategoryChange($event)">
+        <nz-option *ngFor="let option of marketCategory" [nzLabel]="option" [nzValue]="option" >
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '渠道' | translate}}" required>
+      <nz-select nzShowSearch [(ngModel)]="i.channel" name="channel" required (ngModelChange)="channelChange($event)">
+        <nz-option *ngFor="let option of saleChannelOptions" [nzLabel]="option.label" [nzValue]="option.value">
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '现有价格' | translate}}" required>
+      <input nz-input [(ngModel)]="i.sum" name="sum" disabled="true" required>
+    </se>
+    <se label="{{ '调整价格' | translate}}" required>
+      <input nz-input [(ngModel)]="i.prodAvgPrice" name="prodAvgPrice" required>
+    </se>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save(f)"
+  [disabled]="!f.valid || !f.dirty">{{ '保存' | translate}}</button>
+  <button nz-button type="button" (click)="close()">{{ '关闭' | translate}}</button>
+</div>

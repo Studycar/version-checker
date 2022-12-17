@@ -1,0 +1,80 @@
+<div class="div_menu">
+  <span class="span_menu">
+
+    <custom-button text="{{ (isExpand?'全部展开':'全部收缩') | translate}}" (clickEvent)="showMinus()" [src]="ImgSrc">
+    </custom-button>
+
+    <custom-button text="{{ '导出' | translate}}" (clickEvent)="export()" [src]="'基础icon-导出'">
+    </custom-button>
+    <custom-button text="{{ '创建' | translate}}" (clickEvent)="send()" [src]="'批量下达'">
+    </custom-button>
+    <custom-button text="{{ '刷新' | translate}}" (clickEvent)="reload()" [src]="'基础icon-刷新'">
+    </custom-button>
+    <custom-button text="{{ '子打开/收缩' | translate}}" (clickEvent)="ec.toggleExpand()" src="收缩"></custom-button>
+    <custom-button text="{{ '搜索' | translate}}" (clickEvent)="FindRequest()" [src]="'基础icon-查询'">
+    </custom-button>
+    <custom-button 
+      style="float: right;"
+      [isPopover]="true"
+      [visible]="visible"
+      [popoverContent]="workbenchSetting"
+      text="{{ '设置' | translate}}"
+      [src]="'基础icon-工作台设置'"
+    >
+      </custom-button>
+  </span>
+</div>
+
+<nz-card>
+  <ag-grid-angular #agGrid [class]="themeClass" [style.height.px]="gridHeight" [rowData]="gridData"
+                   [pagination]="false" [treeData]="true" [columnDefs]="columns"
+                   excludeChildrenWhenTreeDataFiltering=true
+                   expandOrContract
+                   #ec="expandOrContract"
+                   [gridOptions]="gridOptions" [groupDefaultExpanded]="groupDefaultExpanded" [getDataPath]="getDataPath"
+                   [getRowNodeId]="getRowNodeId"
+                   [autoGroupColumnDef]="autoGroupColumnDef" (selectionChanged)="onSelectionChanged($event)"
+                   (rowSelected)="onRowSelected($event)" (gridReady)="onGridReady($event)"
+                   (cellValueChanged)="onCellValueChanged($event)"
+                   [myAgGridState]="'resource-issued-platform-ag'">
+  </ag-grid-angular>
+  <!-- <custom-pager [height]="pagerHeight" [context]="context" [view]='context.view' [(pageSize)]="_pageSize"
+    [(pageNo)]="_pageNo" (pageChangeEvent)="onPageChanged($event)"></custom-pager> -->
+  <div>{{ '总记录数：' | translate}}{{gridData.length}}</div>
+  <custom-excelexport [expColumns]='expColumns' [expColumnsOptions]='expColumnsOptions' fileName="{{'SKU计划工作台' | translate}}"
+                      #excelexport></custom-excelexport>
+</nz-card>
+
+<ng-template #customTemplate let-dataItem>
+  <textarea nz-input *ngIf="dataItem.levelNum=='0'&&dataItem.makeOrderStatus=='A'"
+            [(ngModel)]="dataItem.comments" (ngModelChange)="finishEdit(dataItem)" nzAutosize></textarea>
+</ng-template>
+<ng-template #customTemplate1 let-dataItem>
+  <input type="checkbox" [checked]="dataItem.redundantJobFlag=='Y'" disabled/>
+</ng-template>
+<ng-template #customTemplate2 let-dataItem>
+  <input type="checkbox" style="zoom:140%;" [checked]="dataItem.uncompletedBom=='Y'" disabled/>
+</ng-template>
+<ng-template #customTemplate3 let-dataItem>
+  <input type="checkbox" [checked]="dataItem.resourceExcFlag=='Y'" disabled/>
+</ng-template>
+<ng-template #customTemplate4 let-dataItem>
+  <span *ngIf="dataItem.levelNum===0" title="{{ '生产线刷新' | translate}}" nz-popconfirm
+        nzTitle="{{ '是否确认刷新该数据?' | translate}}"
+        (nzOnConfirm)="loadMark(dataItem)" class="pointer">
+            <i class="anticon anticon-reload"> </i>
+          </span>
+  <nz-divider nzType="vertical"></nz-divider>
+  <span *ngIf="dataItem.makeOrderStatus==='A' || dataItem.makeOrderStatus==='B'" title="{{'计划单'| translate}}" (click)="createPlanOrder(dataItem)" class="pointer">
+    <i class="anticon anticon-profile "></i>
+  </span>
+</ng-template>
+<ng-template #customTemplate5 let-dataItem>
+  <input type="checkbox" [checked]="dataItem.resourceMixFlag=='Y'" disabled/>
+</ng-template>
+<ng-template #workbenchSetting>
+  <workbench-setting-imp
+    [context]="context"
+    (updateClick)="closePopUp()"
+  ></workbench-setting-imp>
+</ng-template>

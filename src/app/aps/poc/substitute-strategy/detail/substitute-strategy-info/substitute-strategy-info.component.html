@@ -1,0 +1,25 @@
+<div class="modal-header">
+    <div class="modal-title">{{ '替代策略值维护' | translate}}</div>
+</div>
+<div class="operatable-area">
+    <button nz-button nzType="primary" (click)="addCode()">
+    <i class="anticon anticon-plus-circle-o"></i>{{ '新增' | translate}}
+  </button>
+</div>
+<ag-grid-angular #agGrid [class]="themeClass" [style.height.px]="gridHeight" [rowData]="gridData" [columnDefs]="columnsDef" [gridOptions]="gridOptions" [myAgGridState]="'lookupcodedetail'">
+</ag-grid-angular>
+<custom-pager [fixed]="false" [height]="pagerHeight" [context]="context" [view]='context.view' [(pageSize)]="_pageSize" [(pageNo)]="_pageNo" (pageChangeEvent)="onPageChanged($event)"></custom-pager>
+<ng-template #customTemplate let-dataItem>
+
+    <span title="{{ '编辑' | translate}}" (click)="addCode(dataItem)" class="pointer">
+             <i class="anticon anticon-edit"></i>
+    </span>
+    <!-- <nz-divider nzType="vertical"></nz-divider> -->
+    <!-- <span title="{{ '添加物料' | translate}}" (click)="addDetail(dataItem)" class="pointer">
+                            <i class="anticon anticon-plus"></i>
+    </span> -->
+    <nz-divider nzType="vertical"></nz-divider>
+    <span class="pointer" title="{{ '删除' | translate}}" nz-popconfirm nzTitle="{{ '是否确认删除该记录?' | translate}}" (nzOnConfirm)="deleteCode(dataItem);">
+            <i class="anticon anticon-delete"></i>
+   </span>
+</ng-template>

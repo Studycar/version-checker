@@ -1,0 +1,463 @@
+<nz-card [nzBordered]="false">
+  <ng-container *ngIf="!isComputed">
+    <form nz-form #f="ngForm" se-container="3">
+      <se label="{{ '批号' | translate }}">
+        <popup-select [(SelectValue)]="i.batchCode" [ValueField]="'batchCode'"
+          [(SelectText)]="i.batchCode" [TextField]="'batchCode'" name="batchCode" [options]="saleDistOptions"
+          [gridView]="gridViewSaleDists" [columns]="columnsSaleDists" (TextChanged)="onSaleDistTextChanged($event, 'batchCode')"
+          (SearchEvent)="searchSaleDists($event, 'batchCode')" (RowSelect)="onSaleDistSelect($event)">
+        </popup-select>
+      </se>
+      <se label="{{ '捆包号' | translate }}">
+        <popup-select [(SelectValue)]="i.baleNo" [ValueField]="'baleNo'"
+          [(SelectText)]="i.baleNo" [TextField]="'baleNo'" name="baleNo" [options]="saleDistOptions"
+          [gridView]="gridViewSaleDists" [columns]="columnsSaleDists" (TextChanged)="onSaleDistTextChanged($event, 'baleNo')"
+          (SearchEvent)="searchSaleDists($event, 'baleNo')" (RowSelect)="onSaleDistSelect($event)">
+        </popup-select>
+      </se>
+      <se label="{{ '合同基价' | translate }}">
+        <nz-input-number name="basePrice" [nzFormatter]="formatterPrecision6" [(ngModel)]="i.basePrice"></nz-input-number>
+      </se>
+      <se label="{{ '合同时间' | translate }}">
+        <nz-date-picker nzShowTime [(ngModel)]="i.signingDate" nzFormat="yyyy-MM-dd HH:mm:ss" name="signingDate">
+        </nz-date-picker>
+      </se>
+      <se label="{{ '形式' | translate }}">
+        <nz-select nzShowSearch name="prodType" [(ngModel)]="i.prodType">
+          <nz-option *ngFor="let op of prodTypeOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+        </nz-select>
+      </se>
+      <se label="{{ '计价方式' | translate }}">
+        <nz-select nzShowSearch name="pricingType" [(ngModel)]="i.pricingType">
+          <nz-option *ngFor="let op of pricingTypeOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+        </nz-select>
+      </se>
+      <se label="{{ '结算方式' | translate }}">
+        <nz-select nzShowSearch name="jsfs" [(ngModel)]="i.jsfs">
+          <nz-option *ngFor="let op of settleStyleOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+        </nz-select>
+      </se>
+      <se label="{{ '存货编码' | translate }}">
+        <input nz-input type="text" name="itemId" [(ngModel)]="i.itemId">
+      </se>
+      <se label="{{ '存货名称' | translate }}">
+        <input nz-input type="text" name="skuName" [(ngModel)]="i.skuName">
+      </se>
+      <se label="{{ '客户简称' | translate }}">
+        <popup-select [Value]="i.cusAbbreviation" [ValueField]="'cusAbbreviation'"
+          [Text]="i.cusAbbreviation" [TextField]="'cusAbbreviation'" [options]="customersOptions"
+          [gridView]="gridViewCustoms" [columns]="columnsCustoms" (TextChanged)="onPopupSelectTextChanged($event)"
+          (SearchEvent)="searchCustoms($event)" (RowSelect)="onRowSelectCustoms($event)">
+        </popup-select>
+      </se>
+      <se label="{{ '工厂' | translate }}">
+        <nz-select nzShowSearch name="plantCode" [(ngModel)]="i.plantCode">
+          <nz-option *ngFor="let op of plantOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+        </nz-select>
+      </se>
+      <se label="{{ '运输方式' | translate }}">
+        <nz-select nzShowSearch name="transportType" [(ngModel)]="i.transportType">
+          <nz-option *ngFor="let op of transportTypeOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+        </nz-select>
+      </se>
+      <se label="{{ '目的地' | translate }}">
+        <input nz-input type="text" name="place" [(ngModel)]="i.place">
+      </se>
+      <se label="{{ '是否受托' | translate }}">
+        <nz-select nzShowSearch name="entrustedProcessing" [(ngModel)]="i.entrustedProcessing">
+          <nz-option *ngFor="let op of YesNoOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+        </nz-select>
+      </se>
+      <se label="{{ '包装方式' | translate }}">
+        <nz-select nzShowSearch name="packType" [(ngModel)]="i.packType">
+          <nz-option *ngFor="let op of packTypeOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+        </nz-select>
+      </se>
+      <se label="{{ '计价单位' | translate }}">
+        <nz-select nzShowSearch name="unit" [(ngModel)]="i.unit">
+          <nz-option *ngFor="let op of unitOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+        </nz-select>
+      </se>
+      <se label="{{ '分卷状态' | translate }}">
+        <nz-select nzShowSearch name="subsectionState" [(ngModel)]="i.subsectionState">
+          <nz-option *ngFor="let op of subsectionStateOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+        </nz-select>
+      </se>
+      <se label="{{ '等级' | translate }}">
+        <nz-select nzShowSearch name="grade" [(ngModel)]="i.grade">
+          <nz-option *ngFor="let op of gradeOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+        </nz-select>
+      </se>
+      <se label="{{ '钢种大类' | translate }}">
+        <nz-select nzShowSearch name="steelSort" [(ngModel)]="i.steelSort">
+          <nz-option *ngFor="let op of steelSortOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+        </nz-select>
+      </se>
+      <se label="{{ '钢种' | translate }}">
+        <nz-select nzShowSearch name="steelGrade" [(ngModel)]="i.steelGrade" (ngModelChange)="steelTypeChange()">
+          <nz-option *ngFor="let op of steelTypeOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+        </nz-select>
+      </se>
+      <se label="{{ '表面' | translate }}">
+        <nz-select nzShowSearch name="surface" [(ngModel)]="i.surface">
+          <nz-option *ngFor="let op of surfaceOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+        </nz-select>
+      </se>
+      <se label="{{ '厚/薄料' | translate }}">
+        <nz-select nzShowSearch name="houbo" [(ngModel)]="i.houbo">
+          <nz-option *ngFor="let op of materialOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+        </nz-select>
+      </se>
+      <se label="{{ '理重' | translate }}">
+        <nz-input-number name="theoreticalWeight" [(ngModel)]="i.theoreticalWeight"></nz-input-number>
+      </se>
+      <se label="{{ '净重' | translate }}">
+        <nz-input-number name="weight" [(ngModel)]="i.weight"></nz-input-number>
+      </se>
+      <se label="{{ '规格尺寸' | translate }}">
+        <input nz-input type="text" name="spec" [(ngModel)]="i.spec"/>
+      </se>
+      <!-- <se label="{{ '实厚' | translate }}">
+        <nz-input-number name="actHeight" [(ngModel)]="i.actHeight"></nz-input-number>
+      </se>
+      <se label="{{ '实宽' | translate }}">
+        <nz-input-number name="actWidth" [(ngModel)]="i.actWidth"></nz-input-number>
+      </se> -->
+      <se label="{{ '套筒类型' | translate }}">
+        <nz-select nzShowSearch name="ttType" [(ngModel)]="i.ttType">
+          <nz-option *ngFor="let op of ttTypeOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+        </nz-select>
+      </se>
+      <se label="{{ '张数（纸板）' | translate }}">
+        <nz-input-number name="avaMarkupFinal" [(ngModel)]="i.avaMarkupFinal"></nz-input-number>
+      </se>
+      <se label="{{ '板长' | translate }}">
+        <nz-input-number name="plateLength" [(ngModel)]="i.plateLength"></nz-input-number>
+      </se>
+      <se label="{{ '面膜标签描述' | translate }}">
+        <input nz-input type="text" name="upLabelDesc" [(ngModel)]="i.upLabelDesc">
+      </se>
+      <se label="{{ '底膜标签描述' | translate }}">
+        <input nz-input type="text" name="downLabelDesc" [(ngModel)]="i.downLabelDesc">
+      </se>
+      <se label="{{ '表面保护' | translate }}">
+        <nz-select nzShowSearch name="paper" [(ngModel)]="i.paper">
+          <nz-option *ngFor="let op of paperOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+        </nz-select>
+      </se>
+      <se label="{{ '钢卷内径' | translate }}">
+        <input nz-input type="text" name="coilInnerDia" [(ngModel)]="i.coilInnerDia"/>
+      </se>
+      <se label="{{ '是否整卷' | translate }}">
+        <nz-select nzShowSearch name="fullVolume" [(ngModel)]="i.fullVolume">
+          <nz-option *ngFor="let op of YesNoOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+        </nz-select>
+      </se>
+      <se label="{{ '是否切边' | translate }}">
+        <nz-select nzShowSearch name="trmming" [(ngModel)]="i.trmming">
+          <nz-option *ngFor="let op of YesNoOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+        </nz-select>
+      </se>
+      <se label="{{ '特殊加价' | translate }}">
+        <nz-input-number name="specialMarkup" [(ngModel)]="i.specialMarkup"></nz-input-number>
+      </se>
+      <se label="{{ '数量单位' | translate }}">
+        <nz-select nzShowSearch name="unitCode" [(ngModel)]="i.unitCode">
+          <nz-option *ngFor="let op of unitOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+        </nz-select>
+      </se>
+      <se label="{{ '现存量' | translate }}">
+        <nz-input-number name="onhandQuantity" [(ngModel)]="i.onhandQuantity"></nz-input-number>
+      </se>
+      <se label="{{ '重卷次数' | translate }}">
+        <nz-input-number name="rewinding" [(ngModel)]="i.rewinding"></nz-input-number>
+      </se>
+    </form>
+    <form nz-form #btn="ngForm" se-container="3">
+      <se>
+        <button nz-button type="submit" [nzType]="'primary'" (click)="compute()" [nzLoading]="http.loading">{{'计算总价' | translate }}</button>
+      </se>
+      <se>
+        <button nz-button nzType="dashed" (click)="clear()">{{'重置' | translate}}</button>
+      </se>
+    </form>
+  </ng-container>
+  <ng-container *ngIf="isComputed">
+    <form nz-form #g="ngForm" se-container="3">
+      <se label="{{ '总价' | translate }}">
+        <nz-input-group nzAddOnAfter="元">
+          <input nz-input type="text" name="price" disabled [(ngModel)]="computeOpt.price">
+        </nz-input-group>
+      </se>
+      <se label="{{ '吨钢加价汇总' | translate }}">
+        <nz-input-group nzAddOnAfter="元/吨">
+          <input nz-input type="text" name="markupTon" disabled [(ngModel)]="computeOpt.markupTon">
+        </nz-input-group>
+      </se>
+      <se>
+        <button nz-button type="submit" [nzType]="'primary'" (click)="return()" [nzLoading]="http.loading">{{'返回重新计算' | translate }}</button>
+      </se>
+    </form>
+    <nz-divider [nzText]="'加价结果详情'" [nzOrientation]="'left'"></nz-divider>
+    <form nz-form #h="ngForm" se-container="3">
+      <se>计价规则取值</se>
+      <se>计价吨钢结果</se>
+      <se>货值</se>
+      <se label="{{ '厚/薄料加价' | translate }}">
+        <nz-input-group nzAddOnAfter="元/吨">
+          <input nz-input type="text" name="HbMarkup" disabled [(ngModel)]="computeOpt.HbMarkup">
+        </nz-input-group>
+      </se>
+      <se label="{{ '厚/薄料加价' | translate }}">
+        <nz-input-group nzAddOnAfter="元/吨">
+          <input nz-input type="text" name="HbMarkupFinal" disabled [(ngModel)]="computeOpt.HbMarkupFinal">
+        </nz-input-group>
+      </se>
+      <se label="{{ '厚/薄料加价' | translate }}">
+        <nz-input-group nzAddOnAfter="元">
+          <input nz-input type="text" name="HbPrice" disabled [(ngModel)]="computeOpt.HbPrice">
+        </nz-input-group>
+      </se>
+      <se label="{{ '结算方式加价' | translate }}">
+        <nz-input-group nzAddOnAfter="元/吨">
+          <input nz-input type="text" name="JsfsMarkup" disabled [(ngModel)]="computeOpt.JsfsMarkup">
+        </nz-input-group>
+      </se>
+      <se label="{{ '结算方式加价' | translate }}">
+        <nz-input-group nzAddOnAfter="元/吨">
+          <input nz-input type="text" name="JsfsMarkupFinal" disabled [(ngModel)]="computeOpt.JsfsMarkupFinal">
+        </nz-input-group>
+      </se>
+      <se label="{{ '结算方式加价' | translate }}">
+        <nz-input-group nzAddOnAfter="元">
+          <input nz-input type="text" name="JsfsPrice" disabled [(ngModel)]="computeOpt.JsfsPrice">
+        </nz-input-group>
+      </se>
+      <se label="{{ '运输方式加价' | translate }}">
+        <nz-input-group nzAddOnAfter="元/吨">
+          <input nz-input type="text" name="YsfsMarkup" disabled [(ngModel)]="computeOpt.YsfsMarkup">
+        </nz-input-group>
+      </se>
+      <se label="{{ '运输方式加价' | translate }}">
+        <nz-input-group nzAddOnAfter="元/吨">
+          <input nz-input type="text" name="YsfsMarkupFinal" disabled [(ngModel)]="computeOpt.YsfsMarkupFinal">
+        </nz-input-group>
+      </se>
+      <se label="{{ '运输方式加价' | translate }}">
+        <nz-input-group nzAddOnAfter="元">
+          <input nz-input type="text" name="YsfsPrice" disabled [(ngModel)]="computeOpt.YsfsPrice">
+        </nz-input-group>
+      </se>
+      <se label="{{ '包装方式加价' | translate }}">
+        <nz-input-group nzAddOnAfter="元/吨">
+          <input nz-input type="text" name="BzfsMarkup" disabled [(ngModel)]="computeOpt.BzfsMarkup">
+        </nz-input-group>
+      </se>
+      <se label="{{ '包装方式加价' | translate }}">
+        <nz-input-group [nzAddOnAfter]="computeOpt.BzfsUnitFinal || '元/KG'">
+          <input nz-input type="text" name="BzfsMarkupFinal" disabled [(ngModel)]="computeOpt.BzfsMarkupFinal">
+        </nz-input-group>
+      </se>
+      <se label="{{ '包装方式加价' | translate }}">
+        <nz-input-group nzAddOnAfter="元">
+          <input nz-input type="text" name="BzfsPrice" disabled [(ngModel)]="computeOpt.BzfsPrice">
+        </nz-input-group>
+      </se>
+      <se label="{{ '超长超短加价' | translate }}">
+        <nz-input-group nzAddOnAfter="元/张">
+          <input nz-input type="text" name="CccdMarkup" disabled [(ngModel)]="computeOpt.CccdMarkup">
+        </nz-input-group>
+      </se>
+      <se label="{{ '超长超短加价' | translate }}">
+        <nz-input-group nzAddOnAfter="元/张">
+          <input nz-input type="text" name="CccdMarkupFinal" disabled [(ngModel)]="computeOpt.CccdMarkupFinal">
+        </nz-input-group>
+      </se>
+      <se label="{{ '超长超短加价' | translate }}">
+        <nz-input-group nzAddOnAfter="元">
+          <input nz-input type="text" name="CccdPrice" disabled [(ngModel)]="computeOpt.CccdPrice">
+        </nz-input-group>
+      </se>
+      <se label="{{ '加工类型加价' | translate }}">
+        <nz-input-group nzAddOnAfter="元/平方">
+          <input nz-input type="text" name="ProcessMarkup" disabled [(ngModel)]="computeOpt.ProcessMarkup">
+        </nz-input-group>
+      </se>
+      <se label="{{ '加工类型加价' | translate }}">
+        <nz-input-group [nzAddOnAfter]="computeOpt.ProcessUnitFinal || '元/KG'">
+          <input nz-input type="text" name="ProcessMarkupFinal" disabled [(ngModel)]="computeOpt.ProcessMarkupFinal">
+        </nz-input-group>
+      </se>
+      <se label="{{ '加工类型加价' | translate }}">
+        <nz-input-group nzAddOnAfter="元">
+          <input nz-input type="text" name="ProcessPrice" disabled [(ngModel)]="computeOpt.ProcessPrice">
+        </nz-input-group>
+      </se>
+      <se label="{{ '面膜加价' | translate }}">
+        <nz-input-group nzAddOnAfter="元/平方">
+          <input nz-input type="text" name="CoatingUpMarkup" disabled [(ngModel)]="computeOpt.CoatingUpMarkup">
+        </nz-input-group>
+      </se>
+      <se label="{{ '面膜加价' | translate }}">
+        <nz-input-group [nzAddOnAfter]="computeOpt.CoatingUpUnitFinal || '元/KG'">
+          <input nz-input type="text" name="CoatingUpMarkupFinal" disabled [(ngModel)]="computeOpt.CoatingUpMarkupFinal">
+        </nz-input-group>
+      </se>
+      <se label="{{ '面膜加价' | translate }}">
+        <nz-input-group nzAddOnAfter="元">
+          <input nz-input type="text" name="CoatingUpPrice" disabled [(ngModel)]="computeOpt.CoatingUpPrice">
+        </nz-input-group>
+      </se>
+      <se label="{{ '底膜加价' | translate }}">
+        <nz-input-group nzAddOnAfter="元/平方">
+          <input nz-input type="text" name="CoatingDownMarkup" disabled [(ngModel)]="computeOpt.CoatingDownMarkup">
+        </nz-input-group>
+      </se>
+      <se label="{{ '底膜加价' | translate }}">
+        <nz-input-group [nzAddOnAfter]="computeOpt.CoatingDownUnitFinal || '元/KG'">
+          <input nz-input type="text" name="CoatingDownMarkupFinal" disabled [(ngModel)]="computeOpt.CoatingDownMarkupFinal">
+        </nz-input-group>
+      </se>
+      <se label="{{ '底膜加价' | translate }}">
+        <nz-input-group nzAddOnAfter="元">
+          <input nz-input type="text" name="CoatingDownPrice" disabled [(ngModel)]="computeOpt.CoatingDownPrice">
+        </nz-input-group>
+      </se>
+      <se label="{{ '分卷加价' | translate }}">
+        <nz-input-group nzAddOnAfter="元/吨">
+          <input nz-input type="text" name="SubsecMarkup" disabled [(ngModel)]="computeOpt.SubsecMarkup">
+        </nz-input-group>
+      </se>
+      <se label="{{ '分卷加价' | translate }}">
+        <nz-input-group nzAddOnAfter="元/吨">
+          <input nz-input type="text" name="SubsecMarkupFinal" disabled [(ngModel)]="computeOpt.SubsecMarkupFinal">
+        </nz-input-group>
+      </se>
+      <se label="{{ '分卷加价' | translate }}">
+        <nz-input-group nzAddOnAfter="元">
+          <input nz-input type="text" name="SubsecPrice" disabled [(ngModel)]="computeOpt.SubsecPrice">
+        </nz-input-group>
+      </se>
+      <se label="{{ '表面加价' | translate }}">
+        <nz-input-group nzAddOnAfter="元/吨">
+          <input nz-input type="text" name="SurfaceMarkup" disabled [(ngModel)]="computeOpt.SurfaceMarkup">
+        </nz-input-group>
+      </se>
+      <se label="{{ '表面加价' | translate }}">
+        <nz-input-group nzAddOnAfter="元/吨">
+          <input nz-input type="text" name="SurfaceMarkupFinal" disabled [(ngModel)]="computeOpt.SurfaceMarkupFinal">
+        </nz-input-group>
+      </se>
+      <se label="{{ '表面加价' | translate }}">
+        <nz-input-group nzAddOnAfter="元">
+          <input nz-input type="text" name="SurfacePrice" disabled [(ngModel)]="computeOpt.SurfacePrice">
+        </nz-input-group>
+      </se>
+      <se label="{{ '等级加价' | translate }}">
+        <nz-input-group nzAddOnAfter="元/吨">
+          <input nz-input type="text" name="GradeMarkup" disabled [(ngModel)]="computeOpt.GradeMarkup">
+        </nz-input-group>
+      </se>
+      <se label="{{ '等级加价' | translate }}">
+        <nz-input-group nzAddOnAfter="元/吨">
+          <input nz-input type="text" name="GradeMarkupFinal" disabled [(ngModel)]="computeOpt.GradeMarkupFinal">
+        </nz-input-group>
+      </se>
+      <se label="{{ '等级加价' | translate }}">
+        <nz-input-group nzAddOnAfter="元">
+          <input nz-input type="text" name="GradePrice" disabled [(ngModel)]="computeOpt.GradePrice">
+        </nz-input-group>
+      </se>
+      <se label="{{ '平板加价' | translate }}">
+        <nz-input-group nzAddOnAfter="元/吨">
+          <input nz-input type="text" name="PbMarkup" disabled [(ngModel)]="computeOpt.PbMarkup">
+        </nz-input-group>
+      </se>
+      <se label="{{ '平板加价' | translate }}">
+        <nz-input-group nzAddOnAfter="元/吨">
+          <input nz-input type="text" name="PbMarkupFinal" disabled [(ngModel)]="computeOpt.PbMarkupFinal">
+        </nz-input-group>
+      </se>
+      <se label="{{ '平板加价' | translate }}">
+        <nz-input-group nzAddOnAfter="元">
+          <input nz-input type="text" name="PbPrice" disabled [(ngModel)]="computeOpt.PbPrice">
+        </nz-input-group>
+      </se>
+      <se label="{{ '分条加价' | translate }}">
+        <nz-input-group nzAddOnAfter="元/吨">
+          <input nz-input type="text" name="SittingMarkup" disabled [(ngModel)]="computeOpt.SittingMarkup">
+        </nz-input-group>
+      </se>
+      <se label="{{ '分条加价' | translate }}">
+        <nz-input-group nzAddOnAfter="元/吨">
+          <input nz-input type="text" name="SittingMarkupFinal" disabled [(ngModel)]="computeOpt.SittingMarkupFinal">
+        </nz-input-group>
+      </se>
+      <se label="{{ '分条加价' | translate }}">
+        <nz-input-group nzAddOnAfter="元">
+          <input nz-input type="text" name="SittingPrice" disabled [(ngModel)]="computeOpt.SittingPrice">
+        </nz-input-group>
+      </se>
+      <se label="{{ '套筒加价' | translate }}">
+        <nz-input-group nzAddOnAfter="元/吨">
+          <input nz-input type="text" name="TtMarkup" disabled [(ngModel)]="computeOpt.TtMarkup">
+        </nz-input-group>
+      </se>
+      <se label="{{ '套筒加价' | translate }}">
+        <nz-input-group [nzAddOnAfter]="computeOpt.Tt8UnitFinal || '元/KG'">
+          <input nz-input type="text" name="TtMarkupFinal" disabled [(ngModel)]="computeOpt.TtMarkupFinal">
+        </nz-input-group>
+      </se>
+      <se label="{{ '套筒加价' | translate }}">
+        <nz-input-group nzAddOnAfter="元">
+          <input nz-input type="text" name="TtPrice" disabled [(ngModel)]="computeOpt.TtPrice">
+        </nz-input-group>
+      </se>
+      <se label="{{ '内径加价' | translate }}">
+        <nz-input-group nzAddOnAfter="元/吨">
+          <input nz-input type="text" name="InnerDiaMarkup" disabled [(ngModel)]="computeOpt.InnerDiaMarkup">
+        </nz-input-group>
+      </se>
+      <se label="{{ '内径加价' | translate }}">
+        <nz-input-group nzAddOnAfter="元/吨">
+          <input nz-input type="text" name="InnerDiaMarkupFinal" disabled [(ngModel)]="computeOpt.InnerDiaMarkupFinal">
+        </nz-input-group>
+      </se>
+      <se label="{{ '内径加价' | translate }}">
+        <nz-input-group nzAddOnAfter="元">
+          <input nz-input type="text" name="InnerDiaPrice" disabled [(ngModel)]="computeOpt.InnerDiaPrice">
+        </nz-input-group>
+      </se>
+      <se label="{{ '垫纸加价' | translate }}">
+        <nz-input-group nzAddOnAfter="元/吨">
+          <input nz-input type="text" name="PaperMarkup" disabled [(ngModel)]="computeOpt.PaperMarkup">
+        </nz-input-group>
+      </se>
+      <se label="{{ '垫纸加价' | translate }}">
+        <nz-input-group nzAddOnAfter="元/吨">
+          <input nz-input type="text" name="PaperMarkupFinal" disabled [(ngModel)]="computeOpt.PaperMarkupFinal">
+        </nz-input-group>
+      </se>
+      <se label="{{ '垫纸加价' | translate }}">
+        <nz-input-group nzAddOnAfter="元">
+          <input nz-input type="text" name="PaperPrice" disabled [(ngModel)]="computeOpt.PaperPrice">
+        </nz-input-group>
+      </se>
+      <se label="{{ '规格加价' | translate }}">
+        <nz-input-group nzAddOnAfter="元/吨">
+          <input nz-input type="text" name="GgMarkup" disabled [(ngModel)]="computeOpt.GgMarkup">
+        </nz-input-group>
+      </se>
+      <se label="{{ '规格加价' | translate }}">
+        <nz-input-group nzAddOnAfter="元/吨">
+          <input nz-input type="text" name="GgMarkupFinal" disabled [(ngModel)]="computeOpt.GgMarkupFinal">
+        </nz-input-group>
+      </se>
+      <se label="{{ '规格加价' | translate }}">
+        <nz-input-group nzAddOnAfter="元">
+          <input nz-input type="text" name="GgPrice" disabled [(ngModel)]="computeOpt.GgPrice">
+        </nz-input-group>
+      </se>
+    </form>
+  </ng-container>
+</nz-card>

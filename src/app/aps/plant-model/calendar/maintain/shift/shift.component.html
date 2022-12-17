@@ -1,0 +1,24 @@
+<div class="modal-header">
+  <div class="modal-title">{{ ('班次信息') | translate}} </div>
+</div>
+<div class="mb-md">
+  <button nz-button (click)="add()" [nzType]="'primary'">
+    <i class="anticon anticon-plus-circle-o"></i>{{ '新增' | translate}}
+  </button>
+  <!-- <button (click)="removeBatch()" nz-button [nzType]="'danger'">
+      <i class="anticon anticon-delete"></i>{{ '删除' | translate}}
+    </button> -->
+</div>
+<nz-card>
+  <ag-grid-angular #agGrid [class]="themeClass" [style.height.px]="gridHeight" [rowData]="view.data"
+    [columnDefs]="columns" [gridOptions]="gridOptions" (selectionChanged)="onSelectionChanged($event)"
+    [myAgGridRowKey]="{tb:'PS_CALENDAR_SHIFTS'}" [myAgGridState]="'shift'">
+  </ag-grid-angular>
+  <custom-pager [height]="pagerHeight" [fixed]="false" [context]="context" [view]='context.view'
+    [(pageSize)]="_pageSize" [(pageNo)]="_pageNo" (pageChangeEvent)="onPageChanged($event)"></custom-pager>
+</nz-card>
+<ng-template #customTemplate let-dataItem>
+  <span title="{{ '编辑' | translate}}" (click)="add(dataItem)" [ngStyle]="pointer">
+    <i class="anticon anticon-edit"></i>
+  </span>
+</ng-template>

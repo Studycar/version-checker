@@ -1,0 +1,84 @@
+<!doctype html>
+<html class=no-js>
+<head>
+  <meta charset=utf-8>
+  <title>Angular Gantt - Gantt chart component for AngularJS (Demo)</title>
+  <meta name=description content="Gantt chart component for AngularJS">
+  <meta name=viewport content="width=device-width">
+  <link rel=canonical href=https://www.angular-gantt.com/ >
+  <link rel="shortcut icon" href=https://www.angular-gantt.com/img/favicon.ico>
+  <meta property=og:title content="Angular Gantt (Demo)">
+  <meta property=og:description content="Gantt chart component for AngularJS">
+  <meta property=og:type content=website>
+  <meta property=og:url content=https://www.angular-gantt.com/demo/ >
+  <meta property=og:image content=https://www.angular-gantt.com/img/angular-gantt.png>
+  <link href=angular-gantt-demo.css rel=stylesheet>
+  <style>
+    html, body, .gantt-box {
+      height: 100%;
+      width: 100%;
+    }
+  </style>
+</head>
+<body ng-app=gantt.demo ng-strict-di id=gantt.demo><!--[if lt IE 7]>
+<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
+  your browser</a> to improve your experience.</p>
+<![endif]-->
+<div ng-controller=DemoCtrl class="gantt-box">
+  <div style="display: none"><textarea id=dataStorage></textarea>
+    <button id=initGanttData ng-click=initGanttData()></button>
+    <button id=getGanttData ng-click=getGanttData()></button>
+    <button id=setGanttData ng-click=setGanttData()></button>
+    <textarea id=scaleModeStorage></textarea>
+    <button id=initScaleMode ng-click=initScaleMode()></button>
+    <textarea id=filterTasksStorage></textarea>
+    <button id=initFilterTasks ng-click=initFilterTasks()></button>
+    <textarea id=filterRowsStorage></textarea>
+    <button id=initFilterRows ng-click=initFilterRows()></button>
+    <textarea id=taskTooltipsStorage></textarea>
+    <button id=initTaskTooltipsDisplay ng-click=initTaskTooltipsDisplay()></button>
+    <textarea id=rowNameStorage></textarea>
+    <button id=initRowName ng-click=initRowName()></button>
+    <button id=backupRowName ng-click=backupRowName()></button>
+    <textarea id=taskIdStorage></textarea>
+    <button id=initTaskId ng-click=initTaskId()></button>
+    <button id=backupTaskId ng-click=backupTaskId()></button>
+    <textarea id=taskFromStorage></textarea>
+    <button id=initTaskFrom ng-click=initTaskFrom()></button>
+    <button id=backupTaskFrom ng-click=backupTaskFrom()></button>
+    <textarea id=taskColorsStorage></textarea>
+    <button id=initTaskColors ng-click=initTaskColors()></button>
+    <textarea id=taskHighlightStorage></textarea>
+    <button id=initTaskHighlightColors ng-click=initTaskHighlightColors()></button>
+  </div>
+  <div class="gantt" gantt data=data timespans=timespans show-side=options.labelsEnabled daily=options.daily
+       filter-task="{'name': options.filterTask}" filter-row="{'name': options.filterRow}" sort-mode=options.sortMode
+       view-scale=options.scale column-width=options.columnWidth auto-expand=options.autoExpand
+       task-out-of-range=options.taskOutOfRange from-date=options.fromDate to-date=options.toDate
+       allow-side-resizing=options.allowSideResizing
+       task-content="options.taskContentEnabled ? options.taskContent : undefined"
+       row-content="options.rowContentEnabled ? options.rowContent : undefined" current-date=options.currentDate
+       current-date-value=options.currentDateValue
+       headers="options.width && options.shortHeaders || options.longHeaders" max-height="options.maxHeight()"
+       time-frames=options.timeFrames date-frames=options.dateFrames
+       time-frames-working-mode=options.timeFramesWorkingMode
+       time-frames-non-working-mode=options.timeFramesNonWorkingMode time-frames-magnet=options.timeFramesMagnet
+       api=options.api column-magnet=options.columnMagnet>
+    <gantt-tree enabled="options.sideMode === 'Tree' || options.sideMode === 'TreeTable'"
+                header-content=options.treeHeaderContent keep-ancestor-on-filter-row=true></gantt-tree>
+    <gantt-groups
+      enabled="options.groupDisplayMode === 'group' || options.groupDisplayMode === 'overview' || options.groupDisplayMode === 'promote'"
+      display=options.groupDisplayMode></gantt-groups>
+    <gantt-tooltips content=options.tooltipsContent></gantt-tooltips>
+    <gantt-progress></gantt-progress>
+    <gantt-movable enabled=!options.readOnly allow-row-switching=options.movable.allowRowSwitching></gantt-movable>
+    <gantt-overlap></gantt-overlap>
+    <gantt-dependencies enabled=options.dependencies.enabled conflict-checker=options.dependencies.conflictChecker
+                        read-only=true></gantt-dependencies>
+  </div>
+</div>
+<script type=text/javascript src=manifest.js></script>
+<script type=text/javascript src=vendor.js></script>
+<script type=text/javascript src=angular-gantt-demo.js></script>
+</body>
+</html>

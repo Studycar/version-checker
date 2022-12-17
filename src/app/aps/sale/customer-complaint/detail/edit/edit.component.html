@@ -1,0 +1,149 @@
+<div class="modal-header">
+  <div class="modal-title">{{ isModify ? '编辑信息' : '新增信息' | translate }}</div>
+</div>
+<div style="position: relative; height: 32px" *ngIf="isModify">
+  <button nz-button nzType="dashed" style="position: absolute; right: 0;" (click)="clear()">{{'重置' | translate}}</button>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="2">
+    <se label="{{ '客诉申请单号' | translate }}">
+      <input nz-input type="text" disabled name="orno" [(ngModel)]="i.orno">
+    </se>
+    <se label="{{ '客诉申请单行号' | translate }}" *ngIf="isModify">
+      <input nz-input type="text" disabled name="pono" [(ngModel)]="i.pono">
+    </se>
+    <se label="{{ '客诉申请单行状态' | translate }}" required>
+      <nz-select nzShowSearch name="state" nzDisabled [(ngModel)]="i.state" required>
+        <nz-option *ngFor="let op of stateOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '选择处理公司' | translate }}" required>
+      <nz-select nzShowSearch name="plantCode" [(ngModel)]="i.plantCode" nzDisabled required>
+        <nz-option *ngFor="let op of plantOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '钢卷号' | translate }}" required>
+      <popup-select [(SelectValue)]="i.batchNum" [ValueField]="'batchNum'"
+        [(SelectText)]="i.batchNum" [TextField]="'batchNum'" name="batchNum" [Disabled]="isResolve" [options]="invoiceDetailedOptions"
+        [gridView]="gridViewInvoicesDetail" [columns]="columnsInvoicesDetail" (TextChanged)="onInvoiceDetailTextChanged($event)"
+        (SearchEvent)="searchInvoicesDetail($event)" (RowSelect)="onInvoiceDetailSelect($event)" required>
+      </popup-select>
+    </se>
+    <se label="{{ '钢种' | translate }}">
+      <nz-select nzShowSearch name="steelType" nzDisabled [(ngModel)]="i.steelType">
+        <nz-option *ngFor="let op of steelTypeOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '规格尺寸' | translate }}">
+      <input nz-input type="text" disabled name="standardsType" [(ngModel)]="i.standardsType">
+    </se>
+    <se label="{{ '表面' | translate }}">
+      <nz-select nzShowSearch name="surface" nzDisabled [(ngModel)]="i.surface">
+        <nz-option *ngFor="let op of surfaceOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '钢卷状态' | translate }}" required>
+      <input nz-input type="text" [disabled]="isResolve" name="gjlx" [(ngModel)]="i.gjlx" required>
+    </se>
+    <se label="{{ '钢卷所在地' | translate }}" required>
+      <nz-select nzShowSearch name="gjszd" [nzDisabled]="isResolve" [(ngModel)]="i.gjszd" required>
+        <nz-option *ngFor="let op of gjszdOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '净重' | translate }}">
+      <nz-input-number name="weigthKg" nzDisabled [(ngModel)]="i.weigthKg"></nz-input-number>
+    </se>
+    <se label="{{ '不良量' | translate }}" required>
+      <nz-input-number name="blp" [nzDisabled]="isResolve" [(ngModel)]="i.blp" required></nz-input-number>
+    </se>
+    <se label="{{ '缺陷描述' | translate }}" required>
+      <input nz-input type="text" [disabled]="isResolve" name="qxms" [(ngModel)]="i.qxms" required>
+    </se>
+    <se label="{{ '客户诉求' | translate }}" required>
+      <input nz-input type="text" [disabled]="isResolve" name="qhsq" [(ngModel)]="i.qhsq" required>
+    </se>
+    <se label="{{ '材料类型' | translate }}" required>
+      <nz-select nzShowSearch name="cailiaoType" [nzDisabled]="isResolve" [(ngModel)]="i.cailiaoType" required>
+        <nz-option *ngFor="let op of cailiaoTypeOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se>
+    <!-- 客诉处理内容 -->
+    <se label="{{ '处理信息反馈' | translate }}" *ngIf="isResolve">
+      <input nz-input type="text" name="clxxfk" [(ngModel)]="i.clxxfk">
+    </se>
+    <se label="{{ '赔付类型' | translate }}"  *ngIf="isResolve">
+      <nz-select nzShowSearch name="pflx" [(ngModel)]="pflx" (ngModelChange)="clearPFLX($event)">
+        <nz-option *ngFor="let op of pflxOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '退换货类型' | translate }}" *ngIf="isResolve" required>
+      <nz-select nzShowSearch name="thType" [(ngModel)]="i.thType" required>
+        <nz-option *ngFor="let op of thTypeOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '吨钢赔付（元/吨）' | translate }}" *ngIf="isResolve">
+      <nz-input-number name="dgpf" [(ngModel)]="i.dgpf" [nzDisabled]="pflx === 2" (ngModelChange)="generatePFJE()"></nz-input-number>
+    </se>
+    <se label="{{ '按张赔付（元/张）' | translate }}" *ngIf="isResolve">
+      <nz-input-number name="azpf" [(ngModel)]="i.azpf" [nzDisabled]="pflx === 1" (ngModelChange)="generatePFJE()"></nz-input-number>
+    </se>
+    <se label="{{ '不良重量/吨' | translate }}" *ngIf="isResolve">
+      <nz-input-number name="blpKg" [(ngModel)]="i.blpKg" (ngModelChange)="generatePFJE()"></nz-input-number>
+    </se>
+    <se label="{{ '赔付金额' | translate }}" *ngIf="isResolve">
+      <nz-input-number name="pfje" [(ngModel)]="i.pfje" nzDisabled></nz-input-number>
+    </se>
+    <se label="{{ '赔付描述说明' | translate }}" *ngIf="isResolve">
+      <input nz-input type="text" name="pfmssm" [(ngModel)]="i.pfmssm">
+    </se>
+    <ng-container *ngIf="i && i.pfje && i.pfje > 0">
+      <se label="{{ '币种' | translate }}" required>
+        <nz-select nzShowSearch [(ngModel)]="i.currency" name="currency" required>
+          <nz-option
+            *ngFor="let option of currencyOptions"
+            [nzLabel]="option.label"
+            [nzValue]="option.value"
+          >
+          </nz-option>
+        </nz-select>
+      </se>
+      <se label="{{ '付款账号' | translate }}" required>
+        <input
+          type="text"
+          nz-input
+          [(ngModel)]="i.payAccountNo"
+          name="payAccountNo"
+          required
+        />
+      </se>
+      <se label="{{ '付款方式' | translate }}" required>
+        <nz-select nzShowSearch [(ngModel)]="i.payType" name="payType" required>
+          <nz-option
+            *ngFor="let option of payTypeOptions"
+            [nzLabel]="option.label"
+            [nzValue]="option.value"
+          >
+          </nz-option>
+        </nz-select>
+      </se>
+      <se label="{{ '是否加急' | translate }}" required>
+        <nz-select nzShowSearch [(ngModel)]="i.urgent" name="urgent" required>
+          <nz-option
+            *ngFor="let option of yesNoOptions"
+            [nzLabel]="option.label"
+            [nzValue]="option.value"
+          >
+          </nz-option>
+        </nz-select>
+      </se>
+    </ng-container>
+    <!-- 客诉申请附件处理 -->
+    <se label="{{ '附件信息' | translate }}" col="1" required>
+      <common-upload #commonUpload [fileTypes]="fileTypes" [annexs]="annexs" [multiple]="true" [limit]="5" [showUpload]="!isResolve" [Disabled]="isResolve"></common-upload>
+    </se>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="button" (click)="close()">{{ '取消' | translate }}</button>
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save(f.value)" [nzLoading]="http.loading" [disabled]="f.invalid || !f.dirty || (!isResolve && commonUpload.annexs.length === 0)">{{'保存' | translate }}</button>
+</div>

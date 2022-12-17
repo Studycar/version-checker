@@ -1,0 +1,57 @@
+<div class="modal-header">
+  <div class="modal-title">{{ isEdit ? '编辑客户信息' : '客户信息变更' | translate }}</div>
+</div>
+<div>
+  <form #f="ngForm" se-container="2">
+    <se *ngIf="!isEdit" label="{{ '客户编码' | translate }}">
+      <input nz-input type="text" name="cusCode" [(ngModel)]="i.cusCode" disabled>
+    </se>
+    <se label="{{ '客户名称' | translate }}">
+      <input nz-input type="text" name="cusName" [(ngModel)]="i.cusName">
+    </se>
+    <se label="{{ '客户简称' | translate }}">
+      <input nz-input type="text" name="cusAbbreviation" [(ngModel)]="i.cusAbbreviation">
+    </se>
+    <se label="{{ '所属客户' | translate }}">
+      <popup-select [Value]="i.affiliatedCus" [ValueField]="'cusName'"
+        [Text]="i.affiliatedCus" [TextField]="'cusName'" name="affiliatedCus" [options]="customersOptions"
+        [gridView]="gridViewCustoms" [columns]="columnsCustoms" (TextChanged)="onPopupSelectTextChanged($event)"
+        (SearchEvent)="searchCustoms($event)" (RowSelect)="onRowSelect($event)">
+      </popup-select>
+    </se>
+    <se label="{{ '客户级别' | translate }}">
+      <nz-select [(ngModel)]="i.cusGrade" name="cusGrade">
+        <nz-option *ngFor="let op of cusGradeOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '客户类型' | translate }}">
+      <nz-select [(ngModel)]="i.cusType" name="cusType">
+        <nz-option *ngFor="let op of cusTypeOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '税号' | translate }}">
+      <input nz-input type="text" name="taxNum" [(ngModel)]="i.taxNum" disabled>
+    </se>
+    <se label="{{ '联系人' | translate }}">
+      <input nz-input type="text" name="contact" [(ngModel)]="i.contact">
+    </se>
+    <se label="{{ '地区分类' | translate }}">
+      <nz-select nzShowSearch name="region" [(ngModel)]="i.region">
+        <nz-option *ngFor="let op of regionOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '地址' | translate }}">
+      <input nz-input type="text" name="address" [(ngModel)]="i.address" />
+    </se>
+    <se label="{{ '联系电话' | translate }}">
+      <input nz-input type="text" name="telNum" [(ngModel)]="i.telNum" />
+    </se>
+    <se *ngIf="!isEdit" label="{{ '变更原因' | translate }}" required>
+      <input type="text" nz-input name="changeReason" [(ngModel)]="i.changeReason" required />
+    </se>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="button" (click)="close()">{{ '取消' | translate }}</button>
+  <button nz-button type="submit" [nzType]="'primary'" (click)="submit(f.value)" [nzLoading]="http.loading" [disabled]="f.invalid || !f.dirty">{{'保存' | translate }}</button>
+</div>

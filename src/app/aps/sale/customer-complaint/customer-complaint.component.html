@@ -1,0 +1,35 @@
+<custom-formquery [queryParams]="queryParams" [context]="context" >
+  <custom-button *ngIf="!isResolve" text="{{ '新增' | translate }}" [src]="'基础icon-新增'" (clickEvent)="add()"></custom-button>
+  <custom-button *ngIf="!isResolve" text="{{ '提交审批' | translate }}" [src]="'提交审核'" (clickEvent)="apply()"></custom-button>
+  <custom-button *ngIf="isResolve" text="{{ '导入' | translate }}" [src]="'基础icon-导入'" [loading]="optionsLoading" (clickEvent)="import()"></custom-button>
+  <custom-button text="{{ '导出' | translate }}" [src]="'基础icon-导出'" (clickEvent)="export()"></custom-button>
+</custom-formquery>
+<nz-card>
+  <ag-grid-angular #agGrid [class]="themeClass" [style.height.px]="gridHeight" [rowData]="gridData"
+    [columnDefs]="columns" [gridOptions]="gridOptions" [myAgGridState]="'hw-customer-complaint'"
+    [myAgGridRowKey]="{tb:'PS_COMPLAINT'}">
+  </ag-grid-angular>
+  <custom-pager [height]="pagerHeight" [context]="context" [view]='context.view' [(pageSize)]="_pageSize" [fixed]="false"
+    [(pageNo)]="_pageNo" (pageChangeEvent)="onPageChanged($event)"></custom-pager>
+  <custom-excelexport [expColumns]='expColumns' [expColumnsOptions]='expColumnsOptions' fileName='客诉申请' #excelexport></custom-excelexport>
+</nz-card>
+<ng-template #customTemplate let-dataItem>
+  <div *ngIf="!isResolve && dataItem.clzt === '10'" style="display: inline;">
+    <span title="{{ '编辑' | translate}}" (click)="add(dataItem)" style="cursor: Pointer">
+      <i class="anticon anticon-edit"></i>
+    </span>
+    <nz-divider nzType="vertical"></nz-divider>
+    <span title="{{ '删除' | translate}}" nz-popconfirm nzTitle="{{ '是否确认删除该记录?' | translate}}"
+      (nzOnConfirm)="remove(dataItem);" class="pointer">
+      <i class="anticon anticon-delete"></i>
+    </span>
+    <nz-divider nzType="vertical"></nz-divider>
+  </div>
+  <span title="{{ '明细' | translate}}" style="cursor: Pointer" (click)="showDetail(dataItem)">
+    <i class="anticon anticon-bars"></i>
+  </span>
+  <nz-divider nzType="vertical"></nz-divider>
+  <span title="{{ '修改记录' | translate}}" (click)="showHistoryRecord(dataItem)" style="cursor: Pointer">
+    <img src="/assets/icons/operate-icons/history.svg" />
+  </span>
+</ng-template>

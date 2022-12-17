@@ -1,0 +1,49 @@
+<div class="modal-header">
+  <div class="modal-title">{{ '物料工序列表' | translate}}</div>
+</div>
+<div style="padding-left: 10px; margin-bottom: 10px;">
+  <button nz-button (click)="add()" [nzType]="'primary'">
+    <i class="anticon anticon-plus-circle-o"></i>{{ '新增' | translate}}
+  </button>
+  <button nz-button (click)="export()" class="mx-sm">
+    <i class="anticon anticon-export"></i>{{ '导出' | translate}}
+  </button>
+  <button nz-button (click)="save()" class="mx-sm">
+    <i class="anticon anticon-save"></i>{{ '保存' | translate}}
+  </button>
+  <label style="margin-left: 10px;margin-right: 10px;">从物料</label>
+  <input type="text" nz-input [(ngModel)]="ITEM_CODE" [readonly]="'true'" [class.disabled]="'true'"
+         [ngStyle]="{'width':'150px'}">
+  <label style="margin-left: 10px;margin-right: 10px;">复制到</label>
+  <popup-select [(SelectValue)]="targetCopyItemCode" [(SelectText)]='targetCopyItemCode' [ValueField]="'ITEM_CODE'"
+                [TextField]="'ITEM_CODE'" [gridView]="itemGridView" [columns]="itemColumns"
+                (SearchEvent)="searchItem($event)"
+                [nzStyle]="{'width':'150px'}">
+  </popup-select>
+  <button nz-button (click)="copy()" class="mx-sm">
+    <i class="anticon anticon-copy"></i>{{ '复制' | translate}}
+  </button>
+</div>
+<nz-card>
+  <ag-grid-angular #agGrid id="materialProcessGrid" [class]="themeClass" [style.height.px]="gridHeight" [rowData]="gridData"
+                   [columnDefs]="columns" [gridOptions]="gridOptions" (selectionChanged)="onSelectionChanged($event)"
+                   (cellValueChanged)="onCellValueChanged($event)" [myAgGridRowKey]="{tb:'PS_ITEM_PROCESS'}"
+                   [myAgGridState]="'material-process-grid'" (virtualColumnsChanged)="onVirtualColumnsChanged($event)">
+  </ag-grid-angular>
+  <custom-excelexport [expColumns]='expColumns' fileName='物料工序' #excelexport></custom-excelexport>
+</nz-card>
+<ng-template #customTemplate let-dataItem>
+  <span title="删除" nz-popconfirm nzTitle="是否确认删除该记录?" (nzOnConfirm)="remove(dataItem)" style="cursor: Pointer">
+                            <i class="anticon anticon-delete"></i>
+                          </span>
+</ng-template>
+<ng-template #customTemplate1 let-dataItem>
+  <span>
+       <nz-input-number [(ngModel)]="dataItem.LEAD_TIME" [nzMin]="0" [nzStep]="0.01"></nz-input-number>
+  </span>
+</ng-template>
+<ng-template #customTemplate2 let-dataItem>
+  <span>
+       <nz-input-number [(ngModel)]="dataItem.USAGE" [nzMin]="0" [nzStep]="0.1"></nz-input-number>
+  </span>
+</ng-template>

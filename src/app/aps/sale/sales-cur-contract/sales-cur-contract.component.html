@@ -1,0 +1,43 @@
+<custom-formquery [queryParams]="queryParams" [context]="context" >
+  <custom-button text="{{ '导出' | translate }}" [src]="'基础icon-导出'" (clickEvent)="export()"></custom-button>
+</custom-formquery>
+<nz-card>
+  <ag-grid-angular #agGrid [class]="themeClass" [style.height.px]="gridHeight" [rowData]="gridData"
+    [columnDefs]="columns" [gridOptions]="gridOptions" [myAgGridState]="'ps-contract-stock'"
+    [myAgGridRowKey]="{tb:'PS_CONTRACT_STOCK'}" (cellDoubleClicked)="onCellDoubleClicked($event)">
+  </ag-grid-angular>
+  <custom-pager [height]="pagerHeight" [context]="context" [view]='context.view' [(pageSize)]="_pageSize"
+    [(pageNo)]="_pageNo" (pageChangeEvent)="onPageChanged($event)"></custom-pager>
+  <custom-excelexport [expColumns]='expColumns' [expColumnsOptions]='expColumnsOptions' fileName='现货合同表' #excelexport></custom-excelexport>
+</nz-card>
+<ng-template #customTemplate let-dataItem>
+  <ng-container *ngIf="['10','40'].includes(dataItem.contractState)">
+    <span title="{{ '删除' | translate}}" nz-popconfirm nzTitle="{{ '是否确认删除该记录?' | translate}}"
+      (nzOnConfirm)="remove(dataItem);" class="pointer">
+      <i class="anticon anticon-delete"></i>
+    </span>
+  </ng-container>
+  <ng-container *ngIf="['30'].includes(dataItem.contractState) && !['40'].includes(dataItem.contractType)">
+    <span title="{{'合同取消' | translate}}" (click)="cancel(dataItem)">
+      <i class="anticon anticon-stop"></i>
+    </span>
+    <nz-divider nzType="vertical"></nz-divider>
+  </ng-container>
+  <ng-container *ngIf="['30','60','120'].includes(dataItem.contractState)">
+    <span *ngIf="!dataItem.isDownloading" title="{{ '下载' | translate}}" (click)="download(dataItem)" class="pointer">
+      <i class="anticon anticon-download"></i>
+    </span>
+    <span *ngIf="dataItem.isDownloading" title="{{ '下载中' | translate}}" class="pointer">
+      <i class="anticon anticon-loading"></i>
+    </span>
+    <nz-divider nzType="vertical"></nz-divider>
+    <span *ngIf="!dataItem.isPreviewing" title="{{ '预览' | translate}}" (click)="preview(dataItem)" class="pointer">
+      <i class="anticon anticon-eye"></i>
+    </span>
+    <span *ngIf="dataItem.isPreviewing" title="{{ '预览中' | translate}}" class="pointer">
+      <i class="anticon anticon-loading"></i>
+    </span>
+    <nz-divider nzType="vertical"></nz-divider>
+  </ng-container>
+
+</ng-template>

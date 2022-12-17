@@ -1,0 +1,99 @@
+<custom-formquery [queryParams]="queryParams" [context]="context" (event1)="searchItems($event)" (event2)="searchBuyer($event)" (event3)="searchVendor($event)" (event4)="searchPoNumber($event)" >
+  <span>
+   <!-- <custom-button text="{{ '保存' | translate}}" (clickEvent)="save()" [src]="'保存'"></custom-button>-->
+    <custom-button text="{{ '转单' | translate }}" (clickEvent)="exchange()" [src]="'转单'"></custom-button>
+    <custom-button text="{{ '导出' | translate }}" (clickEvent)="exportFile()" [src]="'基础icon-导出'"></custom-button>
+    <custom-button text="{{ '保存' | translate}}" (clickEvent)="save()" [src]="'保存'"></custom-button>
+    <custom-button text="{{ '关闭/取消' | translate }}" (clickEvent)="cancel()" [src]="'取消订单'"></custom-button>
+  </span>
+</custom-formquery>
+<nz-card>
+  <ag-grid-angular #agGrid [class]="themeClass" id="PCPurchaseOrderManagementGrid" [style.height.px]="gridHeight" [rowData]="gridData"
+    [columnDefs]="columns" [gridOptions]="gridOptions"  [suppressMenuHide]="true" [myAgGridRowKey]="{tb:'V_PC_PURCHASE_ORDER'}" [myAgGridState]="'PCPurchaseOrderManagement'"
+    [suppressRowClickSelection]="true" [isRowSelectable]="isRowSelectable" (virtualColumnsChanged)="onVirtualColumnsChanged($event)">
+  </ag-grid-angular>
+  <custom-pager [height]="pagerHeight" [context]="context" [view]='context.view' [(pageSize)]="_pageSize" [(pageNo)]="_pageNo"
+    [fixed]="!isPopShow" (pageChangeEvent)="onPageChanged($event)">
+  </custom-pager>
+  <custom-excelexport [expColumns]='expColumns' [expColumnsOptions]='expColumnsOptions' fileName='采购订单管理' #excelexport>
+  </custom-excelexport>
+</nz-card>
+<ng-template #customTemplate let-dataItem>
+  <span class="pointer" title="{{'查看' | translate}}" (click)="viewItem(dataItem)" ><i nz-icon nzType="bars" nzTheme="outline"></i></span>
+  <nz-divider nzType="vertical" [hidden]="!dataRowEdit(dataItem)"></nz-divider>
+  <span class="pointer" title="{{'删除' | translate}}" [hidden]="!dataRowDelete(dataItem)" nz-popconfirm nzTitle="{{ '是否确认删除该记录?' | translate}}" (nzOnConfirm)="deleteRow(dataItem);" ><i nz-icon nzType="delete" nzTheme="outline"></i></span>
+</ng-template>
+<ng-template #customTemplateDate let-dataItem>
+  <span>
+  <nz-date-picker nzShowTime nzFormat="yyyy-MM-dd" [(ngModel)]="dataItem.needByDate" name="actualNeedByDate"
+    nzPlaceHolder="请选择"  [nzDisabledDate]="disabledDate" [required]="true" [nzAllowClear]="false" [disabled]="!dataRowEdit(dataItem)">
+  </nz-date-picker>
+  </span>
+</ng-template>
+
+<ng-template #customTemplateQty let-dataItem>
+  <span>
+  <nz-input-number type="number" #inputbox1 nz-input [nzMin]="0"  [nzMax]="dataItem.quantity" [(ngModel)]="dataItem.newQuantity" name="newQuantity" required [disabled]="!dataRowNEWQUANTITYEdit(dataItem)" (nzBlur)="currentNewQuantityBlur(inputbox1,dataItem)"   (ngModelChange)="currentNewQuantityChange(inputbox1,dataItem)" >
+ </nz-input-number>
+  </span>
+</ng-template>
+
+<ng-template #customTemplateChangeQty let-dataItem>
+  <span>
+  <nz-input-number type="number"  #inputbox [nzMin]="0" nz-input [(ngModel)]="dataItem.changeQty"   (nzBlur)="currentQuantityBlur(inputbox,dataItem)"   (ngModelChange)="currentQuantityChange(inputbox,dataItem)"  name="currentQuantity" required [disabled]="!dataRowQuantityChangeEdit(dataItem)">
+  </nz-input-number>
+  </span>
+</ng-template>
+
+<ng-template #customTemplateComments let-dataItem>
+  <span>
+  <input type="text" nz-input [(ngModel)]="dataItem.comments" name="comments" required [disabled]="!dataRowEdit(dataItem)">
+  </span>
+</ng-template>
+
+<ng-template #customTemplateBondedTypeSelect let-dataItem>
+  <span>
+    <nz-select [(ngModel)]="dataItem.bondedType" name="bondedType" [disabled]="!dataRowEdit(dataItem)" nzAllowClear nzShowSearch >
+      <nz-option *ngFor="let option of listBondedType" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+    </nz-select>
+  </span>
+</ng-template>
+
+<ng-template #customTemplateSubinventory let-dataItem>
+  <span>
+    <nz-select [(ngModel)]="dataItem.destinationSubinventory" name="destinationSubinventory" [disabled]="!dataRowEdit(dataItem)" nzDropdownMatchSelectWidth='false' nzAllowClear nzShowSearch>
+      <nz-option *ngFor="let option of listSubinventory" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+    </nz-select>
+  </span>
+</ng-template>
+
+
+<ng-template #customTemplateSubinventoryapppop let-dataItem>
+  <span>
+      <app-popup-select #selMater2  [nzSearchNull]="true" [(SelectValue)]="dataItem.newDestinationSubinventory" [(SelectText)]='dataItem.newDestinationSubinventory' [ValueField]="'subinventoryCode'"
+        [TextField]="'subinventoryCode'" [gridView]="gridViewSubinventory" [columns]="columnsSubinventory" (SearchEvent)="searchSubinventory($event,dataItem)" (TextChanged)="textChangedSubinventory($event)"
+        (RowSelect)="rowSelectSubinventory($event)" [Disabled]="!dataRowEdit(dataItem)">
+      </app-popup-select>
+  </span>
+</ng-template>
+
+<ng-template #customTemplateLocationapppop let-dataItem>
+  <span>
+    <app-popup-select #selMater3 [nzSearchNull]="true" [(SelectValue)]="dataItem.newDeliverToLocationId" [(SelectText)]='dataItem.newDeliverToLocationId' [ValueField]="'deliveryRegionCode'"
+    [TextField]="'deliveryRegionCode'" [gridView]="gridViewLocation" [columns]="columnsLocation" (SearchEvent)="searchLocation($event,dataItem)" (TextChanged)="textChangedLocation($event)"
+    (RowSelect)="rowSelectLocation($event)" [Disabled]="!dataRowEdit(dataItem)">
+  </app-popup-select>
+  </span>
+</ng-template>
+
+<ng-template #customTemplateVendorPop let-dataItem>
+  <span>
+    <app-popup-select #selMater3 [nzSearchNull]="true" [(SelectValue)]="dataItem.changeToVendor" [(SelectText)]='dataItem.changeToVendor' [ValueField]="'vendorNumber'"
+    [TextField]="'vendorNumber'" [gridView]="gridViewChangeToVendors" [columns]="columnsChangeToVendors" (SearchEvent)="searchChangeToVendor($event,dataItem)" (TextChanged)="textChangedChangeToVendor($event,dataItem)"
+    (RowSelect)="rowSelectChangeToVendor($event,dataItem)" [Disabled]="!dataRowQuantityChangeEdit(dataItem)">
+  </app-popup-select>
+  </span>
+</ng-template>
+
+
+

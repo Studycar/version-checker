@@ -1,0 +1,19 @@
+<custom-formquery [queryParams]="queryParams" [context]="context" 
+  (event1)="searchStocks($event)"  
+  (event2)="onStocksSelect($event)"  
+  (event3)="onStockTextChanged($event)"  
+>
+  <custom-button text="{{ '获取数据' | translate }}" [src]="'供需生成'" (clickEvent)="getData()"></custom-button>
+  <custom-button text="{{ '推送SRM' | translate }}" [src]="'发布'" (clickEvent)="pushToSrm()"></custom-button>
+  <custom-button text="{{ '导出' | translate }}" [src]="'基础icon-导出'" (clickEvent)="export()"></custom-button>
+
+</custom-formquery>
+<nz-card>
+  <ag-grid-angular #agGrid [class]="themeClass" [style.height.px]="gridHeight" [rowData]="gridData"
+    [columnDefs]="columns" [gridOptions]="gridOptions" [myAgGridState]="'ps_purchase_demand_summary'"
+    [myAgGridRowKey]="{tb:'PS_PURCHASE_DEMAND_SUMMARY'}">
+  </ag-grid-angular>
+  <custom-pager [height]="pagerHeight" [context]="context" [view]='context.view' [(pageSize)]="_pageSize"
+    [(pageNo)]="_pageNo" (pageChangeEvent)="onPageChanged($event)"></custom-pager>
+  <custom-excelexport [expColumns]='expColumns' [expColumnsOptions]='expColumnsOptions' fileName='采购需求汇总表' #excelexport></custom-excelexport>
+</nz-card>

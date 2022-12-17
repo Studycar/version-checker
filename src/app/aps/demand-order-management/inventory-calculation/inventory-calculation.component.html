@@ -1,0 +1,78 @@
+<custom-formquery [queryParams]="queryParams" [context]="context" (event1)="searchItems($event)">
+    <span>
+        <custom-button
+            text="{{ '新增' | translate}}"
+            (clickEvent)="add()"
+            [src]="'基础icon-新增'"
+            [srcDisabled]="'disabled'"
+            [disabled]="selectIndex === 2">
+        </custom-button>
+        <custom-button
+            text="{{'导入' | translate}}"
+            (clickEvent)="importFile()"
+            [src]="'基础icon-导入'" [loading]="optionsLoading"
+            [srcDisabled]="'disabled'"
+            [disabled]="selectIndex === 0 || selectIndex === 2">
+        </custom-button>
+        <custom-button
+            text="{{'导出' | translate}}"
+            (clickEvent)="exportFile()"
+            [src]="'基础icon-导出'">
+        </custom-button>
+        <custom-button
+            text="{{'引入安全库存' | translate}}"
+            (clickEvent)="recommendSafetyStock()"
+            [src]="'safety-stock'"
+            [srcDisabled]="'disabled'"
+            [disabled]="selectIndex === 0 || selectIndex === 1">
+        </custom-button>
+    </span>
+</custom-formquery>
+<nz-card>
+    <div>
+        <nz-tabset [(nzSelectedIndex)]="selectIndex">
+            <nz-tab *ngFor="let tab of tabs" [nzTitle]="titleTemplate" (nzSelect)="tabSelect(tab)">
+                <ng-template #titleTemplate>
+                    <div style="height: 24px;">
+                        {{ tab.name | translate }}
+                    </div>
+                </ng-template>
+            </nz-tab>
+        </nz-tabset>
+        <ag-grid-angular
+          #agGrid
+          [class]="themeClass"
+          [style.height.px]="gridHeight"
+          [rowData]="gridData"
+          [columnDefs]="columns"
+          [gridOptions]="gridOptions"
+          [myAgGridRowKey]="{tb:'INVENTORY_CALCULATION'}"
+          tabAggridState
+          [originState]="tabFirstFlag"
+          [stateKey]="stateKey"
+          [tabSubject]="tabSubject"
+        ></ag-grid-angular>
+        <custom-pager
+            [height]="pagerHeight"
+            [context]="context"
+            [view]='context.view'
+            [(pageSize)]="_pageSize"
+            [(pageNo)]="_pageNo"
+            (pageChangeEvent)="onPageChanged($event)">
+        </custom-pager>
+        <custom-excelexport
+            [expColumns]="expColumns"
+            [expColumnsOptions]="expColumnsOptions"
+            [fileName]="exportFileName"
+            #excelExport>
+        </custom-excelexport>
+    </div>
+</nz-card>
+
+<ng-template #customTemplate let-dataItem>
+    <span title="{{'编辑' | translate}}" (click)="add(dataItem)" class="pointer"><i nz-icon nzType="edit" nzTheme="outline"></i></span>
+    <nz-divider nzType="vertical"></nz-divider>
+    <span title="{{ '删除' | translate}}" nz-popconfirm nzTitle="{{ '是否确认删除该记录?' | translate}}" (nzOnConfirm)="remove(dataItem)" class="pointer">
+        <i class="anticon anticon-delete"></i>
+    </span>
+</ng-template>

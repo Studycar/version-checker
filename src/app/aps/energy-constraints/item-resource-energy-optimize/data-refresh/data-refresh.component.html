@@ -1,0 +1,33 @@
+<div class="modal-header">
+    <div class="modal-title">{{ 'PP.物料资源能耗标准值优化程序参数' | translate}}</div>
+</div>
+<div>
+    <form nz-form #f="ngForm" se-container="2" [labelWidth]="150">
+        <se label="{{ '工厂' | translate }}" required>
+            <nz-select #select nzShowSearch name="plantCode" [(ngModel)]="plantCode">
+                <nz-option *ngFor="let option of plantCodeList" [nzValue]="option.value" [nzLabel]="option.label"></nz-option>
+            </nz-select>
+        </se>
+        <se></se>
+        <se label="{{ '开始时间' | translate}}" required>
+            <nz-date-picker nzFormat="yyyy-MM-dd" [(ngModel)]="startDate" name="startDate" [nzDisabledDate]="disabledStartDate">
+            </nz-date-picker>
+          </se>
+        <se label="{{ '结束时间' | translate}}" required>
+            <nz-date-picker nzFormat="yyyy-MM-dd" [(ngModel)]="endDate" name="endDate" [nzDisabledDate]="disabledEndDate">
+            </nz-date-picker>
+        </se>
+        <se label="{{'标准值最小允差（%）' | translate}}">
+            <nz-input-number [(ngModel)]="params.stanRateMin" [nzMin]="0" [nzStep]="0.1" name="stanMinTolerance"></nz-input-number>
+        </se>
+        <se label="{{'标准值最大允差（%）' | translate }}">
+            <nz-input-number [(ngModel)]="params.stanRateMax" [nzMin]="0" [nzStep]="0.1" name="stanMaxtolerance"></nz-input-number>
+        </se>
+    </form>
+</div>
+<div class="modal-footer">
+    <button nz-button type="submit" [nzType]="'primary'" (click)="dataRefreshConfirm()" [disabled]="f.invalid" [nzLoading]="http.loading">
+        {{ '确认' | translate}}</button>
+    <button nz-button type="button" (click)="close()">
+        {{ '关闭' | translate}}</button>
+</div>

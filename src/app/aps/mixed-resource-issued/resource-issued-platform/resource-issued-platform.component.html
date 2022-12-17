@@ -1,0 +1,215 @@
+<div id="rootContainer" class="content-title">
+  <div id="divContainer">
+    <div style="padding-left:17px;">
+
+      <custom-button text="{{ (!isExpand?'全部展开':'全部收缩') | translate}}" (clickEvent)="showMinus()" [src]="ImgSrc">
+      </custom-button>
+      <custom-button text="{{ '导出' | translate}}" (clickEvent)="export()" [src]="'基础icon-导出'">
+      </custom-button>
+      <custom-button text="{{ '下达' | translate}}" (clickEvent)="send()" [src]="'批量下达'">
+      </custom-button>
+      <custom-button text="{{ '刷新' | translate}}" (clickEvent)="reload()" [src]="'基础icon-刷新'">
+      </custom-button>
+      <custom-button text="{{ '搜索' | translate}}" (clickEvent)="FindRequest()" [src]="'基础icon-查询'">
+      </custom-button>
+
+    </div>
+  </div>
+</div>
+<!--分页的查询-->
+
+<!--<st #st [data]="url" [columns]="columns" [extraParams]="params" total="TotalCount" [resReName]="{list: 'Result', total: 'TotalCount'}"
+    [reqReName]="{pi:'page', ps:'pageSize'}"  bordered showSizeChanger showQuickJumper showTotal>
+  </st>-->
+
+<nz-card>
+  <nz-table #nzTable nzshowSizeChanger [nzData]="data" [nzScroll]="xySize" (nzCurrentPageDataChange)="currentPageDataChange($event)"
+    [nzSize]="small" [nzShowPagination]="nzShowPagination" nzShowQuickJumper nzShowTotal nzBordered [nzTotal]="nzTotal"
+    [nzFrontPagination]="nzFrontPagination" [nzLoading]="loading" [(nzPageIndex)]="pageIndex" [(nzPageSize)]="pageSize"
+    (nzPageIndexChange)="onStateChange()" (nzPageSizeChange)="onStateChange(true)">
+
+    <thead>
+      <tr>
+        <th nzWidth="60px" nzLeft="0px" nzShowCheckbox [(nzChecked)]="allChecked" [nzIndeterminate]="indeterminate"
+          (nzCheckedChange)="checkAll($event)" [ngStyle]="styleColor"></th>
+        <th nzWidth="300px" nzLeft="60px" [ngStyle]="styleColor">{{ '工单号' | translate}}</th>
+        <th nzWidth="100px" [ngStyle]="styleColor">{{ '工厂' | translate}}</th>
+        <th nzWidth="100px" [ngStyle]="styleColor">{{ '项目号' | translate}}</th>
+        <th nzWidth="150px" [ngStyle]="styleColor">{{ '物料编码' | translate}}</th>
+        <th nzWidth="200px" [ngStyle]="styleColor">{{ '物料描述' | translate}}</th>
+        <th nzWidth="100px" [ngStyle]="styleColor">{{ '物料状态' | translate}}</th>
+        <th nzWidth="100px" [ngStyle]="styleColor">{{ '工单状态' | translate}}</th>
+        <th nzWidth="80px" [ngStyle]="styleColor">{{ '层级' | translate}}</th>
+        <th nzWidth="80px" [ngStyle]="styleColor">{{ '数量' | translate}}</th>
+        <th nzWidth="80px" [ngStyle]="styleColor">{{ '单位' | translate}}</th>
+        <th nzWidth="160px" [ngStyle]="styleColor">{{ '建议开工时间' | translate}}</th>
+        <th nzWidth="160px" [ngStyle]="styleColor">{{ '建议完工时间' | translate}}</th>
+        <th nzWidth="160px" [ngStyle]="styleColor">{{ '创建时间' | translate}}</th>
+        <th nzWidth="160px" [ngStyle]="styleColor">{{ '下达时间' | translate}}</th>
+        <th nzWidth="300px" [ngStyle]="styleColor">{{ '备注' | translate}}</th>
+        <th nzWidth="200px" [ngStyle]="styleColor">{{ '需求备注' | translate}}</th>
+        <th nzWidth="120px" [ngStyle]="styleColor">{{ '是否冗余工单' | translate}} </th>
+        <th nzWidth="130px" [ngStyle]="styleColor">{{ '是否残缺BOM' | translate}}</th>
+        <th nzWidth="140px" [ngStyle]="styleColor">{{ '未正确获得资源' | translate}}</th>
+        <th nzWidth="150px" [ngStyle]="styleColor">{{ '计划组' | translate}}</th>
+        <th nzWidth="150px" [ngStyle]="styleColor">{{ '资源' | translate}}</th>
+        <th nzWidth="100px" [ngStyle]="styleColor">{{ '库存分类' | translate}}</th>
+        <th nzWidth="100px" [ngStyle]="styleColor">{{ '计划分类' | translate}}</th>
+        <th nzWidth="200px" [ngStyle]="styleColor">{{ '出错信息' | translate}}</th>
+        <th nzWidth="60px" nzRight="0px" [ngStyle]="styleColor">{{ '操作' | translate}} </th>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-template ngFor let-data [ngForOf]="nzTable.data">
+        <ng-template ngFor let-item [ngForOf]="expandDataCache[data.MAKE_ORDER_NUM]">
+          <tr *ngIf="(item.parent&&item.parent.expand)||!(item.parent)">
+
+
+            <td nzLeft="0px" id="item.Id" name="item.Id" [(nzChecked)]="item.checked" [nzDisabled]="item.disabled"
+              nzShowCheckbox (nzCheckedChange)="nzCheckedChange(item, $event)"></td>
+
+
+            <td nzLeft="60px" [nzIndentSize]="item.level*30" [nzShowExpand]="!!item.children" [(nzExpand)]="item.expand"
+              (nzExpandChange)="collapse(expandDataCache[data.MAKE_ORDER_NUM],item,$event)">
+              {{item.MAKE_ORDER_NUM}}
+            </td>
+
+            <td>{{item.PLANT_CODE}}</td>
+            <td>
+              <nz-tooltip [nzTitle]="item.PROJECT_NUMBER">
+                <ellipsis lines="1">
+                  <span nz-tooltip>{{item.PROJECT_NUMBER}}</span>
+                </ellipsis>
+              </nz-tooltip>
+            </td>
+            <td>
+              <nz-tooltip [nzTitle]="item.ITEM_CODE">
+                <ellipsis lines="1">
+                  <span nz-tooltip>{{item.ITEM_CODE}}</span>
+                </ellipsis>
+              </nz-tooltip>
+            </td>
+            <td>
+              <nz-tooltip [nzTitle]="item.DESCRIPTIONS">
+                <ellipsis lines="1">
+                  <span nz-tooltip>{{item.DESCRIPTIONS}}</span>
+                </ellipsis>
+              </nz-tooltip>
+            </td>
+            <td>
+              {{optionsItemFind(item.ITEM_STATUS_CODE)?.label}}
+            </td>
+
+            <td>
+              {{optionsFind(item.MAKE_ORDER_STATUS)?.label}}
+            </td>
+            <td>{{item.LEVEL_NUM}}</td>
+            <td>{{item.MO_QTY}}</td>
+            <td>{{item.UNIT_OF_MEASURE}}</td>
+            <td>{{item.FPC_TIME}}</td>
+            <td>{{item.LPC_TIME}}</td>
+            <td>{{item.CREATION_DATE}}</td>
+            <td>{{item.ISSUED_DATE}}</td>
+
+            <td [ngStyle]="styleColor">
+
+              <div class="editable-cell">
+                <div class="editable-cell-text-wrapper">
+                  <ng-container *ngIf="!item.edit">
+                    <nz-tooltip [nzTitle]="item.COMMENTS">
+                      <ellipsis lines="1">
+                        <span nz-tooltip>{{item.COMMENTS}}</span>
+                      </ellipsis>
+                    </nz-tooltip>
+                    <i *ngIf="item.LEVEL_NUM=='0'&&item.MAKE_ORDER_STATUS=='A' " class="anticon anticon-edit editable-cell-icon"
+                      (click)="startEdit(item)"></i>
+                  </ng-container>
+                  <ng-container *ngIf="item.LEVEL_NUM=='0'&&item.edit&&item.MAKE_ORDER_STATUS=='A' ">
+                    <input type="text" nz-input [(ngModel)]="item.COMMENTS">
+                    <i class="anticon anticon-check editable-cell-icon-check" (click)="finishEdit(item)"></i>
+                  </ng-container>
+                </div>
+              </div>
+
+            </td>
+            <td>
+              <nz-tooltip [nzTitle]="item.REQ_COMMENTS">
+                <ellipsis lines="1">
+                  <span nz-tooltip>{{item.REQ_COMMENTS}}</span>
+                </ellipsis>
+              </nz-tooltip>
+            </td>
+
+            <td>
+              <input type="checkbox" style="zoom:140%;" [checked]="item.REDUNDANT_JOB_FLAG=='Y'" disabled />
+            </td>
+            <td>
+              <input type="checkbox" style="zoom:140%;" [checked]="item.UNCOMPLETED_BOM=='Y'" disabled />
+            </td>
+            <td>
+              <!--<td>{{item.RESOURCE_EXC_FLAG}}</td>-->
+              <input type="checkbox" style="zoom:140%;" [checked]="item.RESOURCE_EXC_FLAG=='Y'" disabled />
+            </td>
+
+            <td>
+              <nz-tooltip [nzTitle]="item.SCHEDULE_GROUP_CODE">
+                <ellipsis lines="1">
+                  <span nz-tooltip>{{item.SCHEDULE_GROUP_CODE}}</span>
+                </ellipsis>
+              </nz-tooltip>
+            </td>
+            <td>
+              <nz-tooltip [nzTitle]="item.RESOURCE_CODE">
+                <ellipsis lines="1">
+                  <span nz-tooltip>{{item.RESOURCE_CODE}}</span>
+                </ellipsis>
+              </nz-tooltip>
+            </td>
+            <td>
+              <nz-tooltip [nzTitle]="item.INV_CATEGORY_CODE">
+                <ellipsis lines="1">
+                  <span nz-tooltip>{{item.INV_CATEGORY_CODE}}</span>
+                </ellipsis>
+              </nz-tooltip>
+            </td>
+            <td>
+              <nz-tooltip [nzTitle]="item.PLAN_CATEGORY_CODE">
+                <ellipsis lines="1">
+                  <span nz-tooltip>{{item.PLAN_CATEGORY_CODE}}</span>
+                </ellipsis>
+              </nz-tooltip>
+            </td>
+            <td>
+              <nz-tooltip [nzTitle]="item.ERROR_MESSAGE">
+                <ellipsis lines="1">
+                  <span nz-tooltip>{{item.ERROR_MESSAGE}}</span>
+                </ellipsis>
+              </nz-tooltip>
+            </td>
+
+            <td nzRight="0px" [ngStyle]="styleColortd">
+              <!-- <span title="编辑备注" *ngIf="item.LEVEL_NUM=='0'" (click)="edit(item)" [ngStyle]="spanStyle">
+                  <i class="anticon anticon-edit"></i>
+                </span>
+                <span *ngIf="item.LEVEL_NUM=='0'">
+                  <nz-divider nzType="vertical"></nz-divider>
+                </span>
+                <span title="资源刷新" *ngIf="item.LEVEL_NUM=='0'" (click)="loadMark(item)" [ngStyle]="spanStyle">
+                  <i class="anticon anticon-reload"></i>
+                </span>-->
+
+              <span title="资源刷新" *ngIf="item.LEVEL_NUM=='0'" nz-popconfirm nzTitle="是否确认刷新该数据?" (nzOnConfirm)="loadMark(item)"
+                style="cursor: Pointer">
+                <i class="anticon anticon-reload"></i>
+              </span>
+
+            </td>
+          </tr>
+        </ng-template>
+      </ng-template>
+    </tbody>
+  </nz-table>
+
+  <custom-excelexport [expColumns]='expColumns' [expColumnsOptions]='expColumnsOptions' fileName='总装跟单件工单数据'
+    #excelexport></custom-excelexport>
+</nz-card>

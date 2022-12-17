@@ -1,0 +1,20 @@
+<form nz-form #f="ngForm" se-container="2">
+  <se label="{{ '客户名称' | translate}}">
+    <input type="text" nz-input [(ngModel)]="formData.cusAbbreviation" name="cusAbbreviation" disabled />
+  </se>
+  <se label="{{ '下单日期' | translate}}">
+    <input type="text" nz-input [(ngModel)]="formData.changeOrderDate" name="changeOrderDate" disabled />
+  </se>
+  <se label="{{ '存货名称' | translate}}">
+    <input type="text" nz-input [(ngModel)]="formData.stockName" name="stockName" disabled />
+  </se>
+  <se label="{{ '规格' | translate}}">
+    <input type="text" nz-input [(ngModel)]="formData.standards" name="standards" disabled />
+  </se>
+  <se label="{{ '数量' | translate}}">
+    <input type="text" nz-input [(ngModel)]="formData.quantity" name="quantity" disabled />
+  </se>
+  <se label="{{ '变更说明' | translate}}">
+    <textarea nz-input name="attribute1" [(ngModel)]="formData.attribute1" nzAutosize disabled></textarea>
+  </se>
+</form>

@@ -1,0 +1,22 @@
+<div class="modal-header">
+  <div class="modal-title">{{ '请求组明细' | translate}}</div>
+</div>
+<nz-card>
+  <div class="mb-md">
+    <button (click)="add()" nz-button nzType="primary">
+      <i class="anticon anticon-plus-circle-o"></i>{{ '新增' | translate}}
+    </button>
+  </div>
+  <ag-grid-angular #agGrid [class]="themeClass" [style.height.px]="gridHeight" [rowData]="gridData"
+    [columnDefs]="columns22" [gridOptions]="gridOptions" [myAgGridRowKey]="{tb:'REQUEST_GROUPS_DETAIL'}"
+    [myAgGridState]="'REQUEST_GROUPS_DETAIL'">
+  </ag-grid-angular>
+  <custom-pager [height]="pagerHeight" [fixed]="false" [context]="context" [view]="view" [(pageSize)]="_pageSize"
+    [(pageNo)]="_pageNo" (pageChangeEvent)="onPageChanged($event)"></custom-pager>
+</nz-card>
+<ng-template #customTemplate let-dataItem>
+  <span title="{{'删除' | translate}}" (nzOnConfirm)="remove(dataItem)" class="pointer" nz-popconfirm
+    nzTitle="是否确认删除该记录?">
+    <i class="anticon anticon-delete"></i>
+  </span>
+</ng-template>

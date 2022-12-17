@@ -1,0 +1,76 @@
+<div class="modal-header">
+  <div class="modal-title">{{ (isModify?'编辑':'新增') | translate}} </div>
+</div>
+<div style=" margin:2px auto;" *ngIf="isModify">
+  <button style="float: right;" nz-button nzType="dashed" (click)="clear()">{{ '重置' | translate}}</button>
+  <div style="clear: both;"></div>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="2">
+    <se label="{{ '事业部' | translate}}" required>
+      <nz-select nzShowSearch [(ngModel)]="i.businessUnitCode" name="businessUnitCode" required [nzDisabled]="isModify" (ngModelChange)="buCodeOptionsChange($event)">
+        <nz-option *ngFor="let option of buCodeOptions" [nzLabel]="option.label" [nzValue]="option.value">
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '品类' | translate}}" required>
+      <nz-select nzShowSearch [(ngModel)]="i.marketCategory" name="marketCategory" required [nzDisabled]="isModify">
+        <nz-option *ngFor="let option of categoryOptions" [nzLabel]="option.label" [nzValue]="option.value">
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '计划期月份' | translate}}" required>
+      <nz-month-picker [(ngModel)]="i.planPeriodMonth" name="planPeriodMonth" required [nzDisabled]="isModify"></nz-month-picker>
+    </se>
+    <se label="{{ '渠道' | translate}}" required>
+      <nz-select nzShowSearch [(ngModel)]="i.saleChannel" name="saleChannel" required [nzDisabled]="isModify">
+        <nz-option *ngFor="let option of saleChannelOptions" [nzLabel]="option.label" [nzValue]="option.value">
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '1月' | translate}}" required [optionalHelp]="tooltipTitle">
+      <nz-input-number [(ngModel)]="i.productQtyM1" name="productQtyM1" [nzMin]="0" [nzMax]="1" required (ngModelChange)="calculate($event)"></nz-input-number>
+    </se>
+    <se label="{{ '2月' | translate}}" required [optionalHelp]="tooltipTitle">
+      <nz-input-number [(ngModel)]="i.productQtyM2" name="productQtyM2" [nzMin]="0" [nzMax]="1" required (ngModelChange)="calculate($event)"></nz-input-number>
+    </se>
+    <se label="{{ '3月' | translate}}" required [optionalHelp]="tooltipTitle">
+      <nz-input-number [(ngModel)]="i.productQtyM3" name="productQtyM3" [nzMin]="0" [nzMax]="1" required (ngModelChange)="calculate($event)"></nz-input-number>
+    </se>
+    <se label="{{ '4月' | translate}}" required [optionalHelp]="tooltipTitle">
+      <nz-input-number [(ngModel)]="i.productQtyM4" name="productQtyM4" [nzMin]="0" [nzMax]="1" required (ngModelChange)="calculate($event)"></nz-input-number>
+    </se>
+    <se label="{{ '5月' | translate}}" required [optionalHelp]="tooltipTitle">
+      <nz-input-number [(ngModel)]="i.productQtyM5" name="productQtyM5" [nzMin]="0" [nzMax]="1" required (ngModelChange)="calculate($event)"></nz-input-number>
+    </se>
+    <se label="{{ '6月' | translate}}" required [optionalHelp]="tooltipTitle">
+      <nz-input-number [(ngModel)]="i.productQtyM6" name="productQtyM6" [nzMin]="0" [nzMax]="1" required (ngModelChange)="calculate($event)"></nz-input-number>
+    </se>
+    <se label="{{ '7月' | translate}}" required [optionalHelp]="tooltipTitle">
+      <nz-input-number [(ngModel)]="i.productQtyM7" name="productQtyM7" [nzMin]="0" [nzMax]="1" required (ngModelChange)="calculate($event)"></nz-input-number>
+    </se>
+    <se label="{{ '8月' | translate}}" required [optionalHelp]="tooltipTitle">
+      <nz-input-number [(ngModel)]="i.productQtyM8" name="productQtyM8" [nzMin]="0" [nzMax]="1" required (ngModelChange)="calculate($event)"></nz-input-number>
+    </se>
+    <se label="{{ '9月' | translate}}" required [optionalHelp]="tooltipTitle">
+      <nz-input-number [(ngModel)]="i.productQtyM9" name="productQtyM9" [nzMin]="0" [nzMax]="1" required (ngModelChange)="calculate($event)"></nz-input-number>
+    </se>
+    <se label="{{ '10月' | translate}}" required [optionalHelp]="tooltipTitle">
+      <nz-input-number [(ngModel)]="i.productQtyM10" name="productQtyM10" [nzMin]="0" [nzMax]="1" required (ngModelChange)="calculate($event)"></nz-input-number>
+    </se>
+    <se label="{{ '11月' | translate}}" required [optionalHelp]="tooltipTitle">
+      <nz-input-number [(ngModel)]="i.productQtyM11" name="productQtyM11" [nzMin]="0" [nzMax]="1" required (ngModelChange)="calculate($event)"></nz-input-number>
+    </se>
+    <se label="{{ '12月' | translate}}" required [optionalHelp]="tooltipTitle">
+      <nz-input-number [(ngModel)]="i.productQtyM12" name="productQtyM12" [nzMin]="0" [nzMax]="1" required (ngModelChange)="calculate($event)"></nz-input-number>
+    </se>
+    <se label="{{ '可分配数值' | translate }}" optionalHelp="正数表示还可分配的数值，负数表示已超过的数值" [col]="1">
+      <span [ngStyle]="{ 'color': rest < 0 ? 'red' : 'unset' }">{{ rest }}</span>
+    </se>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save(f)"
+  [disabled]="!f.valid || !f.dirty" [nzLoading]="loading">{{ '保存' | translate}}</button>
+  <button nz-button type="button" (click)="close()">{{ '关闭' | translate}}</button>
+</div>

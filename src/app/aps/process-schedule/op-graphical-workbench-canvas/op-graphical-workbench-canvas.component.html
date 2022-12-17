@@ -1,0 +1,171 @@
+<div>
+  <div class="div_menu">
+    <custom-function-button [ngClass]="{'custom_function_button': true}" text="{{ '查询' | translate}}"
+      [iconStyle]="iconStyle" (clickEvent)="search('1')" src="../../../../assets/imgs/planSchedule/8.svg">
+    </custom-function-button>
+    <custom-function-button [ngClass]="{'custom_function_button': true}" text="{{ '排产刷新' | translate}}"
+      [iconStyle]="iconStyle" (clickEvent)="refresh()" src="../../../../assets/imgs/planSchedule/6.svg">
+    </custom-function-button>
+    <nz-divider nzType="vertical"></nz-divider>
+    <custom-function-button [ngClass]="{'custom_function_button': true}" text="{{ '工作日历' | translate}}"
+      [iconStyle]="iconStyle" (clickEvent)="openCalendar()" src="../../../../assets/imgs/planSchedule/3.svg">
+    </custom-function-button>
+    <custom-function-button [ngClass]="{'custom_function_button': true}" text="{{ '固定&取消固定' | translate}}"
+      [iconStyle]="iconStyle" (clickEvent)="fixMo()" src="../../../../assets/imgs/planSchedule/4.svg">
+    </custom-function-button>
+    <custom-function-button [ngClass]="{'custom_function_button': true}" text="{{ '置尾单' | translate}}"
+      [iconStyle]="iconStyle" (clickEvent)="setEndMo()" src="../../../../assets/imgs/planSchedule/10.svg">
+    </custom-function-button>
+    <custom-function-button [ngClass]="{'custom_function_button': true}" text="{{ '工单指定' | translate}}"
+      [iconStyle]="iconStyle" (clickEvent)="setResourceAndRate()" src="../../../../assets/icons/工单指定.svg">
+    </custom-function-button>
+    <custom-function-button [ngClass]="{'custom_function_button': true}" text="{{ '工单拆分' | translate}}"
+      [iconStyle]="iconStyle" (clickEvent)="splitMo()" src="../../../../assets/imgs/planSchedule/拆分.svg">
+    </custom-function-button>
+    <!-- <custom-function-button [ngClass]="{'custom_function_button': true}" text="{{ '修改' | translate}}"
+      [iconStyle]="iconStyle" (clickEvent)="openMoEdit()" src="../../../../assets/imgs/planSchedule/edit.svg">
+    </custom-function-button> -->
+    <nz-divider nzType="vertical"></nz-divider>
+    <custom-function-button [ngClass]="{'custom_function_button': true}" text="{{ '集约排产' | translate}}"
+      [iconStyle]="iconStyle" (clickEvent)="chooseLine()" src="../../../../assets/imgs/planSchedule/5.svg">
+    </custom-function-button>
+    <custom-function-button [ngClass]="{'custom_function_button': true}" text="{{ '工序联动' | translate}}"
+      [iconStyle]="iconStyle" (clickEvent)="moLink()" src="../../../../assets/imgs/planSchedule/2.svg">
+    </custom-function-button>
+    <nz-divider nzType="vertical"></nz-divider>
+    <custom-function-button [ngClass]="{'custom_function_button': true}" text="{{ '工序组件' | translate}}"
+      [iconStyle]="iconStyle" (clickEvent)="openMoComponent()" src="../../../../assets/imgs/planSchedule/工单组件.svg">
+    </custom-function-button>
+    <custom-function-button [ngClass]="{'custom_function_button': true}" text="{{ '工序簇' | translate}}"
+      [iconStyle]="iconStyle" (clickEvent)="openMoLevel()" src="../../../../assets/imgs/planSchedule/工单族.svg">
+    </custom-function-button>
+    <nz-divider nzType="vertical"></nz-divider>
+    <custom-function-button [ngClass]="{'custom_function_button': true}" text="{{ '计划发布' | translate}}"
+      [iconStyle]="iconStyle" (clickEvent)="release()" src="../../../../assets/imgs/planSchedule/计划发布.svg">
+    </custom-function-button>
+    <custom-function-button [ngClass]="{'custom_function_button': true}" text="{{ '排产表' | translate}}"
+      [iconStyle]="iconStyle" (clickEvent)="openSchedule()" src="../../../../assets/imgs/planSchedule/排产表.svg">
+    </custom-function-button>
+    <custom-function-button [ngClass]="{'custom_function_button': true}" text="{{ '数字化工作台' | translate}}"
+      [iconStyle]="iconStyle" (clickEvent)="openOpDigitWorkbench()" src="../../../../assets/icons/数字化工作台.svg">
+    </custom-function-button>
+     <custom-function-button [ngClass]="{'custom_function_button': true}" text="{{ '例外检查' | translate}}"
+      [iconStyle]="iconStyle" (clickEvent)="moException()" src="../../../../assets/imgs/planSchedule/工单例外.svg">
+    </custom-function-button>
+  </div>
+  <div class="div_menu">
+    <button nz-button nz-dropdown [nzDropdownMenu]="day"><span>{{'放大（天）'|translate}}</span> <i nz-icon
+        [nzType]="'down'"></i></button>
+    <nz-dropdown-menu #day="nzDropdownMenu">
+      <ul nz-menu>
+        <li nz-menu-item *ngFor="let day of scaleDayModes" (click)="scaleModeChange(day)">
+          {{day}}
+        </li>
+      </ul>
+    </nz-dropdown-menu>
+
+    <button nz-button nz-dropdown [nzDropdownMenu]="hour"><span>{{'放大（时）'|translate}}</span> <i nz-icon
+        [nzType]="'down'"></i></button>
+    <nz-dropdown-menu #hour="nzDropdownMenu">
+      <ul nz-menu>
+        <li nz-menu-item *ngFor="let hour of scaleHourModes" (click)="scaleModeChange(hour)">
+          {{hour}}
+        </li>
+      </ul>
+    </nz-dropdown-menu>
+
+    <nz-divider nzType="vertical"></nz-divider>
+    <button nz-button nz-dropdown [nzDropdownMenu]="color"><span>{{'工单颜色'|translate}}</span> <i nz-icon
+        [nzType]="'down'"></i></button>
+    <nz-dropdown-menu #color="nzDropdownMenu">
+      <ul nz-menu>
+        <li nz-menu-item *ngFor="let color of taskColors" (click)="taskColorsChange(color.value)">
+          {{color.label}}
+        </li>
+      </ul>
+    </nz-dropdown-menu>
+    <button nz-button nz-dropdown [nzDropdownMenu]="hightLight"><span>{{'高亮'|translate}}</span> <i nz-icon
+        [nzType]="'down'"></i></button>
+    <nz-dropdown-menu #hightLight="nzDropdownMenu">
+      <ul nz-menu>
+        <li nz-menu-item *ngFor="let color of taskHightColors" (click)="taskColorsChange(color.value)">
+          {{color.label}}
+        </li>
+      </ul>
+    </nz-dropdown-menu>
+
+    <button nz-button nz-dropdown [nzDropdownMenu]="tips" [nzClickHide]="false"><span>{{'提示内容'|translate}}</span> <i
+        nz-icon [nzType]="'down'"></i></button>
+    <nz-dropdown-menu #tips="nzDropdownMenu">
+      <ul nz-menu>
+        <li nz-menu-item>
+          <label nz-checkbox [(ngModel)]="taskTooltipsDisplay[0]"
+            (ngModelChange)="taskTooltipsDisplayChange($event)">{{'工单号'|translate}}</label>
+        </li>
+        <li nz-menu-item>
+          <label nz-checkbox [(ngModel)]="taskTooltipsDisplay[1]"
+            (ngModelChange)="taskTooltipsDisplayChange($event)">{{'物料编号'|translate}}</label>
+        </li>
+        <li nz-menu-item>
+          <label nz-checkbox [(ngModel)]="taskTooltipsDisplay[2]"
+            (ngModelChange)="taskTooltipsDisplayChange($event)">{{'物料描述'|translate}}</label>
+        </li>
+        <li nz-menu-item>
+          <label nz-checkbox [(ngModel)]="taskTooltipsDisplay[3]"
+            (ngModelChange)="taskTooltipsDisplayChange($event)">{{'需求时间'|translate}}</label>
+        </li>
+        <li nz-menu-item>
+          <label nz-checkbox [(ngModel)]="taskTooltipsDisplay[4]"
+            (ngModelChange)="taskTooltipsDisplayChange($event)">{{'数量'|translate}}</label>
+        </li>
+        <li nz-menu-item>
+          <label nz-checkbox [(ngModel)]="taskTooltipsDisplay[5]"
+            (ngModelChange)="taskTooltipsDisplayChange($event)">{{'完工数量'|translate}}</label>
+        </li>
+        <li nz-menu-item>
+          <label nz-checkbox [(ngModel)]="taskTooltipsDisplay[6]"
+            (ngModelChange)="taskTooltipsDisplayChange($event)">{{'工序描述'|translate}}</label>
+        </li>
+        <li nz-menu-item>
+          <label nz-checkbox [(ngModel)]="taskTooltipsDisplay[7]"
+            (ngModelChange)="taskTooltipsDisplayChange($event)">{{'生产产品经理'|translate}}</label>
+        </li>
+        <li nz-menu-item>
+          <label nz-checkbox [(ngModel)]="taskTooltipsDisplay[8]"
+            (ngModelChange)="taskTooltipsDisplayChange($event)">{{'起止时间'|translate}}</label>
+        </li>
+      </ul>
+    </nz-dropdown-menu>
+
+    <nz-divider nzType="vertical"></nz-divider>
+    <div style="float:right;">
+      <nz-input-group [nzAddOnBefore]="addOnBeforeTemplate">
+        <input nz-input placeholder="过滤内容" [(ngModel)]="filterCode" name="filterCode"
+          (ngModelChange)="filterWorkOrderByField($event)">
+      </nz-input-group>
+      <ng-template #addOnBeforeTemplate>
+        <nz-select [(ngModel)]="filterField" (ngModelChange)="filterFieldChange($event)">
+          <nz-option *ngFor="let filter of taskFilters" [nzLabel]="filter.label" [nzValue]="filter.value"></nz-option>
+        </nz-select>
+      </ng-template>
+    </div>
+  </div>
+  <aps-gantt [options]="options"></aps-gantt>
+</div>
+
+<div *ngIf="loading" class="div-p">
+  <div class="div-c">
+    <ng-template #indicatorTemplate>
+      <div>
+        <div>
+          <i nz-icon [nzType]="'loading'" style="font-size: 100px;"></i>
+        </div>
+        <div>
+          <label style="font-size:30px">Loading...</label>
+        </div>
+      </div>
+    </ng-template>
+    <nz-spin [nzIndicator]="indicatorTemplate" [nzSpinning]="loading">
+    </nz-spin>
+  </div>
+</div>

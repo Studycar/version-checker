@@ -1,0 +1,45 @@
+<custom-formquery [queryParams]="queryParams" [context]="context"
+    (event1)="changeBusinessUnitOptions($event)"
+    (event2)="searchItems($event)"
+>
+    <span>
+        <custom-button text="{{ '导出' | translate }}" (clickEvent)="export()" [src]="'基础icon-导出'"></custom-button>
+        <custom-button text="{{ '引入安全库存' | translate}}" (clickEvent)="pushToSafeStock()" [src]="'引入需求工作台'">
+        </custom-button>
+    </span>
+</custom-formquery>
+
+<nz-card>
+    <ag-grid-angular
+        #agGrid
+        [class]="themeClass"
+        [style.height.px]="gridHeight"
+        [rowData]="gridData"
+        [columnDefs]="columns"
+        [gridOptions]="gridOptions"
+        [myAgGridRowKey]="{tb:'AI_CLASSIFICATION_OPERATION'}"
+        [myAgGridState]="'aiClassificationOperation'"
+        [suppressRowClickSelection]="true">
+    </ag-grid-angular>
+
+    <ng-template #customTemplate1 let-dataItem>
+        <nz-select [(ngModel)]="dataItem.prodPlantCode" [ngStyle]="{width:'100%'}" nzShowSearch name="prodPlantCode" (ngModelChange)="prodPlantChange(dataItem)" [disabled]="dataItem.attribute1==='Success'" required>
+          <nz-option *ngFor="let option of prodPlantOptions" [nzValue]="option.value" [nzLabel]="option.label"></nz-option>
+        </nz-select>
+      </ng-template>
+
+    <custom-pager
+        [height]="pagerHeight"
+        [context]="context"
+        [view]='context.view'
+        [(pageSize)]="_pageSize"
+        [(pageNo)]="_pageNo"
+        (pageChangeEvent)="onPageChanged($event)">
+    </custom-pager>
+    <custom-excelexport
+        [expColumns]="expColumns"
+        [expColumnsOptions]="expColumnsOptions"
+        fileName="库存计划"
+        #excelexport>
+    </custom-excelexport>
+</nz-card>

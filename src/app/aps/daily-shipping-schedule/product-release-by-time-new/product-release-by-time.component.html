@@ -1,0 +1,30 @@
+<custom-formquery [queryParams]="queryParams" [context]="context" (event1)="searchItems($event)">
+  <span>
+    <custom-button text="{{ '释放计算' | translate}}" (clickEvent)="submitReq()" [src]="'供需生成'">
+    </custom-button>
+    <custom-button text="{{ '导出' | translate}}" (clickEvent)="export()" [src]="'基础icon-导出'">
+    </custom-button>
+  </span>
+</custom-formquery>
+
+<nz-card>
+  <ag-grid-angular #agGrid id="dnGrid" [class]="themeClass" [rowData]="gridData" [columnDefs]="totalColumns"
+    [gridOptions]="gridOptions" [myAgGridState]="'SP_PRODUCT_RELEASE_BY_TIME_NEW'" [style.height.px]="gridHeight"
+    [suppressRowTransform]="true" [suppressRowClickSelection]="true" [myAgGridRowKey]="{tb:'PS_RELEASE_CALCULATION'}">
+  </ag-grid-angular>
+  <custom-pager [height]="pagerHeight" [context]="context" [view]='context.view' [(pageSize)]="_pageSize"
+    [(pageNo)]="_pageNo" (pageChangeEvent)="onPageChanged($event)"></custom-pager>
+  <custom-excelexport [expColumns]='totalColumns' fileName='释放量计算' #excelexport></custom-excelexport>
+</nz-card>
+
+<nz-modal [(nzVisible)]="isVisible" nzTitle="释放量计算" [nzFooter]="modalFooter" (nzOnCancel)="handleCancel()">
+  <form #f="ngForm" se-container="1">
+    <se label="{{ '计算天数' | translate }}" required>
+      <nz-input-number name="day" [nzMin]="1" [nzMax]="10" [(ngModel)]="day" [nzPrecision]="0" required></nz-input-number>
+    </se>
+  </form>
+  <ng-template #modalFooter>
+    <button nz-button nzType="default" (click)="handleCancel()">取消</button>
+    <button nz-button nzType="primary" [disabled]="f.invalid" (click)="handleOk()" [nzLoading]="http.loading">确认</button>
+  </ng-template>
+</nz-modal>

@@ -1,0 +1,56 @@
+<div class="modal-header">
+  <div class="modal-title">{{ title | translate }}</div>
+</div>
+<div style="position: relative; height: 32px" *ngIf="isModify">
+  <button nz-button nzType="dashed" style="position: absolute; right: 0;" (click)="clear()">{{'重置' | translate}}</button>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="2">
+    <!-- <se label="{{ '工厂' | translate}}" required>
+      <nz-select #select [(ngModel)]="i.PLANT_CODE" name="PLANT_CODE"  [nzDisabled]="isModify"
+        required>
+        <nz-option *ngFor="let option of plantOptions" [nzLabel]="option.label" [nzValue]="option.value">
+        </nz-option>
+      </nz-select>
+    </se> -->
+    <se label="{{ '替代组' | translate}}" required>
+      <input type="text" nz-input [(ngModel)]="i.SUBSTITUTE_GROUP" name="SUBSTITUTE_GROUP" disabled="false" required>
+    </se>
+    <se label="{{ '消耗优先级' | translate}}" [required]="isUsePriority">
+      <input type="number" nz-input [(ngModel)]="i.USE_PRIORITY" name="USE_PRIORITY"  disabled="false" [required]="isUsePriority">
+    </se>
+    <se label="{{ '采购比例' | translate}}" [required]="isPercentBalance">
+      <!-- <nz-select #select [(ngModel)]="i.MIX_USED" name="MIX_USED"
+        required>
+        <nz-option *ngFor="let option of mixUseOptions" [nzLabel]="option.label" [nzValue]="option.value" required>
+        </nz-option>
+      </nz-select> -->
+      <input type="number" nz-input [(ngModel)]="i.BUY_PERSENT" name="BUY_PERSENT" disabled="false" [required]="isPercentBalance">
+    </se>
+    <se label="{{ '物料编码' | translate}}" required>
+        <popup-select #selMater1 [(SelectValue)]="i.ITEM_CODE" [(SelectText)]='i.ITEM_CODE' [ValueField]="'ITEM_CODE'" [TextField]="'ITEM_CODE'"
+          [gridView]="gridView1" [columns]="columns1" (SearchEvent)="search1($event)" (TextChanged)="change1($event)" [Disabled]="isModify"
+          required>
+        </popup-select>
+    </se>
+    <se label="{{ '单位用量' | translate}}" required>
+      <input type="number" nz-input [(ngModel)]="i.USAGE" name="USAGE"  required>
+    </se>
+    <se label="{{ '关键物料' | translate}}" required>
+      <input type="text" nz-input [(ngModel)]="i.KEY_FLAG" name="KEY_FLAG" required>
+    </se>
+    <se label="{{ '生效日期' | translate}}">
+      <nz-date-picker nzShowTime nzFormat="yyyy-MM-dd" [(ngModel)]="i.EFFECTIVITY_DATE" name="startBegin" nzPlaceHolder="">
+      </nz-date-picker>
+    </se>
+    <se label="{{ '失效日期' | translate}}">
+      <nz-date-picker nzShowTime nzFormat="yyyy-MM-dd" [(ngModel)]="i.DISABLE_DATE" name="startEnd" nzPlaceHolder="">
+      </nz-date-picker>
+    </se>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save(f)" [disabled]="!f.valid || !f.dirty"
+    [nzLoading]="http.loading">{{ '保存' | translate}}</button>
+  <button nz-button type="button" (click)="close()">{{ '关闭' | translate}}</button>
+</div>

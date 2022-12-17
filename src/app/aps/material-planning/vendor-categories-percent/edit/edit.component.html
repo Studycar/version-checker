@@ -1,0 +1,48 @@
+<div class="modal-header">
+    <div class="modal-title">{{ title | translate}}</div>
+</div>
+<div style="position: relative; height: 32px" *ngIf="params.Id">
+    <button nz-button nzType="dashed" style="position: absolute; right: 0;" (click)="clear()">重置</button>
+</div>
+<div>
+    <form nz-form #f="ngForm" se-container="2" [labelWidth]="140">
+        <se label="{{ '维度名' | translate}}" required>
+            <nz-select [(ngModel)]="params.dimensionName" (ngModelChange)="onDimNameChange($event)" nzShowSearch name="dimensionName" required [nzDisabled]="readOnly">
+                <nz-option *ngFor="let o of dimensionNameOptions" [nzLabel]="o.label" [nzValue]="o.value"></nz-option>
+            </nz-select>
+        </se>
+        <se label="{{'维度值' | translate}}" required>
+            <nz-select [(ngModel)]="params.dimensionValues" nzShowSearch name="dimensionValues" required [nzDisabled]="readOnly">
+                <nz-option *ngFor="let o of dimensionValueOptions" [nzLabel]="o.label" [nzValue]="o.value"></nz-option>
+            </nz-select>
+        </se>
+        <se label="{{ '库存分类' | translate}}" required>
+            <popup-select #selMater1 [(SelectValue)]="params.categoriesCode" [(SelectText)]="params.categoriesCode" [ValueField]="'categoriesCode'" [TextField]="'categoriesCode'" [gridView]="gridView1" [columns]="columns1" (SearchEvent)="searchCate($event)" 
+                (RowSelect)="cate_rowSelect($event)" required [Disabled]="readOnly">
+            </popup-select>
+        </se>
+        <se label="{{'供应商' | translate}}" required>
+            <popup-select #selMater1 [(SelectValue)]="params.vendorNumber" [(SelectText)]="params.vendorNumber" [ValueField]="'vendorNumber'" [TextField]="'vendorNumber'" [gridView]="gridView2" [columns]="columns2" (SearchEvent)="searchVendor($event)" 
+            (RowSelect)="vendor_rowSelect($event)" required [Disabled]="readOnly">
+            </popup-select>
+        </se>
+        <se label="{{'供货比例' | translate}}" required>
+            <nz-input-number [(ngModel)]="params.allocationPercent" [nzMin]="0" [nzStep]="0.1" [nzMax]="100" name="allocationPercent" required></nz-input-number>
+        </se>
+        <se label="{{'优先级' | translate}}" required>
+            <nz-input-number [(ngModel)]="params.priority" [nzMin]="1" [nzStep]="1" [nzMax]="1000" name="priority" required></nz-input-number>
+        </se>
+        <se label="{{'生效日期' | translate}}" required>
+            <nz-date-picker [(ngModel)]="params.effectiveDate" [nzAllowClear]="false" name="effectiveDate" required></nz-date-picker>
+        </se>
+        <se label="{{'失效日期' | translate}}">
+            <nz-date-picker [(ngModel)]="params.disableDate" [nzAllowClear]="true" name="disableDate" ></nz-date-picker>
+        </se>
+    </form>
+</div>
+<div class="modal-footer">
+    <button nz-button type="submit" [nzType]="'primary'" (click)="save()" [disabled]="f.invalid || !f.dirty" [nzLoading]="http.loading">
+        {{ '保存' | translate}}</button>
+    <button nz-button type="button" (click)="close()">
+        {{ '关闭' | translate}}</button>
+</div>

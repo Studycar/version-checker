@@ -1,0 +1,73 @@
+<div class="modal-header">
+  <div class="modal-title">{{ isModify ? '编辑信息' : '新增信息' | translate }}</div>
+</div>
+<div style="position: relative; height: 32px" *ngIf="isModify">
+  <button nz-button nzType="dashed" style="position: absolute; right: 0;" (click)="clear()">{{'重置' | translate}}</button>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="2">
+    <se label="{{ '配送单号' | translate }}">
+      <input nz-input type="text" disabled name="deliveryOrderCode" [(ngModel)]="i.deliveryOrderCode">
+    </se>
+    <se label="{{ '明细行号' | translate }}" *ngIf="isModify">
+      <input nz-input type="text" disabled name="detailedNum" [(ngModel)]="i.detailedNum">
+    </se>
+    <se label="{{ '配送单行状态' | translate }}">
+      <nz-select nzShowSearch name="state" nzDisabled [(ngModel)]="i.state">
+        <nz-option *ngFor="let op of detailedStateOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '配送单类型' | translate }}" required>
+      <nz-select nzShowSearch name="type" [(ngModel)]="i.type" (ngModelChange)="typeChange()" required>
+        <nz-option *ngFor="let op of deliveryTypeOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '工厂' | translate }}">
+      <nz-select nzShowSearch name="plantCode" nzDisabled [(ngModel)]="i.plantCode">
+        <nz-option *ngFor="let op of plantOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '发货单号' | translate }}" [required]="i.type === '20'">
+      <popup-select [(SelectValue)]="i.invoiceBillCode" [ValueField]="'invoiceBillCode'" [Disabled]="i.type !== '20'" [selectBy]="'id'"
+        [(SelectText)]="i.invoiceBillCode" [TextField]="'invoiceBillCode'" name="invoiceBillCode" [options]="invoiceDetailedOptions"
+        [gridView]="gridViewInvoicesDetail" [columns]="columnsInvoicesDetail" (TextChanged)="onInvoiceDetailTextChanged($event)"
+        (SearchEvent)="searchInvoicesDetail($event)" (RowSelect)="onInvoiceDetailSelect($event)" [required]="i.type === '20'">
+      </popup-select>
+    </se>
+    <se label="{{ '发货单明细行号' | translate }}">
+      <input nz-input type="text" disabled name="invoiceBillDetailedNum" [(ngModel)]="i.invoiceBillDetailedNum">
+    </se>
+    <se label="{{ '调拨单号' | translate }}" [required]="i.type === '10'">
+      <popup-select [(SelectValue)]="i.code" [ValueField]="'code'" [Disabled]="i.type !== '10'" [selectBy]="'id'"
+        [(SelectText)]="i.code" [TextField]="'code'" name="code" [options]="transferDetailedOptions"
+        [gridView]="gridViewTransfersDetail" [columns]="columnsTransfersDetail" (TextChanged)="onTransferDetailTextChanged($event)"
+        (SearchEvent)="searchTransferDetail($event)" (RowSelect)="onTransferDetailSelect($event)" [required]="i.type === '10'">
+      </popup-select>
+    </se>
+    <se label="{{ '调拨单明细行号' | translate }}">
+      <input nz-input type="text" disabled name="pono" [(ngModel)]="i.pono">
+    </se>
+    <se label="{{ '存货编码' | translate }}" required>
+      <input nz-input type="text" disabled name="stockCode" [(ngModel)]="i.stockCode" required>
+    </se>
+    <se label="{{ '配送日期' | translate }}" required>
+      <nz-date-picker nzFormat="yyyy-MM-dd" [(ngModel)]="i.invoiceBillDate" name="invoiceBillDate" required>
+      </nz-date-picker>
+    </se>
+    <se label="{{ '是否省内' | translate }}" >
+      <nz-select nzShowSearch name="sfsn" [(ngModel)]="i.sfsn" >
+        <nz-option *ngFor="let op of YesNoOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '下游客户' | translate }}">
+      <input nz-input type="text" name="xykh" [(ngModel)]="i.xykh">
+    </se>
+    <se label="{{ '配送地址' | translate }}">
+      <input nz-input type="text" name="shippingAddress" [(ngModel)]="i.shippingAddress" disabled >
+    </se>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="button" (click)="close()">{{ '取消' | translate }}</button>
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save(f.value)" [nzLoading]="http.loading" [disabled]="f.invalid || !f.dirty">{{'保存' | translate }}</button>
+</div>

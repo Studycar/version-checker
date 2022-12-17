@@ -1,0 +1,14 @@
+<div class="mb-md">
+  <span>
+    <custom-button text="{{ '刷新' | translate}}" (clickEvent)="query()" [src]="'基础icon-刷新'">
+    </custom-button>
+    <custom-button text="{{ '清除' | translate}}" (clickEvent)="clear()" [src]="'基础icon-清除@1.5x'">
+    </custom-button>
+  </span>
+</div>
+<nz-list [nzDataSource]="gridView.data" nzBordered nzSize="small" [nzRenderItem]="item">
+  <ng-template #item let-item>
+    <div>{{item['CreateDate']}} </div>
+    <nz-list-item [nzContent]="item['SQL']"></nz-list-item>
+  </ng-template>
+</nz-list>

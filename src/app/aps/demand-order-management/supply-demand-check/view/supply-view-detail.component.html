@@ -1,0 +1,11 @@
+<div class="modal-header">
+  <div class="modal-title">{{ title | translate}}</div>
+</div>
+<nz-card>
+  <ag-grid-angular #agGrid [class]="themeClass" [style.height.px]="gridHeight" [rowData]="gridData"
+    [columnDefs]="staticColumns" [gridOptions]="gridOptions" [myAgGridRowKey]="{tb:'PS_BALANCE_CHECK_DEMAND'}"
+    [myAgGridState]="'PS_BALANCE_CHECK_DEMAND'">
+  </ag-grid-angular>
+  <custom-pager [height]="pagerHeight" [fixed]="false" [context]="context" [view]='context.view'
+    [(pageSize)]="_pageSize" [(pageNo)]="_pageNo" (pageChangeEvent)="onPageChanged($event)"></custom-pager>
+</nz-card>

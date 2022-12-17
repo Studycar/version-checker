@@ -1,0 +1,27 @@
+<div class="modal-header">
+  <div class="modal-title">{{ ('例外检查') | translate}}</div>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="1">
+    <se label="{{ '工厂' | translate}}" required>
+      <nz-select #select [(ngModel)]="saveData.plantCode" nzShowSearch (ngModelChange)="plantChange($event)" name="plantCode">
+        <nz-option *ngFor="let o of plantOptions" [nzValue]="o.value" [nzLabel]="o.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '计划组' | translate}}" required>
+      <nz-select #select [(ngModel)]="saveData.scheduleGroupCode" nzShowSearch (ngModelChange)="scheduleGroupChange($event)" name="scheduleGroupCode">
+        <nz-option *ngFor="let o of scheduleGroupOptions" [nzValue]="o.value" [nzLabel]="o.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '资源' | translate}}">
+      <nz-select #select [(ngModel)]="saveData.resourceCode" nzAllowClear nzShowSearch name="resourceCode">
+        <nz-option *ngFor="let o of resourceOptions" [nzValue]="o.value" [nzLabel]="o.label"></nz-option>
+      </nz-select>
+    </se>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save()" [disabled]="f.invalid || !f.dirty" [nzLoading]="http.loading">
+    {{ '确定' | translate}}</button>
+  <button nz-button type="button" (click)="close()">    {{ '关闭' | translate}}</button>
+</div>

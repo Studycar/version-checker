@@ -1,0 +1,55 @@
+<div class="modal-header">
+  <div class="modal-title">{{ '客户明细信息' }}</div>
+</div>
+<custom-formquery [queryParams]="queryParams" [context]="context">
+  <custom-button text="{{ '新增' | translate }}" [src]="'基础icon-新增'" (clickEvent)="add()"></custom-button>
+  <!-- <custom-button text="{{ '导出' | translate }}" [src]="'基础icon-导出'" (clickEvent)="export()"></custom-button> -->
+  <custom-button text="{{ '查询余额' | translate }}" [src]="'搜索'" (clickEvent)="queryLimit()"></custom-button>
+</custom-formquery>
+<nz-card>
+  <ag-grid-angular #agGrid [class]="themeClass" [style.height.px]="gridHeight-200" [rowData]="gridData"
+    [columnDefs]="columns" [gridOptions]="gridOptions" [myAgGridState]="'hw-customer'"
+    [myAgGridRowKey]="{tb:'PS_CUSTOMER_HW'}">
+  </ag-grid-angular>
+  <custom-pager [height]="pagerHeight" [context]="context" [view]='context.view' [(pageSize)]="_pageSize" [fixed]="false"
+    [(pageNo)]="_pageNo" (pageChangeEvent)="onPageChanged($event)"></custom-pager>
+  <custom-excelexport [expColumns]='expColumns' [expColumnsOptions]='expColumnsOptions' fileName='客户信息' #excelexport></custom-excelexport>
+</nz-card>
+<ng-template #customTemplate let-dataItem>
+  <!-- 仅待审批和驳回状态可编辑/删除 -->
+  <ng-container *ngIf="['10', '40'].includes(dataItem.cusState)">
+    <span title="{{ '编辑' | translate }}" (click)="add(dataItem)" style="cursor: Pointer">
+      <i class="anticon anticon-edit"></i>
+    </span>
+    <nz-divider nzType="vertical"></nz-divider>
+    <span title="{{ '删除' | translate}}" nz-popconfirm nzTitle="{{ '是否确认删除该记录?' | translate}}"
+      (nzOnConfirm)="remove(dataItem);" class="pointer">
+      <i class="anticon anticon-delete"></i>
+    </span>
+    <nz-divider nzType="vertical"></nz-divider>
+  </ng-container>
+   <!-- 仅启用和停用状态可变更 -->
+   <!-- <div style="display: inline;" *ngIf="dataItem.cusState === '50' || dataItem.cusState === '70'">
+    <span title="{{ '状态变更' | translate }}" (click)="onCusStateChange(dataItem)" style="cursor: Pointer">
+      <i class="anticon anticon-sync"></i>
+    </span>
+    <nz-divider nzType="vertical"></nz-divider>
+  </div> -->
+  <!-- 仅表头启用、明细已审核状态可申请、变更 -->
+  <ng-container *ngIf="dataItem.cusState === '30' && header.cusState === '50'">
+    <span title="{{ '申请临时信用额度' | translate }}" nz-popconfirm [nzTitle]="generateCreditTitle(dataItem)" (nzOnConfirm)="openTempCredit(dataItem)" style="cursor: Pointer">
+      <i class="anticon anticon-money-collect"></i>
+    </span>
+    <nz-divider nzType="vertical"></nz-divider>
+    <ng-container *ngIf="dataItem.annualCreditOngoing !== '1'">
+      <span title="{{ '申请年度信用额度' | translate }}" (click)="openAnnualCredit(dataItem)" style="cursor: Pointer">
+        <i class="anticon anticon-money-collect" style="color: #8BC34A;"></i>
+      </span>
+      <nz-divider nzType="vertical"></nz-divider>
+    </ng-container>
+    <span title="{{ '信息变更' | translate }}" (click)="openDetailInfoChangeModal(dataItem)" style="cursor: Pointer">
+      <i class="anticon anticon-audit"></i>
+    </span>
+    <nz-divider nzType="vertical"></nz-divider>
+  </ng-container>
+</ng-template>

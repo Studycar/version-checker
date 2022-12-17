@@ -1,0 +1,107 @@
+<div class="modal-header">
+  <div class="modal-title">{{ (isModify?'编辑信息':'新增信息') | translate}} </div>
+</div>
+<div *ngIf="isModify" style=" margin:2px auto;">
+  <button style="float: right;" nz-button nzType="dashed" (click)="clear()">
+    <i class="anticon anticon-delete"></i>{{ '重置' | translate}}</button>
+  <div style="clear: both;"></div>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="2" [labelWidth]=130>
+    <se label="{{ '接口编码' | translate}}" required>
+      <input type="text" nz-input [(ngModel)]="i.code" name="code" required [readonly]="isModify"
+        [class.disabled]="isModify">
+    </se>
+    <se label="{{ '接口名称' | translate}}" required>
+      <input type="text" nz-input [(ngModel)]="i.name" name="name" required>
+    </se>
+    <se label="{{ '接口描述' | translate}}">
+      <input type="text" nz-input [(ngModel)]="i.remark" name="remark">
+    </se>
+    <se label="{{ '关联系统' | translate}}" required>
+      <nz-select nzShowSearch [(ngModel)]="i.sourceCode" name="sourceCode" required>
+        <nz-option *ngFor="let option of sourceOptions" [nzLabel]="option.label" [nzValue]="option.value">
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '接口方式' | translate}}" required>
+      <nz-select nzShowSearch [(ngModel)]="i.apiType" (ngModelChange)="apiTypeChange($event)" name="apiType"
+        required>
+        <nz-option *ngFor="let option of apiTypeOptions" [nzLabel]="option.label" [nzValue]="option.value">
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '接口表' | translate}}" required>
+      <!-- <input type="text" nz-input [(ngModel)]="i.apiTable" name="apiTable"> -->
+      <nz-select nzShowSearch [nzAllowClear]="true" [nzMaxMultipleCount]="1" nzMode="tags"
+        [(ngModel)]="i.apiTableList" name="apiTable" required>
+        <nz-option *ngFor="let option of tableOptions" [nzLabel]="option.label" [nzValue]="option.value">
+        </nz-option>
+      </nz-select>
+    </se>
+    <se *ngIf="isdblink" label="{{ '关联系统表' | translate}}" required>
+      <input type="text" nz-input [(ngModel)]="i.sourceTable" name="sourceTable" required>
+    </se>
+    <se *ngIf="isdblink" label="{{ '全量同步' | translate}}" required>
+      <nz-select nzShowSearch [(ngModel)]="i.fullFlag" name="fullFlag" required>
+        <nz-option *ngFor="let option of enableOptions" [nzLabel]="option.label" [nzValue]="option.value">
+        </nz-option>
+      </nz-select>
+    </se>
+    <se *ngIf="isdblink" label="{{ '关联系统更新字段' | translate}}" [required]="i.fullFlag!=='Y'">
+      <input type="text" nz-input [(ngModel)]="i.sourceUpdateField" name="sourceUpdateField">
+    </se>
+    <se *ngIf="isdblink" label="{{ '关联系统更新时间' | translate}}">
+      <nz-date-picker nzShowTime nzFormat="yyyy-mm-dd hh:mm:ss" [(ngModel)]="i.sourceUpdateDate"
+        name="sourceUpdateDate">
+      </nz-date-picker>
+    </se>
+    <se *ngIf="isdblink" label="{{ '关联系统组织字段' | translate}}">
+      <input type="text" nz-input [(ngModel)]="i.sourcePlantField" name="sourcePlantField">
+    </se>
+    <se *ngIf="!isdblink" label="{{ '数据流向' | translate}}" required>
+      <nz-select nzShowSearch [(ngModel)]="i.sendFlag" name="sendFlag" required>
+        <nz-option *ngFor="let option of sendFlagOptions" [nzLabel]="option.label" [nzValue]="option.value">
+        </nz-option>
+      </nz-select>
+    </se>
+    <se *ngIf="!isdblink" label="{{ '外部url' | translate}}" [required]="i.sendFlag==='Y'">
+      <input type="text" nz-input [(ngModel)]="i.sendUrl" name="sendUrl" [required]="i.sendFlag==='Y'">
+    </se>
+    <se *ngIf="!isdblink" label="{{ '推拉方式' | translate}}" required>
+      <nz-select  nzShowSearch [(ngModel)]="i.pushFlag" name="pushFlag" required>
+        <nz-option *ngFor="let option of pushOptions" [nzLabel]="option.label" [nzValue]="option.value">
+        </nz-option>
+      </nz-select>
+    </se>
+    <se *ngIf="!isdblink" label="{{ '传输数据类型' | translate}}" required>
+      <nz-select  nzShowSearch [nzAllowClear]="true" [(ngModel)]="i.entityType" name="entityType" required>
+        <nz-option *ngFor="let option of typeOptions" [nzLabel]="option.label" [nzValue]="option.value">
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '是否启用' | translate}}" required>
+      <nz-select  nzShowSearch [(ngModel)]="i.enableFlag" name="enableFlag" required>
+        <nz-option *ngFor="let option of enableOptions" [nzLabel]="option.label" [nzValue]="option.value">
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '记录完整报文' | translate}}" required>
+      <nz-select  nzShowSearch [(ngModel)]="i.logFlag" name="logFlag" required>
+        <nz-option *ngFor="let option of enableOptions" [nzLabel]="option.label" [nzValue]="option.value">
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '并发程序简称' | translate}}">
+      <input type="text" nz-input [(ngModel)]="i.programName" name="programName">
+    </se>
+    <se label="{{ '并发程序接口编码' | translate}}">
+      <input type="text" nz-input [(ngModel)]="i.codeInput" name="codeInput">
+    </se>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save(f)" [disabled]="!f.valid"
+    [nzLoading]="http.loading">{{ '保存' | translate}}</button>
+  <button nz-button type="button" (click)="close()">{{ '关闭' | translate}}</button>
+</div>

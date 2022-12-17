@@ -1,0 +1,29 @@
+<div class="modal-header">
+  <div class="modal-title">{{ title }}信息</div>
+</div>
+<div style="position: relative; height: 32px" *ngIf="isEdit">
+  <button nz-button nzType="dashed" style="position: absolute; right: 0;" (click)="clear()">重置</button>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="2">
+    <se label="{{ '参数值' | translate}}" required>
+      <input type="text" nz-input [(ngModel)]="m.parameterValue" name="parameterValue" required="required">
+    </se>
+    <se label="{{ '参数级别' | translate}}" required>
+      <nz-select [(ngModel)]="m.levelValue" name="levelValue" (ngModelChange)="levelchange($event)"
+        required>
+        <nz-option *ngFor="let option of leveloptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ 'LINK' | translate}}">
+      <nz-select [(ngModel)]="m.linkId" name="linkId" nzAllowClear (ngModelChange)="linkChange($event)">
+        <nz-option *ngFor="let option of linkoptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save()" [disabled]="!f.valid || !f.dirty"
+    [nzLoading]="http.loading">{{ '保存' | translate}}</button>
+  <button nz-button type="button" (click)="close()">{{ '关闭' | translate}}</button>
+</div>

@@ -1,0 +1,28 @@
+<custom-formquery [queryParams]="queryParams" [expandForm]="true" [context]="context" (event1)="plantChange($event)">
+  <span>
+    <custom-button text="{{ '新增' | translate}}" (clickEvent)="add()" [src]="'基础icon-新增'" [disabled]="customFormquery.NgFormInvalid">
+    </custom-button>
+    <custom-button text="{{ '保存' | translate}}" (clickEvent)="Save()" [src]="'btn_save'">
+    </custom-button>
+    <custom-button text="{{ '导出' | translate}}" (clickEvent)="export()" [src]="'基础icon-导出'">
+    </custom-button>
+  </span>
+</custom-formquery>
+<nz-card>
+  <div style="display:inline-block;width:30%">
+    <ag-grid-angular #agGrid [class]="themeClass" [style.height.px]="gridHeight" [rowData]="gridData1" [columnDefs]="columns1"
+      [gridOptions]="gridOptions" [pagination]="false"  (rowSelected)="onScheduleRowSelected($event)" [myAgGridRowKey]="{tb:'PS_SCHEDULE_GROUP'}"
+      [myAgGridState]="'prolinegroupmaintain'">
+    </ag-grid-angular>
+  </div>
+  <div style="display:inline-block;width:3%"></div>
+  <div style="display:inline-block;width:67%">
+    <ag-grid-angular #agGrid id="BalanceScoring" [class]="themeClass" [style.height.px]="gridHeight" [rowData]="gridData" [columnDefs]="columns"
+      [components]="components" (cellValueChanged)="onCellValueChanged($event)" [suppressRowTransform]="true" [myAgGridRowKey]="{tb:'PS_GA_PARAMETER_HEAD'}"
+      [gridOptions]="gridOptions" [pagination]="false" (rowSelected)="onRowSelected($event)" [myAgGridState]="'BalanceScoringParaSet'"
+      (cellClicked)="cellClickHandler($event)">
+    </ag-grid-angular>
+  </div>
+  <div>{{ '总记录数：' | translate}}{{gridData.length}}</div>
+  <custom-excelexport [expColumns]='expColumns' fileName='BalanceScoringParaSetExport' #excelexport></custom-excelexport>
+</nz-card>

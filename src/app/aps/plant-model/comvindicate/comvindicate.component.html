@@ -1,0 +1,67 @@
+<div class="modal-header" *ngIf="pShowTitle">
+  <div class="modal-title">{{ ('工单组件') | translate}} </div>
+</div>
+<custom-formquery [queryParams]="queryParams" [context]="context" [showExpandIcon]="showButton">
+  <span>
+    <!-- <custom-button text="{{ '新增' | translate}}" (clickEvent)="add({})" [src]="'基础icon-新增'">
+    </custom-button>
+    <custom-button text="{{ '删除' | translate}}" (clickEvent)="removeBath()" [src]="'基础icon-删除'">
+    </custom-button> -->
+    <custom-button [showExpand]="showButton" text="{{ '导出' | translate}}" (clickEvent)="export()" [src]="'基础icon-导出'">
+    </custom-button>
+  </span>
+</custom-formquery>
+<nz-card>
+  <div>
+    <nz-tabset>
+      <nz-tab *ngFor="let tab of tabs" [nzTitle]="titleTemplate" (nzSelect)="tabSelect(tab)">
+        <ng-template #titleTemplate>
+          <div style="height: 24px;">
+            {{ tab.name | translate }}
+            <span class="tag-triangle">
+              <i class="anticon anticon-up" *ngIf="tab.index===selectIndex" style="margin-right: 0;"></i>
+            </span>
+          </div>
+        </ng-template>
+      </nz-tab>
+    </nz-tabset>
+    <!--
+    <kendo-grid #grid [data]="view" [height]="gridHeight" [pageSize]="gridState.take" [navigable]="true" [resizable]="true"
+      [skip]="gridState.skip" (dataStateChange)="onStateChange($event)" [columnMenu]="true" [reorderable]="true" [filter]="gridState.filter"
+      [selectable]="true" [sort]="gridState.sort" [pageable]="{
+        buttonCount: 5,
+        info: true,
+        pageSizes: true,
+        previousNext: true
+      }" [loading]="QueryService.http.loading" [columnMenu]="true" [reorderable]="true" [myGridRowKey]="{tb:'PS_MO_REQUIREMENT'}"
+      [myGridState]="'comvindicate'">
+      <kendo-grid-messages pagerPage="{{ '分页' | translate}}" pagerOf="{{ '的' | translate}}" pagerItems="{{ '总数' | translate}}"
+        pagerItemsPerPage="{{ '页项' | translate}}" groupPanelEmpty="Drag here to group" noRecords="{{ '没有数据' | translate}}">
+      </kendo-grid-messages>
+      <kendo-grid-column *ngFor="let col of columns" [locked]="col.locked" [field]="col.field" [title]="col.title" [width]="col.width"
+        [hidden]="col.field !=='ITEM_CODE' && hiddenColumns.indexOf(col.field) < 0" [style]="gridLineStyle">
+        <ng-template kendoGridCellTemplate let-dataItem *ngIf="col.ui?.type === 'select'">
+          {{optionsFind(dataItem[col.field],col.ui.index)?.label}}
+        </ng-template>
+        <ng-template kendoGridCellTemplate let-dataItem *ngIf="col.ui?.tooltip">
+          <ellipsis lines="{{col.ui?.tooltip}}">
+            <span nz-tooltip [nzTitle]="dataItem[col.field]">{{dataItem[col.field]}}</span>
+          </ellipsis>
+        </ng-template>
+      </kendo-grid-column>
+    </kendo-grid>-->
+    <ag-grid-angular #agGrid [class]="themeClass" [style.height.px]="gridHeight" [rowData]="gridData" [columnDefs]="columns"
+      [gridOptions]="gridOptions" (selectionChanged)="onSelectionChanged($event)" [myAgGridRowKey]="{tb:'PS_MO_REQUIREMENT'}"
+      [myAgGridState]="'comvindicateAg'">
+    </ag-grid-angular>
+    <custom-pager [height]="pagerHeight" [fixed]="fixed" [context]="context" [view]='context.view' [(pageSize)]="_pageSize" [(pageNo)]="_pageNo"
+      (pageChangeEvent)="onPageChanged($event)"></custom-pager>
+    <custom-excelexport [expColumns]='expColumns' [expColumnsOptions]='expColumnsOptions' fileName='工单组件' #excelexport>
+    </custom-excelexport>
+  </div>
+</nz-card>
+<!-- <ng-template #customTemplate let-dataItem>
+  <span title="编辑" (click)="add(dataItem)" style="cursor: Pointer"><i class="anticon anticon-edit"></i></span>
+  <nz-divider nzType="vertical"></nz-divider>
+  <span title="删除" nz-popconfirm nzTitle="是否确认删除该记录?" (nzOnConfirm)="remove(dataItem)" style="cursor: Pointer"><i class="anticon anticon-delete"></i></span>
+</ng-template> -->

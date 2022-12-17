@@ -1,0 +1,75 @@
+<div class="modal-header">
+    <div class="modal-title">{{ title | translate }}</div>
+</div>
+<div style="position: relative; height: 32px" *ngIf="params.id">
+    <button nz-button nzType="dashed" style="position: absolute; right: 0;" (click)="clear()">重置</button>
+</div>
+<div>
+    <form nz-form #f="ngForm" se-container="2">
+        <se label="{{'工厂' | translate}}" required>
+            <nz-select [(ngModel)]="params.plantCode" name="plantCode" [disabled]="editDisabled" required>
+                <nz-option *ngFor="let option of plantOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+            </nz-select>
+        </se>
+        <se label="{{'上阶物料编码' | translate}}" required>
+            <popup-select
+            [(SelectValue)]="params.assemblyItemId"
+            [(SelectText)]="params.assemblyItemCode"
+            [TextField]="'itemCode'"
+            [ValueField]="'itemId'"
+            [gridView]="itemOptions"
+            [columns]="columnsItems"
+            (SearchEvent)="searchItems($event)"
+            (TextChanged)="assemblyItemChange($event)"
+            required>
+            </popup-select>
+        </se>
+        <se label="{{'物料编码' | translate }}" required>
+            <popup-select
+            [(SelectValue)]="params.componentItemId"
+            [(SelectText)]="params.componentItemCode"
+            [TextField]="'itemCode'"
+            [ValueField]="'itemId'"
+            [gridView]="itemOptions"
+            [columns]="columnsItems"
+            (SearchEvent)="searchItems($event)"
+            (TextChanged)="componentItemChange($event)"
+            required>
+            </popup-select>
+        </se>
+        <se label="{{'变更类型' | translate}}">
+            <nz-select [(ngModel)]="params.ecrType" name="ecrType" [disabled]="editDisabled">
+                <nz-option *ngFor="let option of ecrTypeOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+            </nz-select>
+        </se>
+        <se label="{{'变更前用量' | translate }}">
+            <input type="text" nz-input [(ngModel)]="params.beforeQty" name="beforeQty">
+        </se>
+        <se label="{{'变更后用量' | translate}}">
+            <input type="text" nz-input [(ngModel)]="params.afterQty" name="afterQty">
+        </se>
+        <se label="{{'生效期' | translate}}" required>
+            <nz-date-picker nzShowTime nzFormat="yyyy-MM-dd HH:mm:ss" [(ngModel)]="params.effectivityDate" name="effectivityDate" nzPlaceHolder="" required>
+            </nz-date-picker>
+        </se>
+        <se label="{{'失效期' | translate}}">
+            <nz-date-picker nzShowTime nzFormat="yyyy-MM-dd HH:mm:ss" [(ngModel)]="params.disableDate" name="disableDate" nzPlaceHolder="">
+            </nz-date-picker>
+        </se>
+        <se label="{{'BOM替代项' | translate }}">
+            <input type="text" nz-input [(ngModel)]="params.alternateBomDesignator" name="alternateBomDesignator">
+        </se>
+        <se label="{{'替代组' | translate}}">
+            <input type="text" nz-input [(ngModel)]="params.replacementGroup" name="replacementGroup">
+        </se>
+        <se label="{{'是否启用' | translate}}" required>
+            <nz-select [(ngModel)]="params.enableFlag" name="enableFlag" [disabled]="editDisabled" required>
+                <nz-option *ngFor="let option of whetherOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+            </nz-select>
+        </se>
+    </form>
+</div>
+<div class="modal-footer">
+    <button nz-button type="submit" [nzType]="'primary'" [disabled]="!f.valid || !f.dirty" [nzLoading]="http.loading"  (click)="save()">{{'保存' | translate}}</button>
+    <button nz-button type="button" (click)="close()">{{'关闭' | translate}}</button>
+</div>

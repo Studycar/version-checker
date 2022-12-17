@@ -1,0 +1,87 @@
+<custom-formquery [queryParams]="queryParams" [context]="context" (event1)="searchWares($event)"
+  (event2)="onWaresSelect($event)" (event3)="onWaresTextChanged($event)">
+  <custom-button *ngIf="isNotDistributed" text="{{ '新增' | translate }}" [src]="'基础icon-新增'" (clickEvent)="add()">
+  </custom-button>
+  <custom-button *ngIf="isNotDistributed" text="{{ '弃审/删除' | translate }}" [src]="'基础icon-删除'" (clickEvent)="remove()">
+  </custom-button>
+  <custom-button text="{{ '导入' | translate }}" [src]="'基础icon-导入'" [loading]="optionsLoading" (clickEvent)="import()">
+  </custom-button>
+  <custom-button text="{{ '导出' | translate }}" [src]="'基础icon-导出'" (clickEvent)="export()"></custom-button>
+  <custom-button *ngIf="isNotDistributed" text="{{ '获取现有量' | translate }}" [src]="'获取数据'" (clickEvent)="getOnhand()">
+  </custom-button>
+  <custom-button *ngIf="isNotDistributed" text="{{ '自动分货' | translate }}" [src]="'自动拆分合并'"
+    (clickEvent)="matchCustomerOrder()"></custom-button>
+  <custom-button *ngIf="!isNotDistributed" text="{{ '匹配合同' | translate }}" [src]="'匹配'" (clickEvent)="matchContract()">
+  </custom-button>
+  <!-- <custom-button text="{{ '更新合同数量' | translate }}" [src]="'基础icon-刷新'" (clickEvent)="updateContract()"></custom-button> -->
+  <custom-button *ngIf="isNotDistributed" text="{{ '转现货分货' | translate }}" [src]="'确认订单'"
+    (clickEvent)="confirmCancelFh()"></custom-button>
+  <custom-button *ngIf="isCurrent" text="{{ '取消分货' | translate }}" [src]="'取消订单-2'" (clickEvent)="confirmCancelFh()">
+  </custom-button>
+  <custom-button *ngIf="isDistributed || isCurrent" text="{{ '刷新是否有原料合同' | translate }}" [src]="'基础icon-刷新'"
+    (clickEvent)="refreshHasRawContract()"></custom-button>
+  <custom-button *ngIf="isCurrent" text="{{ '生成合同' | translate }}" [src]="'创建工单'" (clickEvent)="addContract()">
+  </custom-button>
+  <custom-button *ngIf="isCurrent || isBilled || isDistributed" text="{{ '计价' | translate }}" [src]="'例外计算'" (clickEvent)="compute()">
+  </custom-button>
+  <custom-button *ngIf="isCurrent || isBilled || isDistributed" text="{{ '批量挂合同' | translate }}" [src]="'绑定'" (clickEvent)="batchDeductionContract()"></custom-button>
+</custom-formquery>
+<nz-card>
+  <ag-grid-angular #agGrid [class]="themeClass" [style.height.px]="gridHeight" [rowData]="gridData"
+    [columnDefs]="columns" [gridOptions]="gridOptions" [myAgGridState]="property[type].myAgGridState"
+    [myAgGridRowKey]="{tb:'PS_SALES_DIST_DETAILED'}" (filterChanged)="onFilterChanged($event)">
+  </ag-grid-angular>
+  <custom-tb-select-sum [context]="context" [sumItems]="property[type].sumItems" [height]="sumHeight"></custom-tb-select-sum>
+  <custom-pager [height]="pagerHeight" [context]="context" [view]='context.view' [(pageSize)]="_pageSize" [fixed]="false"
+    [(pageNo)]="_pageNo" (pageChangeEvent)="onPageChanged($event)"></custom-pager>
+  <custom-excelexport [expColumns]='expColumns' [expColumnsOptions]='expColumnsOptions'
+    [fileName]='property[type].exportFileName' #excelexport></custom-excelexport>
+</nz-card>
+<ng-template #customTemplate let-dataItem>
+  <div *ngIf="!dataItem.isBottomRowData">
+    <!-- 已开单、合同待审核的情况下隐藏PS_DIST_DETAILED_STATE = 40、60  -->
+    <div *ngIf="!['40','60'].includes(dataItem.distDetailedState) && !dataItem.returnFlag" style="display: inline;">
+      <span title="编辑" (click)="add(dataItem)" style="cursor: Pointer">
+        <i class="anticon anticon-edit"></i>
+      </span>
+      <nz-divider nzType="vertical"></nz-divider>
+      <span title="{{ '删除' | translate}}" nz-popconfirm nzTitle="{{ '是否确认删除该记录?' | translate}}"
+        (nzOnConfirm)="remove(dataItem);" class="pointer">
+        <i class="anticon anticon-delete"></i>
+      </span>
+      <nz-divider nzType="vertical"></nz-divider>
+    </div>
+    <div *ngIf="dataItem.distDetailedState !== '10' && (getFlag(dataItem, 'null') || getFlag(dataItem, 'notnull')) && !dataItem.returnFlag" style="display: inline;">
+      <span title="编辑合同" (click)="editContract(dataItem, getFlag(dataItem, 'null'))" style="cursor: Pointer">
+        <i class="anticon anticon-form"></i>
+      </span>
+    </div>
+  </div>
+</ng-template>
+<nz-modal [(nzVisible)]="isVisible" [nzTitle]="modalProperty[modalType].title" [nzFooter]="modalFooter"
+  (nzOnCancel)="handleCancel()">
+  <form #f="ngForm" se-container="1">
+    <se label="{{ '工厂' | translate }}" *ngIf="['getOnhand'].includes(modalType)" required>
+      <nz-select nzShowSearch name="plantCode" [(ngModel)]="plantCode" (ngModelChange)="loadPlantWares()" required>
+        <nz-option *ngFor="let op of plantOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '成品仓库' | translate }}" *ngIf="['getOnhand'].includes(modalType)">
+      <nz-select nzShowSearch name="warehouse" nzMode="multiple" [(ngModel)]="warehouses">
+        <nz-option *ngFor="let op of warehousePlantOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '合同号' | translate }}" *ngIf="['batchDeductionContract'].includes(modalType)">
+      <popup-select [(SelectValue)]="contractCode" [ValueField]="'contractCode'" [options]="contractOptions"
+        [(SelectText)]="contractCode" [TextField]="'contractCode'" name="contractCode"
+        [gridView]="gridViewContracts" [columns]="columnsContracts" (TextChanged)="ContractTextChanged($event)"
+        (SearchEvent)="searchContracts($event)" (RowSelect)="onRowSelectContracts($event)">
+      </popup-select>
+    </se>
+  </form>
+  <ng-template #modalFooter>
+    <button nz-button nzType="default" (click)="handleCancel()">取消</button>
+    <button nz-button nzType="primary" [disabled]="f.invalid" (click)="handleOk()"
+      [nzLoading]="http.loading">确认</button>
+  </ng-template>
+</nz-modal>

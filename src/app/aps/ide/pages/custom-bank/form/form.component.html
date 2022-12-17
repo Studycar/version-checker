@@ -1,0 +1,36 @@
+<form nz-form #f="ngForm" se-container="2">
+  <se label="{{ '客户编码' | translate}}">
+    <input type="text" nz-input [(ngModel)]="formData.cusCode" name="cusCode" disabled />
+  </se>
+  <se label="{{ '客户名称' | translate}}">
+    <input type="text" nz-input [(ngModel)]="formData.cusName" name="cusName" disabled />
+  </se>
+  <se label="{{ '客户简称' | translate}}">
+    <input type="text" nz-input [(ngModel)]="formData.cusAbbreviation" name="cusAbbreviation" disabled />
+  </se>
+  <se label="{{ '税号' | translate}}">
+    <input type="text" nz-input [(ngModel)]="formData.taxNum" name="taxNum" disabled />
+  </se>
+  <nz-table 
+    #basicTable 
+    [nzData]="formDataBody" 
+    [nzSize]="'small'" 
+    [nzBordered]="false"
+    [nzPageSize]="formDataBody.length"
+    [nzShowPagination]="false">
+    <thead>
+      <tr>
+        <th *ngFor="let col of columns">{{col.headerName}}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of basicTable.data">
+        <td *ngFor="let col of columns">{{ col.valueFormatter ? col.valueFormatter(data[col.field]) : data[col.field] }}</td>
+      </tr>
+    </tbody>
+  </nz-table>
+</form>
+<!-- <ag-grid-angular #agGrid [class]="'ag-theme-alpine'" [style.height.px]="gridHeight-200" [rowData]="gridData"
+  [columnDefs]="columns" [gridOptions]="gridOptions" [myAgGridState]="'ps-cur-contract'"
+  [myAgGridRowKey]="{tb:'PS_CUR_CONTRACT'}">
+</ag-grid-angular> -->

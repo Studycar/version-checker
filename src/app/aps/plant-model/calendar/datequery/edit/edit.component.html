@@ -1,0 +1,60 @@
+<div class="modal-header">
+  <div class="modal-title">{{ (isModify?'编辑信息':'新增信息') | translate}} </div>
+</div>
+<div style=" margin:2px auto;">
+  <button style="float: right;" nz-button nzType="dashed" (click)="clear()">
+    <i class="anticon anticon-delete"></i>{{ '重置' | translate}}</button>
+  <div style="clear: both;"></div>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="2" [labelWidth]="150">
+    <se label="{{ '班次编码' | translate}}">
+      <input type="text" nz-input [(ngModel)]="i.shiftCode" name="shiftCode" [readonly]="isModify" [class.disabled]="isModify">
+    </se>
+    <se label="{{ '班次描述' | translate}}">
+      <input type="text" nz-input [(ngModel)]="i.shiftName" name="shiftName" [readonly]="isModify" [class.disabled]="isModify">
+    </se>
+    <se label="{{ '模板' | translate}}">
+      <input type="text" nz-input [(ngModel)]="i.shiftIntervalName" name="shiftIntervalName" [readonly]="isModify" [class.disabled]="isModify">
+    </se>
+    <se label="{{ '生产线' | translate}}">
+      <input type="text" nz-input [(ngModel)]="i.resourceCode" name="resourceCode" [readonly]="isModify" [class.disabled]="isModify">
+    </se>
+    <se label="{{ '是否有效' | translate}}">
+      <nz-select nzShowSearch nzAllowClear [(ngModel)]="i.enableFlag" name="enableFlag" [nzDisabled]="isModify">
+        <nz-option *ngFor="let option of enableOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '日期' | translate}}">
+      <input type="text" nz-input [(ngModel)]="i.showCalendarDay" name="showCalendarDay" [readonly]="isModify" [class.disabled]="isModify">
+    </se>
+    <se label="{{ '开始时间' | translate}}">
+      <!-- <input type="text" nz-input [(ngModel)]="i.SHOW_START_TIME" name="SHOW_START_TIME" [readonly]="isModify" [class.disabled]="isModify"> -->
+      <nz-date-picker nzShowTime [(ngModel)]="i.startTime" (ngModelChange)="change($event)" name="startTime" required></nz-date-picker>
+    </se>
+    <se label="{{ '结束时间' | translate}}">
+      <!-- <input type="text" nz-input [(ngModel)]="i.SHOW_END_TIME" name="SHOW_END_TIME" [readonly]="isModify" [class.disabled]="isModify"> -->
+      <nz-date-picker nzShowTime [(ngModel)]="i.endTime" (ngModelChange)="change($event)" name="endTime" required></nz-date-picker>
+    </se>
+    <se label="{{ '休息时间（小时）' | translate}}" required>
+      <nz-input-number [(ngModel)]="i.restTime" (ngModelChange)="change($event)" [nzPrecision]="0" name="restTime" required></nz-input-number>
+    </se>
+    <se label="{{ '借用能力（小时）' | translate}}">
+      <nz-input-number [(ngModel)]="i.lendCapacity" [nzPrecision]="0" name="lendCapacity" [nzDisabled]="isModify"></nz-input-number>
+    </se>
+    <se label="{{ '可用时间（小时）' | translate}}">
+      <nz-input-number [(ngModel)]="i.availableTime" [nzPrecision]="0" name="availableTime" [nzDisabled]="isModify"></nz-input-number>
+    </se>
+    <se label="{{ '开动率%' | translate}}" required>
+      <nz-input-number [(ngModel)]="i.efficency" (ngModelChange)="change($event)" [nzPrecision]="0" name="efficency" required></nz-input-number>
+    </se>
+    <se label="{{ '可用产能（小时）' | translate}}">
+      <nz-input-number [(ngModel)]="i.availableCapacity" [nzPrecision]="0" name="availableCapacity" [nzDisabled]="isModify"></nz-input-number>
+    </se>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save(f.value)" [disabled]="f.invalid" [nzLoading]="http.loading">{{
+    '保存' | translate}}</button>
+  <button nz-button type="button" (click)="close()">{{ '关闭' | translate}}</button>
+</div>

@@ -1,0 +1,185 @@
+<div class="content-title">
+
+  <div>
+    <button nz-button (click)="add({})" [nzType]="'primary'">
+      <i class="anticon anticon-plus-circle-o"></i>{{ '新增' | translate}}
+    </button>
+    <button nz-button nzType="danger" (click)="removeBath()">
+      <i class="anticon anticon-delete"></i>{{ '删除' | translate}}
+    </button>
+    <button nz-button (click)="import()" [nzType]="'default'">
+      <i class="anticon anticon-download"></i> {{ '导入' | translate}}
+    </button>
+    <button nz-button (click)="export()" class="mx-sm">
+      <i class="anticon anticon-export"></i>{{ '导出' | translate}}
+    </button>
+    <button nz-button (click)="searchExpand()" class="mx-sm">
+      <i nz-icon [nzType]="expandForm?'anticon-up':'anticon-down'"></i>
+      {{ '搜索' | translate}}
+    </button>
+  </div>
+  <form *ngIf="expandForm" nz-form #f="ngForm" se-container="3" [style.margin-top.px]="form_marginTop">
+
+    <se label="工厂" required>
+
+      <nz-select [(ngModel)]="queryParams.plantID" nzShowSearch (ngModelChange)="onChangePlant($event)" name="plantID" nzAllowClear
+        required>
+        <nz-option *ngFor="let o of optionListPlant" [nzValue]="o.plantCode" [nzLabel]="o.plantCode"></nz-option>
+        <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+          <i class="anticon anticon-loading anticon-spin loading-icon"></i> Loading Data...
+        </nz-option>
+      </nz-select>
+
+    </se>
+
+    <se label="计划组">
+      <nz-select [(ngModel)]="queryParams.plantGroupID" nzShowSearch (ngModelChange)="onChangeGroup($event)" name="plantGroupID"
+        nzAllowClear>
+        <nz-option *ngFor="let o of optionListPlantGroup" [nzValue]="o.scheduleGroupCode" [nzLabel]="o.scheduleGroupCode"></nz-option>
+        <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+          <i class="anticon anticon-loading anticon-spin loading-icon"></i> Loading Data...
+        </nz-option>
+      </nz-select>
+    </se>
+
+    <se label="资源" *ngIf="expandForm">
+      <nz-select [(ngModel)]="queryParams.productLineID" nzShowSearch name="productLineID" nzAllowClear>
+        <nz-option *ngFor="let o of optionListProductLine" [nzValue]="o.resourceCode" [nzLabel]="o.resourceCode"></nz-option>
+        <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+          <i class="anticon anticon-loading anticon-spin loading-icon"></i> Loading Data...
+        </nz-option>
+      </nz-select>
+    </se>
+
+    <!-- <se label="物料" *ngIf="expandForm">
+
+      <popup-select #selMater1
+        [ID]="'selMater1'"
+        [Value]="queryParams.itemCode"
+        [Text]='queryParams.itemCode'
+        [ValueField]="'itemCode'"
+        [nzStyle]="{'width':'200px'}"
+        [gridView]="gridView1"
+        [columns]="Columns"
+        (TextChanged)="onTextChanged($event)"
+        (SearchEvent)="onSearch1($event)"
+        (RowSelect)="onRowSelect($event)">
+      </popup-select>
+
+    </se>-->
+
+
+
+    <se label="物料起始值" *ngIf="expandForm">
+
+      <!--  <input type="text" nz-input [(ngModel)]="queryParams.ITEM_CODE_S" name="ITEM_CODE_S">-->
+
+      <popup-select #selMater2
+        [ID]="'selMater2'"
+        [Value]="queryParams.itemCodeS"
+        [Text]='queryParams.itemCodeS'
+        [ValueField]="'itemCode'"
+        [nzStyle]="{'width':'200px'}"
+        [gridView]="gridView2"
+        [columns]="Columns"
+        (TextChanged)="onTextChanged($event)"
+        (SearchEvent)="onSearch2($event)"
+        (RowSelect)="onRowSelectStart($event)">
+      </popup-select>
+    </se>
+
+    <se label="物料结束值" *ngIf="expandForm">
+      <!--  <input type="text" nz-input [(ngModel)]="queryParams.ITEM_CODE_E" name="ITEM_CODE_E">-->
+      <popup-select #selMater3
+        [ID]="'selMater3'"
+        [Value]="queryParams.itemCodeE"
+        [Text]='queryParams.itemCodeE'
+        [ValueField]="'itemCode'"
+        [nzStyle]="{'width':'200px'}"
+        [gridView]="gridView3"
+        [columns]="Columns"
+        (TextChanged)="onTextChanged($event)"
+        (SearchEvent)="onSearch3($event)"
+        (RowSelect)="onRowSelectEnd($event)">
+      </popup-select>
+    </se>
+    <!--  <se label="物料描述" *ngIf="expandForm">
+      <input type="text" nz-input [(ngModel)]="queryParams.ItemDesc" name="ItemDesc">
+    </se> -->
+    <se>
+      <button nz-button type="submit" [nzType]="'primary'" (click)="query()">
+        <i class="anticon anticon-search"></i>{{ '查询' | translate}}</button>
+      <button nz-button class="mx-sm" (click)="clear()">
+        <i class="anticon anticon-delete"></i>{{ '重置' | translate}}</button>
+
+
+
+    </se>
+  </form>
+</div>
+<nz-card>
+
+  <kendo-grid #grid [data]="view" [height]="kendoHeight" [pageSize]="gridState.take" [skip]="gridState.skip" [sort]="gridState.sort"
+    [sortable]="true" (dataStateChange)="onStateChange($event)" [filter]="gridState.filter" filterable="menu" [resizable]="true"
+    [selectable]="{'checkboxOnly':true,'mode': 'multiple'}" [kendoGridSelectBy]="'Id'" [selectedKeys]="mySelection" [columnMenu]="true"
+    [reorderable]="true" [pageable]="{
+      buttonCount: 10,
+      info: true,
+      pageSizes: true,
+      previousNext: true
+    }" [loading]="editService.http.loading">
+
+    <kendo-grid-messages pagerPage="分页" pagerOf="的" pagerItems="总数" pagerItemsPerPage="页项" groupPanelEmpty="Drag here to group"
+      noRecords="没有数据">
+    </kendo-grid-messages>
+
+
+    <kendo-grid-command-column title="操作" width="70" [locked]="true" [style]="{'border-bottom': '1px solid #d9d9d9'}">
+      <ng-template kendoGridCellTemplate let-isNew="isNew" let-dataItem="dataItem">
+
+        <span title="编辑" (click)="add(dataItem)" style="cursor: Pointer">
+          <i class="anticon anticon-edit"></i>
+        </span>
+
+        <nz-divider nzType="vertical"></nz-divider>
+
+        <span title="删除" nz-popconfirm nzTitle="是否确认删除该记录?" (nzOnConfirm)="remove(dataItem)" style="cursor: Pointer">
+          <i class="anticon anticon-delete"></i>
+        </span>
+
+
+      </ng-template>
+    </kendo-grid-command-column>
+    <kendo-grid-checkbox-column [width]="60" showSelectAll="true" [locked]="true" [style]="{'border-bottom': '1px solid #d9d9d9'}"></kendo-grid-checkbox-column>
+
+
+    <kendo-grid-column field="plantCode" title="工厂" width="100" [style]="{'border-bottom': '1px solid #d9d9d9'}"></kendo-grid-column>
+    <kendo-grid-column field="itemCode" title="物料" width="150" [style]="{'border-bottom': '1px solid #d9d9d9'}"></kendo-grid-column>
+    <kendo-grid-column field="scheduleGroupCode" title="计划组" width="150" [style]="{'border-bottom': '1px solid #d9d9d9'}"></kendo-grid-column>
+    <kendo-grid-column field="resourceCode" title="资源" width="150" [style]="{'border-bottom': '1px solid #d9d9d9'}"></kendo-grid-column>
+    <kendo-grid-column field="resourceType" title="资源类型" width="150" [style]="{'border-bottom': '1px solid #d9d9d9'}"></kendo-grid-column>
+
+    <kendo-grid-column field="descriptions" title="物料描述" width="400" [style]="{'border-bottom': '1px solid #d9d9d9'}">
+      <ng-template kendoGridCellTemplate let-dataItem>
+        <ellipsis lines="1">
+          <span nz-tooltip [nzTitle]="dataItem.descriptions">{{dataItem.descriptions}}</span>
+        </ellipsis>
+      </ng-template>
+    </kendo-grid-column>
+
+    <kendo-grid-column field="rateType" title="速率类型" width="180" [style]="{'border-bottom': '1px solid #d9d9d9'}">
+
+      <ng-template kendoGridCellTemplate let-dataItem>
+        {{optionsFind(dataItem.rateType)?.label}}
+      </ng-template>
+    </kendo-grid-column>
+    <kendo-grid-column field="rate" title="速率" width="100" [style]="{'border-bottom': '1px solid #d9d9d9'}"></kendo-grid-column>
+    <kendo-grid-column field="priority" title="优先级" width="100" [style]="{'border-bottom': '1px solid #d9d9d9'}"></kendo-grid-column>
+    <kendo-grid-column field="processCode" title="工序号" width="100" [style]="{'border-bottom': '1px solid #d9d9d9'}"></kendo-grid-column>
+
+    <kendo-grid-column field="scheduleFlag" title="参与排产标识" width="150" [style]="{'border-bottom': '1px solid #d9d9d9'}"></kendo-grid-column>
+    <kendo-grid-column field="selectResourceFlag" title="参与选线标识" width="150" [style]="{'border-bottom': '1px solid #d9d9d9'}"></kendo-grid-column>
+
+  </kendo-grid>
+</nz-card>
+<custom-excelexport [expColumns]='expColumns' [expColumnsOptions]='expColumnsOptions' fileName='工艺路线数据' #excelexport></custom-excelexport>

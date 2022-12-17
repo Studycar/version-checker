@@ -1,0 +1,39 @@
+<div style="width:100%;margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid #e8e8e8;">
+  <div class="modal-title">{{ '送货计划发布' | translate}}</div>
+</div>
+<div style="width:100%;margin-bottom: 10px;">
+  <div>
+    <button nz-button (click)="planRelease()" [nzType]="'primary'" [nzLoading]="http.loading">
+          <i class="anticon anticon-arrow-up"></i>{{ '发布' | translate}}</button>
+    <button nz-button class="mx-sm" (click)="export()" [nzLoading]="http.loading">
+      <i class="anticon anticon-export"></i>{{ '导出' | translate}}</button>
+  </div>
+</div>
+<!--<kendo-grid #grid [data]="view" [height]="gridHeight" [pageSize]="gridState.take" [skip]="gridState.skip" [sort]="gridState.sort"
+  [sortable]="true" (dataStateChange)="dataStateChange($event)" [filter]="gridState.filter" filterable="menu" [resizable]="true"
+  [columnMenu]="true" [reorderable]="true" [pageable]="pageable" [loading]="commonQueryService.http.loading" [myGridRowKey]="{tb:'PC_DELIVERY_PLAN'}"
+  [myGridState]="'ShippingNoticeHfPlanRelease'" [selectable]="selectableSettings" [kendoGridSelectBy]="mySelectionKey" [selectedKeys]="mySelection">
+
+  <kendo-grid-messages pagerPage="{{ '分页' | translate}}" pagerOf="{{ '的' | translate}}" pagerItems="{{ '总数' | translate}}"
+    pagerItemsPerPage="{{ '页项' | translate}}" groupPanelEmpty="Drag here to group" noRecords="{{ '没有数据' | translate}}">
+  </kendo-grid-messages>
+
+  <kendo-grid-checkbox-column width="60" [locked]="true" showSelectAll="true">
+  </kendo-grid-checkbox-column>
+
+  <kendo-grid-column *ngFor="let col of staticColumns" [field]="col.field" [title]="col.title" [locked]="col.locked" [width]="col.width"
+    [filter]="col.filter?col.filter:''">
+    <ng-template kendoGridCellTemplate let-dataItem>
+      <ellipsis lines="1">
+        <span nz-tooltip [nzTitle]="dataItem[col.field]">{{dataItem[col.field]}}</span>
+      </ellipsis>
+    </ng-template>
+  </kendo-grid-column>
+</kendo-grid>-->
+<ag-grid-angular #agGrid id="dnGrid" [class]="themeClass" [style.height.px]="gridHeight" [rowData]="gridData" [columnDefs]="staticColumns"
+  [gridOptions]="gridOptions" (selectionChanged)="onSelectionChanged($event)" [myAgGridRowKey]="{tb:'PC_DELIVERY_PLAN'}" [myAgGridState]="'ShippingNoticeHfPlanRelease'"
+  [suppressRowTransform]="true">
+</ag-grid-angular>
+<custom-pager [fixed]="false" [height]="pagerHeight" [context]="context" [view]='context.view' [(pageSize)]="_pageSize" [(pageNo)]="_pageNo"
+  (pageChangeEvent)="onPageChanged($event)"></custom-pager>
+<custom-excelexport [expColumns]='staticColumns' fileName='deliveryPlanExport' #excelexport></custom-excelexport>

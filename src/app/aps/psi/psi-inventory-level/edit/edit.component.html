@@ -1,0 +1,33 @@
+<div class="modal-header">
+  <div class="title">{{ (isModify ? '编辑' : '新增') | translate }}</div>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="2">
+    <se label="{{ '事业部' | translate}}" required>
+      <nz-select nzShowSearch [(ngModel)]="i.businessUnitCode" name="businessUnitCode" required (ngModelChange)="buCodeOptionsChange($event)">
+        <nz-option *ngFor="let option of buCodeOptions" [nzLabel]="option.label" [nzValue]="option.value">
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '类型' | translate}}" required>
+      <nz-select nzShowSearch [(ngModel)]="i.type" name="type" required (ngModelChange)="typeChange($event)">
+        <nz-option *ngFor="let option of typeList" [nzLabel]="option.label" [nzValue]="option.value">
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '类型值' | translate}}" required>
+      <nz-select nzShowSearch [(ngModel)]="i.typeValue" name="typeValue" required (ngModelChange)="typeValueChange($event)">
+        <nz-option *ngFor="let option of typeValueOptions" [nzLabel]="option.label" [nzValue]="option.value">
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '库存阈值(数量)' | translate}}" required>
+      <nz-input-number [(ngModel)]="i.thresholdValue" name="thresholdValue" [nzMin]="0" required></nz-input-number>
+    </se>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save(f)"
+  [disabled]="!f.valid || !f.dirty">{{ '保存' | translate}}</button>
+  <button nz-button type="button" (click)="close()">{{ '关闭' | translate}}</button>
+</div>

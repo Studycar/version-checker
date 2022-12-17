@@ -1,0 +1,32 @@
+<div class="modal-header">
+  <div class="modal-title">{{ ('例外计算') | translate}} </div>
+</div>
+<div style=" margin:2px auto;">
+  <!-- <button style="float: right;" nz-button nzType="dashed" (click)="clear()">
+    <i class="anticon anticon-delete"></i>{{ '重置' | translate}}</button> -->
+  <div style="clear: both;"></div>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="1" [labelWidth]=100>
+    <!-- <div style="min-height:200px;margin:0 auto;text-align: center;vertical-align: middle;"> -->
+    <se label="{{ '计算范围' | translate}}">
+      <nz-radio-group [(ngModel)]="selectedMode" name="selectedMode" *ngFor="let item of calculateModes">
+        <label nz-radio nzValue="{{ item.value }}">{{ item.label  | translate}}</label><br />
+      </nz-radio-group>
+    </se>
+
+    <se label="{{ '工厂' | translate}}" required>
+      <!-- <app-common-select type="plant" [(SelectValue)]="plantCode"></app-common-select> -->
+      <nz-select #select [(ngModel)]="plantCode" name="plantCode" nzShowSearch required>
+        <nz-option *ngFor="let option of plantcodes" [nzLabel]="option.label" [nzValue]="option.value"
+          [nzDisabled]="option.disabled"></nz-option>
+      </nz-select>
+    </se>
+    <!-- </div> -->
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="button" (click)="close()">{{ '关闭' | translate}}</button>
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save(f.value)" [disabled]="f.invalid" [nzLoading]="http.loading">{{
+    '提交' | translate}}</button>
+</div>

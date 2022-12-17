@@ -1,0 +1,36 @@
+<div class="modal-header">
+  <div class="modal-title">{{ isModify ? '编辑信息' : '新增信息' | translate }}</div>
+</div>
+<div style="position: relative; height: 32px" *ngIf="isModify">
+  <button nz-button nzType="dashed" style="position: absolute; right: 0;" (click)="clear()">{{'重置' | translate}}</button>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="2">
+    <se label="{{ '退货单号' | translate }}" required>
+      <input nz-input type="text" disabled name="orno" [(ngModel)]="i.orno" required>
+    </se>
+    <se label="{{ '退货单状态' | translate }}" required>
+      <nz-select #select nzShowSearch name="state" nzDisabled [(ngModel)]="i.state" required>
+        <nz-option *ngFor="let op of returnStateOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '退货日期' | translate }}" required>
+      <nz-date-picker nzFormat="yyyy-MM-dd" [(ngModel)]="i.thDate" name="thDate" required>
+      </nz-date-picker>
+    </se>
+    <se label="{{ '客户编码' | translate }}" required>
+      <popup-select [(SelectValue)]="i.cusCode" [ValueField]="'cusCode'"
+        [(SelectText)]="i.cusCode" [TextField]="'cusCode'" name="cusCode" [options]="customersOptions"
+        [gridView]="gridViewCustoms" [columns]="columnsCustoms" (TextChanged)="onPopupSelectTextChanged($event)"
+        (SearchEvent)="searchCustoms($event)" (RowSelect)="onRowSelect($event)" [Disabled]="isModify" required>
+      </popup-select>
+    </se>
+    <se label="{{ '客户简称' | translate }}">
+      <input nz-input type="text" disabled name="cusAbbreviation" [(ngModel)]="i.cusAbbreviation">
+    </se>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="button" (click)="close()">{{ '取消' | translate }}</button>
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save(f.value)" [nzLoading]="http.loading" [disabled]="f.invalid || !f.dirty">{{'保存' | translate }}</button>
+</div>

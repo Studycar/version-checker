@@ -1,0 +1,32 @@
+<div class="modal-header">
+    <div class="modal-title">{{title}} {{ '信息' | translate}} </div>
+</div>
+<div style="position: relative; height: 32px" *ngIf="i.userRespId">
+    <button nz-button nzType="dashed" style="position: absolute; right: 0;" (click)="clear()">重置</button>
+</div>
+<div>
+    <form nz-form #f="ngForm" se-container="2" [labelWidth]=100>
+        <se label="{{ '职责名称' | translate}}" required>
+            <nz-select nzShowSearch nzAllowClear [(ngModel)]="i.respId" name="respId" (ngModelChange)="change($event)" [required]="isModify">
+                <nz-option *ngFor="let option of respOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+            </nz-select>
+        </se>
+        <se label="{{ '应用模块' | translate}}" required>
+            <input type="text" nz-input [(ngModel)]="i.applicationName" name="applicationName" required>
+        </se>
+        <se label="{{ '生效日期' | translate}}" required>
+            <nz-date-picker nzShowTime nzFormat="yyyy-MM-dd HH:mm:ss" [(ngModel)]="i.startDate" name="startDate" required>
+            </nz-date-picker>
+        </se>
+        <se label="{{ '失效日期' | translate}}">
+            <nz-date-picker nzShowTime nzFormat="yyyy-MM-dd HH:mm:ss" [(ngModel)]="i.endDate" name="endDate">
+            </nz-date-picker>
+        </se>
+    </form>
+</div>
+<!-- <sf *ngIf="i" #sf mode="edit" [schema]="schema" [ui]="ui" [formData]="i" button="none"> -->
+<div class="modal-footer">
+    <button nz-button type="submit" [nzType]="'primary'" (click)="save(f.value)" [disabled]="f.invalid || !f.dirty" [nzLoading]="http.loading">{{'保存' | translate}}</button>
+    <button nz-button type="button" (click)="close()">{{ '关闭' | translate}}</button>
+</div>
+<!-- </sf> -->

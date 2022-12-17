@@ -1,0 +1,30 @@
+<div class="modal-header">
+  <div class="modal-title">{{ '保存到版本' | translate}}</div>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="2">
+    <se label="{{ '当前版本' | translate}}" required>
+      <input nz-input [(ngModel)]="i.rsltVersion" name="rsltVersion" disabled="true" required>
+    </se>
+    <se label="{{ '保存到' | translate}}" required>
+      <nz-select nzShowSearch [(ngModel)]="i.targetVersion" name="targetVersion" required>
+        <nz-option *ngFor="let option of targetVersionOptions" [nzLabel]="option.label" [nzValue]="option.value" >
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '是否用于合并' | translate}}" required>
+      <nz-select nzShowSearch [(ngModel)]="i.isMerge" name="isMerge" required>
+        <nz-option *ngFor="let option of isMergeOptions" [nzLabel]="option.label" [nzValue]="option.value">
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '备注' | translate}}">
+      <textarea nz-input [(ngModel)]="i.mark" name="mark" [nzAutosize]="{ minRows: 2, maxRows: 6 }"></textarea>
+    </se>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save(f)"
+  [disabled]="!f.valid || !f.dirty" [nzLoading]="loading">{{ '保存' | translate}}</button>
+  <button nz-button type="button" (click)="close()">{{ '关闭' | translate}}</button>
+</div>

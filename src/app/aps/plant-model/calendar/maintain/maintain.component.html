@@ -1,0 +1,50 @@
+<div class="modal-header">
+  <div class="modal-title">{{ ('日历编码') | translate}} </div>
+</div>
+<div>
+  <button nz-button nzType="primary" (click)="add()"><i nz-icon type="plus-circle" theme="outline"></i>新增</button>
+  <button nz-button (click)="expandForm=!expandForm" nzType="default">
+    <i nz-icon [nzType]="expandForm?'anticon-up':'anticon-down'"></i> {{ '搜索' | translate}}
+  </button>
+  <form nz-form #f="ngForm" se-container="3" labelWidth="100" style="margin-top: 10px;">
+    <se label="事业部" *ngIf="expandForm" required>
+      <nz-select nzShowSearch nzAllowClear [(ngModel)]="queryParams.values.scheduleRegionCode"
+        name="scheduleRegionCode" required>
+        <nz-option *ngFor="let option of regionOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+    <se label="日历编码" *ngIf="expandForm">
+      <input type="text" nz-input [(ngModel)]="queryParams.values.calendarCode" name="calendarCode">
+    </se>
+    <se label="描述" *ngIf="expandForm">
+      <input type="text" nz-input [(ngModel)]="queryParams.values.descriptions" name="descriptions">
+    </se>
+    <se label="是否有效" *ngIf="expandForm">
+      <nz-select nzShowSearch nzAllowClear [(ngModel)]="queryParams.values.enableFlag" name="enableFlag">
+        <nz-option *ngFor="let option of enableOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+    <se *ngIf="expandForm">
+      <button nz-button type="submit" [nzType]="'primary'" (click)="query()">查询</button>
+      <button nz-button nzType="default" (click)="clear()">重置</button>
+    </se>
+  </form>
+</div>
+&nbsp;
+<nz-card>
+  <ag-grid-angular #agGrid [class]="themeClass" [style.height.px]="gridHeight" [rowData]="view.data"
+    [columnDefs]="columns" [gridOptions]="gridOptions" (selectionChanged)="onSelectionChanged($event)"
+    [myAgGridRowKey]="{tb:'PS_CALENDARS'}" [myAgGridState]="'maintain'">
+  </ag-grid-angular>
+  <custom-pager [height]="pagerHeight" [fixed]="false" [context]="context" [view]='context.view'
+    [(pageSize)]="_pageSize" [(pageNo)]="_pageNo" (pageChangeEvent)="onPageChanged($event)"></custom-pager>
+</nz-card>
+<ng-template #customTemplate let-dataItem>
+  <span title="{{ '编辑' | translate}}" (click)="add(dataItem)" [ngStyle]="pointer">
+    <i class="anticon anticon-edit"></i>
+  </span>
+  <nz-divider nzType="vertical"></nz-divider>
+  <span title="{{ '班次时段' | translate}}" (click)="openShiftTime(dataItem)" [ngStyle]="pointer">
+    <i class="anticon anticon-bars"></i>
+  </span>
+</ng-template>

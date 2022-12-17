@@ -1,0 +1,22 @@
+<custom-formquery [queryParams]="queryParams" [context]="context" (event1)="plantChange($event)"
+  (event2)="searchCat($event)" (event3)="searchItems($event)">
+  <span>
+    <custom-button text="{{ '导出' | translate}}" (clickEvent)="export()" [src]="'基础icon-导出'">
+    </custom-button>
+  </span>
+</custom-formquery>
+<nz-card>
+  <ag-grid-angular #agGrid [class]="themeClass" [style.height.px]="gridHeight" [rowData]="gridData"
+    [columnDefs]="columns" [gridOptions]="gridOptions" (selectionChanged)="onSelectionChanged($event)"
+    [myAgGridRowKey]="{tb:'PC_KIT_MO'}" [myAgGridState]="'query-purchasekitstatus-main'">
+  </ag-grid-angular>
+  <custom-pager [height]="pagerHeight" [context]="context" [view]='context.view' [(pageSize)]="_pageSize"
+    [(pageNo)]="_pageNo" (pageChangeEvent)="onPageChanged($event)"></custom-pager>
+  <custom-excelexport [expColumns]='expColumns' [expColumnsOptions]='expColumnsOptions' fileName='备料齐套查询' #excelexport>
+  </custom-excelexport>
+</nz-card>
+<ng-template #customTemplate let-dataItem>
+  <span title="{{ '物料明细' | translate}}"  style="text-align: center;display:block;cursor: Pointer;" (click)="itemdetail(dataItem)" class="pointer">
+                            <i class="anticon anticon-bars"></i>
+                          </span>
+</ng-template>

@@ -1,0 +1,20 @@
+<div class="modal-header" style="margin-bottom: 0;">
+  <div class="modal-title">{{ 'MO总结' | translate }}</div>
+</div>
+<custom-formquery [queryParams]="queryParams" [context]="context" [showExpandIcon]="showExpand">
+  <span>
+    <custom-button text="{{ (isExpand?'全部展开':'全部收缩') | translate}}" (clickEvent)="showMinus()" [src]="ImgSrc">
+    </custom-button>
+  </span>
+  <span>
+    <custom-button text="{{ '导出' | translate }}" (clickEvent)="exportFile()" [src]="'基础icon-导出'"></custom-button>
+  </span>
+</custom-formquery>
+<nz-card>
+  <ag-grid-angular #agGrid [class]="themeClass" [style.height.px]="gridHeight" [rowData]="gridData" [columnDefs]="columns"
+    [treeData]="true" [groupDefaultExpanded]="groupDefaultExpanded" [autoGroupColumnDef]="autoGroupColumnDef" [getDataPath]="getDataPath"
+    [pagination]='false' [gridOptions]="gridOptions" [myAgGridRowKey]="{tb:'PS_MAKE_ORDER'}" [myAgGridState]="'PS_MAKE_ORDER'">
+  </ag-grid-angular>
+  <custom-excelexport [expColumns]='expColumns' [expColumnsOptions]='expColumnsOptions' fileName="MO总结" #excelexport>
+  </custom-excelexport>
+</nz-card>

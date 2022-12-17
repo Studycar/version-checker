@@ -1,0 +1,54 @@
+<div class="modal-header">
+    <div class="modal-title">{{ title | translate }}</div>
+</div>
+<div>
+    <div class="view-div"></div>
+    <div class="ng-star-inserted">
+        <div class="ant-steps ant-steps-horizontal ant-steps-label-horizontal">
+            <div *ngFor="let item of stepsData; let i = index"  nzicon="user"
+                class="ant-steps-item ant-steps-item-finish ant-steps-item-active ant-steps-item-custom">
+                <div class="ant-steps-item-container" tabindex="0" (click)="handleActive(i)">
+                    <div class="steps-item-container-inner" [ngClass]="{'active': i == activeIndex}">
+                        <div class="ant-steps-item-tail ng-star-inserted"></div>
+                            <img [src]="item.iconSrc" class="steps-icon" style="width:30px;height:30px;"/>
+                        <div class="ant-steps-item-content" style="position: relative; display: block;">
+                            <div class="ant-steps-item-title1" [ngClass]="{'plan': item.plan}">
+                            </div>
+                            <div class="ant-steps-item-description steps-item-title">
+                                {{item.label | translate}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <nz-divider></nz-divider>
+        <!-- 订单信息 -->
+        <nz-descriptions [nzTitle]="'订单信息' | translate" [nzColumn]="5">
+            <!-- <nz-descriptions-item [nzTitle]="item.label  | translate" *ngFor="let item of orderInfo">{{item.value}}
+            </nz-descriptions-item> -->
+          </nz-descriptions>
+        <div class="desc-div" *ngFor="let item of orderInfo; let i = index" [ngStyle]="{'width': item.width + '%'}" [ngClass]="{'fl-right' : i == orderInfo.length-1}">
+          <div class="desc-title">{{ item.label | translate}}：</div>
+          <div class="desc-value">{{item.value}}</div>
+        </div>
+        <!-- <div class="desc-div">
+          <div class="desc-title">{{ '计划完成时间：' | translate}}</div>
+          <div class="desc-value">{{moEndDate}}</div>
+        </div> -->
+        <nz-divider></nz-divider>
+        <div [ngSwitch]="activeIndex">
+            <!-- 需求管理 -->
+            <order-history [item]="i" *ngSwitchCase="0"></order-history>
+            <!-- 车间排程 -->
+            <shop-scheduling [item]="i" *ngSwitchCase="1"></shop-scheduling>
+            <!-- 生产备料 -->
+            <production-preparation [item]="i" *ngSwitchCase="2" [chartData]="chartData" [propsData]="propsData"></production-preparation>
+            <!-- 完工齐套 -->
+            <completed-sleeve [item]="i" *ngSwitchCase="3" [completionRateData]="completionRateData"></completed-sleeve>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button nz-button type="button" (click)="close()">{{ '关闭' | translate}}</button>
+</div>

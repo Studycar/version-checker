@@ -1,0 +1,117 @@
+<div style="padding-bottom: 5px">
+  <div class="mb-md">
+    <button nz-button (click)="save()" [nzType]="'primary'">
+      {{ '保存' | translate}}
+    </button>
+    <button nz-button (click)="cancel()" [nzType]="'danger'">
+      {{ '取消' | translate}}
+    </button>
+    <button nz-button (click)="release()" [nzType]="'default'">
+      {{ '释放' | translate}}
+    </button>
+    <button nz-button (click)="publish()" [nzType]="'default'">
+      {{ '发布' | translate}}
+    </button>
+    <button nz-button (click)="export()" [nzType]="'primary'">
+      <i nz-icon nzType="download"></i>{{ '导出' | translate}}
+    </button>
+  </div>
+  <form nz-form *ngIf="expandForm" #f="ngForm" se-container="3" [style.margin-top.px]="5">
+    <se label="{{ '组织' | translate}}" required>
+      <nz-select #select [(ngModel)]="queryParams.plantCode" (ngModelChange)="plantChange($event)" nzShowSearch
+        name="strPlantCode" required>
+        <nz-option *ngFor="let option of dtPlant" [nzLabel]="option.plantCode" [nzValue]="option.plantCode">
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '物料' | translate}}">
+      <popup-select #selMaterItem [ValueField]="'itemCode'" nzAllowClear [TextField]="'itemCode'"
+        [(SelectValue)]="queryParams.itemCode" [(SelectText)]="queryParams.itemCode" [gridView]="gridViewItem"
+        [columns]="columnItem" (SearchEvent)="searchItem($event)">
+      </popup-select>
+    </se>
+    <se label="{{ '供应商' | translate}}">
+      <popup-select #selMaterVendor [ValueField]="'vendorShortName'" [TextField]="'vendorShortName'"
+        [(SelectValue)]="queryParams.vendorName" [(SelectText)]="queryParams.vendorName" [gridView]="gridViewVendor"
+        [columns]="columnVendor" nzAllowClear (SearchEvent)="searchVendor($event)">
+      </popup-select>
+    </se>
+    <se label="{{ '采购员' | translate}}">
+      <nz-select #select [(ngModel)]="queryParams.buyer" nzShowSearch name="buyer" nzAllowClear>
+        <nz-option *ngFor="let option of dtBuyer" [nzLabel]="option.fullName" [nzValue]="option.employeeNumber">
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '状态' | translate}}">
+      <!--<nz-select #select [(ngModel)]="queryParams.STATUS" nzShowSearch name="Status">
+        <nz-option *ngFor="let option of dtStatus" [nzLabel]="option.LOOKUP_CODE" [nzValue]="option.MEANING"></nz-option>
+      </nz-select>-->
+      <custom-tree-select [dataTree]="dtStatus" [columns]="columnStatus" keyField="lookupCode" valueField="meaning"
+        [valueLevel]="statusValueLevel" [valueObject]="queryParams" valueObjectField="statusDesc"
+        [selectionRef]="dtStatusSelect"></custom-tree-select>
+    </se>
+    <!-- <se label="{{ '送货区域' | translate}}">
+      <nz-select #select [(ngModel)]="queryParams.DELIVERY_REGION_CODE" nzShowSearch name="deliveryRegion" nzAllowClear>
+        <nz-option *ngFor="let option of dtDeliveryRegion" [nzLabel]="option.DELIVERY_REGION_CODE" [nzValue]="option.DELIVERY_REGION_CODE"></nz-option>
+      </nz-select>
+    </se> -->
+    <se label="{{ '送货通知' | translate}}">
+      <input type="text" nz-input [(ngModel)]="queryParams.notityNumber" name="notityNumber" nzAllowClear>
+    </se>
+    <se label="{{ '发布状态' | translate}}">
+      <nz-select #select [(ngModel)]="queryParams.publishFlag" nzShowSearch name="publishFlag" nzAllowClear>
+        <nz-option nzLabel="已发布" nzValue="Y"></nz-option>
+        <nz-option nzLabel="发布中" nzValue="B"></nz-option>
+        <nz-option nzLabel="发布失败" nzValue="C"></nz-option>
+        <nz-option nzLabel="未发布" nzValue="N"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '下达日期' | translate}}">
+      <nz-range-picker nzFormat="yyyy/MM/dd" [(ngModel)]="queryParams.dateRelease" name="dateRelease" nzAllowClear>
+      </nz-range-picker>
+    </se>
+    <se label="{{ '到货日期' | translate}}">
+      <nz-range-picker nzFormat="yyyy/MM/dd" [(ngModel)]="queryParams.needByDate" name="needByDate" nzAllowClear>
+      </nz-range-picker>
+    </se>
+    <se>
+      <button nz-button type="submit" [nzType]="'primary'" (click)="query()">{{ '查询' | translate}}</button>
+      <button nz-button type="submit" (click)="reset()" class="mx-sm"> {{ '重置' | translate}}</button>
+      <!--<a (click)="expandForm=!expandForm">
+        <i nz-icon [nzType]="expandForm?'anticon-up':'anticon-down'"></i>
+      </a>-->
+    </se>
+  </form>
+</div>
+<nz-card>
+  <ag-grid-angular #agGrid id="dnGrid" [class]="themeClass" [style.height.px]="gridHeight" [rowData]="gridData"
+    [columnDefs]="extendColumns" [gridOptions]="gridOptions" (selectionChanged)="onSelectionChanged()"
+    [myAgGridRowKey]="{tb:'PC_NOTIFY_HEADER'}" [suppressRowClickSelection]="true" [myAgGridState]="'PC_NOTIFY_HEADER'"
+    (virtualColumnsChanged)="onVirtualColumnsChanged()" (cellValueChanged)="onCellValueChanged($event)"
+    (cellDoubleClicked)="onCellDoubleClicked($event)">
+  </ag-grid-angular>
+  <custom-pager [height]="pagerHeight" [context]="context" [view]='context.view' [(pageSize)]="_pageSize"
+    [(pageNo)]="_pageNo" [fixed]="false" (pageChangeEvent)="onPageChanged($event)"></custom-pager>
+  <custom-excelexport [expColumns]='extendColumns' [expColumnsOptions]='expColumnsOptions' fileName='送货通知' #excelexport>
+  </custom-excelexport>
+</nz-card>
+<ng-template #customTemplate let-dataItem>
+  <span>
+    <nz-date-picker nzShowTime nzFormat="yyyy-MM-dd HH:mm:ss" [(ngModel)]="dataItem.needByDate" name="needByDate"
+      nzPlaceHolder="请选择" [required]="true" [nzAllowClear]="false">
+    </nz-date-picker>
+  </span>
+</ng-template>
+<ng-template #customTemplate1 let-dataItem>
+  <span>
+    <nz-select #select [(ngModel)]="dataItem.attribute5">
+      <nz-option *ngFor="let address of addressOptions" [nzLabel]="address" [nzValue]="address">
+      </nz-option>
+    </nz-select>
+  </span>
+</ng-template>
+<ng-template #customTemplate2 let-dataItem>
+  <span>
+    <input type="text" nz-input [(ngModel)]="dataItem.comments" name="comments" required>
+  </span>
+</ng-template>

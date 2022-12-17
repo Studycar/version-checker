@@ -1,0 +1,59 @@
+<div class="modal-header">
+  <div class="modal-title">{{ '备料平台查询' | translate}} </div>
+</div>
+<form nz-form #f="ngForm" se-container="2" [labelWidth]=100>
+  <se label="{{ '工厂' | translate}}" required>
+    <nz-select #select [(ngModel)]="queryParams.plantCode" nzShowSearch name="plantCode" required
+      (ngModelChange)="plantChange($event)">
+      <nz-option *ngFor="let option of queryParams.dtPlant" [nzLabel]="option.plantCode" [nzValue]="option.plantCode">
+      </nz-option>
+    </nz-select>
+  </se>
+  <se label="{{ '采购员' | translate}}" required>
+    <nz-select #select [(ngModel)]="queryParams.buyer" nzShowSearch name="buyer" required>
+      <nz-option *ngFor="let option of queryParams.dtBuyer" [nzLabel]="option.fullName"
+        [nzValue]="option.employeeNumber"></nz-option>
+    </nz-select>
+  </se>
+  <se label="{{ '备料方式' | translate}}" required>
+    <nz-select #select [(ngModel)]="queryParams.fdStatus" nzShowSearch name="fdStatus" required>
+      <nz-option *ngFor="let option of queryParams.dtFdStatus" [nzLabel]="option.meaning" [nzValue]="option.lookupCode">
+      </nz-option>
+    </nz-select>
+  </se>
+  <se label="{{ '监控方式' | translate}}" required>
+    <nz-select #select [(ngModel)]="queryParams.calendarType" nzShowSearch name="calendarType" required
+      (ngModelChange)="calendarTypeChange($event)">
+      <nz-option *ngFor="let option of queryParams.dtCalendarType" [nzLabel]="option.meaning"
+        [nzValue]="option.deliveryCalendarCode"></nz-option>
+    </nz-select>
+  </se>
+  <se label="{{ '物料类别' | translate}}">
+    <!--<nz-select style="width: 100%" nzMode="multiple" nzPlaceHolder="Please select" [(ngModel)]="queryParams.CagetoryType" name="CagetoryType">
+      <nz-option *ngFor="let option of dtCagetoryType" [nzLabel]="option.title" [nzValue]="option.value"></nz-option>
+    </nz-select>-->
+    <custom-tree-select [dataTree]="queryParams.dtCagetoryType" [columns]="columnCagetoryType" keyField="category"
+      valueField="descriptions" [valueLevel]="treeLevel" [valueObject]="queryParams" valueObjectField="cagetoryTypeName"
+      [selectionRef]="dtCagetoryTypeSelect"></custom-tree-select>
+  </se>
+  <se label="{{ '物料编码' | translate}}">
+    <!--<input type="text" nz-input placeholder="请输入..." [(ngModel)]="queryParams.ItemCode" name="strItemCode" [ngStyle]="{width:'310px'}">-->
+    <div style="width: 310px;">
+      <popup-select #selMaterItem [ValueField]="'itemCode'" nzAllowClear [TextField]="'itemCode'"
+        [gridView]="gridViewItem" [columns]="columnItem" (SearchEvent)="searchItem($event)">
+      </popup-select>
+    </div>
+  </se>
+  <se>
+    <label nz-checkbox [(ngModel)]="queryParams.noZeroDemand" name="noZeroDemand">{{'排除需求为0' | translate}}</label>
+  </se>
+  <se>
+    <label nz-checkbox [(ngModel)]="queryParams.noZeroSupply" name="noZeroSupply">{{'排除供应为0' | translate}}</label>
+  </se>
+</form>
+<div class="modal-footer">
+  <button nz-button (click)="Reload()" [nzType]="'dashed'" [nzLoading]="http.loading">
+    {{ '重置' | translate}} </button>
+  <button nz-button (click)="query()" [nzType]="'primary'" [nzLoading]="http.loading">
+    {{ '查询' | translate}} </button>
+</div>

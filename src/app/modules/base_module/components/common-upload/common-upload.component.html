@@ -1,0 +1,25 @@
+<nz-upload *ngIf="showUpload" [(nzFileList)]="fileList" [nzMultiple]="multiple" [nzBeforeUpload]="beforeUpload" [nzLimit]="limit"
+  [nzCustomRequest]="customReq" required [nzShowUploadList]="false">
+  <button type="button" nz-button><i nz-icon nzType="upload"></i><span>选择文件</span></button>
+  {{ descriptions }}
+</nz-upload>
+<ng-container *ngIf="annexs.length > 0">
+  <div class="ng-tns-c22-39 ant-upload-list ant-upload-list-text ng-star-inserted">
+    <div class="ant-upload-list-item ant-upload-list-item-done ng-trigger ng-trigger-itemState ng-star-inserted"
+      *ngFor="let item of annexs let i=index">
+      <div class="ant-upload-list-item-info">
+        <span class="ng-tns-c22-39 ng-star-inserted">
+          <i class="anticon ng-tns-c22-116 anticon-paper-clip ng-star-inserted"></i>
+          <!-- <i nz-icon nzType="paper-clip" nzTheme="outline" style="padding-right: 6px;"></i> -->
+          <a class="ant-upload-list-item-name ng-tns-c22-39 ng-star-inserted" (click)="onClickAnnex(item)">
+            {{ item.name }}
+          </a>
+        </span>
+      </div>
+      <!-- <span class="action" (click)="onDeleteAnnex(i)" *ngIf="!Disabled" style="cursor: pointer">
+        <i nz-icon nzType="close" nzTheme="outline" style="font-size: 10px;"></i>
+      </span> -->
+      <i nz-icon *ngIf="!Disabled" (click)="onDeleteAnnex(i)" nzType="close" nzTheme="outline" class="anticon ng-tns-c22-39 anticon-close ng-star-inserted" title="删除文件"></i>
+    </div>
+  </div>
+</ng-container>

@@ -1,0 +1,42 @@
+<div class="modal-header" style="padding-top:10px;padding-bottom:10px;margin-bottom:10px;">
+  <div class="modal-title">{{'链接阶段定义' | translate}}</div>
+</div>
+<table cellpadding=0 cellspacing=0 border=0 style="margin-top:10px;margin-bottom:10px;">
+  <tr>
+    <td align="right">
+      {{'请求集名称' | translate}}
+    </td>
+    <td style="padding-left:5px;">
+      <input type="text" nz-input [(ngModel)]="i.userRequestSetName" [disabled]="'true'" style="width:300px;">
+    </td>
+    <td>
+      &nbsp;
+    </td>
+  </tr>
+  <tr>
+    <td style="padding-top:5px;" align="right">
+      {{'起始阶段' | translate}}
+    </td>
+    <td style="padding-left:5px;padding-top:5px;">
+      <nz-select style="width:300px;" [(ngModel)]="this.i.startStage" nzShowSearch>
+        <nz-option *ngFor="let o of gridData" [nzValue]="o.requestSetStageId" [nzLabel]="o.stageName"></nz-option>
+      </nz-select>
+    </td>
+    <td style="padding-left:5px;padding-top:5px;">
+      <button (click)="save()" nz-button nzType="primary">{{ '保存' | translate}}</button>
+    </td>
+  </tr>
+</table>
+<nz-card>
+  <ag-grid-angular #agGrid [class]="themeClass" [style.height.px]="gridHeight" [rowData]="gridData"
+    [columnDefs]="columns22" [gridOptions]="gridOptions" [myAgGridRowKey]="{tb:'LINK_STAGE'}"
+    [myAgGridState]="'LINK_STAGE'">
+  </ag-grid-angular>
+  <custom-pager [height]="pagerHeight" [fixed]="false" [context]="context" [view]='context.view'
+    [(pageSize)]="_pageSize" [(pageNo)]="_pageNo" (pageChangeEvent)="onPageChanged($event)"></custom-pager>
+</nz-card>
+<ng-template #customTemplate let-dataItem>
+  <span title="{{ '编辑' | translate}}" (click)="edit(dataItem)" class="pointer">
+    <i class="anticon anticon-edit"></i>
+  </span>
+</ng-template>

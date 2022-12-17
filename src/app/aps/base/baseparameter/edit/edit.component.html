@@ -1,0 +1,69 @@
+<div class="modal-header">
+  <div class="modal-title">{{ title }} 信息 </div>
+</div>
+<div style="position: relative; height: 32px" *ngIf="readOnly">
+  <button nz-button nzType="dashed" style="position: absolute; right: 0;" (click)="clear()">重置</button>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="2">
+    <se label="{{ '参数编码' | translate}}" required>
+      <input type="text" nz-input [(ngModel)]="i.parameterCode" name="parameterCode" [disabled]="readOnly"
+        required="required">
+    </se>
+    <se label="{{ '参数名称' | translate}}" required>
+      <input type="text" nz-input [(ngModel)]="i.parameterName" name="parameterName"
+        required="required">
+    </se>
+    <se label="{{ '应用模块' | translate}}" required>
+      <nz-select [(ngModel)]="i.applicationCode" name="applicationCode" [nzShowSearch]="true" [nzDisabled]="readOnly"
+        required="required">
+        <nz-option *ngFor="let option of applicationoptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '参数描述' | translate}}" required>
+      <input type="text" nz-input [(ngModel)]="i.description" name="description" required>
+    </se>
+    <se label="{{ '系统级别生效' | translate}}" required>
+      <nz-select [(ngModel)]="i.sysEnabledFlag" name="sysEnabledFlag" required="required">
+        <nz-option *ngFor="let option of yesOrNo" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '事业部级别生效' | translate}}" required>
+      <nz-select [(ngModel)]="i.regEnabledFlag" name="regEnabledFlag" required="required">
+          <nz-option *ngFor="let option of yesOrNo" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '组织级别生效' | translate}}" required>
+      <nz-select [(ngModel)]="i.plantEnabledFlag" name="plantEnabledFlag" required="required">
+          <nz-option *ngFor="let option of yesOrNo" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '职责级别生效' | translate}}" required>
+      <nz-select [(ngModel)]="i.respEnabledFlag" name="respEnabledFlag" required="required">
+          <nz-option *ngFor="let option of yesOrNo" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '用户级别生效' | translate}}" required>
+      <nz-select [(ngModel)]="i.userEnabledFlag" name="userEnabledFlag" required="required">
+          <nz-option *ngFor="let option of yesOrNo" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '生效时间' | translate}}" required>
+      <nz-date-picker nzShowTime nzFormat="yyyy-MM-dd" [(ngModel)]="i.startDate" name="startDate" nzPlaceHolder="" required="required">
+      </nz-date-picker>
+    </se>
+    <se label="{{ '失效时间' | translate}}">
+      <nz-date-picker nzShowTime nzFormat="yyyy-MM-dd" [(ngModel)]="i.endDate" name="endDate" nzPlaceHolder="">
+      </nz-date-picker>
+    </se>
+    <se label="{{ '语言' | translate}}" required>
+      <nz-select [(ngModel)]="i.language" name="language" [nzDisabled]="readOnly" required>
+        <nz-option *ngFor="let option of languageoptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save()" [disabled]="!f.valid || !f.dirty" [nzLoading]="http.loading">{{ '保存' | translate}}</button>
+  <button nz-button type="button" (click)="close()">{{ '关闭' | translate}}</button>
+</div>

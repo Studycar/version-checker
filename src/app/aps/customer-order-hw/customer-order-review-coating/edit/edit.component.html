@@ -1,0 +1,61 @@
+<div class="modal-header">
+  <div class="modal-title">{{ isModify ? '编辑信息' : '新增信息' }}</div>
+</div>
+<div style="position: relative; height: 32px" *ngIf="isModify">
+  <button nz-button nzType="dashed" style="position: absolute; right: 0;" (click)="clear()">{{'重置' | translate}}</button>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="2">
+    <se label="{{ '工厂' | translate }}">
+      <nz-select #select nzShowSearch name="plantCode" [(ngModel)]="i.plantCode">
+        <nz-option *ngFor="let op of plantOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '存货名称' | translate }}" required>
+      <popup-select [Value]="i.stockName" [ValueField]="'stockName'"
+        [Text]="i.stockName" [TextField]="'stockName'" name="stockName"
+        [gridView]="gridViewStocks" [columns]="columnsStocks" (TextChanged)="onStockTextChanged($event)"
+        (SearchEvent)="searchStocks($event)" (RowSelect)="onStocksSelect($event)" required>
+      </popup-select>
+    </se>
+    <se label="{{ '宽度' | translate }}">
+      <input nz-input type="text" name="width" [(ngModel)]="i.width">
+    </se>
+    <!-- <se label="{{ '面膜存货编码' | translate }}">
+      <popup-select [Value]="i.coatingUpCode" [ValueField]="'stockCode'"
+        [Text]="i.coatingUpCode" [TextField]="'stockCode'" name="coatingUpCode"
+        [gridView]="gridViewStocks" [columns]="columnsStocks" (TextChanged)="onStockTextChanged($event, 'Up')"
+        (SearchEvent)="searchStocks($event)" (RowSelect)="onStocksSelect($event, 'Up')">
+      </popup-select>
+    </se>
+    <se label="{{ '面膜存货描述' | translate }}">
+      <input nz-input type="text" disabled name="coatingUpName" [(ngModel)]="i.coatingUpName"/>
+    </se>
+    <se label="{{ '底膜存货编码' | translate }}">
+      <popup-select [Value]="i.coatingDownCode" [ValueField]="'stockCode'"
+        [Text]="i.coatingDownCode" [TextField]="'stockCode'" name="coatingDownCode"
+        [gridView]="gridViewStocks" [columns]="columnsStocks" (TextChanged)="onStockTextChanged($event, 'Down')"
+        (SearchEvent)="searchStocks($event)" (RowSelect)="onStocksSelect($event, 'Down')">
+      </popup-select>
+    </se>
+    <se label="{{ '底膜存货描述' | translate }}">
+      <input nz-input type="text" disabled name="coatingDownName" [(ngModel)]="i.coatingDownName"/>
+    </se> -->
+    <se label="{{ '表面保护' | translate }}">
+      <nz-select nzShowSearch name="paper" [(ngModel)]="i.paper">
+        <nz-option *ngFor="let op of paperOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '标签描述' | translate }}">
+      <popup-select [Value]="i.labelDesc" [ValueField]="'attrValueName'" [width]="550"
+        [Text]="i.labelDesc" [TextField]="'attrValueName'" name="labelDesc"
+        [gridView]="gridViewlabels" [columns]="columnsLabels" (TextChanged)="onLabelTextChanged($event)"
+        (SearchEvent)="searchLabels($event)" (RowSelect)="onLabelsSelect($event)">
+      </popup-select>
+    </se>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save(f.value)" [nzLoading]="http.loading" [disabled]="f.invalid || !f.dirty">{{'保存' | translate }}</button>
+  <button nz-button type="button" (click)="close()">{{ '取消' | translate }}</button>
+</div>

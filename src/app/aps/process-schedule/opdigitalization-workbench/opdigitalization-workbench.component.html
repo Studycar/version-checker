@@ -1,0 +1,83 @@
+<div class="div_menu">
+  <span class="span_menu">
+    <custom-function-button text="{{ '查询' | translate}}" (clickEvent)="search()" [src]="Img['搜索']">
+    </custom-function-button>
+    <custom-function-button text="{{ '排产刷新' | translate}}" (clickEvent)="refresh(true)" [src]="Img['排产刷新']">
+    </custom-function-button>
+    <nz-divider nzType="vertical"></nz-divider>
+    <custom-function-button text="{{ '工作日历' | translate}}" (clickEvent)="openCalendar()" [src]="Img['工作日历']">
+    </custom-function-button>
+    <custom-function-button [text]="fixValues.buttonText| translate" (clickEvent)="fixMo()" [src]="Img['固定时间']">
+    </custom-function-button>
+    <custom-function-button text="{{ '置尾单' | translate}}" (clickEvent)="setEndMo()" [src]="Img['置尾单']">
+    </custom-function-button>
+    <nz-divider nzType="vertical"></nz-divider>
+    <custom-function-button text="{{ '批量资源调整' | translate}}" (clickEvent)="batchMove()" [src]="Img['批量资源调整']">
+    </custom-function-button>
+    <custom-function-button text="{{ '调整保存' | translate}}" [disabled]="!editService.hasChanges()" (clickEvent)="save()"
+      [src]="Img['调整保存']" [srcDisabled]="Img['调整保存_不可用']">
+    </custom-function-button> <!-- 按顺序调整 和 按资源调整 数据保存 -->
+    <custom-function-button text="{{ '工单指定' | translate}}" (clickEvent)="setResourceAndRate()"
+      src="../../../../assets/icons/工单指定.svg">
+    </custom-function-button>
+    <custom-function-button text="{{ '产能平衡' | translate}}" (clickEvent)="calculateWorking()" [src]="Img['产能平衡']">
+    </custom-function-button>
+    <nz-divider nzType="vertical"></nz-divider>
+    <custom-function-button text="{{ '集约排产' | translate}}" (clickEvent)="chooseLine()" [src]="Img['集约选线']">
+    </custom-function-button>
+    <custom-function-button text="{{ '工序联动' | translate}}" (clickEvent)="moLink()" [src]="Img['工单联动']">
+    </custom-function-button>
+    <!--<custom-function-button text="{{ '上层联动' | translate}}" (clickEvent)="moUpLink()" [src]="Img['上层联动']">
+    </custom-function-button> -->
+    <nz-divider nzType="vertical"></nz-divider>
+    <custom-function-button text="{{ '工序组件' | translate}}" (clickEvent)="openMoComponent()" [src]="Img['工单组件']">
+    </custom-function-button>
+    <custom-function-button text="{{ '工序簇' | translate}}" (clickEvent)="openMoLevel()" [src]="Img['工单族']">
+    </custom-function-button>
+    <custom-function-button text="{{ '备注保存' | translate}}" [disabled]="!editService.hasChanges()"
+      (clickEvent)="remarkMo()" [src]="Img['备注保存']" [srcDisabled]="Img['备注保存_不可用']">
+    </custom-function-button>
+    <nz-divider nzType="vertical"></nz-divider>
+    <custom-function-button text="{{ '计划发布' | translate}}" (clickEvent)="PlanRelease()" [src]="Img['计划发布']">
+    </custom-function-button>
+    <custom-function-button text="{{ '排产表' | translate}}" (clickEvent)="openSchedule()" [src]="Img['排产表']">
+    </custom-function-button>
+    <custom-function-button text="{{ '例外检查' | translate}}" (clickEvent)="moException()" [src]="Img['工单例外']">
+    </custom-function-button>
+    <span style="display: inline-block; vertical-align: bottom;">
+      <picker-color (colorPickerSelect)="pickerClose($event)"></picker-color>
+    </span>
+  </span>
+</div>
+<nz-card>
+  <ag-grid-angular #agGrid id="opDigitalGrid" domLayout='normal' [class]="themeClass" [style.height.px]="gridHeight"
+    [getRowStyle]="getRowStyle" [rowData]="gridData" [columnDefs]="columns" [gridOptions]="gridOptions"
+     [pagination]="false" [animateRows]="true" [rowDragManaged]="false" [deltaRowDataMode]="true"
+    [getRowNodeId]="getRowNodeId" (rowDragEnter)="onRowDragEnter($event)" (rowDragEnd)="onRowDragEnd($event)"
+    (rowDragMove)="onRowDragMove($event)" (rowDragLeave)="onRowDragLeave($event)"
+    (selectionChanged)="onSelectionChanged($event)" (filterChanged)="onFilterChanged($event)"
+    (virtualColumnsChanged)="onVirtualColumnsChanged($event)" (cellValueChanged)="onCellValueChanged($event)"
+    (cellDoubleClicked)="onCellDoubleClicked($event)" [myAgGridRowKey]="{tb:'PS_OP_MAKE_ORDER'}"
+    [myAgGridState]="'opdigitalization-workbench'" updateColorCell recordCol="MARK_COLOUR">
+  </ag-grid-angular>
+  <div>{{ '总记录数：' | translate}}{{gridData&&gridData.length}}</div>
+</nz-card>
+
+<ng-template #customTemplate let-dataItem>
+  <!--jianl修改，固定和指定，都打*号，不好区分，所以固定工单不打*号-->
+  <!-- <span *ngIf="dataItem.SPECIFY_FLAG==='Y'||dataItem.FIX_SCHEDULE_TIME!==null" [ngStyle]="{'color':'red'}">
+    *
+  </span> -->
+  <span [ngStyle]="{'cursor': 'pointer'}">
+    <span *ngIf="dataItem.SPECIFY_FLAG==='Y'" [ngStyle]="{'color':'red'}">
+      *
+    </span>
+    <span>{{dataItem.PROCESS_MAKE_ORDER_NUM}}</span>
+  </span>
+</ng-template>
+
+<ng-template #customTemplate1 let-dataItem>
+  <span title="{{ '拆分' | translate}}" (click)="splitMo(dataItem);" class="pointer">
+    <i class="anticon anticon-appstore"></i>
+  </span>
+</ng-template>

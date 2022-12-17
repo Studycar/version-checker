@@ -1,0 +1,118 @@
+<div>
+  <br>
+  <form nz-form #f="ngForm" se-container="3">
+    <nz-collapse>
+      <nz-collapse-panel [nzHeader]="'主要'" [nzActive]="isOpen">
+        <se label="{{ '创建时间' | translate}}">
+          <input type="text" nz-input [(ngModel)]="j.CREATION_DATE" name="createDate" [disabled]="readOnly">
+        </se>
+        <se label="{{ '计划组' | translate}}">
+          <input type="text" nz-input [(ngModel)]="j.SCHEDULE_GROUP_CODE" name="SCHEDULE_GROUP_CODE" [disabled]="readOnly">
+        </se>
+        <se label="{{ '资源' | translate}}" required>
+          <nz-select [(ngModel)]="j.RESOURCE_CODE" name="RESOURCE_CODE">
+            <nz-option *ngFor="let option of resourceoptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+          </nz-select>
+        </se>
+        <se label="{{ '工序工单' | translate}}">
+          <input type="text" nz-input [(ngModel)]="j.PROCESS_MAKE_ORDER_NUM" name="PROCESS_MAKE_ORDER_NUM" [disabled]="readOnly">
+        </se>
+        <se label="{{ '装配件' | translate}}">
+          <input type="text" nz-input [(ngModel)]="j.ITEM_CODE" name="ITEM_CODE" [disabled]="readOnly">
+        </se>
+        <se label="{{ '装配件描述' | translate}}">
+          <input type="text" nz-input [(ngModel)]="j.DESCRIPTIONS_CN" name="DESCRIPTIONS_CN" [disabled]="readOnly">
+        </se>
+        <se label="{{ '工序编码' | translate}}">
+          <input type="text" nz-input [(ngModel)]="j.PROCESS_CODE" name="PROCESS_CODE" [disabled]="readOnly">
+        </se>
+        <se label="{{ '需求数量' | translate}}">
+          <input type="text" nz-input [(ngModel)]="j.MO_QTY" name="MO_QTY" [disabled]=readOnly>
+        </se>
+        <se label="{{ '状态' | translate}}">
+          <nz-select [(ngModel)]="j.PROCESS_MAKE_ORDER_STATUS" name="PROCESS_MAKE_ORDER_STATUS" [disabled]="readOnly">
+            <nz-option *ngFor="let option of statusoptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+          </nz-select>
+        </se>
+        <se label="{{ '开始时间' | translate}}">
+          <input type="text" nz-input [(ngModel)]="j.FPC_TIME" name="FPC_TIME" [disabled]="readOnly">
+        </se>
+        <se label="{{ '结束时间' | translate}}">
+          <input type="text" nz-input [(ngModel)]="j.LPC_TIME" name="LPC_TIME" [disabled]="readOnly">
+        </se>
+        <se label="{{ '暂挂' | translate}}">
+          <nz-select type="text" [(ngModel)]="ISHANG" name="isHang" [disabled]="readOnly">
+            <nz-option [nzLabel]="'是'" [nzValue]="'Y'"></nz-option>
+            <nz-option [nzLabel]="'否'" [nzValue]="'N'"></nz-option>
+          </nz-select>
+        </se>
+        <se label="{{ '参与排产' | translate}}">
+          <nz-select type="text" [(ngModel)]="j.SCHEDULE_FLAG" name="SCHEDULE_FLAG" (ngModelChange)="scheduleChange($event)">
+            <nz-option [nzLabel]="'是'" [nzValue]="'Y'"></nz-option>
+            <nz-option [nzLabel]="'否'" [nzValue]="'N'"></nz-option>
+          </nz-select>
+        </se>
+        <se label="{{ '尾数标识' | translate}}">
+          <nz-select type="text" [(ngModel)]="j.BACKLOG_FLAG" name="BACKLOG_FLAG" (ngModelChange)="backChange($event)">
+            <nz-option [nzLabel]="'是'" [nzValue]="'Y'"></nz-option>
+            <nz-option [nzLabel]="'否'" [nzValue]="'N'"></nz-option>
+          </nz-select>
+        </se>
+        <se label="{{ '尾数原因' | translate}}" [required]="j.BACKLOG_FLAG==='Y'">
+          <input type="text" nz-input [(ngModel)]="j.BACKLOG_REASON" name="BACKLOG_REASON" [required]="j.BACKLOG_FLAG==='Y'">
+        </se>
+        <se label="{{ '工序备注' | translate}}">
+          <input type="text" nz-input [(ngModel)]="j.COMMENTS" name="COMMENTS">
+        </se>
+      </nz-collapse-panel>
+      <nz-collapse-panel [nzHeader]="'其他'">
+        <se label="{{ '来源工单' | translate}}" required>
+          <input type="text" nz-input [(ngModel)]="j.SOURCE_MAKE_ORDER_NUM" name="SOURCE_MAKE_ORDER_NUM" [disabled]="readOnly">
+        </se>
+        <se label="{{ '需求时间' | translate}}">
+          <input type="text" nz-input [(ngModel)]="j.DEMAND_DATE" name="DEMAND_DATE" [disabled]="readOnly">
+        </se>
+        <se label="{{ '固定排产时间' | translate}}">
+          <nz-date-picker nzShowTime nzFormat="yyyy-MM-dd HH:mm:ss" [(ngModel)]="j.FIX_SCHEDULE_TIME" name="FIX_SCHEDULE_TIME"
+            nzPlaceHolder="{{ '请选择日期' | translate}}">
+          </nz-date-picker>
+        </se>
+        <se label="{{ '父工单' | translate}}">
+          <input type="text" nz-input [(ngModel)]="j.PARENT_MO_NUM" name="PARENT_MO_NUM" [disabled]="readOnly">
+        </se>
+        <se label="{{ '父工单开始时间' | translate}}">
+          <input nz-input type="text" [(ngModel)]="j.PARENT_FPC_TIME" name="PARENT_FPC_TIME" [disabled]="readOnly">
+        </se>
+        <se label="{{ '父工单状态' | translate}}">
+          <input nz-input type="text" [(ngModel)]="j.PARENT_MAKE_ORDER_STATUS" name="strPARENT_MO_STATUS" [disabled]="readOnly">
+        </se>
+        <se label="{{ '顶层工单' | translate}}">
+          <input type="text" nz-input [(ngModel)]="j.TOP_MO_NUM" name="TOP_MO_NUM" [disabled]="readOnly">
+        </se>
+        <se label="{{ '顶层工单开始时间' | translate}}">
+          <input nz-input type="text" [(ngModel)]="j.TOP_FPC_TIME" name="strTOP_MO_START_DATE" [disabled]="readOnly">
+        </se>
+        <se label="{{ '顶层工单状态' | translate}}">
+          <input nz-input type="text" [(ngModel)]="j.TOP_MAKE_ORDER_STATUS" name="strTOP_MO_STATUS" [disabled]="readOnly">
+        </se>
+        <se label="{{ '切换时间(小时)' | translate}}">
+          <input type="text" nz-input [(ngModel)]="j.SWITCH_TIME" name="SWITCH_TIME" [disabled]="readOnly">
+        </se>
+        <se label="{{ '生产最早开始时间' | translate}}">
+          <nz-date-picker nzShowTime nzFormat="yyyy-MM-dd hh:mm:ss" [(ngModel)]="j.EARLIEST_START_TIME" name="EARLIEST_START_TIME"
+            nzPlaceHolder="{{ '请选择日期' | translate}}">
+          </nz-date-picker>
+        </se>
+        <se label="{{ '最终完成时间' | translate}}">
+          <nz-date-picker nzShowTime nzFormat="yyyy-MM-dd hh:mm:ss" [(ngModel)]="j.FULFILL_TIME" name="FULFILL_TIME"
+            nzPlaceHolder="{{ '请选择日期' | translate}}" [disabled]="readOnly">
+          </nz-date-picker>
+        </se>
+      </nz-collapse-panel>
+    </nz-collapse>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save()" [disabled]="!f.valid || !f.dirty" [nzLoading]="http.loading">{{ '保存' | translate}}</button>
+  <button nz-button type="button" (click)="close()">{{ '关闭' | translate}}</button>
+</div>

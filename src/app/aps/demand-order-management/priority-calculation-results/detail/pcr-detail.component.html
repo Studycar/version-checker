@@ -1,0 +1,10 @@
+<div class="modal-header">
+  <div class="modal-title">{{title | translate}}</div>
+</div>
+<ag-grid-angular #agGrid [class]="themeClass" [style.height.px]="500" [rowData]="gridData" [columnDefs]="columns"
+  [gridOptions]="gridOptions" [myAgGridState]="'order-precedence-rule-detail'">
+</ag-grid-angular>
+<div class="modal-footer">
+  <button nz-button (click)="close()">{{ '关闭' | translate}}
+  </button>
+</div>

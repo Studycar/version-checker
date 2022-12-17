@@ -1,0 +1,21 @@
+<div class="modal-header">
+  <div class="modal-title">{{ i.titleText | translate}} </div>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="3" [labelWidth]=100>
+    <se label="{{ '事业部' | translate}}">
+      <input type="text" nz-input [(ngModel)]="i.regionCode" name="regionCode" readonly="true" [class.disabled]="true">
+    </se>
+    <se label="{{ '工厂' | translate}}">
+      <input type="text" nz-input [(ngModel)]="i.plantCode" name="plantCode" readonly="true" [class.disabled]="true">
+    </se>
+    <se>
+      <button nz-button type="button" (click)="query()">{{ '查询' | translate}}</button>
+      <button nz-button type="submit" (click)="confirm()" [nzType]="'primary'" [disabled]="f.invalid">{{ '确定' | translate}}</button>
+    </se>
+  </form>
+</div>
+<nz-card>
+  <custom-tree-view #treeView [dataTree]="treeDataTable" [columns]="treeNodeColumns" [keyField]="keyField" [selectionRef]="selection"
+    [expandRef]="i.expand"></custom-tree-view>
+</nz-card>

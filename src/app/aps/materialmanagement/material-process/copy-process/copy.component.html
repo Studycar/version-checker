@@ -1,0 +1,89 @@
+<style type="text/css">
+  .right-float {
+    float: right;
+  }
+
+  .relative {
+    position: relative;
+  }
+
+  .group-title {
+    position: absolute;
+    top: -15px;
+    left: 10px;
+    background-color: white;
+    padding: 5px;
+  }
+
+  .group {
+    border: solid 1px #DCDCDC;
+    margin: 5px auto 20px;
+    padding: 15px 10px 5px;
+  }
+
+</style>
+<div class="modal-header">
+  <div class="modal-title">{{ '物料工序复制' | translate}} </div>
+</div>
+<div style=" margin:2px auto;">
+  <button class="right-float" nz-button nzType="dashed" (click)="clear()">
+    {{ '重置' | translate}}</button>
+  <div style="clear: both;"></div>
+</div>
+<div class="relative">
+  <div class="group-title">{{ '来源物料' | translate}}</div>
+  <div class="group">
+    <form nz-form #f1="ngForm" se-container="2" [labelWidth]="150">
+      <se label="{{ '工厂' | translate}}">
+        <input type="text" nz-input [(ngModel)]="i.PLANT_CODE" name="PLANT_CODE" readonly="true"
+          [class.disabled]="true">
+      </se>
+      <se label="{{ '物料编码' | translate}}">
+        <input type="text" nz-input [(ngModel)]="i.ITEM_CODE" name="ITEM_CODE" readonly="true" [class.disabled]="true">
+      </se>
+      <!--<se label="{{ '物料描述' | translate}}">
+        <input type="text" nz-input [(ngModel)]="i.CALENDAR_CODE" name="CALENDAR_CODE" readonly="true" [class.disabled]="true">
+      </se>
+      <se label="{{ '开始日期' | translate}}" required>
+        <nz-date-picker nzFormat="yyyy-MM-dd" [(ngModel)]="i.SHOW_START_TIME" name="SHOW_START_TIME" nzPlaceHolder="请选择日期" required>
+        </nz-date-picker>
+      </se>
+      <se label="{{ '结束日期' | translate}}" required>
+        <nz-date-picker nzFormat="yyyy-MM-dd" [(ngModel)]="i.SHOW_END_TIME" name="SHOW_END_TIME" nzPlaceHolder="请选择日期" required>
+        </nz-date-picker>
+      </se>-->
+    </form>
+  </div>
+</div>
+<div class="relative">
+  <div class="group-title">{{ '目标' | translate}}</div>
+  <div class="group">
+    <form nz-form #f2="ngForm" se-container="3">
+      <se label="{{ '工厂' | translate}}" required>
+        <nz-select #select [(ngModel)]="NEW_PLANT_CODE" name="NEW_PLANT_CODE" required>
+          <nz-option *ngFor="let option of plantCodes" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+        </nz-select>
+      </se>
+
+      <se label="{{ '物料类型' | translate}}" required>
+        <nz-select [(ngModel)]="i.CATEGORY" name="CATEGORY" (ngModelChange)="catChange($event)"
+          [nzShowSearch]=true required>
+          <nz-option *ngFor="let option of CatOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+        </nz-select>
+      </se>
+
+      <se label="{{ '物料/分类' | translate}}" required>
+        <!--<input type="text" nz-input [(ngModel)]="i.OBJECT_FROM" name="OBJECT_FROM" required>-->
+        <popup-select [(SelectValue)]="i.OBJECT" [(SelectText)]='i.OBJECT' [ValueField]="'ITEM_CODE'"
+          [TextField]="'ITEM_CODE'" [gridView]="gridView1" [columns]="columns1" (SearchEvent)="search1($event)"
+          (TextChanged)="change1($event)" required>
+        </popup-select>
+      </se>
+    </form>
+  </div>
+</div>
+<div class="modal-footer">
+  <button nz-button type="submit" [nzType]="'primary'" (click)="copy(f1.value)" [disabled]="f1.invalid||f2.invalid"
+    [nzLoading]="http.loading">{{'确定' | translate}}</button>
+  <button nz-button type="button" (click)="close()">{{ '关闭' | translate}}</button>
+</div>

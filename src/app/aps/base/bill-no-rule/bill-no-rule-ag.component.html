@@ -1,0 +1,27 @@
+<custom-button text="{{ '新增' | translate}}" (clickEvent)="Save(true)" [src]="'基础icon-新增'">
+</custom-button>
+
+<custom-button text="{{ '修改' | translate}}" (clickEvent)="Save(false)" [src]="'基础icon-修改'">
+</custom-button>
+
+<custom-button text="{{ '删除' | translate}}" (clickEvent)="Delete()" [src]="'基础icon-删除'">
+</custom-button>
+
+<custom-button text="{{ '刷新' | translate}}" (clickEvent)="GetRules()" [src]="'基础icon-刷新'">
+</custom-button>
+
+<custom-button text="{{ '单据编号记录' | translate}}" (clickEvent)="GetRecords()" [src]="'单据编码记录'">
+</custom-button>
+
+<custom-button text="{{ '生成流水号' | translate}}" (clickEvent)="GetBillNoRule()" [src]="'生成流水号'">
+</custom-button>
+<nz-card>
+  <div>
+    <ag-grid-angular #agGrid [class]="themeClass" [style.height.px]="gridHeight" [rowData]="gridData"
+      [columnDefs]="columns" [gridOptions]="gridOptions" (selectionChanged)="onSelectionChanged($event)"
+      [myAgGridRowKey]="{tb:'BASE_BILLNO_RULE'}" [myAgGridState]="'bill-no-rule'">
+    </ag-grid-angular>
+    <custom-pager [height]="pagerHeight" [context]="context" [view]='context.view' [(pageSize)]="_pageSize"
+      [(pageNo)]="_pageNo" (pageChangeEvent)="onPageChanged($event)"></custom-pager>
+  </div>
+</nz-card>

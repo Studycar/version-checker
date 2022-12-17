@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="32px" height="32px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.4 (67378) - http://www.bohemiancoding.com/sketch -->
+    <title>资源日历班次</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="补充的icon" transform="translate(-251.000000, -152.000000)">
+            <g id="资源日历班次" transform="translate(251.000000, 152.000000)">
+                <path d="M22,8 L25,8 L25,25 L7,25 L7,8 L10,8 L10,10.5 L13,10.5 L13,8 L19,8 L19,10.5 L22,10.5 L22,8 Z M9,12 L9,23 L23,23 L23,12 L9,12 Z M10.5,7 L12.5,7 L12.5,10 L10.5,10 L10.5,7 Z M19.5,7 L21.5,7 L21.5,10 L19.5,10 L19.5,7 Z" id="Rectangle-12" fill="#6D8290"></path>
+                <path d="M10,13 L22,13 L22,22 L10,22 L10,13 Z M11,15 L11,16.5 L21,16.5 L21,15 L11,15 Z M11,18.5 L11,20 L17,20 L17,18.5 L11,18.5 Z" id="Combined-Shape" fill="#8BC34A"></path>
+            </g>
+        </g>
+    </g>
+</svg>

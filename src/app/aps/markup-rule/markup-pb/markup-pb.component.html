@@ -1,0 +1,38 @@
+<custom-formquery [queryParams]="queryParams" [context]="context" >
+  <custom-button text="{{ '新增' | translate }}" [src]="'基础icon-新增'" (clickEvent)="add()"></custom-button>
+  <custom-button text="{{ '删除' | translate }}" [src]="'基础icon-删除'" (clickEvent)="remove()"></custom-button>
+  <!-- <custom-button text="{{ '启用' | translate }}" [src]="'启用'" (clickEvent)="update(undefined, '1')"></custom-button>
+  <custom-button text="{{ '禁用' | translate }}" [src]="'禁用'" (clickEvent)="update(undefined, '0')"></custom-button> -->
+  <custom-button text="{{ '导入' | translate }}" [src]="'基础icon-导入'" [loading]="optionsLoading" (clickEvent)="import()"></custom-button>
+  <custom-button text="{{ '历史记录' | translate }}" [src]="'历史记录'" (clickEvent)="showChangeDetail()"></custom-button>
+  <custom-button text="{{ '导出' | translate }}" [src]="'基础icon-导出'" (clickEvent)="export()"></custom-button>
+</custom-formquery>
+<nz-card>
+  <ag-grid-angular #agGrid [class]="themeClass" [style.height.px]="gridHeight" [rowData]="gridData"
+    [columnDefs]="columns" [gridOptions]="gridOptions" [myAgGridState]="'hw-markup-pb'"
+    [myAgGridRowKey]="{tb:'PS_MARKUP_PB'}">
+  </ag-grid-angular>
+  <custom-pager [height]="pagerHeight" [context]="context" [view]='context.view' [(pageSize)]="_pageSize"
+    [(pageNo)]="_pageNo" (pageChangeEvent)="onPageChanged($event)"></custom-pager>
+  <custom-excelexport [expColumns]='expColumns' [expColumnsOptions]='expColumnsOptions' fileName='平板加价表' #excelexport></custom-excelexport>
+</nz-card>
+<ng-template #customTemplate let-dataItem>
+  <!-- 仅无效状态可删除、启用 -->
+  <div style="display: inline;" *ngIf="dataItem.markupElementState==='N'">
+    <span title="{{ '编辑' | translate}}" (click)="add(dataItem)" style="cursor: Pointer">
+      <i class="anticon anticon-edit"></i>
+    </span>
+    <nz-divider nzType="vertical"></nz-divider>
+    <span title="{{ '删除' | translate}}" nz-popconfirm nzTitle="{{ '是否确认删除该记录?' | translate}}"
+      (nzOnConfirm)="remove(dataItem);" class="pointer">
+      <i class="anticon anticon-delete"></i>
+    </span>
+    <nz-divider nzType="vertical"></nz-divider>
+    <span title="启用" nz-popconfirm nzTitle="是否确认启用该记录?" (nzOnConfirm)="update(dataItem,'1')" style="cursor: Pointer">
+      <i class="anticon anticon-unlock"></i>
+    </span>
+  </div>
+  <span *ngIf="dataItem.markupElementState==='Y'" title="禁用" nz-popconfirm nzTitle="是否确认禁用该记录?" (nzOnConfirm)="update(dataItem,'0')" style="cursor: Pointer">
+    <i class="anticon anticon-lock"></i>
+  </span>
+</ng-template>

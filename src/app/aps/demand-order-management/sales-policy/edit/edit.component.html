@@ -1,0 +1,50 @@
+<div class="modal-header">
+  <div class="modal-title">{{ (isModify ? '编辑信息' : '新增信息') | translate}}</div>
+</div>
+<div *ngIf="isModify" style=" margin:2px auto;">
+  <button style="float: right;" nz-button nzType="dashed" (click)="clear()">
+    {{ '重置' | translate}}</button>
+  <div style="clear: both;"></div>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="3" [labelWidth]=140>
+    <se label="{{ '事业部' | translate}}" required>
+      <nz-select #select [(ngModel)]="editDto.scheduleRegionCode" (ngModelChange)="regionChange()" nzShowSearch
+        name="scheduleRegionCode" [nzDisabled]="isModify" required>
+        <nz-option *ngFor="let o of regionList" [nzValue]="o.value" [nzLabel]="o.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '销售公司' | translate}}" required>
+      <nz-select #select [(ngModel)]="editDto.salesRegion" (ngModelChange)="loadSalesArea()" nzShowSearch
+        name="salesRegion" [nzDisabled]="isModify" required>
+        <nz-option *ngFor="let o of salesRegionList" [nzValue]="o.value" [nzLabel]="o.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '区域' | translate}}">
+      <nz-select #select [(ngModel)]="editDto.salesArea" nzShowSearch name="salesArea" [nzDisabled]="isModify">
+        <nz-option *ngFor="let o of salesAreaList" [nzValue]="o.value" [nzLabel]="o.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '产品编码' | translate}}" required>
+      <popup-select #selMater1 [(SelectValue)]="editDto.itemId" [(SelectText)]='editDto.itemCode'
+        [ValueField]="'itemId'" [TextField]="'itemCode'" [gridView]="gridView1" [columns]="columns1"
+        (SearchEvent)="search1($event)" (TextChanged)="change1($event)" [Disabled]="isModify" required>
+      </popup-select>
+    </se>
+    <se label="{{ '开始时间' | translate}}" required>
+      <nz-date-picker nzSize="default" [(ngModel)]="editDto.beginDate" name="beginDate" required></nz-date-picker>
+    </se>
+    <se label="{{ '结束时间' | translate}}">
+      <nz-date-picker nzSize="default" [(ngModel)]="editDto.endDate" name="endDate"></nz-date-picker>
+    </se>
+    <se label="{{ '促销政策' | translate}}">
+      <textarea nz-input [(ngModel)]="editDto.policyNote" name="policyNote"
+        [nzAutosize]="{ minRows: 2, maxRows: 2 }"></textarea>
+    </se>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save()" [disabled]="f.invalid || !f.dirty"
+    [nzLoading]="http.loading"> {{ '保存' | translate}}</button>
+  <button nz-button type="button" (click)="close()"> {{ '关闭' | translate}}</button>
+</div>

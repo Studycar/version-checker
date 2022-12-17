@@ -1,0 +1,39 @@
+<div class="modal-header" style="padding-top:10px;padding-bottom:10px;margin-bottom:10px;">
+  <div class="modal-title">{{'阶段定义' | translate}}</div>
+</div>
+<table cellpadding='0' cellspacing='0' border='0' style="margin-top:10px;margin-bottom:10px;">
+  <tr>
+    <td>
+      {{'请求集名称' | translate}}
+    </td>
+    <td style="padding-left:5px;">
+      <input type="text" nz-input [(ngModel)]="i.userRequestSetName" [disabled]="'true'" style="width:300px;">
+    </td>
+    <td style="padding-left:5px;">
+      <button (click)="add()" nz-button nzType="primary">{{ '新增' | translate}}</button>
+    </td>
+  </tr>
+</table>
+
+<nz-card>
+  <ag-grid-angular #agGrid [class]="themeClass" [style.height.px]="gridHeight" [rowData]="gridData"
+    [columnDefs]="columns22" [gridOptions]="gridOptions" [myAgGridRowKey]="{tb:'DEFINE_STAGE'}"
+    [myAgGridState]="'DEFINE_STAGE'">
+  </ag-grid-angular>
+  <custom-pager [height]="pagerHeight" [fixed]="false" [context]="context" [view]='context.view'
+    [(pageSize)]="_pageSize" [(pageNo)]="_pageNo" (pageChangeEvent)="onPageChanged($event)"></custom-pager>
+</nz-card>
+<ng-template #customTemplate let-dataItem>
+  <span title="{{ '编辑' | translate}}" (click)="edit(dataItem)" class="pointer">
+    <i class="anticon anticon-edit"></i>
+  </span>
+  <nz-divider nzType="vertical"></nz-divider>
+  <span title="{{ '删除' | translate}}" nz-popconfirm nzTitle="是否确认删除该记录?" nzOkText="是" nzCancelText="否"
+    (nzOnConfirm)="Delete(dataItem)" class="pointer">
+    <i class="anticon anticon-delete"></i>
+  </span>
+  <nz-divider nzType="vertical"></nz-divider>
+  <span title="{{ '请求' | translate}}" (click)="Request(dataItem)" class="pointer">
+    <i class="anticon anticon-bars"></i>
+  </span>
+</ng-template>

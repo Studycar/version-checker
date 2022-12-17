@@ -1,0 +1,17 @@
+<button *ngIf="message;else elseBlock" nz-button nzType="link" nzSize="small"
+        (click)="showMessage(tplTitle, tplContent, tplFooter)">
+  <span style="color: #3c8dbc">查看</span>
+</button>
+<ng-template #elseBlock>无</ng-template>
+
+<ng-template #tplTitle>
+  <span>备注</span>
+</ng-template>
+
+<ng-template #tplContent>
+  <div [innerHtml]="message"></div>
+</ng-template>
+
+<ng-template #tplFooter style="text-align: center;">
+  <button nz-button nzType="primary" (click)="close()">确定</button>
+</ng-template>

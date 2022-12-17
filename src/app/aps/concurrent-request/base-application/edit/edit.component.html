@@ -1,0 +1,28 @@
+<div class="modal-header">
+  <div class="modal-title">{{ (isModify?'编辑':'新增') | translate}} </div>
+</div>
+<div style="position: relative; height: 32px" *ngIf="isModify">
+  <button nz-button nzType="dashed" style="position: absolute; right: 0;" (click)="clear()">重置</button>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container>
+    <se label="{{ '应用简称' | translate}}" required>
+      <input type="text" nz-input [(ngModel)]="i.applicationShortName"
+        name="applicationShortName" [disabled]="isModify" required>
+    </se>
+    <se label="{{'应用名称' | translate}}" required>
+      <input type="text" nz-input [(ngModel)]="i.applicationName" name="applicationName" required>
+    </se>
+    <se label="{{'基本路径' | translate}}" required>
+      <input type="text" nz-input [(ngModel)]="i.basepath" name="basepath" required>
+    </se>
+    <se label="{{'说明' | translate}}">
+      <textarea nz-input [(ngModel)]="i.description" name="description"> </textarea>
+    </se>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save()" [disabled]="!f.valid || !f.dirty"
+    [nzLoading]="http.loading">{{ '保存' | translate}}</button>
+  <button nz-button type="button" (click)="close()">{{ '关闭' | translate}}</button>
+</div>

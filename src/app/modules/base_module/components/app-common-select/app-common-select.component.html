@@ -1,0 +1,44 @@
+<nz-select
+  [(ngModel)]="ngModelData"
+  [nzAllowClear]="nzAllowClear"
+  [nzOpen]="nzOpen"
+  [nzAutoFocus]="nzAutoFocus"
+  [nzDisabled]="nzDisabled"
+  [nzDropdownClassName]="nzDropdownClassName"
+  [nzDropdownMatchSelectWidth]="nzDropdownMatchSelectWidth"
+  [nzDropdownStyle]="nzDropdownStyle"
+  [nzCustomTemplate]="nzCustomTemplate"
+  [nzServerSearch]="nzServerSearch"
+  [nzMaxMultipleCount]="nzMaxMultipleCount"
+  [nzMode]="nzMode"
+  [nzNotFoundContent]="nzNotFoundContent"
+  [nzPlaceHolder]="nzPlaceHolder"
+  [nzShowArrow]="nzShowArrow"
+  [nzShowSearch]="nzShowSearch"
+  [nzSize]="nzSize"
+  [nzSuffixIcon]="nzSuffixIcon"
+  [nzRemoveIcon]="nzRemoveIcon"
+  [nzClearIcon]="nzClearIcon"
+  [nzMenuItemSelectedIcon]="nzMenuItemSelectedIcon"
+  [nzTokenSeparators]="nzTokenSeparators"
+  [nzLoading]="nzLoading"
+  [nzMaxTagCount]="nzMaxTagCount"
+  [nzMaxTagPlaceholder]="nzMaxTagPlaceholder"
+  (ngModelChange)="onModelChange($event)"
+  (nzOpenChange)="selectOpenChange($event)"
+  (nzScrollToBottom)="scrollToBottom()"
+  (nzOnSearch)="onSearch($event)"
+  (nzFocus)="onFocus()"
+  (nzBlur)="onBlur()"
+>
+  <nz-option
+    *ngFor="let option of options"
+    [nzLabel]="option.label"
+    [nzValue]="option.value"></nz-option>
+  <nz-option
+    *ngIf="nzLoading"
+    nzDisabled
+    nzCustomContent>
+    <i nz-icon nzType="loading" class="loading-icon"></i> Loading Data...
+  </nz-option>
+</nz-select>

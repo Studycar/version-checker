@@ -1,0 +1,125 @@
+<div class="modal-header">
+  <div class="modal-title">{{'分配菜单'| translate}}</div>
+</div>
+<nz-card>
+  <div class="mb-md">
+    <button nz-button (click)="add()" [nzType]="'primary'">
+      <i nz-icon></i> {{ '新增菜单' | translate}}
+    </button>
+    <button nz-button (click)="showMinus()" [nzType]="'primary'">
+      <i nz-icon></i>{{  (!isExpand?'全部展开':'全部收缩') | translate}}
+    </button>
+  </div>
+
+  <nz-table #nzTable [nzData]="data" [nzScroll]="{ x:'1100px',y:'350px'}" [nzPageSizeOptions]="PageSizeOptions"
+    nzshowSizeChanger nzshowQuickJumper nzshowTotal nzBordered [nzSize]="small">
+    <thead>
+      <tr>
+        <th nzLeft="0px" nzWidth="13%" [ngStyle]="styleColor">{{ '操作' | translate}}</th>
+        <th nzWidth="38%" [ngStyle]="styleColor">{{ '菜单名' | translate}}</th>
+        <th nzWidth="13%" [ngStyle]="styleColor">{{ '应用模块' | translate}}</th>
+        <th nzWidth="15%" [ngStyle]="styleColor">{{ '功能' | translate}}</th>
+        <th nzWidth="11%" [ngStyle]="styleColor">{{ '菜单类型' | translate}}</th>
+        <th nzWidth="8%" [ngStyle]="styleColor">{{ '菜单顺序' | translate}}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-template ngFor let-data [ngForOf]="nzTable.data">
+        <ng-template ngFor let-item [ngForOf]="expandDataCache[data.menuId]">
+          <tr *ngIf="(item.parent&&item.parent.expand)||!(item.parent)" [ngStyle]="{Height:'20px'}">
+
+            <td nzLeft="0px">
+              <span class="icon" title="编辑菜单" (click)="edit(item)" [ngStyle]="spanStyle">
+                <i class="anticon anticon-edit"></i>
+              </span>
+              <nz-divider nzType="vertical"></nz-divider>
+              <span class="icon" title="新增同级菜单" (click)="AddMENU(item)" [ngStyle]="spanStyle">
+                <i class="anticon anticon-plus"></i>
+              </span>
+              <nz-divider nzType="vertical"></nz-divider>
+              <span class="icon" title="新增子菜单" (click)="AddMENUCHILD(item)" [ngStyle]="spanStyle">
+                <i class="anticon anticon-plus-circle-o"></i>
+              </span>
+              <nz-divider nzType="vertical"></nz-divider>
+              <span class="icon" title="删除菜单" nz-popconfirm nzTitle="是否确认删除该记录?" (nzOnConfirm)="remove(item)"
+                [ngStyle]="spanStyle">
+                <i class="anticon anticon-delete"></i>
+              </span>
+            </td>
+            <td [nzIndentSize]="item.level*40" [nzShowExpand]="!!item.children" [(nzExpand)]="item.expand"
+              (nzExpandChange)="collapse(expandDataCache[data.menuId],item,$event)">
+              {{item.menuName}}
+            </td>
+            <td>{{item.applicationName}}</td>
+            <td>
+              <nz-tooltip [nzTitle]="item.functionName">
+                <ellipsis lines="1">
+                  <span nz-tooltip>{{item.functionName}}</span>
+                </ellipsis>
+              </nz-tooltip>
+            </td>
+            <td>
+              {{optionsFind(item.menuType)?.label}}
+            </td>
+            <td>{{item.orderSeq}}</td>
+          </tr>
+        </ng-template>
+      </ng-template>
+    </tbody>
+  </nz-table>
+
+  <st #stEx [columns]="columnsEx" hidden>
+  </st>
+
+  <!-- <kendo-grid #grid [data]="view | async" [height]="600" [pageSize]="gridState.take" [skip]="gridState.skip" [sort]="gridState.sort"
+    [sortable]="true" (dataStateChange)="onStateChange($event)" [filter]="gridState.filter" filterable="menu" [resizable]="true"
+    [selectable]="{'checkboxOnly':true,'mode': 'multiple'}" [kendoGridSelectBy]="'ID'" [selectedKeys]="mySelection" [columnMenu]="true"
+    [reorderable]="true" [pageable]="{
+                buttonCount: 10,
+                info: true,
+                type: numeric,
+                pageSizes: true,
+                previousNext: true
+              }">
+
+    <kendo-grid-messages pagerPage="分页" pagerOf="的" pagerItems="总数" pagerItemsPerPage="页项" groupPanelEmpty="Drag here to group"
+      noRecords="没有数据">
+    </kendo-grid-messages>
+
+    <kendo-grid-command-column title="操作" width="80" [locked]="true" [style]="{'border-bottom': '1px solid #d9d9d9'}">
+      <ng-template kendoGridCellTemplate let-isNew="isNew" let-dataItem="dataItem">
+
+        <span title="编辑" (click)="add(dataItem)" [ngStyle]="spanStyle">
+          <i class="anticon anticon-edit"></i>
+        </span>
+      </ng-template>
+    </kendo-grid-command-column>
+
+    <kendo-grid-column field="MENU_GROUP_CODE" title="菜单组编码" width="250" [style]="{'border-bottom': '1px solid #d9d9d9'}">
+      <ng-template kendoGridCellTemplate let-dataItem>
+        <ellipsis lines="1">
+          <span nz-tooltip [nzTitle]="dataItem.MENU_GROUP_CODE">{{dataItem.MENU_GROUP_CODE}}</span>
+        </ellipsis>
+      </ng-template>
+    </kendo-grid-column>
+    <kendo-grid-column field="MENU_GROUP_NAME" title="菜单组名称" width="250" [style]="{'border-bottom': '1px solid #d9d9d9'}">
+      <ng-template kendoGridCellTemplate let-dataItem>
+        <ellipsis lines="1">
+          <span nz-tooltip [nzTitle]="dataItem.MENU_GROUP_NAME">{{dataItem.MENU_GROUP_NAME}}</span>
+        </ellipsis>
+      </ng-template>
+    </kendo-grid-column>
+
+    <kendo-grid-column field="APPLICATION_NAME" title="应用模块" width="200" [style]="{'border-bottom': '1px solid #d9d9d9'}">
+    </kendo-grid-column>
+
+    <kendo-grid-column field="LANGUAGE_NAME" title="语言" width="150" [style]="{'border-bottom': '1px solid #d9d9d9'}">
+    </kendo-grid-column>
+
+    <kendo-grid-column field="START_DATE" title="生效日期" width="200" [style]="{'border-bottom': '1px solid #d9d9d9'}"></kendo-grid-column>
+    <kendo-grid-column field="END_DATE" title="失效日期" width="200" [style]="{'border-bottom': '1px solid #d9d9d9'}"></kendo-grid-column>
+
+  </kendo-grid>
+</nz-card>
+<custom-excelexport [expColumns]='expColumns' [expColumnsOptions]='expColumnsOptions' fileName='export' #excelexport></custom-excelexport>-->
+</nz-card>

@@ -1,0 +1,79 @@
+<div class="modal-header">
+  <div class="modal-title">{{ isModify ? '编辑信息' : '新增信息' | translate }}</div>
+</div>
+<div style="position: relative; height: 32px" *ngIf="isModify">
+  <button nz-button nzType="dashed" style="position: absolute; right: 0;" (click)="clear()">{{'重置' | translate}}</button>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="2">
+    <se label="{{ '发货单号' | translate }}" *ngIf="isModify">
+      <input nz-input type="text" disabled name="invoiceBillCode" [(ngModel)]="i.invoiceBillCode">
+    </se>
+    <se label="{{ '发货日期' | translate }}" required>
+      <nz-date-picker nzFormat="yyyy-MM-dd" [(ngModel)]="i.invoiceBillDate" name="invoiceBillDate" required>
+      </nz-date-picker>
+    </se>
+    <se label="{{ '发货单状态' | translate }}" required>
+      <nz-select nzShowSearch name="invoiceBillState" nzDisabled [(ngModel)]="i.invoiceBillState" required>
+        <nz-option *ngFor="let op of invoiceStateOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '工厂' | translate }}" required>
+      <nz-select nzShowSearch name="plantCode" (ngModelChange)="plantChange($event)" [nzDisabled]="isModify" [(ngModel)]="i.plantCode" required>
+        <nz-option *ngFor="let op of plantOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '客户编码' | translate }}" required>
+      <popup-select [Value]="i.cusCode" [ValueField]="'cusCode'" [Disabled]="isModify"
+        [Text]="i.cusCode" [TextField]="'cusCode'" name="cusCode" required [options]="customersOptions"
+        [gridView]="gridViewCustoms" [columns]="columnsCustoms" (TextChanged)="onPopupSelectTextChanged($event)"
+        (SearchEvent)="searchCustoms($event)" (RowSelect)="onRowSelect($event)">
+      </popup-select>
+    </se>
+    <se label="{{ '客户简称' | translate }}">
+      <input nz-input type="text" name="cusAbbreviation" disabled [(ngModel)]="i.cusAbbreviation">
+    </se>
+    <se label="{{ '车（船）号' | translate }}">
+      <input nz-input type="text" name="carShipNo" [(ngModel)]="i.carShipNo">
+    </se>
+    <se label="{{ '备注' | translate }}">
+      <input nz-input type="text" name="remarks" [(ngModel)]="i.remarks">
+    </se>
+    <se label="{{ '业务员' | translate }}" required>
+      <popup-select [Value]="i.salesman" [ValueField]="'personName'"
+        [Text]="i.salesman" [TextField]="'personName'" name="salesman" required
+        [gridView]="gridViewUsers" [columns]="columnsUsers" (TextChanged)="onUsersTextChanged($event)"
+        (SearchEvent)="searchUsers($event)" (RowSelect)="onUsersSelect($event)">
+      </popup-select>
+    </se>
+    <se label="{{ '汇率' | translate }}" required>
+      <nz-input-number name="exchangeRate" [(ngModel)]="i.exchangeRate" required></nz-input-number>
+    </se>
+    <se label="{{ '币种' | translate }}" required>
+      <nz-select nzShowSearch name="currency" [(ngModel)]="i.currency" required>
+        <nz-option *ngFor="let op of currencyOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '销售类型' | translate }}" required>
+      <nz-select nzShowSearch name="salesOrderType" [nzDisabled]="isModify" [(ngModel)]="i.salesOrderType" (ngModelChange)="salesOrderTypeChange($event)" [nzCustomTemplate]="custom" required>
+        <nz-option *ngFor="let op of salesOrderTypeOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+      <ng-template #custom let-selected>
+        <span>{{ selected.nzValue }}</span>
+      </ng-template>
+    </se>
+    <se label="{{ '销售类型说明' | translate }}">
+      <input nz-input type="text" disabled name="salesOrderTypeRemarks" [(ngModel)]="i.salesOrderTypeRemarks">
+    </se>
+    <se label="{{ '出库类别' | translate }}">
+      <input nz-input type="text" disabled name="cklb" [(ngModel)]="i.cklb">
+    </se>
+    <se label="{{ '出库类别说明' | translate }}">
+      <input nz-input type="text" disabled name="cklbRemarks" [(ngModel)]="i.cklbRemarks">
+    </se>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="button" (click)="close()">{{ '取消' | translate }}</button>
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save(f.value)" [nzLoading]="http.loading" [disabled]="f.invalid || !f.dirty">{{'保存' | translate }}</button>
+</div>

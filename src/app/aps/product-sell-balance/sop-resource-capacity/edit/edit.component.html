@@ -1,0 +1,58 @@
+<div class="modal-header">
+  <div class="modal-title">{{ title }}信息</div>
+</div>
+<div style="position: relative; height: 32px" *ngIf="isModify">
+  <button nz-button nzType="dashed" style="position: absolute; right: 0;" (click)="clear()">重置</button>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="2" [labelWidth]="80">
+    <se label="{{ '工厂' | translate}}" required>
+      <nz-select #select [(ngModel)]="i.plantCode" nzShowSearch (ngModelChange)="onChangePlant($event)" name="plantCode"
+        [disabled]="IsDisable" required>
+        <nz-option *ngFor="let o of optionListPlant" [nzValue]="o.plantCode" [nzLabel]="o.plantCode"></nz-option>
+        <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+          <i class="anticon anticon-loading anticon-spin loading-icon"></i> Loading Data...
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '计划组' | translate}}" required>
+      <nz-select #select [(ngModel)]="i.scheduleGroupCode" nzShowSearch (ngModelChange)="onChangeGroup($event)"
+        name="scheduleGroupCode" [disabled]="IsDisable" required>
+        <nz-option *ngFor="let o of optionListPlantGroup" [nzValue]="o.scheduleGroupCode"
+          [nzLabel]="o.scheduleGroupCode"></nz-option>
+        <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+          <i class="anticon anticon-loading anticon-spin loading-icon"></i> Loading Data...
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '资源' | translate}}" required>
+      <nz-select #select [(ngModel)]="i.resourceCode" nzShowSearch name="resourceCode"
+        (ngModelChange)="onChangeLine($event)" [disabled]="IsDisable" required>
+        <nz-option *ngFor="let o of optionListProductLine" [nzValue]="o.resourceCode" [nzLabel]="o.resourceCode">
+        </nz-option>
+        <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+          <i class="anticon anticon-loading anticon-spin loading-icon"></i> Loading Data...
+        </nz-option>
+      </nz-select>
+    </se>
+
+    <se label="{{ '月份' | translate}}" required>
+      <nz-month-picker nzShowTime nzFormat="yyyy-MM" [(ngModel)]="i.currentMonth" name="currentMonth"
+        (ngModelChange)="onCurrentMonthChange($event)" [disabled]="IsDisable" required>
+      </nz-month-picker>
+    </se>
+
+    <se label="{{ '开工天数' | translate}}" required>
+      <input type="number" nz-input [(ngModel)]="i.workDay" name="workDay" required>
+    </se>
+
+    <se label="{{ '开工时长' | translate}}" required>
+      <input type="number" nz-input [(ngModel)]="i.workHour" name="workHour" required>
+    </se>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save()" [disabled]="f.invalid || !f.dirty"
+    [nzLoading]="http.loading">{{ '保存' | translate}}</button>
+  <button nz-button type="button" (click)="close()">{{ '关闭' | translate}}</button>
+</div>

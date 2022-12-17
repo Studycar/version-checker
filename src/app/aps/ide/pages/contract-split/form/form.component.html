@@ -1,0 +1,142 @@
+<form nz-form #f="ngForm" se-container="2">
+  <nz-collapse>
+    <nz-collapse-panel
+      nzHeader="原合同信息"
+      [nzActive]="true"
+    >
+      <se label="{{ '当日开盘价+返利加价' | translate}}">
+        <input type="text" nz-input [value]="realPrice" name="realPrice" disabled />
+      </se>
+      <se label="{{ '供方' | translate}}">
+        <nz-select name="plantCode" [(ngModel)]="formData.plantCode" name="plantCode" nzDisabled>
+          <nz-option *ngFor="let op of plantOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+        </nz-select>
+      </se>
+      <se label="{{ '客户编码' | translate}}">
+        <input type="text" nz-input [(ngModel)]="formData.cusCode" name="cusCode" disabled />
+      </se>
+      <se label="{{ '客户名称' | translate}}">
+        <input type="text" nz-input [(ngModel)]="formData.cusName" name="cusName" disabled />
+      </se>
+      <se label="{{ '合同编号' | translate}}">
+        <input type="text" nz-input [(ngModel)]="formData.contractCode" name="contractCode" disabled />
+      </se>
+      <se label="{{ '合同基价/单价' | translate}}">
+        <input type="text" nz-input [(ngModel)]="formData.basePrice" name="basePrice" disabled />
+      </se>
+      <se label="{{ '合同重量' | translate}}">
+        <input type="text" nz-input [(ngModel)]="formData.weightTon" name="weightTon" disabled />
+      </se>
+      <se label="{{ '合同金额' | translate}}">
+        <input type="text" nz-input [(ngModel)]="formData.money" name="money" disabled />
+      </se>
+      <se label="{{ '钢种' | translate}}">
+        <input type="text" nz-input [(ngModel)]="formData.steelType" name="steelType" disabled />
+      </se>
+      <se label="{{ '厚/薄料' | translate}}">
+        <nz-select name="material" [(ngModel)]="formData.material" name="material" nzDisabled>
+          <nz-option *ngFor="let op of materialOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+        </nz-select>
+      </se>
+      <se label="{{ '表体备注（锁价备注）' | translate}}">
+        <textarea nz-input name="remarks" [(ngModel)]="formData.remarks" nzAutosize disabled></textarea>
+      </se>
+      <se label="{{ '变更备注' | translate}}">
+        <textarea nz-input name="changeRemarks" [(ngModel)]="formData.changeRemarks" nzAutosize disabled></textarea>
+      </se>
+    </nz-collapse-panel>
+    <nz-collapse-panel
+      nzHeader="子合同信息"
+      [nzActive]="true"
+      *ngIf="sub.id"
+    >
+      <se label="{{ '当日开盘价+返利加价' | translate}}">
+        <input type="text" nz-input [value]="sub.realPrice" name="subrealPrice" disabled />
+      </se>
+      <se label="{{ '供方' | translate}}">
+        <nz-select name="plantCode" [(ngModel)]="sub.plantCode" name="subplantCode" nzDisabled>
+          <nz-option *ngFor="let op of plantOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+        </nz-select>
+      </se>
+      <se label="{{ '客户编码' | translate}}">
+        <input type="text" nz-input [(ngModel)]="sub.cusCode" name="subcusCode" disabled />
+      </se>
+      <se label="{{ '客户名称' | translate}}">
+        <input type="text" nz-input [(ngModel)]="sub.cusName" name="subcusName" disabled />
+      </se>
+      <se label="{{ '合同编号' | translate}}">
+        <input type="text" nz-input [(ngModel)]="sub.contractCode" name="subcontractCode" disabled />
+      </se>
+      <se label="{{ '合同基价/单价' | translate}}">
+        <input type="text" nz-input [(ngModel)]="sub.basePrice" name="subbasePrice" disabled />
+      </se>
+      <se label="{{ '合同重量' | translate}}">
+        <input type="text" nz-input [(ngModel)]="sub.weightTon" name="subweightTon" disabled />
+      </se>
+      <se label="{{ '合同金额' | translate}}">
+        <input type="text" nz-input [(ngModel)]="sub.money" name="submoney" disabled />
+      </se>
+      <se label="{{ '钢种' | translate}}">
+        <input type="text" nz-input [(ngModel)]="sub.steelType" name="substeelType" disabled />
+      </se>
+      <se label="{{ '厚/薄料' | translate}}">
+        <nz-select name="material" [(ngModel)]="sub.material" name="submaterial" nzDisabled>
+          <nz-option *ngFor="let op of materialOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+        </nz-select>
+      </se>
+      <se label="{{ '表体备注（锁价备注）' | translate}}">
+        <textarea nz-input name="subremarks" [(ngModel)]="sub.remarks" nzAutosize disabled></textarea>
+      </se>
+      <se label="{{ '变更备注' | translate}}">
+        <textarea nz-input name="subchangeRemarks" [(ngModel)]="sub.changeRemarks" nzAutosize disabled></textarea>
+      </se>
+    </nz-collapse-panel>
+    <nz-collapse-panel
+      nzHeader="变更协议信息"
+      [nzActive]="true"
+      *ngIf="change.id"
+    >
+      <se label="{{ '当日开盘价+返利加价' | translate}}">
+        <input type="text" nz-input [value]="change.realPrice" name="changerealPrice" disabled />
+      </se>
+      <se label="{{ '供方' | translate}}">
+        <nz-select name="plantCode" [(ngModel)]="change.plantCode" name="changeplantCode" nzDisabled>
+          <nz-option *ngFor="let op of plantOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+        </nz-select>
+      </se>
+      <se label="{{ '客户编码' | translate}}">
+        <input type="text" nz-input [(ngModel)]="change.cusCode" name="changecusCode" disabled />
+      </se>
+      <se label="{{ '客户名称' | translate}}">
+        <input type="text" nz-input [(ngModel)]="change.cusName" name="changecusName" disabled />
+      </se>
+      <se label="{{ '合同编号' | translate}}">
+        <input type="text" nz-input [(ngModel)]="change.contractCode" name="changecontractCode" disabled />
+      </se>
+      <se label="{{ '合同基价/单价' | translate}}">
+        <input type="text" nz-input [(ngModel)]="change.basePrice" name="changebasePrice" disabled />
+      </se>
+      <se label="{{ '合同重量' | translate}}">
+        <input type="text" nz-input [(ngModel)]="change.weightTon" name="changeweightTon" disabled />
+      </se>
+      <se label="{{ '合同金额' | translate}}">
+        <input type="text" nz-input [(ngModel)]="change.money" name="changemoney" disabled />
+      </se>
+      <se label="{{ '钢种' | translate}}">
+        <input type="text" nz-input [(ngModel)]="change.steelType" name="changesteelType" disabled />
+      </se>
+      <se label="{{ '厚/薄料' | translate}}">
+        <nz-select name="material" [(ngModel)]="change.material" name="changematerial" nzDisabled>
+          <nz-option *ngFor="let op of materialOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+        </nz-select>
+      </se>
+      <se label="{{ '表体备注（锁价备注）' | translate}}">
+        <textarea nz-input name="changeremarks" [(ngModel)]="change.remarks" nzAutosize disabled></textarea>
+      </se>
+      <se label="{{ '变更备注' | translate}}">
+        <textarea nz-input name="changechangeRemarks" [(ngModel)]="change.changeRemarks" nzAutosize disabled></textarea>
+      </se>
+    </nz-collapse-panel>
+  </nz-collapse>
+  
+</form>

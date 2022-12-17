@@ -1,0 +1,72 @@
+<style type="text/css">
+  .right-float {
+    float: right;
+  }
+
+  .relative {
+    position: relative;
+  }
+
+  .group-title {
+    position: absolute;
+    top: -15px;
+    left: 10px;
+    background-color: white;
+    padding: 5px;
+  }
+
+  .group {
+    border: solid 1px #DCDCDC;
+    margin: 5px auto 20px;
+    padding: 15px 10px 5px;
+  }
+</style>
+<div class="modal-header">
+  <div class="modal-title">{{ '日历复制' | translate}} </div>
+</div>
+<div style=" margin:2px auto;">
+  <button class="right-float" nz-button nzType="dashed" (click)="clear()">
+    <i class="anticon anticon-delete"></i>{{ '重置' | translate}}</button>
+  <div style="clear: both;"></div>
+</div>
+<div class="relative">
+  <div class="group-title">{{ '来源日期' | translate}}</div>
+  <div class="group">
+    <form nz-form #f1="ngForm" se-container="2" [labelWidth]="150">
+      <se label="{{ '资源' | translate}}">
+        <input type="text" nz-input [(ngModel)]="i.resourceCode" name="resourceCode" readonly="true" [class.disabled]="true">
+      </se>
+      <se label="{{ '日历编码' | translate}}">
+        <input type="text" nz-input [(ngModel)]="i.calendarCode" name="calendarCode" readonly="true" [class.disabled]="true">
+      </se>
+      <se label="{{ '开始日期' | translate}}" required>
+        <nz-date-picker nzFormat="yyyy-MM-dd" [(ngModel)]="i.showStartTime" name="showStartTime" nzPlaceHolder="请选择日期" required>
+        </nz-date-picker>
+      </se>
+      <se label="{{ '结束日期' | translate}}" required>
+        <nz-date-picker nzFormat="yyyy-MM-dd" [(ngModel)]="i.showEndTime" name="showEndTime" nzPlaceHolder="请选择日期" required>
+        </nz-date-picker>
+      </se>
+    </form>
+  </div>
+</div>
+<div class="relative">
+  <div class="group-title">{{ '目标日期' | translate}}</div>
+  <div class="group">
+    <form nz-form #f2="ngForm" se-container="2" [labelWidth]="150">
+      <se label="{{ '开始日期' | translate}}">
+        <nz-date-picker nzFormat="yyyy-MM-dd" [(ngModel)]="i.targetStartTime" name="targetStartTime" nzPlaceHolder="请选择日期" required>
+        </nz-date-picker>
+      </se>
+      <se label="{{ '结束日期' | translate}}">
+        <nz-date-picker nzFormat="yyyy-MM-dd" [(ngModel)]="i.targetEndTime" name="targetEndTime" nzPlaceHolder="请选择日期" required>
+        </nz-date-picker>
+      </se>
+    </form>
+  </div>
+</div>
+<div class="modal-footer">
+  <button nz-button type="button" (click)="close()">{{ '关闭' | translate}}</button>
+  <button nz-button type="submit" [nzType]="'primary'" (click)="copy(f1.value)" [disabled]="f1.invalid||f2.invalid" [nzLoading]="http.loading">{{
+    '确定' | translate}}</button>
+</div>

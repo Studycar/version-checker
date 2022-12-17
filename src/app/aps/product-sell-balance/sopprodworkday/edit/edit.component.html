@@ -1,0 +1,45 @@
+<div class="modal-header">
+  <div class="modal-title">{{ title }} 信息</div>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="2">
+    <se label="{{ '工厂' | translate}}" required>
+      <nz-select [(ngModel)]="i.PLANT_CODE" name="txtPLANT_CODE" [nzDisabled]="readOnly"
+        (ngModelChange)="plantChange($event)" required nzShowSearch>
+        <nz-option *ngFor="let option of plantoptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '计划组' | translate}}" required>
+      <nz-select [(ngModel)]="i.SCHEDULE_GROUP_CODE" name="SCHEDULE_GROUP_CODE" required nzShowSearch
+        (ngModelChange)="groupChange($event)">
+        <nz-option *ngFor="let option of groupoptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '生产线/模具' | translate}}" required>
+      <nz-select [(ngModel)]="i.RESOURCE_CODE" name="RESOURCE_CODE" required nzShowSearch>
+        <nz-option *ngFor="let option of resourceOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '计划开工天数' | translate}}" required>
+      <input type="number" nz-input [(ngModel)]="i.DAYS" name="DIVISION_DESC" required>
+    </se>
+    <se label="{{ '人员定编' | translate}}" required>
+      <input type="number" nz-input [(ngModel)]="i.POPULATION" name="POPULATION" required>
+    </se>
+    <se label="{{ '开始时间' | translate}}" required>
+      <nz-date-picker [nzDisabledDate]="disabledStartDate" nzShowTime nzFormat="yyyy-MM-dd HH:mm:ss"
+        [(ngModel)]="i.START_DATE" name="START_DATE" (ngModelChange)="onStartChange($event)" required>
+      </nz-date-picker>
+    </se>
+    <se label="{{ '结束时间' | translate}}">
+      <nz-date-picker [nzDisabledDate]="disabledEndDate" nzShowTime nzFormat="yyyy-MM-dd HH:mm:ss"
+        [(ngModel)]="i.END_DATE" name="END_DATE" (ngModelChange)="onEndChange($event)">
+      </nz-date-picker>
+    </se>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save()" [disabled]="!f.valid || !f.dirty"
+    [nzLoading]="http.loading">{{ '保存' | translate}}</button>
+  <button nz-button type="button" (click)="close()">{{ '关闭' | translate}}</button>
+</div>

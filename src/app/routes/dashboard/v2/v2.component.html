@@ -1,0 +1,257 @@
+<nz-spin [nzSpinning]="loadingArr.loading_five" [nzDelay]="500">
+  <div class="container">
+      <div class="first-row-container">
+          <div class="data-collection-block">
+              <div class="top-block">
+                  <div>我的APS人生</div>
+                  <nz-date-picker [(ngModel)]="dataCollectionDate" [nzDisabledDate]="disabledDate" (ngModelChange)="onDataCollectionDateChange($event)" [nzAllowClear]="false"></nz-date-picker>
+              </div>
+              <div class="bottom-block" (mouseenter)="onMouseEnter()" (mouseleave)="onMouseLeave()">
+                  <div *ngIf="iconShow" class="left-icon" (click)="previousPage()"></div>
+                  <nz-carousel #nzCarousel nzAutoPlay [nzAutoPlaySpeed]="8000" [nzDotRender]="dotTemplate" style="height: 336px">
+                      <div class="carousel-block" nz-carousel-content>
+                          <div class="mascot"></div>
+                          <div class="content">
+                              <div>HI，亲爱的{{userName}}，</div>
+                              <div>这是您使用美云智数APS系统的第<em>{{usingDuration}}</em>天</div>
+                          </div>
+                      </div>
+                      <div class="carousel-block" nz-carousel-content>
+                          <div class="mascot"></div>
+                          <div class="content">
+                              <div *ngIf="loggedIn; else notLoggedIn">
+                                  <div>{{dataCollectionDate | date:'yyyy年M月d日'}}这天</div>
+                                  <div>您于<em>{{loginTime}}</em>开启了APS系统计划工作</div>
+                              </div>
+                              <ng-template #notLoggedIn>
+                                  <div>您最近于{{loggedInDate}}这天<em>{{loginTime}}</em>登录使用过系统</div>
+                              </ng-template>
+                              <div *ngIf="userRole === 'administrator' && plannerLoggedIn">计划员从<em>{{plannerLoginTime}}</em>已开始系统排产工作</div>
+                              <div *ngIf="userRole === 'administrator' && !plannerLoggedIn">计划员最近于{{plannerLoggedInDate}}这天<em>{{plannerLoginTime}}</em>登录使用过系统</div>
+                          </div>
+                      </div>
+                      <div class="carousel-block" nz-carousel-content>
+                          <div class="mascot"></div>
+                          <div class="content">
+                              <div>{{dataCollectionDate | date:'yyyy年M月d日'}}这天</div>
+                              <div>系统新进<em>{{newMaterialQty}}个物料</em>，主人要注意啦</div>
+                              <div *ngIf="userRole === 'planner'">主人您新维护和修改了<em>{{processRouteQty}}行</em>工艺路线，<em>{{materialMouldRelationQty}}行</em>物料与模具关系</div>
+                              <div *ngIf="userRole === 'administrator'">
+                                  <div>计划员新维护和修改了<em>{{processRouteQty}}行</em>工艺路线，<em>{{materialMouldRelationQty}}行</em>物料与模具关系</div>
+                                  <div>系统还有<em>{{lostProcessRouteMaterialQty}}个</em>物料缺失工艺路线，<em>{{lostRelationQty}}个</em>物料缺失物料与模具关系</div>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="carousel-block" nz-carousel-content>
+                          <div class="mascot"></div>
+                          <div class="content">
+                              <div>{{dataCollectionDate | date:'yyyy年M月d日'}}这天</div>
+                              <div>系统新进<em>{{newOrderQty}}个</em>订单，还有<em>{{modifyOrderQty}}个</em>订单信息发生变化，主人可要注意查看别延误了交期！</div>
+                          </div>
+                      </div>
+                      <div class="carousel-block" nz-carousel-content>
+                          <div class="mascot"></div>
+                          <div class="content">
+                              <div *ngIf="userRole === 'planner'">{{dataCollectionDate | date:'yyyy年M月d日'}}这天<br>主人辛苦啦！</div>
+                              <div *ngIf="userRole === 'administrator'">{{dataCollectionDate | date:'yyyy年M月d日'}}这天计划员</div>
+                              <div>下达<em>{{issuedOrderQty}}个</em>工单<br>发放<em>{{releaseOrderQty}}个</em>工单<br>发布<em>{{publishOrderQty}}个</em>工单</div>
+                              <div *ngIf="userRole === 'administrator'">{{extraMessage}}</div>
+                          </div>
+                      </div>
+                      <div class="carousel-block" nz-carousel-content>
+                          <div class="mascot"></div>
+                          <div class="content">
+                              <div>{{dataCollectionDate | date:'yyyy年M月d日'}}这天</div>
+                              <div *ngIf="userRole === 'planner'">
+                                  <div>计划是龙头，指导生产执行，{{effect}}</div>
+                                  <div>排产结果<em>交付达成率{{deliveryCompletionRate}}%</em></div>
+                              </div>
+                              <div *ngIf="userRole === 'administrator'">
+                                  <div>计划是龙头，指导生产执行</div>
+                                  <div>排产结果整体<em>交付达成率{{deliveryCompletionRate}}%</em></div>
+                                  <div>注塑01-M23：{{injectionRate}}%，<span [ngClass]="{'danger': injectionRate < 90}">{{injectionDesc}}</span></div>
+                                  <div>丝印01-M23：{{silkRate}}%，<span [ngClass]="{'danger': silkRate < 90}">{{silkDesc}}</span></div>
+                                  <div>冲压01-M23：{{stampingRate}}%，<span [ngClass]="{'danger': stampingRate < 90}">{{stampingDesc}}</span></div>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="carousel-block" nz-carousel-content>
+                          <div class="mascot"></div>
+                          <div class="content">
+                              <div>{{dataCollectionDate | date:'yyyy年M月d日'}}这天</div>
+                              <div *ngIf="userRole === 'planner'">完成一份计划离不开主人您，当然也不能缺少美云智数APS的我。</div>
+                              <div *ngIf="userRole === 'planner'">主人您提交了<em>{{requestQty}}个</em>请求，我自动运行了<em>{{autoRequestQty}}个</em>请求，才使得数据运算得以正常完成</div>
+                              <div *ngIf="userRole === 'administrator'">
+                                  <div>完成一份计划离不开计划员，当然也不能缺少美云智数APS的我。</div>
+                                  <div>计划员累计提交了<em>{{requestQty}}个</em>请求，我自动运行了<em>{{autoRequestQty}}个</em>请求，才使得数据运算得以正常完成</div>
+                                  <div>计划员用到最多的请求是：<em>{{usingMostRequest}}</em></div>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="carousel-block" nz-carousel-content>
+                          <div class="mascot"></div>
+                          <div class="content">
+                              <div>{{dataCollectionDate | date:'yyyy年M月d日'}}这天</div>
+                              <div>{{userRole === 'planner' ? '主人' : '计划员'}}圆满完成了计划工作。</div>
+                              <div>共使用APS<em>{{featureQty}}个</em>功能模块，其中{{useMenuTop1Name}}和{{useMenuTop2Name}}分别使用了<em>{{useMenuTop1Qty}}次</em>和<em>{{useMenuTop2Qty}}次</em></div>
+                          </div>
+                      </div>
+                      <div class="carousel-block" nz-carousel-content>
+                          <div class="mascot"></div>
+                          <div class="content">
+                              <div>{{dataCollectionDate | date:'yyyy年M月d日'}}这天</div>
+                              <div>主人的4大指标，其中有<em>{{targetAchievedQty}}项</em>达成</div>
+                              <div>当天计划变动率：{{planChangeRate}}%，<span [ngClass]="{'danger': planChangeRate > standardPlanChangeRate}">{{planChangeRateDesc}}</span></div>
+                              <div>当天作业完成率：{{jobCompleteRate}}%，<span [ngClass]="{'danger': jobCompleteRate < standardJobCompleteRate}">{{jobCompleteRateDesc}}</span></div>
+                              <div>工单关闭率：{{orderClosingRate}}%，<span [ngClass]="{'danger': orderClosingRate < standardOrderClosingRate}">{{orderClosingRateDesc}}</span></div>
+                              <div>订单交付及时率：{{orderDeliveryRate}}%，<span [ngClass]="{'danger': orderDeliveryRate < standardOrderDeliveryRate}">{{orderDeliveryRateDesc}}</span></div>
+                          </div>
+                      </div>
+                      <div class="carousel-block" nz-carousel-content>
+                          <div class="mascot"></div>
+                          <div class="content">
+                              <div *ngIf="loggedIn; else notOnline">
+                                  <div>{{dataCollectionDate | date:'yyyy年M月d日'}}这天</div>
+                                  <div>您于<em>{{logoutTime}}</em>结束了APS系统工作</div>
+                              </div>
+                              <ng-template #notOnline>
+                                  <div>您最近于{{logoutDate}}这天<em>{{logoutTime}}</em>登录使用过系统</div>
+                              </ng-template>
+                              <div *ngIf="userRole === 'administrator' && plannerLoggedIn">计划员于<em>{{plannerLogoutTime}}</em>结束了最后的排产工作</div>
+                              <div *ngIf="userRole === 'administrator' && !plannerLoggedIn">计划员最近于{{plannerLogoutDate}}这天<em>{{plannerLogoutTime}}</em>登录使用过系统</div>
+                              <div *ngIf="(userRole === 'planner' && loggedIn) || (userRole === 'administrator' && loggedIn && plannerLoggedIn)">主人晚安!</div>
+                          </div>
+                      </div>
+                  </nz-carousel>
+                  <div *ngIf="iconShow" class="right-icon" (click)="nextPage()"></div>
+              </div>
+          </div>
+          <div class="diary-block" (click)="showModal()">
+              <div class="head-style">
+                <p>{{'重要事项'|translate}}</p>
+              </div>
+              <div *ngIf="this.noteArr.Result.length===0;else displayBlock" class="no-data-block noteimg">
+                <p style="margin: 0px;">{{'暂无数据'|translate}}</p>
+              </div>
+              <ng-template #displayBlock>
+                <div class="diary-content">
+                  <p> {{noteArr.Result[0]?.CONTENTS || ''}} </p>
+                </div>
+              </ng-template>
+              <div class="diary-footer">
+                <p> {{noteArr.Result[0]?.AUTHOR||''}} </p>
+                <p>{{noteArr.Result[0]?.NEWSTIME||''}}</p>
+              </div>
+          </div>
+      </div>
+    <div class="head-bar">
+      <nz-select class="select-block" [(ngModel)]="scheduleRegionCode" (ngModelChange)="scheduleRegionFn($event)">
+        <nz-option *ngFor="let option of scheduleRegionOptions" [nzLabel]="option.label" [nzValue]="option.value">
+        </nz-option>
+      </nz-select>
+      <nz-select class="select-block" [(ngModel)]="plantCode" (ngModelChange)="plantFn($event)">
+        <nz-option *ngFor="let option of plantOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+      <nz-date-picker class="select-block" [(ngModel)]="queryDate" (ngModelChange)="dateChangeFn($event)"
+        [nzAllowClear]="false">
+      </nz-date-picker>
+    </div>
+    <div class="chart-block">
+      <div class="echart-block">
+        <div class="echart-head">
+          <p>{{'订单总体完成量'|translate}}</p>
+        </div>
+        <div echarts [options]="chartOption_1" class="chart-content"></div>
+      </div>
+      <div class="echart-block">
+        <div class="echart-head">
+          <p>{{'订单按时完成量'|translate}}</p>
+          <div class="button-block">
+            <div (click)="selectOrderFn(0)" [ngClass]="orderType === 0 ?'order-selected': null">{{'全部'|translate}}</div>
+            <div (click)="selectOrderFn(1)" [ngClass]="orderType === 1 ?'order-selected': null">{{'内销'|translate}}</div>
+            <div (click)="selectOrderFn(2)" [ngClass]="orderType === 2 ?'order-selected': null">{{'外销'|translate}}</div>
+          </div>
+        </div>
+        <div echarts [options]="chartOption_2" class="chart-content"></div>
+      </div>
+      <div class="echart-block" style="flex: 1;margin-right: 0px;">
+        <button nz-button (click)="backEchartsFn()" nzSize="small" class="back-echart-btn"> {{'返回'|translate}} </button>
+        <div class="echart-head">
+          <p>{{'订单生产周期(生产口径)'|translate}}</p>
+        </div>
+        <div echarts [options]="chartOption_3" class="chart-content" (chartClick)="chartClickFn($event)"></div>
+      </div>
+    </div>
+    <div class="chart-bar">
+      <div class="chart-bar-head">
+        <p style="margin: 0px;">{{'作业管控'|translate}}</p>
+        <div class="button-block">
+          <div (click)="selectTimeRange(0)" [ngClass]="timeRange === 0 ?'order-selected': null">{{'当日'|translate}}</div>
+          <div (click)="selectTimeRange(1)" [ngClass]="timeRange === 1 ?'order-selected': null">{{'当月'|translate}}</div>
+        </div>
+        <nz-select class="select-block" nzAllowClear [(ngModel)]="userPlantGroupCode"
+          (ngModelChange)="userPlantGroupFn($event)">
+          <nz-option *ngFor="let option of scheduleGroupOptions" [nzLabel]="option.label" [nzValue]="option.value">
+          </nz-option>
+        </nz-select>
+      </div>
+      <div class="chart-bar-block">
+        <div *ngIf="this.chartOption_5===false;else elseBlock" class="no-data-block">
+          <p>{{'暂无数据'|translate}}</p>
+        </div>
+        <ng-template #elseBlock>
+          <div class="chart-bar-show" echarts [options]="chartOption_5"></div>
+        </ng-template>
+        <div *ngIf="this.chartOption_4===false;else elseBlock_2" class="no-data-block">
+          <p>{{'暂无数据'|translate}}</p>
+        </div>
+        <ng-template #elseBlock_2>
+          <div #elseBlock class="chart-bar-show" echarts [options]="chartOption_4"></div>
+        </ng-template>
+      </div>
+    </div>
+    <div class="gante-container">
+      <div class="gante-block">
+        <nz-spin [nzSpinning]="loadingArr.loading_six" [nzDelay]="0">
+          <div class="gante-content">
+            <div class="head-style">
+              <p>{{'资源负荷率'|translate}}</p>
+              <div class="button-block">
+                <div (click)="selectTimeType(2)" [ngClass]="timeType === 2 ?'order-selected': null">{{'一周'|translate}}</div>
+                <div (click)="selectTimeType(3)" [ngClass]="timeType === 3 ?'order-selected': null">{{'二周'|translate}}</div>
+                <div (click)="selectTimeType(1)" [ngClass]="timeType === 1 ?'order-selected': null">{{'当月'|translate}}</div>
+              </div>
+              <i nz-icon [nzType]="'sync'" [spin]="false" class="refresh-gante-btn" (click)="refreshGanterFn()"></i>
+              <nz-select nzAllowClear class="select-block" [(ngModel)]="userPlantGroupCode_2"
+                (ngModelChange)="userPlantGroupFn_2($event)">
+                <nz-option *ngFor="let option of scheduleGroupOptions" [nzLabel]="option.label"
+                  [nzValue]="option.value"></nz-option>
+              </nz-select>
+            </div>
+            <div id="tutorial" style="width:98%;height: 85%"></div>
+          </div>
+        </nz-spin>
+      </div>
+      <div class="diary-container">
+        <div class="xchart-block">
+          <div class="head-style">
+            <p>{{'工单齐套率'|translate}}</p>
+          </div>
+          <div class="xchart-content" echarts [options]="chartOption_6"></div>
+        </div>
+      </div>
+    </div>
+    <!-- 模态框 -->
+  </div>
+</nz-spin>
+<nz-modal [(nzVisible)]="isVisible" nzTitle="{{'重要事项'|translate}}" [nzFooter]="modalFooter" (nzOnCancel)="handleCancel()">
+  <textarea rows="8" nz-input [(ngModel)]="noteStr"></textarea>
+  <ng-template #modalFooter>
+    <button nz-button nzType="primary" (click)="handleOk()">{{'保存'|translate}}</button>
+    <button nz-button nzType="default" (click)="handleCancel()">{{'关闭'|translate}}</button>
+  </ng-template>
+</nz-modal>
+
+<ng-template #dotTemplate>
+    <div class="dot-template"></div>
+</ng-template>

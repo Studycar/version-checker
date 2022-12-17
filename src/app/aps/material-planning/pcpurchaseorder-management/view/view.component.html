@@ -1,0 +1,63 @@
+<div class="modal-header">
+  <div class="modal-title">{{ '采购订单明细' | translate}} {{ record.id }}</div>
+</div>
+<div *ngIf="Istrue" style=" margin:2px auto;">
+  <button *ngIf="Isdeleteltrue"  style="float: left;background-color: red;" nz-button nzType="primary"  nzDanger (click)="removerows()"><i nz-icon nzType="delete" nzTheme="outline"></i>
+    {{ '删除' | translate}}</button>
+  <button *ngIf="Isapprovaltrue"  style="float: left;" nz-button nzType="primary" (click)="approval()"><i nz-icon nzType="check-circle" nzTheme="outline"></i>
+    {{ '审批' | translate}}</button>
+  <div style="clear: both;"></div>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="3">
+    <se label="{{ '订单编号' | translate}}">
+      <input type="text" nz-input [(ngModel)]="i.poNumber" name="poNumber" readonly [class.disabled]="true">
+    </se>
+    <se label="{{ '工厂' | translate}}" required>
+      <nz-select [(ngModel)]="i.plantCode" name="plantCode" [disabled]="Isview||Isedit" nzAllowClear nzShowSearch required>
+        <nz-option *ngFor="let option of listPlant" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '订单类型' | translate}}" required>
+      <nz-select [(ngModel)]="i.poType" name="poType" [disabled]="Isview||Isedit" nzAllowClear nzShowSearch required>
+        <nz-option *ngFor="let option of listOrderType" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '状态' | translate}} " required>
+      <nz-select [(ngModel)]="i.hstatus" name="hstatus"  readonly [disabled]="true" nzAllowClear nzShowSearch required>
+        <nz-option *ngFor="let option of listPOStatus" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '采购员' | translate}} " required>
+      <input type="text" nz-input [(ngModel)]="i.buyer" name="buyer" readonly [class.disabled]="true">
+    </se>
+    <se label="{{ '保税类型' | translate}}" >
+      <nz-select [(ngModel)]="i.bondedType" name="bondedType" [disabled]="Isview" nzAllowClear nzShowSearch >
+        <nz-option *ngFor="let option of listBondedType" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '供应商' | translate}} " required>
+      <input type="vendorNumber" nz-input [(ngModel)]="i.vendorNumber" name="vendorNumber" readonly [class.disabled]="true">
+    </se>
+
+    <se label="{{ '供应商地点' | translate}} " required>
+      <input type="text" nz-input [(ngModel)]="i.vendorSiteCode" name="vendorSiteCode" readonly [class.disabled]="true">
+    </se>
+    <se label="{{ '币种' | translate}} " required>
+      <input type="text" nz-input [(ngModel)]="i.currencyCode" name="currencyCode" readonly [class.disabled]="true">
+    </se>
+    <se label="{{ '说明' | translate}}" col=2  >
+      <input type="textarea" nz-input colspan="2" [(ngModel)]="i.hcomments" name="hcomments"  [class.disabled]="Isview" >
+    </se>
+  </form>
+</div>
+<ag-grid-angular #agGrid [class]="themeClass" [style.height.px]="gridHeight" [rowData]="gridData" [columnDefs]="columns"
+  [gridOptions]="gridOptions" [myAgGridRowKey]="{tb:'myGridRowKey'}" [suppressMenuHide]="true" [myAgGridState]="'PCPurchaseOrderManagementViewDetial'"
+   (virtualColumnsChanged)="onVirtualColumnsChanged($event)">
+</ag-grid-angular>
+<custom-pager [height]="pagerHeight" [context]="context" [view]='context.view' [(pageSize)]="_pageSize" [(pageNo)]="_pageNo"
+    [fixed]="false" (pageChangeEvent)="onPageChanged($event)">
+ </custom-pager>
+<div class="modal-footer">
+ <!-- <button nz-button type="button" (click)="close()">关闭</button> -->
+</div>

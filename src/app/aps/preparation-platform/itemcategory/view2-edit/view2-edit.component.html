@@ -1,0 +1,22 @@
+<div class="modal-header">
+    <div class="modal-title">编辑 {{ record.id }} 信息</div>
+</div>
+<div style="position: relative; height: 32px" *ngIf="s.Id">
+    <button nz-button nzType="dashed" style="position: absolute; right: 0;" (click)="clear()">重置</button>
+</div>
+<div>
+    <form nz-form #f="ngForm" se-container="2">
+        <se label="{{ '计划组' | translate}}" required>
+            <nz-select [(ngModel)]="s.scheduleGroupCode" name="scheduleGroupCode" nzShowSearch [disabled]="readOnly" required (ngModelChange)="groupChange($event)">
+                <nz-option *ngFor="let option of groupoptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+            </nz-select>
+        </se>
+        <se label="{{ '计划组描述' | translate}}" required>
+            <input nz-input type="text" [(ngModel)]="s.descriptions" name="descriptions" required [disabled]="true">
+        </se>
+    </form>
+</div>
+<div class="modal-footer">
+    <button nz-button type="submit" [nzType]="'primary'" (click)="save()" [disabled]="!f.valid || !f.dirty" [nzLoading]="http.loading">保存</button>
+    <button nz-button type="button" (click)="close()">关闭</button>
+</div>

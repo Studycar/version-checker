@@ -1,0 +1,39 @@
+<div class="modal-header">
+  <div class="modal-title">{{ isModify ? '编辑信息' : '新增信息' | translate }}</div>
+</div>
+<div style="position: relative; height: 32px" *ngIf="isModify">
+  <button nz-button nzType="dashed" style="position: absolute; right: 0;" (click)="clear()">{{'重置' | translate}}</button>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="2">
+    <se label="{{ '产地' | translate }}" required>
+      <nz-select nzShowSearch name="plantCode" [(ngModel)]="i.plantCode" required>
+        <nz-option *ngFor="let op of plantOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '是否长途' | translate }}" required>
+      <nz-select nzShowSearch name="longDistance" [(ngModel)]="i.longDistance" required>
+        <nz-option *ngFor="let op of YesNoOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '收货范围' | translate }}" required>
+      <input nz-input type="text" name="ranges" [(ngModel)]="i.ranges" required>
+    </se>
+    <se label="{{ '收货区域' | translate }}" required>
+      <input nz-input type="text" name="area" [(ngModel)]="i.area" required>
+    </se>
+    <se label="{{ '配送地点' | translate }}" required>
+      <input nz-input type="text" name="place" [(ngModel)]="i.place" required>
+    </se>
+    <se label="{{ '配送仓库' | translate }}" required>
+      <input nz-input type="text" name="warehouse" [(ngModel)]="i.warehouse" required>
+    </se>
+    <se label="{{ '车载吨位' | translate }}" required>
+      <nz-input-number name="deadWeight" [(ngModel)]="i.deadWeight" required></nz-input-number>
+    </se>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="button" (click)="close()">{{ '取消' | translate }}</button>
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save(f.value)" [nzLoading]="http.loading" [disabled]="f.invalid || !f.dirty">{{'保存' | translate }}</button>
+</div>

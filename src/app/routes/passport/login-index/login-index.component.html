@@ -1,0 +1,137 @@
+<div class="home-container">
+  <div class="home-login-box">
+    <div class="login-video">
+      <video width="100%" height="100%" class="video-fill" muted autoplay loop #loginVideo
+             *ngIf='loginVideoImgInfo.IsVideo'>
+        <source [src]="loginVideoImgInfo.LoginVideoImgPartPath" type="video/mp4">
+      </video>
+
+      <img width="100%" height="100%" [src]="loginVideoImgInfo.LoginVideoImgPartPath"
+           *ngIf='!loginVideoImgInfo.IsVideo'/>
+    </div>
+    <div class="home-login">
+      <div class="top-bar">
+        <div class="top-bar-logo">
+          <img src="../../../../assets/logo-color.svg" alt="icon">
+          <p>美云智数APS</p>
+        </div>
+        <div class="transition-lang">
+          <button nz-button nz-dropdown [nzDropdownMenu]="menu"><span>{{lang}}</span> <i nz-icon
+                                                                                         [nzType]="'down'"></i></button>
+          <nz-dropdown-menu #menu="nzDropdownMenu">
+            <ul nz-menu>
+              <li nz-menu-item *ngFor="let item of langs" [nzSelected]="item.code === settingsService.layout.lang"
+                  (click)="change(item.code,item.text)"><span role="img"
+                                                              [attr.aria-label]="item.text">{{item.abbr}}</span>
+                {{item.text}}
+              </li>
+            </ul>
+          </nz-dropdown-menu>
+        </div>
+      </div>
+      <div class="home-body">
+        <section class="login-describe" *ngIf='loginVideoImgInfo.IsVideo'>
+          <h3>
+            数据创造价值<br>
+            智造引领未来
+          </h3>
+          <p>
+            Data Creates Value<br>
+            Intelligent Manufacturing Leads Future
+          </p>
+          <button nz-button nzType="primary" class="play-video" (click)="playFullyVideo()">观看完整视频 <i nz-icon
+                                                                                                     nzType="play-circle"
+                                                                                                     nzTheme="fill"></i>
+          </button>
+        </section>
+        <div class="login-block">
+          <div class="login-block-container">
+            <div class="toggleTab">
+              {{tabRecord.tabTitle}}<img src="./assets/imgs/{{tabRecord.loginToggleImgSrc}}.png" alt="登录方式" *ngIf="!hiddenWXQRCode" (click)="toggleTab()">
+            </div>
+            <div *ngIf="!ewm">
+              <form nz-form [formGroup]="form" (ngSubmit)="submit()" role="form" class="login-form-top">
+                <nz-alert *ngIf="error" [nzType]="'error'" [nzMessage]="error" [nzShowIcon]="true" class="mb-lg">
+                </nz-alert>
+                <nz-form-item>
+                  <nz-form-control>
+                    <nz-input-group nzSize="large" nzPrefixIcon="anticon anticon-user">
+                      <input class="login-input" nz-input formControlName="userName"
+                             placeholder="{{ '用户名' | translate}}">
+                    </nz-input-group>
+                    <nz-form-explain *ngIf="userName.dirty && userName.errors">{{'请输入用户名' | translate}}
+                    </nz-form-explain>
+                  </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
+                  <nz-form-control>
+                    <nz-input-group nzSize="large" nzPrefixIcon="anticon anticon-lock">
+                      <input class="login-input" nz-input type="password" formControlName="password"
+                             placeholder="{{'密码' | translate}}">
+                    </nz-input-group>
+                    <nz-form-explain *ngIf="password.dirty && password.errors">
+                      {{'请输入密码' | translate}}
+                    </nz-form-explain>
+                  </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
+                  <button nz-button type="submit" nzType="primary" class="login-btn" [nzLoading]="loading" nzBlock>
+                    {{'登 录' | translate}}
+                  </button>
+                </nz-form-item>
+              </form>
+            </div>
+            <div class="login-block-qrcode" *ngIf="ewm && !hiddenWXQRCode">
+              <img src="{{loginQrCodeUrl}}" alt="login-qrcode">
+              <p>
+                <span>请使用微信扫描二维码登录<br>“美云智数APS”</span>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="product-description">
+    <p class="text-title">产品概述</p>
+    <p class="product-desc-text">
+      美云智数APS是高级计划排程产品，面向智能制造、工业互联网发展方向，帮助企业搭建三层计划体系，通过推、拉结合计划模式，拉通生产制造价值流关键环节，助力计划排产效率提升；美云智数APS覆盖企业需求管理、产销协同，订单承诺、约束计划、物料计划、车间排程、生产备料等业务领域。
+    </p>
+    <div class="product-item">
+      <div class="ProductItem-container" *ngFor="let item of productArr; let i = index">
+        <div class="product-imgs">
+          <img src="../../../../assets/imgs/product_item{{i+1}}.png " alt="1">
+        </div>
+        <p *ngFor="let text of textArr; let j = index">{{item[j]}}</p>
+      </div>
+    </div>
+  </div>
+  <div class="service-worth">
+    <p class="text-title">业务价值</p>
+    <p class="service-description">
+      承载供应链业务管理框架，助力多维度运营指标管控：准交付、提效率、降库存；建立产销协同规范，围绕订单交付，驱动业务信息化、数字化、自动化变革，引领制造行业的最佳业务实践；透明、可视的全价值链绩效呈现，助力企业打破瓶颈，无缝衔接供应链上下游协同。
+    </p>
+    <div class="service-worth-img">
+      <div id="ServiceWorthImg-container" class="ServiceWorthImg-container"
+           *ngFor="let textDesc of serviceArr; let i = index">
+        <div class="img-zoom-in">
+          <img src="../../../../assets/imgs/Bitmap{{i+1}}.png" alt="1">
+        </div>
+        <p>{{textDesc}}</p>
+      </div>
+    </div>
+  </div>
+  <div class="about-us">
+    <p class="text-title">关于我们</p>
+    <p>美云智数APS系统在智能制造时代为企业提供计划排程领域整体的一体化解决方案，融汇价值流拉通，助力企业提升运营效率</p>
+  </div>
+  <div class="footer">
+    <p>COPYRIGHT © 2016-2019 广东美云智数科技有限公司</p>
+  </div>
+  <div class="video-fullyscreen" [style.display]="fullyVideoShow?'block':'none'" *ngIf="loginVideoImgInfo.IsVideo">
+    <i nz-icon [nzType]="'close'" (click)="closeFullyVideo()"></i>
+    <video width="100%" height="100%" #fullyVideo>
+      <source [src]="loginVideoImgInfo.LoginVideoImgfullPath" type="video/mp4" muted preload="auto">
+    </video>
+  </div>
+</div>

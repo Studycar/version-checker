@@ -1,0 +1,32 @@
+<custom-formquery [queryParams]="queryParams" [context]="context">
+  <span>
+    <custom-button text="{{ '新增' | translate}}" (clickEvent)="save()" [src]="'基础icon-新增'">
+    </custom-button>
+    <custom-button text="{{ '删除' | translate}}" (clickEvent)="delete()" [src]="'基础icon-删除'">
+    </custom-button>
+    <custom-button text="{{ '导出' | translate}}" (clickEvent)="export()" [src]="'基础icon-导出'">
+    </custom-button>
+    <custom-button text="{{ '脚本配置' | translate}}" (clickEvent)="config()" [src]="'脚本配置'">
+    </custom-button>
+    <custom-button text="{{ '例外计算' | translate}}" (clickEvent)="calculate()" [src]="'例外计算'">
+    </custom-button>
+    <custom-button text="{{ '例外信息' | translate}}" (clickEvent)="queryDetail()" [src]="'例外信息'">
+    </custom-button>
+  </span>
+</custom-formquery>
+<nz-card>
+  <ag-grid-angular #agGrid [class]="themeClass" [style.height.px]="gridHeight" [rowData]="gridData"
+    [columnDefs]="gridColumns" [gridOptions]="gridOptions" (selectionChanged)="onSelectionChanged($event)"
+    [myAgGridRowKey]="{tb:'EXCEPRION_SSS'}" [myAgGridState]="'dataexception'">
+  </ag-grid-angular>
+  <custom-pager [height]="pagerHeight" [context]="context" [view]='context.view' [(pageSize)]="_pageSize"
+    [(pageNo)]="_pageNo" (pageChangeEvent)="onPageChanged($event)"></custom-pager>
+  <custom-excelexport [expColumns]='expColumns' [expColumnsOptions]='expColumnsOptions' fileName='例外数据检查' #excelexport>
+  </custom-excelexport>
+</nz-card>
+
+<ng-template #customTemplate let-dataItem>
+<span title="{{ '编辑' | translate}}" (click)="save(dataItem)" class="pointer">
+                              <i class="anticon anticon-edit"></i>
+                          </span>
+</ng-template>

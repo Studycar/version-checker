@@ -1,0 +1,15 @@
+<div class="container">
+    <div class="container-action">
+        <nz-month-picker [nzAllowClear]="false" [(ngModel)]="selectMonth" (ngModelChange)="onSelectMonthChange($event)"></nz-month-picker>
+    </div>
+    <div class="date-area">
+        <ul class="title-list">
+            <li *ngFor="let item of weekLists" class="title-item">{{item | translate}}</li>
+        </ul>
+        <ul class="date-list">
+            <li *ngFor="let item of dateLists" class="date-item" (click)="cellClick(item)">
+                <div [ngClass]="{'checked': item.checked}">{{item.day}}</div>
+            </li>
+        </ul>
+    </div>
+</div>

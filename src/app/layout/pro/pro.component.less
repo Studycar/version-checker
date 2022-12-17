@@ -1,0 +1,20 @@
+@backBlue: #1344ba;
+@backSubBlue: #05287a;
+.reuse-tab {
+  border-bottom: none;
+}
+::ng-deep .alain-pro__sider-logo {
+  background: @backBlue !important;
+}
+.alain-pro__side-nav {
+  background-image: url('/assets/menu-background.jpg');
+  background-color: @backBlue;
+  background-size: cover;
+  ::ng-deep .ant-menu-dark {
+    background: transparent !important;
+  }
+  ::ng-deep .ant-menu-sub {
+    background: @backSubBlue !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25) inset !important;
+  }
+} 

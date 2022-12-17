@@ -1,0 +1,77 @@
+<div class="modal-header">
+  <div class="modal-title">{{ (isModify?'编辑信息':'新增信息') | translate}} </div>
+</div>
+<div style=" margin:2px auto;" *ngIf="isModify">
+  <button style="float: right;" nz-button nzType="dashed" (click)="clear()">{{ '重置' | translate}}</button>
+  <div style="clear: both;"></div>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="2">
+    <!-- <se label="{{ '工厂' | translate}}" required>
+      <nz-select nzShowSearch [(ngModel)]="i.plantCode" name="plantCode" (ngModelChange)="changePlant()"
+        [nzDisabled]="isModify" required>
+        <nz-option *ngFor="let option of optionListPlant" [nzLabel]="option.label" [nzValue]="option.value">
+        </nz-option>
+      </nz-select>
+    </se> -->
+    <se label="{{ '工位编码' | translate}}" required>
+      <input type="text" nz-input [(ngModel)]="i.postCode" name="postCode" required>
+    </se>
+    <se label="{{ '工位名称' | translate}}" required>
+      <input type="text" nz-input [(ngModel)]="i.postName" name="postName" required>
+    </se>
+    <se label="{{ '工位类型' | translate}}" required>
+      <nz-select nzShowSearch [(ngModel)]="i.postType" name="postType" required>
+        <nz-option *ngFor="let option of optionListPostType" [nzLabel]="option.label" [nzValue]="option.value">
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '是否关键岗' | translate}}" required>
+      <nz-select nzShowSearch [(ngModel)]="i.isKey" name="isKey" required>
+        <nz-option *ngFor="let option of optionListEnable" [nzLabel]="option.label" [nzValue]="option.value">
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '是否公共岗' | translate}}" required>
+      <nz-select nzShowSearch [(ngModel)]="i.isPublic" name="isPublic" required>
+        <nz-option *ngFor="let option of optionListEnable" [nzLabel]="option.label" [nzValue]="option.value">
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '工位等级' | translate}}" required>
+      <nz-select nzShowSearch [(ngModel)]="i.postGrade" name="postGrade" required>
+        <nz-option *ngFor="let option of optionListPostGrade" [nzLabel]="option.label" [nzValue]="option.value">
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '工位大类' | translate}}" required>
+      <nz-select nzShowSearch [(ngModel)]="i.category" name="category" required>
+        <nz-option *ngFor="let option of optionListCategory" [nzLabel]="option.label" [nzValue]="option.value">
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '工位小类' | translate}}" required>
+      <nz-select nzShowSearch [(ngModel)]="i.subCat" name="subCat" required>
+        <nz-option *ngFor="let option of optionListSubcat" [nzLabel]="option.label" [nzValue]="option.value">
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '是否认证上岗' | translate}}" required>
+      <nz-select nzShowSearch [(ngModel)]="i.isNeeded" name="isNeeded" required>
+        <nz-option *ngFor="let option of optionListEnable" [nzLabel]="option.label" [nzValue]="option.value">
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '是否有效' | translate}}" required>
+      <nz-select nzShowSearch [(ngModel)]="i.validYn" name="validYn" required>
+        <nz-option *ngFor="let option of optionListEnable" [nzLabel]="option.label" [nzValue]="option.value">
+        </nz-option>
+      </nz-select>
+    </se>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="submit" [nzType]="'primary'" (click)="saveOrEdit(f)"
+    [disabled]="!f.valid || !f.dirty">{{ '保存' | translate}}</button>
+  <button nz-button type="button" (click)="close()">{{ '关闭' | translate}}</button>
+</div>

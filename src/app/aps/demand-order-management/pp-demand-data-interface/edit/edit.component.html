@@ -1,0 +1,175 @@
+<div class="modal-header">
+  <div class="modal-title">{{ title | translate}}</div>
+</div>
+<div style="position: relative; height: 32px" *ngIf="i.id">
+  <button nz-button nzType="dashed" style="position: absolute; right: 0;" (click)="clear()">{{'重置' | translate}}</button>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="3" [labelWidth]=140>
+    <nz-collapse [nzAccordion]=false nzAccordion>
+      <nz-collapse-panel [nzHeader]="panelTitle1" [nzActive]="panelActive1">
+        <se label="{{ '工厂' | translate}}" required>
+          <nz-select #select [(ngModel)]="i.plantCode" nzShowSearch (nzScrollToBottom)="loadplant()"
+            (ngModelChange)="onChangePlant($event)" name="PLANT_CODE" [nzDisabled]="IsDisable" required>
+            <nz-option *ngFor="let o of optionListPlant" [nzValue]="o.plantCode" [nzLabel]="o.plantCode"></nz-option>
+            <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+              <i class="anticon anticon-loading anticon-spin loading-icon"></i> Loading Data...
+            </nz-option>
+          </nz-select>
+        </se>
+        <se label="{{'物料' | translate}}" required>
+          <input type="text" nz-input [(ngModel)]="i.itemCode" name="ITEM_CODE" [disabled]="IsDisable" required>
+        </se>
+        <se label="{{ '订单来源' | translate}}" required>
+          <nz-select #select [(ngModel)]="i.source" name="SOURCE" [nzDisabled]="IsDisable" required>
+            <nz-option *ngFor="let option of sources" [nzLabel]="option.label" [nzValue]="option.value"
+              [nzDisabled]="option.disabled"></nz-option>
+          </nz-select>
+        </se>
+        <se label="{{ '需求订单号' | translate}}" required>
+          <input type="text" nz-input [(ngModel)]="i.reqNumber" name="REQ_NUMBER" [disabled]="IsDisable" required>
+        </se>
+        <se label="{{ '需求订单行号' | translate}}" required>
+          <nz-input-number [(ngModel)]="i.reqLineNum" name="REQ_LINE_NUM" [nzMin]="1" [nzDisabled]="IsDisable"
+            required></nz-input-number>
+        </se>
+        <se label="{{ '订单版本' | translate}}">
+          <input type="text" nz-input [(ngModel)]="i.reqVersion" [disabled]="IsDisable" name="REQ_VERSION">
+        </se>
+        <se label="{{ '需求类型' | translate}}" required>
+          <nz-select #select [(ngModel)]="i.reqType" nzShowSearch name="REQ_TYPE" (ngModelChange)="onChangeReqType()"
+            [nzDisabled]="IsDisable" required>
+            <nz-option *ngFor="let o of applicationReqType" [nzValue]="o.value" [nzLabel]="o.label"></nz-option>
+            <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+              <i class="anticon anticon-loading anticon-spin loading-icon"></i> Loading Data...
+            </nz-option>
+          </nz-select>
+        </se>
+        <se label="{{ '标准类型' | translate}}" required>
+          <nz-select #select [(ngModel)]="i.standardFlag" nzShowSearch (nzScrollToBottom)="loadYesNO()"
+            (ngModelChange)="onChangeStandardType()" name="STANDARD_FLAG" [nzDisabled]="true" required>
+            <nz-option *ngFor="let o of applicationYesNo" [nzValue]="o.value" [nzLabel]="o.label"></nz-option>
+            <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+              <i class="anticon anticon-loading anticon-spin loading-icon"></i> Loading Data...
+            </nz-option>
+          </nz-select>
+        </se>
+        <se label="{{ '需求数量' | translate}}" required>
+          <nz-input-number [(ngModel)]="i.reqQty" name="REQ_QTY" [nzDisabled]="false" [nzMin]="1" required>
+          </nz-input-number>
+        </se>
+        <se label="{{ '需求日期' | translate}}" required>
+          <nz-date-picker [(ngModel)]="i.reqDate" name="REQ_DATE" [nzDisabled]="IsDisable" required></nz-date-picker>
+        </se>
+        <se label="{{ '承诺日期' | translate}}">
+          <nz-date-picker [(ngModel)]="i.promiseDate" name="PROMISE_DATE" [nzDisabled]="IsDisable"></nz-date-picker>
+        </se>
+        <se label="{{ '需求说明' | translate}}">
+          <input type="text" nz-input [(ngModel)]="i.reqCommnet" [disabled]="IsDisable" name="REQ_COMMENT">
+        </se>
+      </nz-collapse-panel>
+      <nz-collapse-panel [nzHeader]="panelTitle2" [nzActive]="panelActive2">
+        <se label="{{ '清关日期' | translate}}">
+          <nz-date-picker [(ngModel)]="i.customsClearanceDate" name="CUSTOMS_CLEARANCE_DATE" [nzDisabled]="IsDisable">
+          </nz-date-picker>
+        </se>
+        <se label="{{ '预计到货日期' | translate}}">
+          <nz-date-picker [(ngModel)]="i.scheduleArrovalDate" name="SCHEDULE_ARRIVAL_DATE" [nzDisabled]="IsDisable">
+          </nz-date-picker>
+        </se>
+        <se label="{{ '销售业务员' | translate}}">
+          <input type="text" nz-input [(ngModel)]="i.salesrepContact" [disabled]="IsDisable" name="SALESREP_CONTACT">
+        </se>
+        <se label="{{ '销售大区' | translate}}">
+          <input type="text" nz-input [(ngModel)]="i.salesRegion" [disabled]="IsDisable" name="SALES_REGION">
+        </se>
+        <se label="{{ '销售区域' | translate}}">
+          <input type="text" nz-input [(ngModel)]="i.salesArea" [disabled]="IsDisable" name="SALES_AREA">
+        </se>
+        <se label="{{ '客户代码' | translate}}">
+          <input type="text" nz-input [(ngModel)]="i.customerNumber" [disabled]="IsDisable" name="CUSTOMER_NUMBER">
+        </se>
+        <se label="{{ '客户型号' | translate}}">
+          <input type="text" nz-input [(ngModel)]="i.customerModel" [disabled]="IsDisable" name="CUSTOMER_MODEL">
+        </se>
+        <se label="{{ '客户订单号' | translate}}">
+          <input type="text" nz-input [(ngModel)]="i.custPoNumber" [disabled]="IsDisable" name="CUST_PO_NUMBER">
+        </se>
+        <se label="{{ '客户订单行号' | translate}}">
+          <input type="text" nz-input [(ngModel)]="i.custPoLineNum" [disabled]="IsDisable" name="CUST_PO_LINE_NUM">
+        </se>
+        <se label="{{ '风险解除日期' | translate}}">
+          <nz-date-picker [(ngModel)]="i.riskClearanceDate" name="RISK_CLEARANCE_DATE" [nzDisabled]="IsDisable">
+          </nz-date-picker>
+        </se>
+        <se label="{{ '生产检验日期' | translate}}">
+          <nz-date-picker [(ngModel)]="i.productionInspectionDate" name="PRODUCTION_INSPECTION_DATE"
+            [nzDisabled]="IsDisable"></nz-date-picker>
+        </se>
+
+        <se label="{{ '客户等级' | translate}}">
+          <nz-select [(ngModel)]="i.attribute8" nzShowSearch name="ATTRIBUTE8" [nzDisabled]="IsDisable">
+            <nz-option *ngFor="let o of gradeList" [nzValue]="o.value" [nzLabel]="o.label"></nz-option>
+          </nz-select>
+        </se>
+        <se label="{{ '收货人电话' | translate}}">
+          <input type="text" nz-input [(ngModel)]="i.attribute9" [disabled]="IsDisable" name="ATTRIBUTE9">
+        </se>
+        <se label="{{ '送货地址' |translate}}">
+          <input type="text" nz-input [(ngModel)]="i.attribute10" [disabled]="IsDisable" name="ATTRIBUTE10">
+        </se>
+        <se label="{{ '运费承担' | translate}}">
+          <input type="text" nz-input [(ngModel)]="i.attribute11" [disabled]="IsDisable" name="ATTRIBUTE11">
+        </se>
+        <se label="{{ '币种' | translate}}">
+          <input type="text" nz-input [(ngModel)]="i.attribute12" [disabled]="IsDisable" name="ATTRIBUTE12">
+        </se>
+        <se label="{{ '收款状态' | translate}}">
+          <input type="text" nz-input [(ngModel)]="i.attribute13" [disabled]="IsDisable" name="ATTRIBUTE13">
+        </se>
+        <se label="{{ '提货方式' |translate}}">
+          <input type="text" nz-input [(ngModel)]="i.attribute14" [disabled]="IsDisable" name="ATTRIBUTE14">
+        </se>
+        <se label="{{ '装载车型' |translate}}">
+          <input type="text" nz-input [(ngModel)]="i.attribute15" [disabled]="IsDisable" name="ATTRIBUTE15">
+        </se>
+      </nz-collapse-panel>
+      <nz-collapse-panel [nzHeader]="panelTitle3" [nzActive]="panelActive3">
+        <se label="{{ '非标计划组' | translate}}" [required]="Istrue">
+          <nz-select #select [(ngModel)]="i.scheduleGroupCode" (ngModelChange)="onChangeScheduleGroup()"
+            [nzDisabled]="IsDisable" name="SCHEDULE_GROUP_CODE" [required]="Istrue">
+            <nz-option *ngFor="let option of schedulegroupcodes" [nzLabel]="option.label" [nzValue]="option.value"
+              [nzDisabled]="option.disabled"></nz-option>
+          </nz-select>
+        </se>
+        <se label="{{ '非标生产线' | translate}}" [required]="Istrue">
+          <nz-select #select [(ngModel)]="i.resourceCode" [nzDisabled]="IsDisable" name="RESOURCE_CODE"
+            [required]="Istrue">
+            <nz-option *ngFor="let option of productlines" [nzLabel]="option.label" [nzValue]="option.value"
+              [nzDisabled]="option.disabled"></nz-option>
+          </nz-select>
+        </se>
+
+        <se label="{{ '小时产出' | translate}}" [required]="Istrue">
+          <nz-input-number [(ngModel)]="i.uph" [nzDisabled]="IsDisable" name="UPH" [required]="Istrue">
+          </nz-input-number>
+        </se>
+
+        <se label="{{ 'MRP净值标识' | translate}}" [required]="Istrue">
+          <nz-select #select [(ngModel)]="i.mrpNetFlag" nzShowSearch (nzScrollToBottom)="loadYesNO()"
+            name="MRP_NET_FLAG" [nzDisabled]="IsDisable">
+            <nz-option *ngFor="let o of applicationYesNo" [nzValue]="o.value" [nzLabel]="o.label"></nz-option>
+          </nz-select>
+        </se>
+        <se label="{{ '取消说明' | translate}}">
+          <input type="text" nz-input [(ngModel)]="i.cancelComments" [disabled]="IsDisable" name="CANCEL_COMMENTS">
+        </se>
+      </nz-collapse-panel>
+    </nz-collapse>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save()" [disabled]="f.invalid || !f.dirty"
+    [nzLoading]="http.loading">{{ '保存' | translate}}</button>
+  <button nz-button type="button" (click)="close()">{{ '关闭' | translate}}</button>
+</div>

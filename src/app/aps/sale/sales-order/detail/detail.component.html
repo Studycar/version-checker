@@ -1,0 +1,63 @@
+<div class="modal-header">
+  <div class="modal-title">{{ '销售订单明细信息' | translate }}</div>
+</div>
+<custom-formquery [queryParams]="queryParams" [context]="context" >
+  <!-- <custom-button text="{{ '新增' | translate }}" [src]="'基础icon-新增'" (clickEvent)="add()"></custom-button>
+  <custom-button text="{{ '删除' | translate }}" [src]="'基础icon-删除'" (clickEvent)="remove()"></custom-button> -->
+  <custom-button text="{{ '导出' | translate }}" [src]="'基础icon-导出'" (clickEvent)="export()"></custom-button>
+</custom-formquery>
+<nz-card>
+  <ag-grid-angular #agGrid [class]="themeClass" [style.height.px]="gridHeight-200" [rowData]="gridData"
+    [columnDefs]="columns" [gridOptions]="gridOptions" [myAgGridState]="'hw-sales-order-detail'"
+    [myAgGridRowKey]="{tb:'PS_SALES_ORDER_DETAILED'}" (filterChanged)="onFilterChanged($event)">
+  </ag-grid-angular>
+  <custom-pager [height]="pagerHeight" [context]="context" [view]='context.view' [(pageSize)]="_pageSize" [fixed]="false"
+    [(pageNo)]="_pageNo" (pageChangeEvent)="onPageChanged($event)">
+    <!-- <ng-container name="info">
+      <span>合计：{{count}} 行</span>&nbsp;
+      <span>重量：{{summaryQuantity}} 吨</span>&nbsp;
+      <span>含税金额：{{summaryMoney}} 元</span>
+    </ng-container> -->
+  </custom-pager>
+  <custom-excelexport [expColumns]='expColumns' [expColumnsOptions]='expColumnsOptions' fileName='销售订单明细' #excelexport></custom-excelexport>
+
+</nz-card>
+<ng-template #customTemplate let-dataItem>
+  <div *ngIf="!dataItem.isBottomRowData">
+    <!-- 以下状态下隐藏修改和删除按钮，PS_SALES_ORDER_DETAILED_STATE = 40、60、80、90 -->
+    <ng-container *ngIf="['40','60','80','90'].indexOf(dataItem.salesOrderDetailedState) === -1 && !dataItem.returnFlag">
+      <!-- <span title="编辑" (click)="add(dataItem)" style="cursor: Pointer">
+        <i class="anticon anticon-edit"></i>
+      </span>
+      <nz-divider nzType="vertical"></nz-divider> -->
+      <span title="{{ '删除' | translate}}" nz-popconfirm nzTitle="{{ '是否确认删除该记录?' | translate}}"
+        (nzOnConfirm)="remove(dataItem);" class="pointer">
+        <i class="anticon anticon-delete"></i>
+      </span>
+      <nz-divider nzType="vertical"></nz-divider>
+    </ng-container>
+    <span title="{{ '查看' | translate}}" (click)="viewData(dataItem)" style="cursor: Pointer">
+      <i class="anticon anticon-eye"></i>
+    </span>
+    <nz-divider nzType="vertical"></nz-divider>
+    <ng-container *ngIf="dataItem.specialMarkup && ['10','70'].indexOf(dataItem.salesOrderDetailedState) > -1">
+      <span title="{{ '特殊价格审批' | translate}}" style="cursor: Pointer" (click)="showSpecialPriceModal(dataItem)">
+        <i class="anticon anticon-audit"></i> 
+      </span>
+      <nz-divider nzType="vertical"></nz-divider>
+    </ng-container>
+    <ng-container *ngIf="
+      ['80', '90'].includes(dataItem.salesOrderDetailedState) === false
+      && ['10', '40'].includes(dataItem.highPriceState) === true
+      && dataItem.salesOrderState !== '40'
+    ">
+      <span title="{{ '高价先出审批' | translate}}" style="cursor: Pointer" (click)="showHighPriceModal(dataItem)">
+        <i class="anticon anticon-money-collect"></i> 
+      </span>
+      <nz-divider nzType="vertical"></nz-divider>
+    </ng-container>
+    <span title="{{ '修改记录' | translate}}" style="cursor: Pointer" (click)="showChangeDetail(dataItem)">
+      <img src="/assets/icons/operate-icons/history.svg" />
+    </span>
+  </div>
+</ng-template>

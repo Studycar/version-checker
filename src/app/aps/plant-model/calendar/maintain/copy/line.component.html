@@ -1,0 +1,104 @@
+<style type="text/css">
+  .right-float {
+    float: right;
+  }
+
+  .relative {
+    position: relative;
+  }
+
+  .group-title {
+    position: absolute;
+    top: -15px;
+    left: 10px;
+    background-color: white;
+    padding: 5px;
+  }
+
+  .group {
+    border: solid 1px #DCDCDC;
+    margin: 5px auto 20px;
+    padding: 15px 10px 5px;
+  }
+</style>
+<div class="modal-header">
+  <div class="modal-title">{{ '工作日历复制' | translate}} </div>
+</div>
+<div style=" margin:2px auto;">
+  <button class="right-float" nz-button nzType="dashed" (click)="clear()">
+    {{ '重置' | translate}}</button>
+  <div style="clear: both;"></div>
+</div>
+<div class="relative">
+  <div class="group-title">{{ '来源日历' | translate}}</div>
+  <div class="group">
+    <form nz-form #f1="ngForm" se-container="2" [labelWidth]="150">
+      <se label="{{ '事业部' | translate}}" required>
+        <nz-select nzShowSearch [(ngModel)]="queryValues.scheduleRegionCode"
+          (ngModelChange)="regionChange($event)" name="scheduleRegionCode" required>
+          <nz-option *ngFor="let option of regionOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+        </nz-select>
+      </se>
+      <se label="{{ '工厂' | translate}}" required>
+        <nz-select nzShowSearch [(ngModel)]="queryValues.plantCode" name="plantCode"
+          (ngModelChange)="plantChange($event)">
+          <nz-option *ngFor="let option of plantOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+        </nz-select>
+      </se>
+      <se label="{{ '计划组' | translate}}" required>
+        <nz-select nzShowSearch [(ngModel)]="queryValues.scheduleGroupCode"
+          (ngModelChange)="groupChange($event)" name="scheduleGroupCode" required>
+          <nz-option *ngFor="let option of groupOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+        </nz-select>
+      </se>
+      <se label="{{ '资源' | translate}}" required>
+        <nz-select nzShowSearch [(ngModel)]="queryValues.resourceCode" (ngModelChange)="lineChange($event)"
+          name="resourceCode" required>
+          <nz-option *ngFor="let option of lineOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+        </nz-select>
+      </se>
+      <se label="{{ '日历编码' | translate}}">
+        <!-- <input type="text" nz-input [(ngModel)]="queryValues.calendarCode" name="calendarCode" readonly="true"
+          [class.disabled]="true"> -->
+          <nz-select nzShowSearch [(ngModel)]="queryValues.calendarCode" name="calendarCode"
+           [nzDisabled]="true">
+        <nz-option *ngFor="let option of calendarOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+      </se>
+      <se label="{{ '车间班次' | translate}}" required>
+        <nz-select nzShowSearch [(ngModel)]="queryValues.shiftCode" (ngModelChange)="shiftChange($event)"
+          name="shiftCode" required>
+          <nz-option *ngFor="let option of shiftOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+        </nz-select>
+      </se>
+      <se label="{{ '是否有效' | translate}}">
+        <nz-select nzShowSearch [(ngModel)]="queryValues.enableFlag" name="enableFlag" [nzDisabled]="true">
+          <nz-option *ngFor="let option of enableOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+        </nz-select>
+      </se>
+    </form>
+  </div>
+</div>
+<div class="relative">
+  <div class="group-title">{{ '日期范围' | translate}}</div>
+  <div class="group">
+    <form nz-form #f2="ngForm" se-container="2" [labelWidth]="150">
+      <se label="{{ '开始日期' | translate}}" required>
+        <nz-date-picker nzFormat="yyyy-MM-dd" [(ngModel)]="queryValues.showStartTime" name="showStartTime"
+          nzPlaceHolder="请选择日期" required>
+        </nz-date-picker>
+      </se>
+      <se label="{{ '结束日期' | translate}}" required>
+        <nz-date-picker nzFormat="yyyy-MM-dd" [(ngModel)]="queryValues.showEndTime" name="showEndTime"
+          nzPlaceHolder="请选择日期" required>
+        </nz-date-picker>
+      </se>
+    </form>
+  </div>
+</div>
+<div class="modal-footer">
+  <button nz-button type="button" (click)="close()">{{ '关闭' | translate}}</button>
+  <button nz-button type="button" [nzType]="'primary'" (click)="next()" [disabled]="f1.invalid||f2.invalid"
+    [nzLoading]="http.loading">{{
+    '下一步' | translate}}</button>
+</div>

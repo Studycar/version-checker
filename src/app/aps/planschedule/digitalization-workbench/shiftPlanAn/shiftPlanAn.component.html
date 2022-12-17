@@ -1,0 +1,57 @@
+<!--
+ * @Author: Zwh
+ * @contact: zhangweika@outlook.com
+ * @Date: 2019-08-20 09:19:45
+ * @LastEditors: zhangwh17
+ * @LastEditTime: 2021-09-29 14:38:25
+ * @Note: ...
+ -->
+ <div class="modal-header" *ngIf="pShowTitle">
+  <div class="modal-title">{{ ('排产表') | translate}} </div>
+</div>
+<div class="content-title">
+  <button nz-button (click)="export()" class="mx-sm">
+    <i class="anticon anticon-export"></i>{{ '导出' | translate}}
+  </button>
+  <button nz-button (click)="expandForm=!expandForm" nzType="default">
+    <i nz-icon [nzType]="expandForm?'anticon-up':'anticon-down'"></i> {{ '搜索' | translate}}
+  </button>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="2" labelWidth="100">
+    <se label="工厂" *ngIf="expandForm" required>
+      <nz-select [(ngModel)]="queryParams.values.plantCode" name="plantCode" required>
+        <nz-option *ngFor="let option of plantOptions" [nzLabel]="option.label" [nzValue]="option.value">
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '资源' | translate }}" *ngIf="expandForm">
+      <custom-tree-select [dataTree]="treeDataTable" [columns]="treeNodeColumns" keyField="id" valueField="code"
+        [valueLevel]="1" [valueObject]="lineIdsStrS" valueObjectField="ResourceCode" [selectionRef]="lineIdsStrOptions">
+      </custom-tree-select>
+    </se>
+    <!-- <se *ngIf="expandForm">
+      <label nz-checkbox [(ngModel)]="queryParams.values.IS_SATURDAY_WORK" name="IS_SATURDAY_WORK">设置周六为工作日</label>
+    </se> -->
+
+    <se label="{{ '时间范围' | translate}}" *ngIf="expandForm" required>
+      <nz-range-picker [nzAllowClear]="false" nzShowTime nzFormat="yyyy-MM-dd HH:mm:ss"
+        [(ngModel)]="queryParams.values.dateTimeRange" name="dateTimeRange" required>
+      </nz-range-picker>
+    </se>
+  </form>
+  <div *ngIf="expandForm" style="text-align:right; margin-bottom: 5px;">
+    <button nz-button type="submit" [nzType]="'primary'" (click)="query()"
+      [disabled]="f.invalid && lineIdsStrS">查询</button>
+    <button nz-button type="reset" class="mx-sm" (click)="clear()">重置</button>
+  </div>
+</div>
+<nz-card>
+  <ag-grid-angular #agGrid domLayout='normal' [class]="themeClass" [style.height.px]="gridHeight" [rowData]="gridData"
+    [columnDefs]="columns" [gridOptions]="gridOptions"
+    [pagination]="false" [myAgGridRowKey]="{tb:'PS_SHIFT_SCHEDULE_DETAIL'}">
+  </ag-grid-angular>
+  <div>{{ '总记录数：' | translate}}{{gridData.length}}</div>
+  <custom-excelexport [expColumns]='expColumns' [expColumnsOptions]='expColumnsOptions' fileName='排产表' #excelexport>
+  </custom-excelexport>
+</nz-card>

@@ -1,0 +1,31 @@
+<div class="modal-header" *ngIf="pShowTitle">
+  <div class="modal-title">{{ ('排产表') | translate}} </div>
+</div>
+<custom-formquery [queryParams]="queryParams" [context]="context" [labelWidth]="80" (event1)="plantChange($event)">
+  <button nz-button (click)="export()">
+    <i class="anticon anticon-export"></i> {{ '导出' | translate}}
+  </button>
+</custom-formquery>
+<nz-card>
+  <kendo-grid #grid [data]="view" [height]="gridHeight" [pageable]="false" [columnMenu]="true" [resizable]="true" [loading]="loading"
+    [myGridRowKey]="{tb:'PS_SHIFT_SCHEDULE_DETAIL'}" [myGridState]="'shiftplan'">
+    <kendo-grid-messages pagerPage="{{ '分页' | translate}}" pagerOf="{{ '的' | translate}}" pagerItems="{{ '总数' | translate}}"
+      pagerItemsPerPage="{{ '页项' | translate}}" groupPanelEmpty="Drag here to group" noRecords="{{ '没有数据' | translate}}">
+    </kendo-grid-messages>
+    <kendo-grid-column *ngFor="let col of columns" [field]="col.field" [title]="col.title| translate" [locked]="col.locked" [width]="col.width"
+      [filter]="col.filter?col.filter:''" [style]="gridLineStyle">
+      <ng-template kendoGridCellTemplate let-dataItem *ngIf="col.ui?.type === 'select'">
+        {{optionsFind(dataItem[col.field],col.ui.index)?.label}}
+      </ng-template>
+      <ng-template kendoGridCellTemplate let-dataItem *ngIf="col.ui?.tooltip">
+        <ellipsis lines="{{col.ui?.tooltip}}">
+          <span nz-tooltip [nzTitle]="dataItem[col.field]">{{dataItem[col.field]}}</span>
+        </ellipsis>
+      </ng-template>
+      <ng-template kendoGridFooterTemplate *ngIf="col.ui?.showTotal === true">
+        总数:{{view.data.length}}
+      </ng-template>
+    </kendo-grid-column>
+  </kendo-grid>
+  <custom-excelexport [expColumns]='expColumns' [expColumnsOptions]='expColumnsOptions' fileName='排产表' #excelexport></custom-excelexport>
+</nz-card>

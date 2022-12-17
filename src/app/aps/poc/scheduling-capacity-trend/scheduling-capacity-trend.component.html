@@ -1,0 +1,30 @@
+<custom-formquery [queryParams]="queryParams" [context]="context"></custom-formquery>
+<nz-card>
+    <div>
+        <ag-grid-angular
+          #agGrid
+          [class]="themeClass"
+          [style.height.px]="gridHeight"
+          [rowData]="gridData"
+          [columnDefs]="columns"
+          [gridOptions]="gridOptions"
+          [paginationPageSize]="_pageSize * 4"
+          [suppressRowTransform]="true"
+          [components]="components"
+          [myAgGridRowKey]="{tb:'SOP_FORECAST_PLAN_DETAIL'}"
+          [myAgGridState]="'purchaseCheck'"
+        ></ag-grid-angular>
+        <custom-pager
+            [height]="pagerHeight"
+            [context]="context"
+            [view]='context.view'
+            [(pageSize)]="_pageSize"
+            [(pageNo)]="_pageNo"
+            [fixed]="false"
+            (pageChangeEvent)="onPageChanged($event)">
+        </custom-pager>
+    </div>
+</nz-card>
+<nz-card>
+    <div echarts [options]="options" style="width: 100%; height: 400px;"></div>
+</nz-card>

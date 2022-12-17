@@ -1,0 +1,44 @@
+<div class="modal-header">
+  <div class="modal-title">{{ (isModify?'编辑信息':'新增信息') | translate}} </div>
+</div>
+<div style=" margin:2px auto;" *ngIf="isModify">
+  <button style="float: right;" nz-button nzType="dashed" (click)="clear()">{{ '重置' | translate}}</button>
+  <div style="clear: both;"></div>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="2">
+    <!-- <se label="{{ '工厂' | translate}}" required>
+      <nz-select nzShowSearch [(ngModel)]="i.PLANT_CODE" name="PLANT_CODE" (ngModelChange)="changePlant()"
+        [nzDisabled]="isModify" required>
+        <nz-option *ngFor="let option of optionListPlant" [nzLabel]="option.label" [nzValue]="option.value">
+        </nz-option>
+      </nz-select>
+    </se> -->
+    <se label="{{ '工位编码' | translate}}" required>
+      <input type="text" nz-input [(ngModel)]="i.POST_CODE" name="POST_CODE" [class.disabled]="true" required>
+    </se>
+    <se label="{{ '工位名称' | translate}}" required>
+      <input type="text" nz-input [(ngModel)]="i.POST_NAME" name="POST_NAME" [class.disabled]="true" required>
+    </se>
+    <se label="{{ '证书编码' | translate}}" required>
+      <nz-select nzShowSearch [(ngModel)]="i.CERTIFICATE_ID" name="CERTIFICATE_ID" [nzDisabled]="isModify" required>
+        <nz-option *ngFor="let option of optionListCertificate" [nzLabel]="option.label" [nzValue]="option.value">
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '是否允许无证上岗' | translate}}" required>
+      <nz-select nzShowSearch [(ngModel)]="i.UNCERTIFICATED_ALLOWED" name="UNCERTIFICATED_ALLOWED" required>
+        <nz-option *ngFor="let option of optionListEnable" [nzLabel]="option.label" [nzValue]="option.value">
+        </nz-option>
+      </nz-select>
+    </se>
+    <!-- <se label="{{ '证书名称' | translate}}" required>
+      <input type="text" nz-input [(ngModel)]="i.CERTIFICATE_NAME" name="CERTIFICATE_NAME" required>
+    </se> -->
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save(f)"
+    [disabled]="!f.valid || !f.dirty">{{ '保存' | translate}}</button>
+  <button nz-button type="button" (click)="close()">{{ '关闭' | translate}}</button>
+</div>

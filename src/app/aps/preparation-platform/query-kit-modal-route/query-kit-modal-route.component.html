@@ -1,0 +1,29 @@
+<!--<div class="div_title">
+    <button nz-button (click)="exportFile()"><i class="anticon anticon-export"></i> {{ '导出' | translate}}</button>
+</div>-->
+<custom-formquery [queryParams]="queryParams" [context]="context" [showExpandIcon]="false">
+  <span>
+    <custom-button text="{{ '导出' | translate}}" (clickEvent)="exportFile()" [src]="'基础icon-导出'"></custom-button>
+  </span>
+</custom-formquery>
+<nz-card>
+    <ag-grid-angular
+      #agGrid
+      [class]="themeClass"
+      [style.height.px]="gridHeight"
+      [rowData]="gridData"
+      [columnDefs]="columns"
+      [paginationPageSize]="_pageSize"
+      [gridOptions]="gridOptions"
+      [myAgGridState]="'query-kit-modal-route'">
+    </ag-grid-angular>
+    <custom-pager
+        [height]="pagerHeight"
+        [context]="context"
+        [view]='context.view'
+        [(pageSize)]="_pageSize"
+        [(pageNo)]="_pageNo"
+        (pageChangeEvent)="onPageChanged($event)">
+    </custom-pager>
+    <custom-excelexport [expColumns]='expColumns' [expColumnsOptions]='expColumnsOptions' fileName='物料明细' #excelexport></custom-excelexport>
+</nz-card>

@@ -1,0 +1,34 @@
+<div class="modal-header">
+  <div class="modal-title">{{ (isModify?'编辑信息':'新增信息') | translate}} </div>
+</div>
+<div style=" margin:2px auto;" *ngIf="isModify">
+  <button style="float: right;" nz-button nzType="dashed" (click)="clear()">{{ '重置' | translate}}</button>
+  <div style="clear: both;"></div>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="2">
+    <se label="{{ '项目名称' | translate}}" required>
+      <input type="text" nz-input [(ngModel)]="i.projectName" name="projectName" required>
+    </se>
+    <se label="{{ '项目描述' | translate}}" required>
+      <input type="text" nz-input [(ngModel)]="i.projectDescription" name="projectDescription" required>
+    </se>
+    <se label="{{ '业务主题域' | translate}}" required>
+      <nz-select nzShowSearch [(ngModel)]="i.proejctTopicType" name="proejctTopicType" required>
+        <nz-option *ngFor="let option of optionListTopic" [nzLabel]="option.label" [nzValue]="option.value">
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '是否有效' | translate}}" required>
+      <nz-select nzShowSearch [(ngModel)]="i.activeFlag" name="activeFlag" required>
+        <nz-option *ngFor="let option of optionListEnable" [nzLabel]="option.label" [nzValue]="option.value">
+        </nz-option>
+      </nz-select>
+    </se>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save(f)"
+    [disabled]="!f.valid || !f.dirty">{{ '保存' | translate}}</button>
+  <button nz-button type="button" (click)="close()">{{ '关闭' | translate}}</button>
+</div>

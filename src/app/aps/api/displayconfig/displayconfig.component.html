@@ -1,0 +1,45 @@
+<nz-collapse>
+  <nz-collapse-panel [nzHeader]="'接口选择区'" [nzActive]="true" [nzDisabled]="false">
+    <form nz-form #f="ngForm" se-container="2" [labelWidth]=100>
+      <se label="{{ '接口编码' | translate}}" required>
+        <nz-select nzShowSearch [nzAllowClear]="false" [(ngModel)]="i.API_CODE"
+          (ngModelChange)="onApiChange($event)" name="API_CODE">
+          <nz-option *ngFor="let option of apiOptions" [nzLabel]="option.label" [nzValue]="option.value">
+          </nz-option>
+        </nz-select>
+      </se>
+      <se label="{{ '接口表' | translate}}" required>
+        <textarea nz-input [(ngModel)]="i.TABLE_NAME" name="TABLE_NAME" placeholder="{{'请输入表名或查询SQL'| translate}}"
+          [nzAutosize]="{ minRows: 1, maxRows: 4 }" [required]="true"> </textarea>
+      </se>
+    </form>
+  </nz-collapse-panel>
+  <nz-collapse-panel [nzHeader]="'字段选择区'" [nzActive]="true" [nzDisabled]="false">
+    <div>
+      <div class="inline left">
+        <button nz-button nzType="primary" (click)="refreshFields()">{{ '刷新' | translate}}</button>
+        <button nz-button nzType="default" (click)="toRight()">{{ '选择' | translate}}</button>
+        <ag-grid-angular #agGrid1 [class]="themeClass" [style.height.px]="gridHeight" [rowData]="gridData1"
+          [columnDefs]="columns1" (gridReady)="onGridReady1($event)" [gridOptions]="gridOptions" [pagination]="false"
+          (selectionChanged)="onSelectionChanged1($event)">
+        </ag-grid-angular>
+      </div>
+      <div class="inline right">
+        <button nz-button nzType="default" (click)="clearAll()">{{ '清空' | translate}}</button>
+        <button nz-button nzType="default" (click)="toLeft()">{{ '移除' | translate}}</button>
+        <button nz-button type="submit" [nzType]="'primary'" (click)="save()"
+          [disabled]="!f.valid">{{ '保存' | translate}}</button>
+        <ag-grid-angular #agGrid [class]="themeClass" [style.height.px]="gridHeight" [rowData]="gridData"
+          [columnDefs]="columns" [gridOptions]="gridOptions" [pagination]="false"
+          (selectionChanged)="onSelectionChanged($event)" [getRowNodeId]="getRowNodeId" [rowDragManaged]="true"
+          [animateRows]="true" [deltaRowDataMode]="true" (rowDragEnter)="onRowDragEnter($event)"
+          (rowDragEnd)="onRowDragEnd($event)" (rowDragMove)="onRowDragMove($event)"
+          (rowDragLeave)="onRowDragLeave($event)">
+        </ag-grid-angular>
+      </div>
+    </div>
+  </nz-collapse-panel>
+</nz-collapse>
+<ng-template #customTemplate let-dataItem>
+  <input type="checkbox" [(ngModel)]="dataItem.IS_ENABLE" />
+</ng-template>

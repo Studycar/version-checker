@@ -1,0 +1,12 @@
+<div class="modal-header">
+  <div class="modal-title">{{ ('批量资源调整') | translate}} </div>
+</div>
+
+<custom-tree-view #treeView [dataTree]="treeDataTable" [columns]="treeNodeColumns" [keyField]="keyField"
+  [selectionRef]="selection" [expandRef]="expandtion" [scroll]="{ x: '1000px', y: '300px' }" [loading]="loading">
+</custom-tree-view>
+
+<div class="modal-footer">
+  <button nz-button type="button" (click)="close()">{{ '关闭' | translate}}</button>
+  <button nz-button type="button" [nzType]="'primary'" (click)="confirm()">{{ '确定' | translate}}</button>
+</div>

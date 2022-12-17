@@ -1,0 +1,70 @@
+<div class="modal-header">
+  <div class="modal-title">{{ isModify ? '编辑信息' : '新增信息' | translate }}</div>
+</div>
+<div style="position: relative; height: 32px" *ngIf="isModify">
+  <button nz-button nzType="dashed" style="position: absolute; right: 0;" (click)="clear()">{{'重置' | translate}}</button>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="2">
+    <se label="{{ '工厂' | translate }}" required>
+      <nz-select nzShowSearch name="plantCode" [(ngModel)]="i.plantCode" [nzDisabled]="isModify" required>
+        <nz-option *ngFor="let op of plantOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '产品编码' | translate }}" required>
+      <popup-select [Value]="i.stockCode" [ValueField]="'stockCode'"
+        [Text]="i.stockCode" [TextField]="'stockCode'" name="stockCode" [Disabled]="isModify"
+        [gridView]="gridViewStocks" [columns]="columnsStocks" (TextChanged)="onStockTextChanged($event)"
+        (SearchEvent)="searchStocks($event)" (RowSelect)="onStocksSelect($event)" required>
+      </popup-select>
+    </se>
+    <se label="{{ '产品名称' | translate }}">
+      <input nz-input type="text" disabled name="stockName" [(ngModel)]="i.stockName"/>
+    </se>
+    <se label="{{ '产品描述' | translate }}">
+      <input nz-input type="text" disabled name="stockDesc" [(ngModel)]="i.stockDesc"/>
+    </se>
+    <se label="{{ '钢种' | translate }}" required>
+      <nz-select nzShowSearch name="steelType" [(ngModel)]="i.steelType" [nzDisabled]="isModify" required>
+        <nz-option *ngFor="let op of steelTypeOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '表面' | translate }}" required>
+      <nz-select nzShowSearch name="surface" [(ngModel)]="i.surface" [nzDisabled]="isModify" required>
+        <nz-option *ngFor="let op of surfaceOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '规格' | translate }}" required>
+      <nz-input-number [(ngModel)]="i.standards" [nzMin]="0" name="standards" [nzDisabled]="isModify" required></nz-input-number>
+    </se>
+    <se label="{{ '宽度' | translate }}" required>
+      <nz-input-number [(ngModel)]="i.width" [nzMin]="0" name="width" [nzDisabled]="isModify" required></nz-input-number>
+    </se>
+    <se label="{{ '长度' | translate }}" required>
+      <nz-input-number [(ngModel)]="i.length" [nzMin]="0" name="length" [nzDisabled]="isModify" required></nz-input-number>
+    </se>
+    <se label="{{ '等级' | translate }}" required>
+      <nz-select nzShowSearch name="grade" [(ngModel)]="i.grade" [nzDisabled]="isModify" required>
+        <nz-option *ngFor="let op of gradeOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se>
+    <!-- <se label="{{ '重量' | translate }}" required>
+      <nz-input-number [(ngModel)]="i.weight" [nzMin]="0" name="weight" [nzDisabled]="isModify" required></nz-input-number>
+    </se> -->
+    <se label="{{ '需求数量' | translate }}" required>
+      <nz-input-number name="requirementQty" [(ngModel)]="i.requirementQty" required></nz-input-number>
+    </se>
+    <se label="{{ '需求日期' | translate }}" required>
+      <nz-date-picker nzFormat="yyyy-MM-dd" [(ngModel)]="i.demandTime" name="demandTime" required>
+      </nz-date-picker>
+    </se>
+
+    <se label="{{ '备注' | translate }}">
+      <input nz-input type="text" name="remark" [(ngModel)]="i.remark">
+    </se>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="button" (click)="close()">{{ '取消' | translate }}</button>
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save(f.value)" [nzLoading]="http.loading" [disabled]="f.invalid || !f.dirty">{{'保存' | translate }}</button>
+</div>

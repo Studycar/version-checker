@@ -1,0 +1,15 @@
+<div class="modal-header">
+  <div class="modal-title">{{ exportFileName+'修改记录' | translate }}</div>
+</div>
+<custom-formquery [enableWBSetting]="false" [queryParams]="queryParams" [context]="context" [showSearchIcon]="isShowQuery">
+  <custom-button *ngIf="isShowExport" text="{{ '导出' | translate }}" [src]="'基础icon-导出'" (clickEvent)="export()"></custom-button>
+</custom-formquery>
+<nz-card>
+  <ag-grid-angular #agGrid [class]="themeClass" [style.height.px]="gridHeight-200" [rowData]="gridData"
+    [columnDefs]="columns" [gridOptions]="gridOptions" [myAgGridState]="myAgGrid.myAgGridState+'change-detail'"
+    [myAgGridRowKey]="{tb:myAgGrid.myAgGridRowKey+'_CHANGE_DETAIL'}">
+  </ag-grid-angular>
+  <custom-pager [height]="pagerHeight" [context]="context" [view]='context.view' [(pageSize)]="_pageSize" [fixed]="false"
+    [(pageNo)]="_pageNo" (pageChangeEvent)="onPageChanged($event)"></custom-pager>
+  <custom-excelexport [expColumns]='expColumns' [expColumnsOptions]='expColumnsOptions' [fileName]="exportFileName + '修改记录'" #excelexport></custom-excelexport>
+</nz-card>

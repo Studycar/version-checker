@@ -1,0 +1,84 @@
+<div class="modal-header">
+  <div class="modal-title">{{ (Istrue?'编辑信息':'新增信息')| translate}} {{ record.id }}</div>
+</div>
+<div *ngIf="Istrue" style=" margin:2px auto;">
+  <button style="float: right;" nz-button nzType="dashed" (click)="clear()">
+    {{ '重置' | translate}}</button>
+  <div style="clear: both;"></div>
+</div>
+
+<div>
+  <form nz-form #f="ngForm" se-container="2">
+
+    <se label="{{ '工厂' | translate}}" required>
+      <nz-select [(ngModel)]="i.plantCode" nzShowSearch name="plantCode" [nzDisabled]="Istrue" nzAllowClear required>
+        <nz-option *ngFor="let o of optionListPlant" [nzValue]="o.plantCode" [nzLabel]="o.plantCode"></nz-option>
+        <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+          <i class="anticon anticon-loading anticon-spin loading-icon"></i> Loading Data...
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '类型' | translate}}" required>
+      <nz-select [(ngModel)]="i.sourceType" nzShowSearch (ngModelChange)="onChangeSourceType($event)" name="sourceType" nzAllowClear
+        required>
+        <nz-option nzValue="需求" nzLabel="需求"></nz-option>
+        <nz-option nzValue="供应" nzLabel="供应"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '来源分类' | translate}}" required>
+      <nz-select [(ngModel)]="i.sourceCategory" nzShowSearch (ngModelChange)="onChangeSourceCategory($event)" name="sourceCategory"
+        nzAllowClear required>
+        <nz-option *ngFor="let o of optionListSourceCategory" [nzValue]="o.value" [nzLabel]="o.value"></nz-option>
+        <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+          <i class="anticon anticon-loading anticon-spin loading-icon"></i> Loading Data...
+        </nz-option>
+      </nz-select>
+    </se>
+
+    <se label="{{ '说明' | translate}}">
+      <input type="text" nz-input [(ngModel)]="i.commentary" name="commentary" disabled="disabled">
+    </se>
+    <se label="{{ '展望期' | translate}}" [required]="required1">
+
+      <nz-input-number [(ngModel)]="i.prospectPeriod" [nzMin]="1" name="prospectPeriod" [required]="required1" [disabled]="disabled1"></nz-input-number>
+
+    </se>
+    <se label="{{ '转换订单来源' | translate}}" [required]="required1">
+      <nz-select [(ngModel)]="i.convertOrderSources" nzShowSearch name="convertOrderSources" nzAllowClear [required]="required1"
+        [disabled]="disabled1">
+        <nz-option *ngFor="let o of optionListConvertLine" [nzValue]="o.value" [nzLabel]="o.label"></nz-option>
+        <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+          <i class="anticon anticon-loading anticon-spin loading-icon"></i> Loading Data...
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '优先级' | translate}}" required>
+      <nz-input-number [(ngModel)]="i.priority" [nzMin]="1" name="PRIORITY" required></nz-input-number>
+    </se>
+
+    <se label="{{ '需求类型' | translate}}" [required]="required1">
+      <nz-select [(ngModel)]="i.reqType" nzShowSearch name="REQ_TYPE" nzAllowClear [required]="required1" [disabled]="disabled1">
+        <nz-option *ngFor="let o of optionListReqLine" [nzValue]="o.value" [nzLabel]="o.label"></nz-option>
+        <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+          <i class="anticon anticon-loading anticon-spin loading-icon"></i> Loading Data...
+        </nz-option>
+      </nz-select>
+    </se>
+
+
+    <se label="{{ '数据收集参数' | translate}}" required>
+      <nz-select [(ngModel)]="i.dataCollectionParameters" nzShowSearch name="DATA_COLLECTION_PARAMETERS" nzAllowClear required>
+        <nz-option *ngFor="let o of optionListCollectionLine" [nzValue]="o.value" [nzLabel]="o.label"></nz-option>
+        <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+          <i class="anticon anticon-loading anticon-spin loading-icon"></i> Loading Data...
+        </nz-option>
+      </nz-select>
+    </se>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save()" [disabled]="f.invalid || !f.dirty" [nzLoading]="http.loading">
+    {{ '保存' | translate}}</button>
+  <button nz-button type="button" (click)="close()">
+    {{ '关闭' | translate}}</button>
+</div>

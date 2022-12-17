@@ -1,0 +1,141 @@
+<div class="modal-header">
+  <div class="modal-title">{{ '客户明细信息变更' | translate }}</div>
+</div>
+<div style="position: relative; height: 32px" *ngIf="isModify">
+  <button nz-button nzType="dashed" style="position: absolute; right: 0;" (click)="clear()">{{ '重置' | translate }}</button>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="2">
+    <se label="{{ '税号' | translate }}" [error]="{ pattern: '请填写正确的税号' }">
+      <input nz-input type="text" name="taxNum" [(ngModel)]="i.taxNum" pattern="^[A-Z0-9]{15}$|^[A-Z0-9]{18}$|^[A-Z0-9]{20}$" (ngModelChange)="taxNumChanged($event)" disabled>
+    </se>
+    <se label="{{ '客户编码' | translate }}">
+      <input nz-input type="text" disabled name="cusCode" [(ngModel)]="i.cusCode">
+    </se>
+    <se label="{{ '客户名称' | translate }}">
+      <input nz-input type="text" [disabled]="isHeadModify" name="cusName" [(ngModel)]="i.cusName">
+    </se>
+    <se label="{{ '客户简称' | translate }}">
+      <input nz-input type="text" [disabled]="isHeadModify" name="cusAbbreviation" [(ngModel)]="i.cusAbbreviation">
+    </se>
+    <se label="{{ '所属客户' | translate }}">
+      <popup-select [Value]="i.affiliatedCus" [ValueField]="'cusName'"
+        [Text]="i.affiliatedCus" [TextField]="'cusName'" name="affiliatedCus" [options]="customersOptions"
+        [gridView]="gridViewCustoms" [columns]="columnsCustoms" (TextChanged)="onPopupSelectTextChanged($event, 'affiliatedCus')"
+        (SearchEvent)="searchCustoms($event)" (RowSelect)="onRowSelect($event, 'affiliatedCus')">
+      </popup-select>
+    </se>
+    <se label="{{ '联系人' | translate }}">
+      <input nz-input type="text" name="contact" [disabled]="isHeadModify" [(ngModel)]="i.contact">
+    </se>
+    <se label="{{ '地区分类' | translate }}">
+      <nz-select nzShowSearch name="region" [nzDisabled]="isHeadModify" [(ngModel)]="i.region" >
+        <nz-option *ngFor="let op of regionOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '地址' | translate }}">
+      <input nz-input type="text" name="address" [disabled]="isHeadModify" [(ngModel)]="i.address">
+    </se>
+    <se label="{{ '联系电话' | translate }}">
+      <input nz-input type="text" name="telNum" [disabled]="isHeadModify" [(ngModel)]="i.telNum">
+    </se>
+    <se label="{{ '是否国内' | translate }}">
+      <nz-select nzShowSearch name="domestic" [nzDisabled]="isHeadModify" [(ngModel)]="i.domestic" >
+        <nz-option *ngFor="let op of domesticOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '币种' | translate }}">
+      <nz-select nzShowSearch name="currency" [nzDisabled]="isHeadModify" [(ngModel)]="i.currency">
+        <nz-option *ngFor="let op of currencyOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '驳回原因' | translate }}" *ngIf="isModify">
+      <input nz-input type="text" disabled name="reason" [(ngModel)]="i.reason">
+    </se>
+    <se label="{{ '客户状态' | translate }}">
+      <nz-select nzShowSearch name="cusState" [(ngModel)]="i.cusState" nzDisabled>
+        <nz-option *ngFor="let op of cusStateOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '所属公司' | translate }}">
+      <nz-select #select nzShowSearch name="plantCode" [(ngModel)]="i.plantCode" nzDisabled>
+        <nz-option *ngFor="let op of plantOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se>
+    <!-- 信用单位为其他客户时需要填写 -->
+    <se label="{{ '信用单位' | translate }}">
+      <popup-select [Value]="i.creditCus" [ValueField]="'cusCode'"
+        [Text]="i.creditCus" [TextField]="'cusName'" name="creditCus" [options]="customersOptions"
+        [gridView]="gridViewCustoms" [columns]="columnsCustoms" (TextChanged)="onPopupSelectTextChanged($event, 'creditCus', 'cusCode')"
+        (SearchEvent)="searchCustoms($event)" (RowSelect)="onRowSelect($event, 'creditCus')">
+      </popup-select>
+    </se>
+    <se label="{{ '客户等级' | translate }}">
+      <nz-select nzShowSearch name="cusGrade" [(ngModel)]="i.cusGrade">
+        <nz-option *ngFor="let op of cusGradeOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '客户类型' | translate }}">
+      <nz-select nzShowSearch name="cusType" [(ngModel)]="i.cusType" nzDisabled>
+        <nz-option *ngFor="let op of cusTypeOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '客户初始额度' | translate }}">
+      <nz-input-number name="initialCredit" [(ngModel)]="i.initialCredit"></nz-input-number>
+    </se>
+    <se label="{{ '信用额度' | translate }}" *ngIf="isModify">
+      <nz-input-number nzDisabled name="credit" [(ngModel)]="i.credit"></nz-input-number>
+    </se>
+    <se label="{{ '占用额度' | translate }}" *ngIf="isModify">
+      <nz-input-number nzDisabled name="zyQuota" [(ngModel)]="i.zyQuota"></nz-input-number>
+    </se>
+    <se label="{{ '临时信用额度' | translate }}" *ngIf="isModify">
+      <nz-input-number name="temCredit" [(ngModel)]="i.temCredit"></nz-input-number>
+    </se>
+    <se label="{{ '账户余额' | translate }}" *ngIf="isModify">
+      <nz-input-number nzDisabled name="balance" [(ngModel)]="i.balance"></nz-input-number>
+    </se>
+    <se label="{{ '业务员' | translate }}">
+      <popup-select [(SelectValue)]="i.salesman" [ValueField]="'personName'"
+        [(SelectText)]="i.salesman" [TextField]="'personName'" name="salesman"
+        [gridView]="gridViewUsers" [columns]="columnsUsers" (TextChanged)="onUsersTextChanged($event)"
+        (SearchEvent)="searchUsers($event)" (RowSelect)="onUsersSelect($event)">
+      </popup-select>
+    </se>
+    <!-- 由业务员带出：部门编码+部门描述 -->
+    <se label="{{ '业务员编码' | translate }}">
+      <input nz-input type="text" disabled name="salesmanCode" [(ngModel)]="i.salesmanCode">
+    </se>
+    <se label="{{ '分管部门' | translate }}">
+      <input nz-input type="text" disabled name="department" [(ngModel)]="i.department">
+    </se>
+    <se label="{{ '部门编码' | translate }}">
+      <input nz-input type="text" disabled name="departmentCode" [(ngModel)]="i.departmentCode">
+    </se>
+    <se label="{{ '是否控制信用额度' | translate }}">
+      <nz-select nzShowSearch name="creditControl" [(ngModel)]="i.creditControl" nzAllowClear>
+        <nz-option *ngFor="let op of YesNoOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '税率' | translate }}">
+      <nz-input-number name="tax" [(ngModel)]="i.tax"></nz-input-number>
+    </se>
+    <se label="{{ '停用时间' | translate }}">
+      <nz-date-picker nzFormat="yyyy-MM-dd" nzDisabled [(ngModel)]="i.disableTime" name="disableTime">
+      </nz-date-picker>
+    </se>
+    <se *ngFor="let col of columns" label="{{ col.headerName | translate }}">
+      <input nz-input type="text" [name]="col.field" [(ngModel)]="i[col.field]">
+    </se>
+    <se label="{{ '附件信息' | translate }}">
+      <common-upload #commonUpload [fileTypes]="fileTypes" [annexs]="annexs" [multiple]="true" [limit]="5"></common-upload>
+    </se>
+    <se label="{{ '变更原因' | translate }}" required>
+      <input nz-input type="text" name="changeReason" [(ngModel)]="i.changeReason" required>
+    </se>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="button" (click)="close()">{{ '取消' | translate }}</button>
+  <button nz-button type="submit" [nzType]="'primary'" (click)="submit(f.value)" [nzLoading]="http.loading" [disabled]="verifySubmit(f)">{{'提交' | translate }}</button>
+</div>

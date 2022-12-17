@@ -1,0 +1,14 @@
+&nbsp;
+<nz-card>
+  <!--<div class="mb-md">
+    <button nz-button (click)="export()" class="mx-sm">
+      <i class="anticon anticon-export"></i>{{ '导出' | translate}}
+    </button>
+  </div>-->
+  <ag-grid-angular #agGrid [class]="themeClass" [style.height.px]="gridHeight" [rowData]="gridData"
+    [columnDefs]="columns" [gridOptions]="gridOptions" (selectionChanged)="onSelectionChanged($event)"
+    [myAgGridRowKey]="{tb:'SOP_RESOURCE_DIVISION'}" [myAgGridState]="'sopdimmainresreview'">
+  </ag-grid-angular>
+  <!--<custom-pager [height]="pagerHeight" [fixed]="false" [context]="context" [view]='context.view'
+    [(pageSize)]="_pageSize" [(pageNo)]="_pageNo" (pageChangeEvent)="onPageChanged($event)"></custom-pager>-->
+</nz-card>

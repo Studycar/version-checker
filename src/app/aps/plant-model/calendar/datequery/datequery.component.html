@@ -1,0 +1,19 @@
+<div class="modal-header">
+  <div class="modal-title">{{ '工作日历' | translate}} </div>
+</div>
+<nz-card>
+  <custom-formquery [queryParams]="queryParams" [context]="context" [enableWBSetting]="false" [expandForm]="true" [showSearchButton]="false"
+    [showResetButton]="false" [showExpandIcon]="false" [labelWidth]="100"></custom-formquery>
+  <ag-grid-angular #agGrid [class]="themeClass" [style.height.px]="gridHeight" [rowData]="gridData"
+    [columnDefs]="columns" [gridOptions]="gridOptions" (selectionChanged)="onSelectionChanged($event)"
+    [myAgGridRowKey]="{tb:'CALENDAR_B'}" [myAgGridState]="'CALENDAR_B'">
+  </ag-grid-angular>
+  <custom-pager [height]="pagerHeight" [context]="context" [view]='context.view' [fixed]="false"
+    [(pageSize)]="_pageSize" [(pageNo)]="_pageNo" (pageChangeEvent)="onPageChanged($event)"></custom-pager>
+</nz-card>
+
+<ng-template #customTemplate let-dataItem>
+  <span title="{{ '编辑' | translate}}" (click)="add(dataItem)" class="pointer">
+    <i class="anticon anticon-edit"></i>
+  </span>
+</ng-template>

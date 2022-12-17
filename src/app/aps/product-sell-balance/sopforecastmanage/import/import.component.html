@@ -1,0 +1,22 @@
+<div class="modal-header">
+    <div class="modal-title">{{ 'SOP预测管理导入'| translate }}</div>
+</div>
+<div style="height:150px">
+    <div style="margin:5px auto;text-align: center;font-size: 16px;">
+        <a (click)="downLoad()">{{ '下载模板'| translate }}</a>
+    </div>
+    <nz-radio-group [(ngModel)]="radioValue" (ngModelChange)="singleSelectChange($event)">
+        <label nz-radio [ngStyle]="style" nzValue="A">修改导入: 针对现在数据修改和个别新增</label>
+        <label nz-radio [ngStyle]="style" nzValue="B">删除导入: 删除现有数据，导入新的预测数据</label>
+    </nz-radio-group>
+    <div style="margin:30px 150px;">
+        <custom-xlsxfile-select [impColumns]='impColumns' [isNotAlivable]="isOk" (excelDataProcessEvent)="excelDataProcess($event)">
+        </custom-xlsxfile-select>
+        <span style="display: inline-block; width: 60px;"></span>
+        <button nz-button (click)="close()" [nzType]="'default'">
+            <i class="anticon anticon-logout"></i> {{ '关闭' | translate}}
+        </button>
+    </div>
+</div>
+<custom-excelexport [expColumns]='expColumns' [expColumnsOptions]='expColumnsOptions' [fileName]='fileName' #excelexport>
+</custom-excelexport>

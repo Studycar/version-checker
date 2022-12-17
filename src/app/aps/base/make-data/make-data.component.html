@@ -1,0 +1,89 @@
+<nz-spin [nzSpinning]="loading">
+  <nz-collapse>
+    <nz-collapse-panel nzHeader="{{'数据删除'|translate}}" [nzActive]="true" [nzDisabled]="true">
+      <table style="width: 100%;">
+        <tr>
+          <td style="width: 33%;padding-right: 50px;">
+            <form id="kpi_division_form" nzLayout="inline" nz-form #kpi_division_form="ngForm" se-container>
+              <se label="{{'工厂'| translate}}" error="请填写" required>
+                <nz-select [(ngModel)]="selected_plant" [nzSize]="240" name="selected_plant" nzShowSearch
+                  [nzAllowClear]="false" required>
+                  <nz-option *ngFor="let option of plants" [nzLabel]="option.label" [nzValue]="option.value">
+                  </nz-option>
+                </nz-select>
+              </se>
+            </form>
+          </td>
+          <td style="width: 33%;padding-right: 50px;">
+            <div style="border-bottom: 1px solid rgb(233, 233, 233);">
+              <label nz-checkbox name="checkall" [(ngModel)]="allChecked" (ngModelChange)="updateAllChecked()"
+                [nzIndeterminate]="indeterminate">
+                全选所有数据
+              </label>
+            </div>
+            <nz-checkbox-group name="checkOptionsOne" [(ngModel)]="checkOptionsOne"
+              (ngModelChange)="updateSingleChecked()"></nz-checkbox-group>
+          </td>
+          <td style="width: 33%;padding-right: 50px;">
+            <button nz-button nzType="primary" (click)="deleteData()" [disabled]="this.selected_plant===''">
+              {{'执行删除'| translate}}
+            </button>
+          </td>
+        </tr>
+      </table>
+    </nz-collapse-panel>
+    <nz-collapse-panel nzHeader="{{'数据导入'|translate}}" [nzActive]="true" [nzDisabled]="true">
+      <form id="kpi_division_form" nzLayout="inline" nz-form #kpi_division_form="ngForm" se-container>
+        <se>
+          <button nz-button nzType="primary" (click)="importItem()" [disabled]="false">
+            {{'导入物料'| translate}}
+          </button>
+        </se>
+        <se>
+          <button nz-button nzType="primary" (click)="importItemCategoryAssign()" [disabled]="false">
+            {{'导入物料类别分配'| translate}}
+          </button>
+        </se>
+        <se>
+          <button nz-button nzType="primary" (click)="importBOMStructure()" [disabled]="false">
+            {{'导入BOM头'| translate}}
+          </button>
+        </se>
+        <se>
+          <button nz-button nzType="primary" (click)="importBOMComponents()" [disabled]="false">
+            {{'导入BOM行'| translate}}
+          </button>
+        </se>
+        <se>
+          <button nz-button nzType="primary" (click)="importItemRoutings()" [disabled]="false">
+            {{'导入工艺路线'| translate}}
+          </button>
+        </se>
+        <se>
+          <button nz-button nzType="primary" (click)="importBuyers()" [disabled]="false">
+            {{'导入采购员'| translate}}
+          </button>
+        </se>
+        <se>
+            <button nz-button nzType="primary" (click)="importOnHandQuantities()" [disabled]="false">
+              {{'导入现有量'| translate}}
+            </button>
+          </se>
+        <!-- <se>
+          <button nz-button nzType="primary" (click)="importBOMComponents()" [disabled]="false">
+            {{'导入合格供应商'| translate}}
+          </button>
+        </se> -->
+        <se>
+          <button nz-button nzType="primary" (click)="importMoCompleteTran()" [disabled]="false">
+            {{'导入完工数量'| translate}}
+          </button>
+        </se>
+      </form>
+    </nz-collapse-panel>
+  </nz-collapse>
+</nz-spin>
+<ng-template #customTemplate1 let-dataItem>
+  <!-- <input type="checkbox" [(checked)]="dataItem.CHECKED" /> -->
+  <label nz-checkbox [(ngModel)]="dataItem.CHECKED"></label>
+</ng-template>

@@ -1,0 +1,50 @@
+<nz-card>
+  <custom-formquery [queryParams]="queryParams" [context]="context">
+    <custom-button
+      text="{{ '导出' | translate }}"
+      (clickEvent)="export()"
+      [src]="'基础icon-导出'"
+    ></custom-button>
+  </custom-formquery>
+  <ag-grid-angular
+    #agGrid
+    [class]="themeClass"
+    [style.height.px]="gridHeight"
+    [rowData]="gridData"
+    [columnDefs]="columns"
+    [gridOptions]="gridOptions"
+    [myAgGridRowKey]="{ tb: 'PP_ORDER_priority' }"
+    [myAgGridState]="'order-precedence-rule'"
+  >
+  </ag-grid-angular>
+  <custom-pager
+    [height]="pagerHeight"
+    [context]="context"
+    [view]="context.view"
+    [(pageSize)]="_pageSize"
+    [(pageNo)]="_pageNo"
+    (pageChangeEvent)="onPageChanged($event)"
+  ></custom-pager>
+</nz-card>
+<custom-excelexport
+  [expColumns]="expColumns"
+  [expColumnsOptions]="expColumnsOptions"
+  fileName="优先级计算结果"
+  #excelexport
+>
+</custom-excelexport>
+<ng-template #customTemplate let-dataItem>
+  <span
+    title="{{ '编辑' | translate }}"
+    (click)="edit(dataItem)"
+    style="cursor: Pointer"
+    ><i class="anticon anticon-edit"></i
+  ></span>
+  <nz-divider nzType="vertical"></nz-divider>
+  <span
+    title="{{ '明细' | translate }}"
+    (click)="queryDetail(dataItem)"
+    style="cursor: Pointer"
+    ><i class="anticon anticon-bars"></i
+  ></span>
+</ng-template>

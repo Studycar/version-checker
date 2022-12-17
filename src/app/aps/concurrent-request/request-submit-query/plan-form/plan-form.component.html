@@ -1,0 +1,107 @@
+<div class="modal-header" style="padding-top:10px;padding-bottom:10px;margin-bottom:10px;">
+  <div class="modal-title">{{'计划'| translate}}</div>
+</div>
+<div style="margin:0px;padding:0px;width:100%;height:100%;" align="center">
+  <table border=0 cellpadding=0 cellspacing=0 style="width:100%;height:100%;">
+    <tr style="height: 300px;">
+      <td valign="top" style="width:180px;">
+        <table border=0 cellpadding=0 cellspacing=0>
+          <tr style="height: 40px;">
+            <td style="padding-top:10px;" align="left">
+              <nz-radio-group [(ngModel)]="this.i.planEnty.scheduleType" [nzSize]="'small'"
+                (ngModelChange)="radChange($event)">
+                <label nz-radio [ngStyle]="radStyle" nzValue="A">{{'尽早'| translate}}</label>
+                <label nz-radio [ngStyle]="radStyle" nzValue="O">{{'一次性'| translate}}</label>
+                <label nz-radio [ngStyle]="radStyle" nzValue="P">{{'定期'| translate}}</label>
+              </nz-radio-group>
+            </td>
+          </tr>
+        </table>
+      </td>
+      <td style="width:400px;padding-top:25px;" align="left" valign="top">
+        <div *ngIf="plDisposable">
+          <table border=0 cellpadding=0 cellspacing=0>
+            <tr>
+              <td style="padding-right: 10px;width:170px;" align="right">
+                <span style="color: red;">*</span> {{' 运行时间 '| translate}}
+              </td>
+              <td style="width: 250px;" align="left">
+                <nz-date-picker nzShowTime nzFormat="yyyy-MM-dd HH:mm:ss" [(ngModel)]="runningTime" nzPlaceHolder="选择时间"
+                  [nzSize]="'small'" [nzStyle]="{'width':'200px'}"></nz-date-picker>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div *ngIf="plRegular">
+          <table border=0 cellpadding=0 cellspacing=0>
+            <tr style="height: 40px;">
+              <td style="padding-right: 10px;width:170px;" align="right">
+                <span style="color:red;">*</span>{{' 起始时间'| translate}}
+              </td>
+              <td style="width: 250px;" align="left">
+                <nz-date-picker nzShowTime nzFormat="yyyy-MM-dd HH:mm:ss" [(ngModel)]="beginTime" nzPlaceHolder="选择时间"
+                  [nzSize]="'small'" [nzStyle]="{'width':'200px'}"></nz-date-picker>
+              </td>
+            </tr>
+            <tr style="height: 40px;">
+              <td style="padding-right: 10px;width:170px;" align="right">
+                {{'终止时间'| translate}}
+              </td>
+              <td align="left">
+                <nz-date-picker nzShowTime nzFormat="yyyy-MM-dd HH:mm:ss" [(ngModel)]="this.i.planEnty.resubmitEndDate"
+                  nzPlaceHolder="选择时间" [nzSize]="'small'" [nzStyle]="{'width':'200px'}"></nz-date-picker>
+              </td>
+            </tr>
+            <tr style="height: 40px;">
+              <td style="padding-left: 20px;" align="left" colspan=2>
+                {{'将”终止时间“留空以无限期运行'| translate}}
+              </td>
+            </tr>
+            <tr style="height: 40px;">
+              <td style="padding-right: 10px;width:170px;" align="right">
+                <span style="color:red;">*</span> {{'重新运行时间间隔'| translate}}
+              </td>
+              <td align="left">
+                <nz-input-number style="width: 50px;" [(ngModel)]="this.i.planEnty.resubmitInterval" [nzSize]="'small'"
+                  [nzMin]="1" [nzStep]="1">
+                </nz-input-number>
+                <nz-select style="width: 149px;background-color: yellow;"
+                  [(ngModel)]="this.i.planEnty.resubmitIntervalUnitCode" [nzSize]="'small'" nzShowSearch>
+                  <nz-option *ngFor="let option of listOfTimeInter" [nzLabel]="option.label" [nzValue]="option.value">
+                  </nz-option>
+                </nz-select>
+              </td>
+            </tr>
+            <tr style="height: 60px;">
+              <td style="padding-right: 10px;width:170px;" align="right">
+                {{'申请间隔时间'| translate}}
+              </td>
+              <td align="left">
+                <nz-radio-group [(ngModel)]="this.i.planEnty.resubmitIntervalTypeCode" [nzSize]="'small '">
+                  <label nz-radio nzValue="START">{{'自上次运行开始' | translate}}</label>
+                  <label nz-radio nzValue="END">{{'自上次运行结束' | translate}}</label>
+                </nz-radio-group>
+              </td>
+            </tr>
+            <tr style="height: 40px;">
+              <td style="padding-right: 10px;width:170px;" align="right">
+                &nbsp;
+              </td>
+              <td align="left">
+                <label nz-checkbox [(ngModel)]="this.i.planEnty.incrementDates">{{'设置每次运行的日期增量参数' | translate}}</label>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </td>
+    </tr>
+    <tr style="height: 40px;padding-top:5px;">
+      <td align="center" colspan=2>
+        <button nz-button type="button" (click)="Confrim()">
+          {{'确认' | translate}}</button>&nbsp;&nbsp;
+        <button nz-button type="button" (click)="close()">
+          {{'关闭' | translate}}</button>
+      </td>
+    </tr>
+  </table>
+</div>

@@ -1,0 +1,32 @@
+<div class="modal-header">
+  <div class="modal-title">{{ title }}信息</div>
+</div>
+<div style="position: relative; height: 32px" *ngIf="i.Id">
+  <button nz-button nzType="dashed" style="position: absolute; right: 0;" (click)="clear()">重置</button>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="1">
+    <se label="{{ '加价维度' | translate}}" required>
+      <nz-select #select [(ngModel)]="i.markupElement" nzShowSearch name="markupElement" required [disabled]="readOnly">
+        <nz-option *ngFor="let o of markupElementOptions" [nzValue]="o.value" [nzLabel]="o.label"></nz-option>
+        <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+          <i class="anticon anticon-loading anticon-spin loading-icon"></i> Loading Data...
+        </nz-option>
+      </nz-select>
+    </se>
+
+    <se label="{{ '是否加工费' | translate}}" required>
+      <nz-select #select [(ngModel)]="i.chargesFlag" nzShowSearch name="chargesFlag" required>
+        <nz-option *ngFor="let o of yesOrNoOptions" [nzValue]="o.value" [nzLabel]="o.label"></nz-option>
+        <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+          <i class="anticon anticon-loading anticon-spin loading-icon"></i> Loading Data...
+        </nz-option>
+      </nz-select>
+    </se>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save()" [disabled]="!f.valid || !f.dirty"
+    [nzLoading]="http.loading">保存</button>
+  <button nz-button type="button" (click)="close()">关闭</button>
+</div>

@@ -1,0 +1,30 @@
+<custom-formquery [queryParams]="queryParams" [context]="context" [enableWBSetting]="false">
+  <span>
+    <custom-button text="{{ '新增' | translate}}" (clickEvent)="add()" [src]="'基础icon-新增'">
+    </custom-button>
+    <custom-button [srcDisabled]="'btn_save_disabled'" [disabled]="DisEnable==='disabled'" text="{{ '保存' | translate}}"
+      (clickEvent)="Update()" [src]="'btn_save'">
+    </custom-button>
+  </span>
+</custom-formquery>
+<nz-card>
+  <div>
+    <nz-tabset [(nzSelectedIndex)]="selectedIndexheader">
+      <nz-tab *ngFor="let tab of tabs" [nzTitle]="titleTemplate" (nzSelect)="tabSelect(tab)">
+        <ng-template #titleTemplate>
+          {{ tab.name | translate}}
+        </ng-template>
+        <div se-container="3" style="width: 600px;height: 1000px;">
+          <form nz-form *ngFor="let data of ColorOption" #f="ngForm">
+            <se label="{{ data.meaning | translate}}" *ngIf="data.headerId===strselectheaderid">
+              <input [(colorPicker)]="data.tag" [style.background]="data.tag" (colorPickerChange)="colorPickerChange(data.colorName, $event)"
+                style="width: 40px;height: 30px; cursor: pointer; border: none;" />
+            </se>
+          </form>
+          <div style="width: 600px;height: 600px;"></div>
+        </div>
+      </nz-tab>
+    </nz-tabset>
+  </div>
+</nz-card>
+<!--<input type="color" [(ngModel)]="queryParams.color" name="color" id="color" onchange="changeColor()">-->

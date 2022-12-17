@@ -1,0 +1,36 @@
+<custom-formquery [queryParams]="queryParams" [context]="context" (event2)="searchItems($event)">
+    <span>
+        <custom-button text="{{ '数据刷新' | translate}}" (clickEvent)="dataRefresh()" [src]="'基础icon-刷新'"></custom-button>
+        <custom-button text="{{ '导出' | translate}}" (clickEvent)="exportFile()" [src]="'基础icon-导出'"></custom-button>
+        <custom-button text="{{'工艺优化' | translate}}" (clickEvent)="processOptimization()" [src]="'基础icon-修改'"></custom-button>
+    </span>
+</custom-formquery>
+<nz-card>
+    <ag-grid-angular
+        #agGrid
+        [class]="themeClass"
+        [style.height.px]="gridHeight"
+        [rowData]="gridData"
+        [columnDefs]="columns"
+        [gridOptions]="gridOptions"
+        [frameworkComponents]="frameworkComponents"
+        [stopEditingWhenGridLosesFocus]="true"
+        (cellValueChanged)="onCellValueChanged($event)"
+        [myAgGridRowKey]="{tb:'PS_ITEM_ROUTINGS'}"
+        [myAgGridState]="'prodlineItemsOptimization'">
+    </ag-grid-angular>
+    <custom-pager
+        [height]="pagerHeight"
+        [context]="context"
+        [view]='context.view'
+        [(pageSize)]="_pageSize"
+        [(pageNo)]="_pageNo"
+        (pageChangeEvent)="onPageChanged($event)">
+    </custom-pager>
+    <custom-excelexport
+        [expColumns]='expColumns'
+        [expColumnsOptions]='expColumnsOptions'
+        fileName='工艺路线优化数据'
+        #excelexport>
+    </custom-excelexport>
+</nz-card>

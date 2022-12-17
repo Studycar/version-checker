@@ -1,0 +1,94 @@
+<div class="modal-header">
+  <div class="modal-title">{{ (isModify?'编辑':'新增') | translate}} </div>
+</div>
+<div style="position: relative; height: 32px" *ngIf="isModify">
+  <button nz-button nzType="dashed" style="position: absolute; right: 0;" (click)="clear()">重置</button>
+</div>
+<div>
+  <form nz-form #f1="ngForm" se-container="1">
+    <se label="{{'值集名' | translate}}" required>
+      <input type="text" nz-input [(ngModel)]="i.flexValueSetName" name="flexValueSetName" required>
+    </se>
+    <se label="{{'说明' | translate}}">
+      <textarea nz-input [(ngModel)]="i.description" name="description"> </textarea>
+    </se>
+  </form>
+</div>
+<nz-divider nzText="{{'格式验证' | translate}}" nzOrientation="left"></nz-divider>
+<div>
+  <form nz-form #f3="ngForm" se-container="2">
+    <se label="{{'格式类型' | translate}}" required>
+      <nz-select [(ngModel)]="i.formatType" name="formatType" [nzShowSearch]="true"
+        (ngModelChange)="formattypechange()" required="required">
+        <nz-option *ngFor="let formattype of formattypes" [nzLabel]="formattype.label" [nzValue]="formattype.value">
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{'最大尺寸' | translate}}" required>
+      <!-- <input type="text" placeholder="请输入内容" nz-input [(ngModel)]="i.maximumSize" name="maximumSize"
+        [readOnly]="roMaximumSize" maxlength="3" required> -->
+        <nz-input-number [nzDisabled]="roMaximumSize" [(ngModel)]="i.maximumSize" name="maximumSize" required></nz-input-number>
+    </se>
+    <se label="{{'精确度' | translate}}">
+      <!-- <input type="text" placeholder="请输入内容" nz-input [(ngModel)]="i.numberPrecision" name="numberPrecision"
+        [readOnly]="roNumberPrecision" maxlength="1"> -->
+        <nz-input-number [nzDisabled]="roNumberPrecision" [(ngModel)]="i.numberPrecision" name="numberPrecision"></nz-input-number>
+    </se>
+    <se>
+      <label nz-checkbox [(ngModel)]="i.numberOnlyFlag" name="numberOnlyFlag"
+        [nzDisabled]="roNumberOnlyFlag">{{'仅限于数字(0-9)' | translate}}</label>
+    </se>
+    <se>
+      <label nz-checkbox [(ngModel)]="i.uppercaseOnlyFlag" name="uppercaseOnlyFlag"
+        [nzDisabled]="roUppercaseOnlyFlag">{{'仅限于大写字母' | translate}}</label>
+    </se>
+    <se>
+      <label nz-checkbox [(ngModel)]="i.numericModeEnabledFlag" name="numericModeEnabledFlag"
+        [nzDisabled]="roNumericModeEnabledFlag">{{'右对齐和填0编号' | translate}}</label>
+    </se>
+    <se *ngIf="isDate" label="{{'最小值' | translate}}">
+      <nz-date-picker [(ngModel)]="i.minimumValue" name="minimumValue"></nz-date-picker>
+    </se>
+    <se *ngIf="isDate" label="{{'最大值' | translate}}">
+      <nz-date-picker [(ngModel)]="i.maximumValue" name="maximumValue"></nz-date-picker>
+    </se>
+    <se *ngIf="isDateTime" label="{{'最小值' | translate}}">
+      <nz-date-picker [(ngModel)]="i.minimumValue" name="minimumValue" nzShowTime>
+      </nz-date-picker>
+    </se>
+    <se *ngIf="isDateTime" label="{{'最大值' | translate}}">
+      <nz-date-picker [(ngModel)]="i.maximumValue" name="maximumValue" nzShowTime>
+      </nz-date-picker>
+    </se>
+    <se *ngIf="isOthers" label="{{'最小值' | translate}}">
+      <!-- <input type="text" placeholder="请输入内容" nz-input [(ngModel)]="i.minimumValue" name="minimumValue" (input)="numberChange($event, i.minimumValue)"> -->
+      <!--<nz-input-number [(ngModel)]="i.minimumValue" name="minimumValue" (ngModelChange)="numberChange($event, i.minimumValue)"></nz-input-number>-->
+      <input type="text" nz-input [(ngModel)]="i.minimumValue" name="minimumValue" (input)="numberChange($event, i.minimumValue, 'min')">
+    </se>
+    <se *ngIf="isOthers" label="{{'最大值' | translate}}">
+      <!-- <input type="text" placeholder="请输入内容" nz-input [(ngModel)]="i.maximumValue" name="maximumValue" (input)="numberChange($event, i.maximumValue)"> -->
+      <!--<nz-input-number [(ngModel)]="i.maximumValue" name="maximumValue" (ngModelChange)="numberChange($event, i.minimumValue)"></nz-input-number>-->
+      <input type="text" nz-input [(ngModel)]="i.maximumValue" name="maximumValue" (input)="numberChange($event, i.maximumValue, 'max')">
+    </se>
+  </form>
+</div>
+<nz-divider nzText="{{'值验证' | translate}}" nzOrientation="left"></nz-divider>
+<div>
+  <form nz-form #f4="ngForm" se-container="2">
+    <se label="{{'验证类型' | translate}}" required>
+      <nz-select [(ngModel)]="i.validationType" name="validationType" [nzShowSearch]="true" required="required">
+        <nz-option *ngFor="let validationtype of validationtypes" [nzLabel]="validationtype.label" [nzValue]="validationtype.value"></nz-option>
+      </nz-select>
+    </se>
+    <se>
+      <button nz-button nzType="primary" (click)="OpenDetail()"
+        [disabled]="this.i.validationType !== 'F' && this.i.validationType !== 'W'">值集查询定义</button>
+    </se>
+  </form>
+</div>
+
+<div class="modal-footer">
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save()"
+    [disabled]="!f1.valid || !f3.valid || !f4.valid" [nzLoading]="http.loading">保存</button>
+  <button nz-button type="button" (click)="close()">关闭</button>
+</div>

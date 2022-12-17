@@ -1,0 +1,43 @@
+<div class="modal-header">
+  <div class="modal-title">{{ 'PSI规划指标' | translate}}</div>
+</div>
+<div>
+  <div nz-row style="margin-bottom: 10px;">
+    <div nz-col [nzSpan]="16">
+      <form nz-form nzLayout="inline" #f="ngForm">
+        <nz-form-item>
+          <nz-form-label>PSI编号</nz-form-label>
+          <nz-form-control>
+            <input nz-input [(ngModel)]="i.psiCode" name="psiCode" readonly />
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label>版本</nz-form-label>
+          <nz-form-control>
+            <input nz-input [(ngModel)]="i.rsltVersion" name="rsltVersion" readonly />
+          </nz-form-control>
+        </nz-form-item>
+      </form>
+    </div>
+    <div nz-col [nzSpan]="8" style="text-align: right;">
+      <button nz-button [nzType]="'primary'" type="button" (click)="exportKpi()">导出</button>
+    </div>
+  </div>
+  <ag-grid-angular
+    #agGrid
+    domLayout="normal"
+    [class]="themeClass"
+    [style.height.px]="300"
+    [rowData]="gridData"
+    [columnDefs]="columns"
+    [columnTypes]="columnTypes"
+    [suppressRowTransform]="true"
+    [gridOptions]="gridOptions"
+    >
+  </ag-grid-angular>
+  <custom-excelexport [expColumns]="expColumns" [expColumnsOptions]="expColumnsOptions" fileName="年度PSI指标" #excelexport>
+  </custom-excelexport>
+</div>
+<div class="modal-footer">
+  <button nz-button type="button" (click)="close()">{{ '关闭' | translate}}</button>
+</div>

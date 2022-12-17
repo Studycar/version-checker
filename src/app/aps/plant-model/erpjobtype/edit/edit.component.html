@@ -1,0 +1,46 @@
+<div class="modal-header">
+    <div class="modal-title">{{ title }}{{ '信息' | translate}}</div>
+</div>
+<div style="position: relative; height: 32px" *ngIf="i.ID">
+    <button nz-button nzType="dashed" style="position: absolute; right: 0;" (click)="clear()">重置</button>
+</div>
+<div>
+    <form nz-form #f="ngForm" se-container="2">
+        <se label="{{ '工厂' | translate}}" required>
+            <nz-select [(ngModel)]="i.plantCode" name="plantCode" [nzShowSearch]=true required (ngModelChange)="plantChange($event)" [nzDisabled]="isModify">
+                <nz-option *ngFor="let option of PlantCodeOptions" [nzLabel]="option.label" [nzValue]="option.value">
+                </nz-option>
+            </nz-select>
+        </se>
+        <se label="{{ '事业部' | translate}}" required>
+            <input type="text" nz-input [(ngModel)]="i.scheduleRegionCode" name="scheduleRegionCode" disabled required>
+        </se>
+        <se label="{{ '工单类型' | translate}}" required>
+            <input type="text" nz-input [(ngModel)]="i.moType" name="moType" [disabled]="isModify" required>
+        </se>
+        <se label="{{ '工单标准类型' | translate}}" required>
+            <nz-select #select [(ngModel)]="i.standardFlag" (ngModelChange)="onChangeStandardType()" name="standardFlag" required>
+                <nz-option *ngFor="let option of autoadjustmentflags" [nzLabel]="option.label" [nzValue]="option.value" required></nz-option>
+            </nz-select>
+        </se>
+        <se label="{{ '默认工单类型' | translate}}" required>
+            <nz-select #select [(ngModel)]="i.defaultFlag" name="defaultFlag" required>
+                <nz-option *ngFor="let option of defaltOptions" [nzLabel]="option.label" [nzValue]="option.value" required>
+                </nz-option>
+            </nz-select>
+        </se>
+        <se label="{{ '工单类型描述' | translate}}">
+            <input type="text" nz-input [(ngModel)]="i.descriptions" name="descriptions">
+        </se>
+        <se label="{{ '是否有效' | translate}}" required>
+            <nz-select #select [(ngModel)]="i.enabledFlag" name="enabledFlag" required>
+                <nz-option *ngFor="let option of enableOptions" [nzLabel]="option.label" [nzValue]="option.value" required>
+                </nz-option>
+            </nz-select>
+        </se>
+    </form>
+</div>
+<div class="modal-footer">
+    <button nz-button type="submit" [nzType]="'primary'" (click)="save(f)" [disabled]="f.invalid || !f.dirty" [nzLoading]="http.loading">{{'保存' | translate}}</button>
+    <button nz-button type="button" (click)="close()">{{ '关闭' | translate}}</button>
+</div>

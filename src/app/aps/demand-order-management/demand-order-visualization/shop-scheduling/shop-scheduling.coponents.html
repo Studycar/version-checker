@@ -1,0 +1,50 @@
+<nz-descriptions [nzTitle]="'工单簇' | translate">
+</nz-descriptions>
+<nz-card>
+    <ag-grid-angular #agGrid [class]="themeClass" [style.height.px]="170" [rowData]="gridData"
+        [columnDefs]="columns" [gridOptions]="gridOptions" [myAgGridRowKey]="{tb:'PP_REQ_ORDERS'}" tabAggridState>
+    </ag-grid-angular>
+</nz-card>
+<nz-descriptions [nzTitle]="'历史记录' | translate">
+</nz-descriptions>
+
+<nz-collapse>
+    <nz-collapse-panel [nzHeader]="'工单修改记录' | translate">
+      <nz-timeline>  
+        <ng-container *ngFor="let item of hisDataModif">
+          <nz-timeline-item nzColor="green">
+            【{{item.creationDate}}】{{item.changeTypeName}}，{{item.attribute1}}
+          </nz-timeline-item>
+        </ng-container>
+      
+        <ng-container *ngIf="!http.loading && hasLoadData && hisDataModif.length === 0">
+          {{ '无数据' | translate}}
+        </ng-container>
+      </nz-timeline>
+    </nz-collapse-panel>
+
+    <nz-collapse-panel [nzHeader]="'调产发布记录' | translate">
+      <nz-timeline>  
+        <ng-container *ngFor="let item of hisDataRelease">
+          <nz-timeline-item nzColor="green">
+            【{{item.creationDate}}】{{item.changeTypeName}}，{{item.attribute1}}
+          </nz-timeline-item>
+        </ng-container>
+        <ng-container *ngIf="!http.loading && hasLoadData && hisDataRelease.length === 0">
+          {{ '无数据' | translate}}
+        </ng-container>
+      </nz-timeline>
+    </nz-collapse-panel>
+    <nz-collapse-panel [nzHeader]="'工单BOM变更' | translate" [nzActive]="true">
+      <nz-timeline>  
+        <ng-container *ngFor="let item of hisDataBom">
+          <nz-timeline-item nzColor="green">
+            【{{item.creationDate}}】{{item.changeTypeName}}，{{item.attribute1}} 
+          </nz-timeline-item>
+        </ng-container>
+        <ng-container *ngIf="!http.loading && hasLoadData && hisDataBom.length === 0">
+          {{ '无数据' | translate}}
+        </ng-container>
+      </nz-timeline>
+    </nz-collapse-panel>
+</nz-collapse>

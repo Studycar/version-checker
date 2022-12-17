@@ -1,0 +1,32 @@
+<custom-formquery [queryParams]="queryParams" [context]="context" (event1)="plantChange($event)"
+  (event2)="groupChange($event)">
+  <span>
+    <custom-button text="{{ '参与排产' | translate}}" [disabled]="isCheck" (clickEvent)="takeSchedule()" [src]="'参与排产'"
+      [srcDisabled]="'不参与排产'">
+    </custom-button>
+    <custom-button text="{{ '导出' | translate}}" (clickEvent)="export()" [src]="'基础icon-导出'">
+    </custom-button>
+  </span>
+</custom-formquery>
+<nz-card>
+  <ag-grid-angular #agGrid [class]="themeClass" [style.height.px]="gridHeight" [rowData]="gridData"
+    [columnDefs]="columns" [gridOptions]="gridOptions" (selectionChanged)="onSelectionChanged($event)"
+    [myAgGridRowKey]="{tb:'PS_OP_MAKE_ORDER'}" [myAgGridState]="'moprocess-maintenance'">
+  </ag-grid-angular>
+  <custom-pager [height]="pagerHeight" [context]="context" [view]='context.view' [(pageSize)]="_pageSize"
+    [(pageNo)]="_pageNo" (pageChangeEvent)="onPageChanged($event)"></custom-pager>
+  <custom-excelexport [expColumns]='expColumns' fileName='工序工单' #excelexport></custom-excelexport>
+</nz-card>
+<ng-template #customTemplate let-dataItem>
+  <span title="工序簇" (click)="summary(dataItem)" style="cursor: Pointer">
+    <i nz-icon [nzType]="'file'" theme="outline"></i>
+  </span>
+  <nz-divider nzType="vertical"></nz-divider>
+  <span title="工序组件" (click)="comdemand(dataItem)" style="cursor: Pointer">
+    <i nz-icon type="close-circle" theme="outline"></i>
+  </span>
+  <nz-divider nzType="vertical"></nz-divider>
+  <span title="修改" (click)="add(dataItem)" style="cursor: Pointer">
+    <i class="anticon anticon-edit"></i>
+  </span>
+</ng-template>

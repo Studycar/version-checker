@@ -1,0 +1,29 @@
+.workbench-setting {
+  width: 676px;
+
+  section{
+    padding: 8px;
+    padding-right: 0;
+  }
+  .scroll-wrap{
+    padding: 8px;
+  }
+
+  ::ng-deep .workbench-setting-row {
+    margin: 8px 0;
+  }
+
+  .text-ellipsis{
+    word-break: break-all;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    width: 100%;
+  }
+
+  .footer {
+    height: 32px;
+    display: flex;
+    justify-content: space-between;
+  }
+}

@@ -1,0 +1,85 @@
+<!--
+ * @Author: Zwh
+ * @contact: zhangweika@outlook.com
+ * @Date: 2020-06-29 15:32:42
+ * @LastEditors: Zwh
+ * @LastEditTime: 2021-03-03 16:03:43
+ * @Note: ...
+-->
+<div class="modal-header">
+    <div class="modal-title">{{ (isModify?'编辑信息':'新增信息') | translate}}</div>
+</div>
+<div style="position: relative; height: 32px" *ngIf="i.id">
+    <button nz-button nzType="dashed" style="position: absolute; right: 0;" (click)="clear()">重置</button>
+</div>
+<div>
+    <form nz-form #f="ngForm" se-container="2">
+        <se label="{{ '工厂' | translate}}" required>
+            <nz-select #select [(ngModel)]="i.plantCode" name="plantCode" nzShowSearch (ngModelChange)="LoadScheduleRegion()" [nzDisabled]="Istrue" required>
+                <nz-option *ngFor="let option of plantcodes" [nzLabel]="option.label" [nzValue]="option.value" [nzDisabled]="option.disabled"></nz-option>
+            </nz-select>
+        </se>
+        <se label="{{ '事业部' | translate}}" required>
+            <nz-select #select [(ngModel)]="i.scheduleRegionCode" name="scheduleRegionCode" [nzDisabled]="true" required>
+                <nz-option *ngFor="let option of scheduleregions" [nzLabel]="option.label" [nzValue]="option.value" [nzDisabled]="option.disabled"></nz-option>
+            </nz-select>
+        </se>
+        <se label="{{ '计划组编码' | translate}}" required>
+            <input type="text" nz-input [(ngModel)]="i.scheduleGroupCode" name="scheduleGroupCode" [disabled]="Istrue" required>
+        </se>
+        <se label="{{ '描述' | translate}}">
+            <input type="text" nz-input [(ngModel)]="i.descriptions" name="descriptions">
+        </se>
+        <se label="{{ '排产滚动开始时间' | translate}}" required>
+            <nz-date-picker nzShowTime nzFormat="yyyy-MM-dd HH:mm:ss" [(ngModel)]="i.scheduleStartTime" name="scheduleStartTime" nzShowTime required>
+            </nz-date-picker>
+        </se>
+        <se label="{{ '排产滚动周期' | translate}}">
+            <nz-input-number [nzMin]="0" [nzPrecision]="2" [(ngModel)]="i.schedulePeriod" name="schedulePeriod"></nz-input-number>
+        </se>
+        <!-- <se label="{{ '排程算法' | translate}}">
+            <nz-select #select [(ngModel)]="i.scheduleAlgorithm" name="scheduleAlgorithm">
+                <nz-option *ngFor="let option of schedulealgorithms" [nzLabel]="option.label" [nzValue]="option.value" [nzDisabled]="option.disabled"></nz-option>
+            </nz-select>
+        </se> -->
+        <se label="{{ '固定时间栏(天)' | translate}}">
+            <nz-input-number [nzMin]="0" [nzPrecision]="2" [(ngModel)]="i.fixTimeFence" name="fixTimeFence"></nz-input-number>
+        </se>
+        <!-- <se label="{{ '排序码' | translate}}">
+            <input type="text" nz-input [(ngModel)]="i.orderByCode" name="orderByCode">
+        </se> -->
+        <!-- <se label="{{ '工单完工偏移量(小时)' | translate}}">
+            <nz-input-number [nzMin]="0" [nzPrecision]="2" [(ngModel)]="i.moCompleteTimeOffset" name="moCompleteTimeOffset"></nz-input-number>
+        </se> -->
+        <se label="{{ '联动层级' | translate}}">
+            <nz-select #select [(ngModel)]="i.linkageLevel" name="linkageLevel">
+                <nz-option *ngFor="let option of linkagelevels" [nzLabel]="option.label" [nzValue]="option.value" [nzDisabled]="option.disabled"></nz-option>
+            </nz-select>
+        </se>
+        <!-- <se label="{{ '联动发放' | translate}}">
+            <nz-select #select [(ngModel)]="i.linkageReleaseFlag" name="linkageReleaseFlag">
+                <nz-option *ngFor="let option of enableflags" [nzLabel]="option.label" [nzValue]="option.value" [nzDisabled]="option.disabled"></nz-option>
+            </nz-select>
+        </se> -->
+        <!-- <se label="{{ '启用模具' | translate}}">
+            <nz-select #select [(ngModel)]="i.enableMould" name="enableMould">
+                <nz-option *ngFor="let option of enableflags" [nzLabel]="option.label" [nzValue]="option.value" [nzDisabled]="option.disabled"></nz-option>
+            </nz-select>
+        </se>
+        <se label="{{ '启用工序排产标识' | translate}}">
+            <nz-select #select [(ngModel)]="i.processScheduleFlag" name="processScheduleFlag">
+                <nz-option *ngFor="let option of enableflags" [nzLabel]="option.label" [nzValue]="option.value" [nzDisabled]="option.disabled"></nz-option>
+            </nz-select>
+        </se> -->
+        <se label="{{ '是否有效' | translate}}" required>
+            <nz-select #select [(ngModel)]="i.enableFlag" name="enableFlag" required>
+                <nz-option *ngFor="let option of enableflags" [nzLabel]="option.label" [nzValue]="option.value" [nzDisabled]="option.disabled"></nz-option>
+            </nz-select>
+        </se>
+
+    </form>
+</div>
+<div class="modal-footer">
+    <button nz-button type="submit" [nzType]="'primary'" (click)="save()" [disabled]="f.invalid || !f.dirty" [nzLoading]="http.loading">{{ '保存' | translate}}</button>
+    <button nz-button type="button" (click)="close()">{{ '关闭' | translate}}</button>
+</div>

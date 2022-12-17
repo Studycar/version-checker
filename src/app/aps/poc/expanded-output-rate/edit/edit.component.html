@@ -1,0 +1,40 @@
+<div class="modal-header">
+    <div class="modal-title">{{ title | translate }}</div>
+</div>
+<div style="position: relative; height: 32px" *ngIf="isModify">
+    <button nz-button nzType="dashed" style="position: absolute; right: 0;" (click)="clear()">{{'重置' | translate}}</button>
+</div>
+<div>
+    <form nz-form #f="ngForm" se-container="2">
+        <se label="{{'工厂' | translate}}" required>
+            <nz-select [(ngModel)]="i.PLANT_CODE" (ngModelChange)="onPlantChange($event)" name="PLANT_CODE" required>
+                <nz-option *ngFor="let option of plantOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+            </nz-select>
+        </se>
+        <se label="{{'产品编码' | translate}}" required>
+            <popup-select
+                [(SelectValue)]="i.ITEM_ID"
+                [(SelectText)]="i.ITEM_CODE"
+                [ValueField]="'ITEM_ID'"
+                [TextField]="'ITEM_CODE'"
+                [gridView]="itemGridView"
+                [columns]="itemColumns"
+                (TextChanged)="onTextChanged($event)"
+                (SearchEvent)="searchItems($event)">
+            </popup-select>
+        </se>
+        <se label="{{'给料数（KG）' | translate}}" required>
+            <nz-input-number [(ngModel)]="i.INPUT_QTY" [nzMin]="0" name="INPUT_QTY" required></nz-input-number>
+        </se>
+        <se label="{{'产出数（KG）' | translate}}" required>
+            <nz-input-number [(ngModel)]="i.OUTPUT_QTY" [nzMin]="0" name="OUTPUT_QTY" required></nz-input-number>
+        </se>
+        <se label="{{'冲洗返工（KG）' | translate}}" required>
+            <nz-input-number [(ngModel)]="i.FIX_LOSS_QTY" [nzMin]="0" name="FIX_LOSS_QTY" required></nz-input-number>
+        </se>
+    </form>
+</div>
+<div class="modal-footer">
+    <button nz-button type="submit" [nzType]="'primary'" [disabled]="!f.valid || !f.dirty || !i.ITEM_ID" [nzLoading]="http.loading" (click)="save()">{{'保存' | translate}}</button>
+    <button nz-button type="button" (click)="close()">{{'关闭' | translate}}</button>
+</div>

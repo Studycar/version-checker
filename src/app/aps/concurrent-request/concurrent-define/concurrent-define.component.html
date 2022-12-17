@@ -1,0 +1,77 @@
+<custom-formquery [showExpandIcon]="false" [context]="context">
+  <span>
+    <custom-button text="{{ '新增' | translate}}" (clickEvent)="add()" [src]="'基础icon-新增'">
+    </custom-button>
+  </span>
+</custom-formquery>
+<nz-card>
+  <!-- <kendo-grid [selectable]="{'checkboxOnly': false,'mode': 'single'}" [height]="gridHeight" style="width: 100%"
+    [data]="gridData" [reorderable]="true" [resizable]="true">
+    <kendo-grid-column *ngFor="let column of columns" [field]="column.field" [title]="column.title"
+      [width]="column.width" [locked]="column.field === 'Operate' ? true:false">
+      <ng-template kendoGridHeaderTemplate let-column>
+        <ellipsis lines="1 ">
+          <span nz-tooltip [nzTitle]="column.title">{{column.title}}</span>
+        </ellipsis>
+      </ng-template>
+
+      <div *ngIf="column.field === 'Operate'">
+        <ng-template kendoGridCellTemplate let-item>
+          <span title="{{'编辑' | translate}}" (click)="edit(item) " [ngStyle]="spanStyleEx">
+            <i class="anticon anticon-edit"></i>
+          </span>
+          <nz-divider nzType="vertical"></nz-divider>
+          <span title="{{'特殊规则' | translate}} " (click)="detail(item) " [ngStyle]="spanStyleEx"
+            *ngIf="item.MANAGER_TYPE==='3'">
+            <i class="anticon anticon-bars"></i>
+            <nz-divider nzType="vertical"></nz-divider>
+          </span>
+          <span title="{{'删除' | translate}} " (nzOnConfirm)="remove(item) " [ngStyle]="spanStyleEx" nz-popconfirm
+            nzTitle="是否确认删除该记录?">
+            <i class="anticon anticon-delete"></i>
+          </span>
+        </ng-template>
+      </div>
+
+      <div
+        *ngIf="column.field !== 'Operate' && column.field !== 'ENABLED_FLAG' && column.field !== 'DEFAULT_FLAG' && column.field !== 'ENABLE_DEBUG'">
+        <ng-template kendoGridCellTemplate let-dataItem>
+          <ellipsis lines="1 ">
+            <span nz-tooltip [nzTitle]="dataItem[column.field]">{{dataItem[column.field]}}</span>
+          </ellipsis>
+        </ng-template>
+      </div>
+
+      <div
+        *ngIf="column.field === 'ENABLED_FLAG' || column.field === 'DEFAULT_FLAG' || column.field === 'ENABLE_DEBUG'">
+        <ng-template kendoGridCellTemplate let-dataItem>
+          <ellipsis lines="1 ">
+            <span nz-tooltip [nzTitle]="(dataItem[column.field] ? '是': '否') | translate">{{(dataItem[column.field] ?
+              '是': '否') | translate}}</span>
+          </ellipsis>
+        </ng-template>
+      </div>
+    </kendo-grid-column>
+  </kendo-grid> -->
+  <ag-grid-angular #agGrid [class]="themeClass" [style.height.px]="gridHeight" [rowData]="gridData"
+    [columnDefs]="columns22" [gridOptions]="gridOptions" [myAgGridRowKey]="{tb:'CONCURRENT_DEFINE'}"
+    [myAgGridState]="'CONCURRENT_DEFINE'">
+  </ag-grid-angular>
+ <!-- <custom-pager [height]="pagerHeight" [context]="context" [view]='context.view' [(pageSize)]="_pageSize"
+    [(pageNo)]="_pageNo" (pageChangeEvent)="onPageChanged($event)"></custom-pager>-->
+</nz-card>
+<ng-template #customTemplate let-dataItem>
+<span title="{{'编辑' | translate}}" (click)="edit(dataItem)" class="pointer">
+                            <i class="anticon anticon-edit"></i>
+                          </span>
+<nz-divider nzType="vertical"></nz-divider>
+<span title="{{'特殊规则' | translate}}" (click)="detail(dataItem)" class="pointer"
+      *ngIf="dataItem.managerType=='3'">
+                            <i class="anticon anticon-bars"></i>
+                            <nz-divider nzType="vertical"></nz-divider>
+                          </span>
+<span title="{{'删除' | translate}}" (nzOnConfirm)="remove(dataItem)" class="pointer" nz-popconfirm
+      nzTitle="是否确认删除该记录?">
+                            <i class="anticon anticon-delete"></i>
+                          </span>
+</ng-template>

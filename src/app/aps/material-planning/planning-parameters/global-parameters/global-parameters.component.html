@@ -1,0 +1,22 @@
+<div class="modal-header" style="margin-bottom: 0;">
+    <div class="modal-title">{{ title | translate }}</div>
+</div>
+<div>
+    <ag-grid-angular
+        #agGrid
+        [class]="themeClass"
+        [style.height.px]="gridHeight"
+        [rowData]="gridData"
+        [columnDefs]="columns"
+        [gridOptions]="gridOptions"
+        [rowHeight]="36"
+        [pagination]="false"
+        [frameworkComponents]="frameworkComponents"
+        [myAgGridRowKey]="{tb:'GLOBAL_PARAMETERS'}"
+        [myAgGridState]="'globalParameters'">
+    </ag-grid-angular>
+</div>
+<div class="modal-footer" style="margin-top: 0;">
+    <button nz-button type="button" (click)="useDefaultValue()">{{'使用默认值' | translate}}</button>
+    <button nz-button type="button" [nzType]="'primary'" (click)="save()">{{'保存' | translate}}</button>
+</div>

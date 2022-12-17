@@ -1,0 +1,32 @@
+<custom-formquery [queryParams]="queryParams" [context]="context" [labelWidth]="120">
+  <custom-button text="{{ '审批' | translate}}" (clickEvent)="approval()" [src]="'提交审核'">
+  </custom-button>
+  <custom-button text="{{ '下达' | translate}}" (clickEvent)="send()" [src]="'批量下达'">
+  </custom-button>
+  <custom-button text="{{ '导出' | translate}}" (clickEvent)="export()" [src]="'基础icon-导出'"></custom-button>
+</custom-formquery>
+<nz-card>
+  <ag-grid-angular #agGrid [class]="themeClass" [style.height.px]="gridHeight" [rowData]="gridData"
+    [columnDefs]="columns" [gridOptions]="gridOptions" [pagination]="false"
+    (selectionChanged)="onSelectionChanged($event)">
+  </ag-grid-angular>
+  <div>{{ '总记录数：' | translate}}{{ (gridData && gridData.length) || 0 }}</div>
+  <custom-excelexport [expColumns]='expColumns' [groupCollection]='groupCollection' fileName='多版本分析' #excelexport>
+  </custom-excelexport>
+  <ng-template #customTemplate let-dataItem>
+    <span title="明细" (click)="detail(dataItem)" style="cursor: Pointer">
+      <i class="anticon anticon-plus"></i>
+    </span>
+  </ng-template>
+</nz-card>
+
+<nz-card *ngIf="gridData && gridData.length && gridData.length > 0">
+  <div class="EChart-box">
+    <div class="left">
+      <div echarts class="chart-content" [options]="option"></div>
+    </div>
+    <div class="right">
+      <div echarts class="chart-content" *ngFor="let options of chartData" [options]="options"></div>
+    </div>
+  </div>
+</nz-card>

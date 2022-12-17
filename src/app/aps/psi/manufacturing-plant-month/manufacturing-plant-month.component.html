@@ -1,0 +1,37 @@
+<custom-formquery [queryParams]="queryParams" [context]="context"
+  (event1)="businessUnitCodeOptionsChange($event)"
+  (event2)="searchItems($event)"
+  (event3)="rowSelectItems($event)"
+  (event4)="yearNumStartChange($event)"
+  (event5)="yearNumEndChange($event)"
+  (event6)="monthNumStartChange($event)"
+  (event7)="monthNumEndChange($event)"
+>
+  <span>
+    <custom-button text="{{ '导出' | translate}}" (clickEvent)="export()" [src]="'基础icon-导出'">
+    </custom-button>
+  </span>
+</custom-formquery>
+
+<nz-card>
+  <ag-grid-angular
+    #agGrid
+    [class]="themeClass"
+    [style.height.px]="gridHeight"
+    [rowData]="gridData"
+    [columnDefs]="columns"
+    [gridOptions]="gridOptions"
+    [myAgGridRowKey]="{tb:''}"
+    [myAgGridState]="'manufacturingPlantMonth'">
+  </ag-grid-angular>
+  <custom-pager
+    [height]="pagerHeight"
+    [context]="context"
+    [view]='context.view'
+    [(pageSize)]="_pageSize"
+    [(pageNo)]="_pageNo"
+    (pageChangeEvent)="onPageChanged($event)">
+  </custom-pager>
+  <custom-excelexport [expColumns]="expColumns" [expColumnsOptions]="expColumnsOptions" fileName="制造工厂PSI(月)" #excelexport>
+  </custom-excelexport>
+</nz-card>

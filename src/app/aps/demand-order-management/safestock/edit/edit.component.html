@@ -1,0 +1,53 @@
+<div class="modal-header">
+  <div class="modal-title">{{ (Istrue?'编辑信息':'新增信息') | translate}}</div>
+</div>
+<div *ngIf="Istrue" style=" margin:2px auto;">
+  <button style="float: right;" nz-button nzType="dashed" (click)="clear()">
+    {{ '重置' | translate}}</button>
+  <div style="clear: both;"></div>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="2" [labelWidth]=140>
+    <se label="{{ '工厂' | translate}}" required>
+      <nz-select #select [(ngModel)]="i.plantCode" (ngModelChange)="onPlantChange($event)" nzShowSearch name="PLANT_CODE" [disabled]="disabled1" required>
+        <nz-option *ngFor="let o of optionListPlant" [nzValue]="o.value" [nzLabel]="o.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '物料编码' | translate}}" required>
+      <popup-select #selMater1 [ID]="selMater1" [Value]="i.itemId" [Text]='i.itemCode' [ValueField]="'itemId'" [TextField]="'itemCode'"
+        [readOnly]="disabled1" [Disabled]="disabled1" [gridView]="gridViewItems" [columns]="columnsItems" (TextChanged)="onTextChanged($event)"
+        (SearchEvent)="searchItems($event)" (RowSelect)="onRowSelect($event)">
+      </popup-select>
+    </se>
+    <se label="{{ '物料类别' | translate}}">
+      <input type="text" nz-input [(ngModel)]="i.categoryCode" name="DESCRIPTIONS_US" readonly="true">
+    </se>
+    <se label="{{ '单位' | translate}}">
+      <input type="text" nz-input [(ngModel)]="i.unitOfMeasure" name="UNIT_OF_MEASURE" readonly="true">
+    </se>
+    <se label="{{ '物料描述' | translate}}">
+      <input type="text" nz-input [(ngModel)]="i.descriptionsCn" name="DESCRIPTIONS_CN" readonly="true">
+    </se>
+    <se label="{{ '最小数量' | translate}}" required>
+      <nz-input-number [(ngModel)]="i.minQuantity" [nzMin]="0" name="MIN_QUANTITY" required></nz-input-number>
+    </se>
+    <se label="{{ '最大数量' | translate}}" required>
+      <nz-input-number [(ngModel)]="i.maxQuantity" [nzMin]="0" [nzPrecision]="0" name="MAX_QUANTITY" required>
+      </nz-input-number>
+    </se>
+    <se label="{{ '生效日期' | translate}}" required>
+      <nz-date-picker nzFormat="yyyy-MM-dd" [(ngModel)]="i.startTime" name="START_TIME" nzPlaceHolder="请选择日期" required>
+      </nz-date-picker>
+    </se>
+    <se label="{{ '失效日期' | translate}}">
+      <nz-date-picker nzFormat="yyyy-MM-dd" [(ngModel)]="i.endTime" name="END_TIME" nzPlaceHolder="请选择日期">
+      </nz-date-picker>
+    </se>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save()" [disabled]="f.invalid || !f.dirty" [nzLoading]="http.loading">
+    {{ '保存' | translate}}</button>
+  <button nz-button type="button" (click)="close()">
+    {{ '关闭' | translate}}</button>
+</div>

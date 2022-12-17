@@ -1,0 +1,41 @@
+<div class="modal-header">
+  <div class="modal-title">{{ title }}信息</div>
+</div>
+<div style="position: relative; height: 32px" *ngIf="i.Id">
+  <button nz-button nzType="dashed" style="position: absolute; right: 0;" (click)="clear()">重置</button>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="2">
+    <se label="{{ '工厂' | translate}}" required>
+      <nz-select [(ngModel)]="i.plantCode" name="plantCode" required [disabled]="readOnly"
+        (ngModelChange)="plantChange($event)">
+        <nz-option *ngFor="let o of plantOptions" [nzValue]="o.plantCode" [nzLabel]="o.plantCode"></nz-option>
+        <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+          <i class="anticon anticon-loading anticon-spin loading-icon"></i> Loading Data...
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '模具编码' | translate}}" required>
+      <input nz-input type="text" [(ngModel)]="i.mouldCode" name="mouldCode" [disabled]="readOnly" required>
+    </se>
+   
+    <se label="{{ '模具描述' | translate}}" required>
+      <input nz-input type="text" [(ngModel)]="i.descriptions" name="descriptions">
+    </se>
+    <se label="{{ '状态' | translate}}" required>
+      <nz-select [(ngModel)]="i.mouldStatus" name="mouldStatus" required>
+        <nz-option *ngFor="let option of statusOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '是否有效' | translate}}" required>
+      <nz-select [(ngModel)]="i.enableFlag" name="enableFlag" required>
+        <nz-option *ngFor="let option of yesOrNo" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save()" [disabled]="!f.valid || !f.dirty"
+    [nzLoading]="http.loading">保存</button>
+  <button nz-button type="button" (click)="close()">关闭</button>
+</div>

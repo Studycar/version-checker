@@ -1,0 +1,5 @@
+﻿<nz-form-label nzSpan="{{ labelGridWidth }}">{{ translatedDisplayName }}</nz-form-label>
+<nz-form-control nzSpan="{{ fieldGridWidth }}" [formGroup]="formGroup">
+  <input nz-input [formControlName]="fieldName" [placeholder]="translatedPlaceHolder" />
+  <m-form-validation-messages [formGroup]="formGroup" [fieldName]="fieldName" [displayName]="displayName" [validationMessages]="validationMessages"></m-form-validation-messages>
+</nz-form-control>

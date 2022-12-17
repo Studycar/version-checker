@@ -1,0 +1,64 @@
+<div class="modal-header">
+  <div class="modal-title">{{ (IsUpdate?'编辑信息':'新增信息') | translate}}</div>
+</div>
+<div *ngIf="IsUpdate" style=" margin:2px auto;">
+  <button style="float: right;" nz-button nzType="dashed" (click)="clear()">{{ '重置' | translate}}</button>
+  <div style="clear: both;"></div>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="2" [labelWidth]=140>
+    <se label="{{ '工厂' | translate}}" required>
+      <input type="text" nz-input [(ngModel)]="moData.PLANT_CODE" name="PLANT_CODE" readonly="true">
+    </se>
+    <se label="{{ '工单号' | translate}}" required>
+      <input type="text" nz-input [(ngModel)]="moData.MAKE_ORDER_NUM" name="MAKE_ORDER_NUM" readonly="true">
+    </se>
+    <se label="{{ '物料编码' | translate}}" required>
+      <input type="text" nz-input [(ngModel)]="moData.ITEM_CODE" name="ITEM_CODE" readonly="true">
+    </se>
+    <se label="{{ '物料描述' | translate}}">
+      <input type="text" nz-input [(ngModel)]="moData.ITEM_DESC" name="ITEM_DESC" readonly="true">
+    </se>
+    <se label="{{ '组件编码' | translate}}" required>
+      <popup-select #selMater1 [ID]="'selMater1'" [Value]="saveData.COMPONENT_ITEM_ID" [Text]='saveData.COMPONENT_ITEM_CODE' [ValueField]="'ITEM_ID'"
+        [TextField]="'ITEM_CODE'" [Disabled]="IsUpdate" [gridView]="gridViewItems" [columns]="columnsItems" (TextChanged)="onTextChanged($event)"
+        (SearchEvent)="searchItems($event)" (RowSelect)="onRowSelect($event)">
+      </popup-select>
+    </se>
+    <se label="{{ '组件描述' | translate}}">
+      <input type="text" nz-input [(ngModel)]="saveData.COMPONENT_ITEM_DESC" name="COMPONENT_ITEM_DESC" readonly="true">
+    </se>
+    <se label="{{ '供应子库' | translate}}" required>
+      <nz-select #select [(ngModel)]="saveData.SUPPLY_SUBINVENTORY" nzShowSearch name="SUPPLY_SUBINVENTORY" required>
+        <nz-option *ngFor="let o of listSubinventories" [nzValue]="o.value" [nzLabel]="o.label">
+        </nz-option>
+        <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+          <i class="anticon anticon-loading anticon-spin loading-icon"></i> Loading Data...
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '供应类型' | translate}}" required>
+      <nz-select #select [(ngModel)]="saveData.SUPPLY_TYPE" nzShowSearch name="SUPPLY_TYPE" required>
+        <nz-option *ngFor="let o of listSupplyType" [nzValue]="o.value" [nzLabel]="o.label">
+        </nz-option>
+        <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+          <i class="anticon anticon-loading anticon-spin loading-icon"></i> Loading Data...
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '需求数量' | translate}}" required>
+      <nz-input-number [(ngModel)]="saveData.REQUIREMENT_QTY" [nzMin]="0" name="REQUIREMENT_QTY" required></nz-input-number>
+    </se>
+    <se label="{{ '单位用量' | translate}}">
+      <input type="text" nz-input [(ngModel)]="saveData.USAGE" name="USAGE" readonly="true">
+    </se>
+    <se label="{{ '工序号' | translate}}">
+      <input type="text" nz-input [(ngModel)]="saveData.PROCESS_CODE" name="PROCESS_CODE">
+    </se>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save()" [disabled]="f.invalid || !f.dirty" [nzLoading]="http.loading">
+    {{ '保存' | translate}}</button>
+  <button nz-button type="button" (click)="close()">{{ '关闭' | translate}}</button>
+</div>

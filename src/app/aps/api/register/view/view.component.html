@@ -1,0 +1,41 @@
+<div class="modal-header">
+  <div class="modal-title">{{ '接口卡信息'| translate}}</div>
+</div>
+<div class="operatable-area">
+  <button nz-button nzType="primary" [disabled]="gridData.length===0"
+    (click)="generate()">{{ '代码生成' | translate}}</button>
+  <button nz-button nzType="primary" (click)="add()">{{ '新增' | translate}}</button>
+  <button nz-button [disabled]="gridData.length===0" (click)="save()">{{ '保存' | translate}}</button>
+  <button nz-button [disabled]="gridData.length===0" (click)="export()">{{ '导出' | translate}}</button>
+  <button nz-button (click)="import()">{{ '导入' | translate}}</button>
+</div>
+<ag-grid-angular #agGrid [class]="themeClass" [style.height.px]="gridHeight" [rowData]="gridData" [columnDefs]="columns"
+  [gridOptions]="gridOptions" [pagination]="false">
+</ag-grid-angular>
+<div>{{ '总记录数：' | translate}}{{gridData.length}}</div>
+<custom-excelexport [expColumns]='expColumns' [expColumnsOptions]='expColumnsOptions' fileName='接口卡信息' #excelexport>
+</custom-excelexport>
+<ng-template #customTemplate1 let-dataItem>
+  <span title="{{ '移除' | translate}}" (click)="remove(dataItem);" class="pointer">
+    <i class="anticon anticon-delete"></i>
+  </span>
+</ng-template>
+<ng-template #customTemplate2 let-dataItem>
+  <span>
+    <nz-select [(ngModel)]="dataItem.type" [ngStyle]="{display:'inline-block',width:'120px'}" nzShowSearch name="type"
+      required>
+      <nz-option *ngFor="let o of typeOptions" [nzValue]="o.value" [nzLabel]="o.label"></nz-option>
+    </nz-select>
+  </span>
+</ng-template>
+<ng-template #customTemplate3 let-dataItem>
+  <input type="checkbox" [(ngModel)]="dataItem.boolNotNull" />
+</ng-template>
+<ng-template #customTemplate4 let-dataItem>
+  <span>
+    <nz-select [(ngModel)]="dataItem.tableField" [ngStyle]="{display:'inline-block',width:'170px'}" nzShowSearch
+      [nzAllowClear]="true" name="tableField">
+      <nz-option *ngFor="let o of fieldOptions" [nzValue]="o.value" [nzLabel]="o.label"></nz-option>
+    </nz-select>
+  </span>
+</ng-template>

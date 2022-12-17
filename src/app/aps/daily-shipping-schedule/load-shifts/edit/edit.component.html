@@ -1,0 +1,32 @@
+<div class="modal-header">
+  <div class="modal-title">{{ (editDto.Id !== undefined ? '编辑信息' : '新增信息') | translate}}</div>
+</div>
+<div style=" margin:2px auto;">
+  <button style="float: right;" nz-button nzType="dashed" (click)="clear()">
+    <i class="anticon anticon-delete"></i>{{ '重置' | translate}}</button>
+  <div style="clear: both;"></div>
+</div>
+
+<div>
+  <form nz-form #f="ngForm" se-container="2" [labelWidth]=140>
+    <se label="{{ '工厂' | translate}}" required>
+      <nz-select #select [(ngModel)]="editDto.plantCode" nzShowSearch name="plantCode" required>
+        <nz-option *ngFor="let o of plantCodes" [nzValue]="o.value" [nzLabel]="o.label"></nz-option>
+      </nz-select>
+    </se>
+
+    <se label="{{ '时段号' | translate}}" required>
+      <nz-input-number [(ngModel)]="editDto.internal" [nzMin]="0" name="internal" required
+        [disabled]="editDto.id !== null"></nz-input-number>
+    </se>
+
+    <se label="{{ '班次开始时间' | translate}}" required>
+      <nz-time-picker [(ngModel)]="editDto.startTime" name="startTime" required></nz-time-picker>
+    </se>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save()" [disabled]="f.invalid || !f.dirty"
+    [nzLoading]="http.loading"> {{ '保存' | translate}}</button>
+  <button nz-button type="button" (click)="close()"> {{ '关闭' | translate}}</button>
+</div>

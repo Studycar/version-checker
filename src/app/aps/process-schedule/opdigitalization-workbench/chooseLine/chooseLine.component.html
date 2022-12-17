@@ -1,0 +1,101 @@
+<div class="modal-header">
+  <div class="modal-title">{{ ('集约选线') | translate}} </div>
+</div>
+<div style=" text-align:right;">
+  <button nz-button nzType="dashed" (click)="clear()">
+    {{ '重置' | translate}}</button>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="3" [labelWidth]='120'>
+    <se label="{{ '事业部' | translate}}">
+      <input type="text" nz-input [(ngModel)]="i.SCHEDULE_REGION_CODE" name="SCHEDULE_REGION_CODE" readonly="true"
+        [class.disabled]="true">
+    </se>
+    <se label="{{ '工厂' | translate}}">
+      <input type="text" nz-input [(ngModel)]="i.PLANT_CODE" name="PLANT_CODE" readonly="true" [class.disabled]="true">
+    </se>
+    <se label="{{ '计划组' | translate}}">
+      <input type="text" nz-input [(ngModel)]="i.SCHEDULE_GROUP_CODE" name="SCHEDULE_GROUP_CODE" readonly="true"
+        [class.disabled]="true">
+    </se>
+    <se label="{{ '选线类型' | translate}}" required>
+      <nz-select nzShowSearch [(ngModel)]="i.ATTRIBUTE1" name="ATTRIBUTE1" required>
+        <nz-option *ngFor="let option of extTypeOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '集约周期(小时)' | translate}}" required>
+      <nz-input-number [(ngModel)]="i.merge_days" [nzPrecision]="0" [nzMin]="0" name="merge_days" required>
+      </nz-input-number>
+    </se>
+    <se label="{{ '经济产能(小时)' | translate}}" required>
+      <nz-input-number [(ngModel)]="i.production_hours" [nzPrecision]="0" [nzMin]="0" name="production_hours" required>
+      </nz-input-number>
+    </se>
+    <se label="{{ '开始时间' | translate}}" required>
+      <nz-date-picker nzShowTime [nzAllowClear]="false" nzFormat="yyyy-MM-dd HH:mm:ss" [(ngModel)]="i.start_date"
+        (nzOnOk)="startDateChange()" name="start_date" nzPlaceHolder="{{'请选择时间'| translate}}" required
+        [ngStyle]="{'width':'120px'}">
+      </nz-date-picker>
+    </se>
+    <se label="{{ '集约维度1' | translate}}">
+      <nz-select nzShowSearch nzAllowClear [(ngModel)]="i.item_ext_type_id1"
+        (ngModelChange)="extTypeId1Change($event)" name="item_ext_type_id1">
+        <nz-option *ngFor="let option of itemExtOptions1" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '集约维度2' | translate}}">
+      <nz-select nzShowSearch nzAllowClear [(ngModel)]="i.item_ext_type_id2" name="item_ext_type_id2"
+        [nzDisabled]="!i.item_ext_type_id1">
+        <nz-option *ngFor="let option of itemExtOptions2" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+    <!--     <se label="{{ '集中优先级3' | translate}}">
+      <nz-select nzShowSearch nzAllowClear [(ngModel)]="i.item_ext_type_id3" name="item_ext_type_id3">
+        <nz-option *ngFor="let option of itemExtOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '集中优先级4' | translate}}">
+      <nz-select nzShowSearch nzAllowClear [(ngModel)]="i.item_ext_type_id4" name="item_ext_type_id4">
+        <nz-option *ngFor="let option of itemExtOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se> -->
+  </form>
+  <div style="text-align:right;margin-bottom: 5px;">
+    <button nz-button type="submit " (click)="confirm() " [nzType]=" 'primary' " [disabled]="f.invalid ">
+      {{ '确定' | translate}}</button>
+    <button nz-button type=" button " (click)="close() ">{{ '关闭' | translate}}</button>
+  </div>
+</div>
+<nz-card>
+  <kendo-grid #grid [data]="view" [height]="gridHeight" [pageSize]="gridState.take" [skip]="gridState.skip"
+    [sort]="gridState.sort" [sortable]="false" (cellClick)="cellClickHandler($event)"
+    (cellClose)="cellCloseHandler($event)" [filter]="gridState.filter" filterable="menu" [resizable]="true"
+    [selectable]="selectableSettings" [kendoGridSelectBy]="selectBy" [selectedKeys]="selectionKeys" [columnMenu]="true"
+    [reorderable]="true" [pageable]="false" [navigable]="true" [loading]="loading">
+    <kendo-grid-messages pagerPage="分页" pagerOf="的" pagerItems="总数" pagerItemsPerPage="页项"
+      groupPanelEmpty="Drag here to group" noRecords="没有数据">
+    </kendo-grid-messages>
+    <kendo-grid-checkbox-column [width]="80" showSelectAll="true" [locked]="true">
+      <ng-template kendoGridFooterTemplate>
+        总数:{{view.data.length}}
+      </ng-template>
+    </kendo-grid-checkbox-column>
+    <kendo-grid-column *ngFor="let col of columns" [field]="col.field" [title]="col.title" [locked]="col.locked"
+      [width]="col.width" [style]="gridLineStyle">
+      <ng-template kendoGridCellTemplate let-dataItem>
+        <span *ngIf="col.ui?.type==='dateTime'">{{dataItem[col.field]|date:"yyyy-MM-dd HH:mm:ss"}}</span>
+        <span *ngIf="col.ui?.type!=='dateTime'">
+          <ellipsis lines="col.ui?.toolTip">
+            <span nz-tooltip [nzTitle]="dataItem[col.field]">{{dataItem[col.field]}}</span>
+          </ellipsis>
+        </span>
+      </ng-template>
+      <ng-template kendoGridEditTemplate let-dataItem="dataItem" let-column="column" let-formGroup="formGroup"
+        *ngIf="col.ui?.type === 'dateTime'">
+        <nz-date-picker nzShowTime [nzAllowClear]="false" [nzDisabledDate]="disabledDate" nzFormat="yyyy-MM-dd HH:mm:ss"
+          [(ngModel)]="dataItem[col.field]" (nzOnOk)="datePickerOnOk($event)" [formControl]="formGroup.get(col.field)">
+        </nz-date-picker>
+      </ng-template>
+    </kendo-grid-column>
+  </kendo-grid>
+</nz-card>

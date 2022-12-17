@@ -1,0 +1,47 @@
+<div class="modal-header">
+  <div class="modal-title">{{ isModify ? '编辑信息' : '新增信息' | translate }}</div>
+</div>
+<div style="position: relative; height: 32px" *ngIf="isModify">
+  <button nz-button nzType="dashed" style="position: absolute; right: 0;" (click)="clear()">{{'重置' | translate}}</button>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="2">
+    <se label="{{ '配送单号' | translate }}" *ngIf="isModify">
+      <input nz-input type="text" disabled name="deliveryOrderCode" [(ngModel)]="i.deliveryOrderCode">
+    </se>
+    <se label="{{ '配送单状态' | translate }}" required>
+      <nz-select nzShowSearch name="state" nzDisabled [(ngModel)]="i.state" required>
+        <nz-option *ngFor="let op of deliveryStateOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '配送日期' | translate }}" required>
+      <nz-date-picker nzFormat="yyyy-MM-dd" [(ngModel)]="i.deliveryOrderDate" name="deliveryOrderDate" required>
+      </nz-date-picker>
+    </se>
+    <se label="{{ '工厂' | translate }}" required>
+      <nz-select nzShowSearch name="plantCode" [(ngModel)]="i.plantCode" [nzDisabled]="isModify" required>
+        <nz-option *ngFor="let op of plantOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '车号' | translate }}">
+      <input nz-input type="text" name="carNumber" [(ngModel)]="i.carNumber">
+    </se>
+    <se label="{{ '物流公司' | translate }}">
+      <input nz-input type="text" name="logistics" [(ngModel)]="i.logistics">
+    </se>
+    <se label="{{ '配送地址' | translate }}" required>
+      <popup-select [(SelectValue)]="i.shippingAddress" [ValueField]="'warehouse'" [Disabled]="isModify"
+        [(SelectText)]="i.shippingAddress" [TextField]="'warehouse'" name="shippingAddress"
+        [gridView]="gridViewWares" [columns]="columnsWares" (TextChanged)="onWaresTextChanged($event)"
+        (SearchEvent)="searchWares($event)" (RowSelect)="onWaresSelect($event)" required>
+      </popup-select>
+    </se>
+    <se label="{{ '备注' | translate }}">
+      <input nz-input type="text" name="remarks" [(ngModel)]="i.remarks">
+    </se>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="button" (click)="close()">{{ '取消' | translate }}</button>
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save(f.value)" [nzLoading]="http.loading" [disabled]="f.invalid || !f.dirty">{{'保存' | translate }}</button>
+</div>

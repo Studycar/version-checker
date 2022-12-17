@@ -1,0 +1,43 @@
+<div class="modal-header">
+  <div class="modal-title">{{ title }}信息</div>
+</div>
+<div style="position: relative; height: 32px" *ngIf="isModify">
+  <button nz-button nzType="dashed" style="position: absolute; right: 0;" (click)="clear()">重置</button>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="1" [labelWidth]="120">
+    <se label="{{ '工厂' | translate}}" required="true">
+      <nz-select #select [(ngModel)]="i.plantCode" nzShowSearch (nzScrollToBottom)="loadplant()"
+        (ngModelChange)="onChangePlant($event)" name="PLANT_CODE" required>
+        <nz-option *ngFor="let o of optionListPlant" [nzValue]="o.plantCode" [nzLabel]="o.plantCode"></nz-option>
+        <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+          <i class="anticon anticon-loading anticon-spin loading-icon"></i> Loading Data...
+        </nz-option>
+      </nz-select>
+    </se>
+  
+    <se label="{{ '计划组' | translate}}" required="true">
+      <nz-select #select [(ngModel)]="i.scheduleGroupCode"  name="SCHEDULE_GROUP_CODE" required>
+        <nz-option *ngFor="let o of scheduleGroupCodeOptions" [nzValue]="o.value" [nzLabel]="o.label"></nz-option>
+        <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+          <i class="anticon anticon-loading anticon-spin loading-icon"></i> Loading Data...
+        </nz-option>
+      </nz-select>
+    </se>
+
+    <se label="{{ '配套方案' | translate}}" required="true">
+      <nz-select #select [(ngModel)]="i.matchProject" nzShowSearch name="CATEGORY_SET" required>
+        <nz-option *ngFor="let o of categorySet" [nzValue]="o.value" [nzLabel]="o.label"></nz-option>
+        <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+          <i class="anticon anticon-loading anticon-spin loading-icon"></i> Loading Data...
+        </nz-option>
+      </nz-select>
+    </se>
+
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save()" [disabled]="f.invalid || !f.dirty"
+    [nzLoading]="http.loading">{{ '保存' | translate}}</button>
+  <button nz-button type="button" (click)="close()">{{ '关闭' | translate}}</button>
+</div>

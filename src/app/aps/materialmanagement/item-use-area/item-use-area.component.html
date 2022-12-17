@@ -1,0 +1,18 @@
+<custom-formquery [queryParams]="queryParams" [context]="context" (event1)="plantChange($event)"
+  (event2)="searchItemsCode($event)" (popupSelectTextChangedEvent)="onPopupSelectTextChanged($event)"
+  (event3)="onPopupRowSelectChanged($event)">
+  <span>
+    <custom-button text="{{ '导出' | translate}}" (clickEvent)="export()" [src]="'基础icon-导出'">
+    </custom-button>
+  </span>
+</custom-formquery>
+<nz-card>
+  <ag-grid-angular #agGrid [class]="themeClass" [style.height.px]="gridHeight" [rowData]="gridData" [pagination]="false"
+    [treeData]="true" [columnDefs]="columns" excludeChildrenWhenTreeDataFiltering="true" [gridOptions]="gridOptions"
+    [groupDefaultExpanded]="groupDefaultExpanded" [getDataPath]="getDataPath" [autoGroupColumnDef]="autoGroupColumnDef"
+    (selectionChanged)="onSelectionChanged()" (gridReady)="onGridReady($event)" [myAgGridState]="'item-use-area'">
+  </ag-grid-angular>
+  <div>{{ '总记录数：' | translate}}{{gridData.length}}</div>
+  <custom-excelexport [expColumns]='expColumns' [expColumnsOptions]='expColumnsOptions' fileName='物料使用处' #excelexport>
+  </custom-excelexport>
+</nz-card>

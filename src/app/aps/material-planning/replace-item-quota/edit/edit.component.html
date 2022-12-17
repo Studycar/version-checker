@@ -1,0 +1,52 @@
+<div class="modal-header">
+    <div class="modal-title">{{ title | translate }}</div>
+</div>
+<div style="position: relative; height: 32px" *ngIf="params.id">
+    <button nz-button nzType="dashed" style="position: absolute; right: 0;" (click)="clear()">重置</button>
+</div>
+<div>
+    <form nz-form #f="ngForm" se-container="2">
+        <se label="{{'工厂' | translate}}" required>
+            <nz-select [(ngModel)]="params.plantCode" name="plantCode" [disabled]="editDisabled" required>
+                <nz-option *ngFor="let option of plantOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+            </nz-select>
+        </se>
+        <se label="{{'项目号' | translate}}">
+            <input type="text" nz-input [(ngModel)]="params.projectNumber" name="projectNumber">
+        </se>
+        <se label="{{'替代组' | translate }}" required>
+            <input type="text" nz-input [(ngModel)]="params.replacementGroup" name="replacementGroup" [disabled]="editDisabled" required >
+        </se>
+        <se label="{{'绑定组合' | translate}}">
+            <input type="text" nz-input [(ngModel)]="params.combinationGroup" name="combinationGroup">
+        </se>
+        <se label="{{'物料编码' | translate }}" required>
+            <popup-select
+                [(SelectText)]="params.itemCode"
+                [TextField]="'itemCode'"
+                [ValueField]="'itemCode'"
+                [gridView]="itemOptions"
+                [columns]="columnsItems"
+                (SearchEvent)="searchItems($event)">
+            </popup-select>
+        </se>
+        <se label="{{'消耗优先级' | translate}}" required>
+            <input type="text" nz-input [(ngModel)]="params.consumePriority" name="consumePriority" required>
+        </se>
+        <se label="{{'配额' | translate}}" required>
+            <input type="text" nz-input [(ngModel)]="params.allocationPercent" name="allocationPercent" required>
+        </se>
+        <se label="{{'配额生效时间' | translate}}" required>
+            <nz-date-picker nzShowTime nzFormat="yyyy-MM-dd HH:mm:ss" [(ngModel)]="params.effectivityDate" name="effectivityDate" nzPlaceHolder="" required>
+            </nz-date-picker>
+        </se>
+        <se label="{{'配额失效时间' | translate}}">
+            <nz-date-picker nzShowTime nzFormat="yyyy-MM-dd HH:mm:ss" [(ngModel)]="params.disableDate" name="disableDate" nzPlaceHolder="">
+            </nz-date-picker>
+        </se>
+    </form>
+</div>
+<div class="modal-footer">
+    <button nz-button type="submit" [nzType]="'primary'" [disabled]="!f.valid || !f.dirty" [nzLoading]="http.loading" (click)="save()">{{'保存' | translate}}</button>
+    <button nz-button type="button" (click)="close()">{{'关闭' | translate}}</button>
+</div>

@@ -1,0 +1,27 @@
+<custom-formquery [queryParams]="queryParams" [context]="context" 
+(event1)="searchItems($event)" 
+(event2)="rowSelect($event)"></custom-formquery>
+
+<nz-card>
+    <ag-grid-angular
+      #agGrid
+      [class]="themeClass"
+      [style.height.px]="gridHeight"
+      [rowData]="gridData"
+      [columnDefs]="columns"
+      [gridOptions]="gridOptions"
+      [myAgGridRowKey]="{tb:'PS_MAKE_ORDER'}">
+    </ag-grid-angular>
+    <custom-pager
+        [height]="pagerHeight"
+        [context]="context"
+        [view]='context.view'
+        [(pageSize)]="_pageSize"
+        [(pageNo)]="_pageNo"
+        (pageChangeEvent)="onPageChanged($event)">
+    </custom-pager>
+</nz-card>
+
+<ng-template #customTemplate let-dataItem>
+    <span title="{{ '明细' | translate}}" (click)="detail(dataItem)" class="pointer"><i nz-icon nzType="bars" nzTheme="outline"></i></span>
+</ng-template>

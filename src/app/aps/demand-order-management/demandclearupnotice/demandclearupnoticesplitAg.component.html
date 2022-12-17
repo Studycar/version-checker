@@ -1,0 +1,62 @@
+&nbsp;
+<div class="content-title" style="border:solid 0.5px rgba(115, 112, 117, 0.349);">
+  <form nz-form #f="ngForm" se-container="3">
+    <se label="{{'父订单号码' | translate}}">
+      <input type="text" nz-input [(ngModel)]="i.REQ_NUMBER" disabled name="REQ_NUMBER">
+    </se>
+    <se label="{{'父订单行号' | translate}}">
+      <input type="text" nz-input [(ngModel)]="i.REQ_LINE_NUM" disabled name="REQ_LINE_NUM">
+    </se>
+    <se label="{{'父订单数量' | translate}}">
+      <input type="text" nz-input [(ngModel)]="i.REQ_QTY" disabled name="REQ_QTY">
+    </se>
+    <se label="{{'需求日期' | translate}}">
+      <input type="text" nz-input [(ngModel)]="i.REQ_DATE" disabled name="REQ_DATE">
+    </se>
+  </form>
+</div>
+<div></div>
+<div class="content-title" style="border:solid 0.5px rgba(115, 112, 117, 0.349);">
+  <div style="margin-bottom: 10px;">
+    <button nz-button (click)="clear()">
+      {{ '清除' | translate}}
+    </button>
+    <button nz-button (click)="add()" [nzType]="'primary'">
+      {{ '新增' | translate}}
+    </button>
+    <label>&nbsp;&nbsp;{{'批次数量' | translate}}：</label>
+    <nz-input-number [(ngModel)]="BATCH_REQ_QTY" [nzStep]="0.01" name="BATCH_REQ_QTY"></nz-input-number>
+    <label>&nbsp;&nbsp;</label>
+    <nz-radio-group [(ngModel)]="splitType">
+      <label nz-radio nzValue="1">{{'等量拆分' | translate}}</label>
+      <label nz-radio nzValue="2">{{'尾数拆分' | translate}}</label>
+    </nz-radio-group>
+    <br />
+  </div>
+  <ag-grid-angular id="noticeSplitGrid" [class]="themeClass" [style.height.px]="200" [rowData]="gridData"
+    [columnDefs]="columns" [gridOptions]="gridOptions" [pagination]="false" 
+     (cellValueChanged)="onCellValueChanged($event)"
+    (virtualColumnsChanged)="onVirtualColumnsChanged($event)">
+  </ag-grid-angular>
+</div>
+<div class="mb-md">
+  <button style="float: right;" nz-button (click)="close()" class="mx-sm">
+    {{ '取消' | translate}}
+  </button>
+  <button style="float: right;" [disabled]="disabled" nz-button (click)="saveChanges()" [nzType]="'primary'">
+    {{ '提交' | translate}}
+  </button>
+  <div style="clear: both;"></div>
+</div>
+<ng-template #customTemplate let-dataItem>
+<span title="{{ '删除' | translate}}"  (click)="remove(dataItem)" class="pointer">
+                              <i class="anticon anticon-delete"></i>
+                          </span>
+</ng-template>
+<ng-template #customTemplate1 let-dataItem>
+  <span>
+                          <nz-date-picker  nzShowTime  nzFormat="yyyy-MM-dd HH:mm:ss" [(ngModel)]="dataItem.REQ_DATE" name="REQ_DATE" nzPlaceHolder="{{'请选择' | translate}}" [required]="true" [nzAllowClear]="false">
+                          </nz-date-picker>
+                        </span>
+</ng-template>
+

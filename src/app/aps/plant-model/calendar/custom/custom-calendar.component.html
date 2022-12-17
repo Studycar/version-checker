@@ -1,0 +1,52 @@
+<div class="container">
+  <div class="container_action">
+    <!--<a (click)="expandSelect()" class="action_a">
+      <i nz-icon [nzType]="showSelect?'anticon-up':'anticon-down'"></i>
+      {{'年月选择'| translate}}
+    </a>-->
+    <!-- <div class="action" [hidden]="!showSelect" [style.height.px]="selectHeight">
+      <span class="span_year">
+        <nz-select nzPlaceHolder="{{'请选择'| translate}}" name="year" nzShowSearch nzAllowClear [(ngModel)]="year" (ngModelChange)="ymChange($event)">
+          <nz-option *ngFor="let option of yearOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+        </nz-select>
+      </span>
+      <span class="year">{{'年'| translate}}</span>
+      <span class="span_month">
+        <nz-select nzPlaceHolder="{{'请选择'| translate}}" name="month" nzShowSearch nzAllowClear [(ngModel)]="month" (ngModelChange)="ymChange($event)">
+          <nz-option *ngFor="let option of monthOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+        </nz-select>
+      </span>
+      <span class="year">{{'月'| translate}}</span>
+    </div> -->
+    <nz-month-picker [ngStyle]="{width: '160px'}" [(ngModel)]="selectMonth" (ngModelChange)="ymCalendarSelect($event)">
+    </nz-month-picker>
+  </div>
+  <table cellspacing="0" class="table" [style.height.px]="tableHeight">
+    <thead>
+      <tr>
+        <th *ngFor="let w of weekOptions" title="{{w.title}}" [class.workday]="w.isWorkDay">
+          <div>{{w.title| translate}}</div>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let weekNum of weeks">
+        <td *ngFor="let w of weekOptions; let i=index">
+          <div class="date_container" [class.not_current_month]="!calendarDates[weekNum*7+i]?.isCurrentMonth"
+            [class.current_day]="calendarDates[weekNum*7+i]?.isCurrentDay">
+            <div class="date_title" title="{{calendarDates[weekNum*7+i]?.date| date}}"
+              (click)="cellClick(calendarDates[weekNum*7+i])">{{calendarDates[weekNum*7+i]?.day}}</div>
+            <div class="date_content">
+              <ul [style.height.px]="tdContentHeight">
+                <li *ngFor="let item of cellDataFind(calendarDates[weekNum*7+i])">
+                  <input type="checkbox" [checked]="item.checked"
+                    (click)="cellCheck($event,item)" />{{getCellContent(item)}}
+                </li>
+              </ul>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

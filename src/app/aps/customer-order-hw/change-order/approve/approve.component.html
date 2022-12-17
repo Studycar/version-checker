@@ -1,0 +1,29 @@
+<div class="modal-header">
+  <div class="modal-title">{{ '客户变更单提交审批' | translate }}</div>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="2">
+    <se label="{{ '客户名称' | translate }}">
+      <input nz-input disabled [(ngModel)]="i.cusAbbreviation" name="cusAbbreviation">
+    </se>
+    <se label="{{ '下单日期' | translate }}">
+      <input nz-input disabled [(ngModel)]="i.changeOrderDate" name="changeOrderDate" />
+    </se>
+    <se label="{{ '存货名称' | translate }}">
+      <input nz-input disabled [(ngModel)]="i.stockName" name="stockName" />
+    </se>
+    <se label="{{ '规格' | translate }}">
+      <input nz-input disabled [(ngModel)]="i.standards" name="standards" />
+    </se>
+    <se label="{{ '数量' | translate }}">
+      <input nz-input disabled [(ngModel)]="i.quantity" name="quantity" />
+    </se>
+    <se label="{{ '变更说明' | translate }}" required>
+      <input nz-input [(ngModel)]="i.attribute1" name="attribute1" required />
+    </se>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="button" (click)="close()">{{ '取消' | translate }}</button>
+  <button nz-button type="submit" [nzType]="'primary'" (click)="submit()" [nzLoading]="http.loading" [disabled]="f.invalid || !f.dirty">{{'提交' | translate }}</button>
+</div>

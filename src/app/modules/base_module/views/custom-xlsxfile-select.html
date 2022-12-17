@@ -1,0 +1,9 @@
+﻿<div [ngSwitch]="buttonType" [style.width.px]="buttonWidth" [style.height.px]="buttonHeight" style="display: inline-block;position:relative;margin:0px 5px;cursor:pointer;">
+  <input type="file" [disabled]="isNotAlivable" (change)="fileUpload($event)" multiple="false" class="ml-sm" [style.width.px]="buttonWidth" [style.height.px]="buttonHeight"
+    style="filter:alpha(opacity=0);opacity:0;z-index:9999;position:absolute;cursor:pointer;" />
+  <ng-content *ngSwitchCase="'custom'"></ng-content>
+  <button *ngSwitchDefault [disabled]="isNotAlivable" nz-button [nzType]="'default'">
+    <i class="anticon anticon-download"></i> {{ buttonText | translate}}
+  </button>
+</div>
+<custom-excelexport [expColumns]='expColumns' [expColumnsOptions]='expColumnsOptions' fileName='Error' #excelexport></custom-excelexport>

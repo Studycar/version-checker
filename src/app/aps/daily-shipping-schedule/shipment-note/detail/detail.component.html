@@ -1,0 +1,16 @@
+<div style="width:100%;margin-bottom: 10px;">
+  <div>
+    <button nz-button class="mx-sm" (click)="export()" [nzLoading]="http.loading">
+      <i class="anticon anticon-export"></i>{{ '导出' | translate}}</button>
+  </div>
+</div>
+<nz-card>
+  <ag-grid-angular #agGrid [class]="themeClass" [style.height.px]="gridHeight" [rowData]="gridData"
+    [columnDefs]="columns" [gridOptions]="gridOptions" [myAgGridRowKey]="{tb:'SP_SHIPMENT_NOTE'}"
+    [myAgGridState]="'spShipmentNoteDetail'">
+  </ag-grid-angular>
+  <custom-pager [height]="pagerHeight" [context]="context" [fixed]="false" [view]='context.view'
+    [(pageSize)]="_pageSize" [(pageNo)]="_pageNo" (pageChangeEvent)="onPageChanged($event)"></custom-pager>
+  <custom-excelexport [expColumns]='columns' fileName='DN单物料明细' #excelexport>
+  </custom-excelexport>
+</nz-card>

@@ -1,0 +1,40 @@
+<div class="modal-header">
+  <div class="modal-title">{{ title }}{{ '信息' | translate}}</div>
+</div>
+<div style="position: relative; height: 32px" *ngIf="i.id">
+  <button nz-button nzType="dashed" style="position: absolute; right: 0;" (click)="clear()">重置</button>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="2">
+    <se label="{{ '工厂' | translate}}" required>
+      <input type="text" nz-input [(ngModel)]="i.plantCode" name="PLAT_CODE" disabled required>
+    </se>
+    <se label="{{ '送货区域' | translate}}" required>
+      <!-- popuSelectRequire="value"  -->
+      <input nz-input type="text" [(ngModel)]="i.deliveryRegionCode" name="strDELIVERY_REGION_CODE" disabled required>
+    </se>
+    <se label="{{ '子库' | translate}}" required>
+      <!-- <nz-select nzShowSearch [(ngModel)]="i.WAREHOUSE_CODE" name="WAREHOUSE_CODE" required>
+                <nz-option *ngFor="let option of warehouseoptions" [nzLabel]="option.label" [nzValue]="option.value">
+                </nz-option>
+            </nz-select> -->
+      <popup-select popuSelectRequire="SelectValue" #selMater1 [(SelectValue)]="i.warehouseCode"
+        [(SelectText)]='i.warehouseCode' [ValueField]="'subinventoryCode'" [TextField]="'subinventoryCode'"
+        [gridView]="gridView1" [columns]="columns1" (SearchEvent)="search1($event)" (TextChanged)="change1($event)">
+      </popup-select>
+    </se>
+    <se label="{{ '是否默认子库' | translate}}" required>
+      <nz-select nzShowSearch [(ngModel)]="i.defaultWarehouseFlag" name="strDEFAULT_WAREHOUSE_FLAG" required>
+        <nz-option *ngFor="let option of yesnoOptions" [nzLabel]="option.label" [nzValue]="option.value">
+        </nz-option>
+      </nz-select>
+    </se>
+  </form>
+</div>
+<div class="modal-footer">
+  <!--f.dirty代表是否编辑过，如果点开都没编辑过，那就禁用保存按钮-->
+  <!--由于变更popup-select的值，不会触发form的dirty属性，所以里面要增加多一个判断-->
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save()"
+    [disabled]="!f.valid || (!f.dirty&&!i.warehouseCode) || !i.warehouseCode" [nzLoading]="http.loading">保存</button>
+  <button nz-button type="button" (click)="close()">关闭</button>
+</div>

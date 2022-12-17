@@ -1,0 +1,133 @@
+<div class="modal-header">
+  <div class="modal-title">{{ (Istrue?'编辑信息':'新增信息') | translate}} {{ record.id }}</div>
+</div>
+<div *ngIf="Istrue" style=" margin:2px auto;">
+  <button style="float: right;" nz-button nzType="dashed" (click)="clear()">
+    {{ '重置' | translate}}</button>
+  <div style="clear: both;"></div>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="2" [labelWidth]=140>
+    <se label="{{ '工厂' | translate}}" required>
+      <nz-select #select [(ngModel)]="i.plantCode" nzShowSearch (ngModelChange)="onChangePlant($event)" name="plantCode" [disabled]="disabled1"
+        required>
+        <nz-option *ngFor="let o of optionListPlant" [nzValue]="o.plantCode" [nzLabel]="o.plantCode+'('+o.descriptions+')'"></nz-option>
+        <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+          <i class="anticon anticon-loading anticon-spin loading-icon"></i> Loading Data...
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '计划组' | translate}}" required>
+      <nz-select #select [(ngModel)]="i.scheduleGroupCode" [nzDisabled]="Istrue" nzShowSearch (ngModelChange)="onChangeGroup($event)" name="scheduleGroupCode"
+        required>
+        <nz-option *ngFor="let o of optionListPlantGroup" [nzValue]="o.scheduleGroupCode" [nzLabel]="o.scheduleGroupCode+'('+o.descriptions+')'"></nz-option>
+        <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+          <i class="anticon anticon-loading anticon-spin loading-icon"></i> Loading Data...
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '资源' | translate}}" required>
+      <nz-select #select [(ngModel)]="i.resourceCode" [nzDisabled]="Istrue" nzShowSearch name="resourceCode" (ngModelChange)="onChangeLine($event)"
+        required>
+        <nz-option *ngFor="let o of optionListProductLine" [nzValue]="o.resourceCode" [nzLabel]="o.resourceCode+'('+o.descriptions+')'">
+        </nz-option>
+        <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+          <i class="anticon anticon-loading anticon-spin loading-icon"></i> Loading Data...
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '资源类型' | translate}}" required>
+      <nz-select #select [(ngModel)]="i.resourceType" nzShowSearch name="resourceType" disabled="true">
+        <nz-option *ngFor="let o of applicationitemtypes" [nzValue]="o.value" [nzLabel]="o.label"></nz-option>
+        <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+          <i class="anticon anticon-loading anticon-spin loading-icon"></i> Loading Data...
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '工序' | translate}}" required>
+      <input type="text" nz-input [(ngModel)]="i.processCode" name="processCode" [disabled]="Istrue">
+    </se>
+    <se label="{{ '产品编码' | translate}}" required>
+      <popup-select #selStock1 name="stockCode" [ID]="'selStock1'" [Value]="i.stockCode" [Text]='i.stockCode' [ValueField]="'stockCode'" [TextField]="'stockName'"
+        [readOnly]="disabled1" [Disabled]="disabled1" [gridView]="gridViewStocks" [columns]="columnsStock" (TextChanged)="onTextChanged($event)"
+        (SearchEvent)="searchPsProduction($event)" (RowSelect)="onRowSelect($event)">
+      </popup-select>
+    </se>
+    <se label="{{ '产品名称' | translate}}" required>
+      <input type="text" disabled nz-input [(ngModel)]="i.stockName" name="stockName">
+    </se>
+    <se label="{{ '钢种' | translate}}" required>
+      <nz-select #select [(ngModel)]="i.steelType" [nzDisabled]="Istrue" nzShowSearch name="rateType" required>
+        <nz-option *ngFor="let o of steelTypeOption" [nzValue]="o.value" [nzLabel]="o.label"></nz-option>
+        <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+          <i class="anticon anticon-loading anticon-spin loading-icon"></i> Loading Data...
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '表面' | translate}}" required>
+      <nz-select [(ngModel)]="i.surface" nzShowSearch name="surface" [nzDisabled]="Istrue">
+        <nz-option *ngFor="let o of surfaceOptions" [nzValue]="o.value" [nzLabel]="o.label"></nz-option>
+        <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+          <i class="anticon anticon-loading anticon-spin loading-icon"></i> Loading Data...
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '产品规格' | translate}}" required>
+      <!-- <input type="text" [disabled]="Istrue" nz-input [(ngModel)]="i.standards" name="standards" required> -->
+      <nz-input-number [(ngModel)]="i.standards" [disabled]="Istrue" [nzMin]="0" [nzFormatter]="formatterPrecision" name="standards" required></nz-input-number>
+    </se>    
+    <se label="{{ '产品宽' | translate}}" required>
+      <nz-input-number [(ngModel)]="i.width" [disabled]="Istrue" [nzMin]="0" name="width" required></nz-input-number>
+    </se>
+    <se label="{{ '产品长' | translate}}">
+      <nz-input-number [(ngModel)]="i.length" [disabled]="Istrue" [nzMin]="0" name="length"></nz-input-number>
+    </se>
+    <!-- <se label="{{ '原料编码' | translate}}" required>
+      <popup-select #selStock2 name="rawStockCode" [ID]="'selStock2'" [Value]="i.rawStockCode" [Text]='i.rawStockCode' [ValueField]="'rawStockCode'" [TextField]="'rawStockName'"
+        [readOnly]="disabled1" [Disabled]="disabled1" [gridView]="gridViewStocks2" [columns]="columnsStock2" (TextChanged)="onTextChanged2($event)"
+        (SearchEvent)="searchPsProduction2($event)" (RowSelect)="onRowSelect2($event)">
+      </popup-select>
+    </se>
+    <se label="{{ '原料名称' | translate}}" required>
+      <input type="text" disabled nz-input [(ngModel)]="i.rawStockName" name="rawStockName">
+    </se>
+    <se label="{{ '原料表面' | translate}}" required>
+      <nz-select [(ngModel)]="i.rawSurface" nzShowSearch name="rawSurface" [nzDisabled]="Istrue">
+        <nz-option *ngFor="let o of surfaceOptions" [nzValue]="o.value" [nzLabel]="o.label"></nz-option>
+        <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+          <i class="anticon anticon-loading anticon-spin loading-icon"></i> Loading Data...
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '原料规格' | translate}}" required>
+      <nz-input-number [(ngModel)]="i.rawStandards" [disabled]="Istrue" [nzMin]="0" [nzFormatter]="formatterPrecision" name="rawStandards" required></nz-input-number>
+    </se>
+    <se label="{{ '原料宽' | translate}}" required>
+      <nz-input-number [(ngModel)]="i.rawWidth" [disabled]="Istrue" [nzMin]="0" name="rawWidth" required></nz-input-number>
+    </se>
+    <se label="{{ '原料长' | translate}}">
+      <nz-input-number [(ngModel)]="i.rawLength" [disabled]="Istrue" [nzMin]="0" name="rawLength"></nz-input-number>
+    </se> -->
+    <se label="{{ '速率类型' | translate}}" required>
+      <nz-select #select [(ngModel)]="i.rateType"  nzShowSearch name="rateType" required>
+        <nz-option *ngFor="let o of applicationRateType" [nzValue]="o.value" [nzLabel]="o.label"></nz-option>
+        <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+          <i class="anticon anticon-loading anticon-spin loading-icon"></i> Loading Data...
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '速率' | translate}}" required>
+      <nz-input-number [(ngModel)]="i.rate" [nzMin]="0" name="rate" required></nz-input-number>
+    </se>
+    <se label="{{ '优先级' | translate}}" required>
+      <nz-input-number [(ngModel)]="i.priority" [nzMin]="1" name="priority" required></nz-input-number>
+    </se>
+    
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save()" [disabled]="f.invalid || !f.dirty" [nzLoading]="http.loading">
+    {{ '保存' | translate}}</button>
+  <button nz-button type="button" (click)="close()">
+    {{ '关闭' | translate}}</button>
+</div>

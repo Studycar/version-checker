@@ -1,0 +1,56 @@
+<div class="modal-header">
+  <div class="modal-title">{{ '工作日历复制目标' | translate}} </div>
+</div>
+<div>
+  <button nz-button type="button" (click)="close()">{{ '上一步' | translate}}</button>
+  <button nz-button type="button" [nzType]="'primary'" (click)="copy()">{{ '复制' | translate}}</button>
+  <button nz-button (click)="expandForm=!expandForm" nzType="default">
+    <i nz-icon [nzType]="expandForm?'anticon-up':'anticon-down'"></i> {{ '搜索' | translate}}
+  </button>
+  <form nz-form #f="ngForm" se-container="3" labelWidth="100">
+    <se label="事业部" *ngIf="expandForm" required>
+      <input nz-input type="text" [(ngModel)]="queryParams.values.scheduleRegionCode" name="scheduleRegionCode"
+        [disabled]="true">
+    </se>
+    <se label="{{ '工厂' | translate}}" *ngIf="expandForm" required>
+      <nz-select nzShowSearch [(ngModel)]="queryParams.values.plantCode" name="plantCode"
+        (ngModelChange)="plantChange($event)">
+        <nz-option *ngFor="let option of plantOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+    <se label="计划组" *ngIf="expandForm">
+      <nz-select nzShowSearch nzAllowClear [(ngModel)]="queryParams.values.scheduleGroupCode"
+        name="scheduleGroupCode" (ngModelChange)="groupChange($event)">
+        <nz-option *ngFor="let option of groupOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+    <se label="资源" *ngIf="expandForm">
+      <nz-select nzShowSearch nzAllowClear [(ngModel)]="queryParams.values.resourceCode" name="resourceCode">
+        <nz-option *ngFor="let option of lineOptions" [nzLabel]="option.label" [nzValue]="option.value">
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="资源描述" *ngIf="expandForm">
+      <input nz-input [(ngModel)]="queryParams.values.descriptions" name="descriptions">
+    </se>
+    <se *ngIf="expandForm">
+      <button nz-button type="submit" [nzType]="'primary'" (click)="query()">查询</button>
+      <button nz-button class="mx-sm" (click)="clear()">重置</button>
+    </se>
+  </form>
+</div>
+&nbsp;
+<nz-card>
+  <!-- <custom-formquery [queryParams]="queryParams" [context]="context" [expandForm]="false" [showSearchButton]="true"
+    [showResetButton]="true" [showExpandIcon]="true" (event1)="groupChange($event)" (event2)="resourceChange($event)"
+    [labelWidth]="100">
+    <button nz-button type="button" (click)="close()">{{ '上一步' | translate}}</button>
+    <button nz-button type="button" [nzType]="'primary'" (click)="copy()">{{ '复制' | translate}}</button>
+  </custom-formquery> -->
+  <ag-grid-angular #agGrid [class]="themeClass" [style.height.px]="gridHeight" [rowData]="gridData"
+    [columnDefs]="columns" [gridOptions]="gridOptions" (selectionChanged)="onSelectionChanged($event)"
+    [myAgGridRowKey]="{tb:'PS_RESOURCE'}" [myAgGridState]="'line-select'">
+  </ag-grid-angular>
+  <custom-pager [height]="pagerHeight" [context]="context" [view]='context.view'
+    [(pageSize)]="_pageSize" [(pageNo)]="_pageNo" (pageChangeEvent)="onPageChanged($event)"  [fixed]="false"></custom-pager>
+</nz-card>

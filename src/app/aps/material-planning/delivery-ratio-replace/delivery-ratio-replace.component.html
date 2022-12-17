@@ -1,0 +1,32 @@
+<custom-formquery [queryParams]="queryParams" [context]="context" (event1)="plantChange($event)"
+(event2)="searchItems($event)" >
+    <span>        
+        <custom-button text="{{ '导出' | translate }}" (clickEvent)="export()" [src]="'基础icon-导出'"></custom-button>
+    </span>
+</custom-formquery>
+<nz-card>
+    <ag-grid-angular
+        #agGrid
+        [class]="themeClass"
+        [style.height.px]="gridHeight"
+        [rowData]="gridData"
+        [columnDefs]="columns"
+        [gridOptions]="gridOptions"
+        [myAgGridRowKey]="{tb:'PC_VENDOR_ALLOCATION_PERCENT'}">
+    </ag-grid-angular>
+    <custom-pager
+        [height]="pagerHeight"
+        [context]="context"
+        [view]='context.view'
+        [(pageSize)]="_pageSize"
+        [(pageNo)]="_pageNo"
+        (pageChangeEvent)="onPageChanged($event)">
+    </custom-pager>
+    <custom-excelexport
+        [expColumns]="expColumns"
+        [expColumnsOptions]="expColumnsOptions"
+        fileName="供货比例(替代)"
+        #excelexport>
+    </custom-excelexport>    
+    
+</nz-card>

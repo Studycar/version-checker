@@ -1,0 +1,35 @@
+<table cellspacing=0 cellpadding=0 border=0>
+  <tr>
+    <td>
+      <nz-input-group nzSuffixIcon="anticon anticon-search" (click)="SelectPopup($event)">
+        <input type="text" #anchor nz-input [ngStyle]="nzStyle" [(ngModel)]="SelectText" [ngModelOptions]="{standalone: true}"
+          (keydown)="onKeydown($event)" [disabled]="Disabled" [readOnly]="readOnly">
+      </nz-input-group>
+    </td>
+  </tr>
+</table>
+<kendo-popup [anchor]="anchor" #popup [anchorAlign]="anchorAlign" [popupAlign]="popupAlign" (anchorViewportLeave)="show = false"
+  *ngIf="show">
+  <div style="border:1px solid #c0c0c0;">
+    <table cellpadding=0 cellSpacing=0 border=0>
+      <tr>
+        <td style="padding:10px;margin:0px;border-top:1px solid #c0c0c0;" colspan=2>
+          <kendo-grid [height]="kendoHeight" [ngStyle]="kendoStyle" [data]="gridData" [sortable]="true" [sort]="sort"
+            (sortChange)="sortChange($event)" [resizable]="true" [reorderable]="true" [selectable]="{'checkboxOnly': false,'mode': 'single'}"
+            [selectedKeys]="mySelection" (selectedKeysChange)="onSelectedKeysChange($event)" [kendoGridSelectBy]="ValueField">
+            <kendo-grid-column *ngFor="let column of columns" [field]="column.field" [title]="column.title" [width]="column.width || 100"
+              [hidden]="column.hidden" [style]="column.field == lastColumnName ? {'border-bottom':'1px solid #d9d9d9','border-right':'1px solid #d9d9d9'}:{'border-bottom':'1px solid #d9d9d9'}"
+              [headerStyle]="column.field == lastColumnName ? {'border-right':'1px solid #d9d9d9'}:{'border-right':'0px solid #d9d9d9'}">
+              <ng-template kendoGridHeaderTemplate let-column>
+                <span nz-tooltip [nzTitle]="column.title">{{column.title}}</span>
+              </ng-template>
+              <ng-template kendoGridCellTemplate let-dataItem>
+                <span nz-tooltip [nzTitle]="dataItem[column.field]">{{dataItem[column.field]}}</span>
+              </ng-template>
+            </kendo-grid-column>
+          </kendo-grid>
+        </td>
+      </tr>
+    </table>
+  </div>
+</kendo-popup>

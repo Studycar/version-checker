@@ -1,0 +1,52 @@
+<div class="modal-header">
+  <div class="modal-title">{{ '特殊规则定义' | translate}}</div>
+</div>
+<nz-card>
+  <div class="mb-md">
+    <button (click)="add()" nz-button nzType="primary">
+      <i class="anticon anticon-plus-circle-o"></i>{{ '新增' | translate}}
+    </button>
+  </div>
+  <!--<kendo-grid [selectable]="{'checkboxOnly': false,'mode': 'single'}" [height]="265" style="width: 100%"
+    [data]="gridData" [reorderable]="true" [resizable]="true">
+    <kendo-grid-column *ngFor="let column of columns" [field]="column.field" [title]="column.title"
+      [width]="column.width" [locked]="column.field === 'Operate' ? true:false">
+      <ng-template kendoGridHeaderTemplate let-column>
+        <ellipsis lines="1 ">
+          <span nz-tooltip [nzTitle]="column.title">{{column.title}}</span>
+        </ellipsis>
+      </ng-template>
+
+      <div *ngIf="column.field === 'Operate'">
+        <ng-template kendoGridCellTemplate let-item>
+          <span title="{{'删除' | translate}} " (nzOnConfirm)="remove(item) " [ngStyle]="spanStyle" nz-popconfirm
+            nzTitle="{{'是否确认删除该记录?' | translate}}">
+            <i class="anticon anticon-delete"></i>
+          </span>
+        </ng-template>
+      </div>
+
+      <div *ngIf="column.field !== 'Operate'">
+        <ng-template kendoGridCellTemplate let-dataItem>
+          <ellipsis lines="1 ">
+            <span nz-tooltip [nzTitle]="dataItem[column.field]">{{dataItem[column.field]}}</span>
+          </ellipsis>
+        </ng-template>
+      </div>
+    </kendo-grid-column>
+  </kendo-grid>-->
+  <ag-grid-angular
+    #agGrid
+    [class]="themeClass"
+    [style.height.px]="265"
+    [rowData]="gridData"
+    [columnDefs]="columns"
+    [gridOptions]="gridOptions"
+    [myAgGridRowKey]="{tb:'CURRENT_RULE'}"
+    [myAgGridState]="'CURRENT_RULE'"></ag-grid-angular>
+</nz-card>
+<ng-template #customTemplate let-item>
+  <span title="{{'删除' | translate}} " (nzOnConfirm)="remove(item) " [ngStyle]="customSpanStyle" nz-popconfirm nzTitle="{{'是否确认删除该记录?' | translate}}">
+    <i class="anticon anticon-delete"></i>
+  </span>
+</ng-template>

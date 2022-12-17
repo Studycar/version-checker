@@ -1,0 +1,29 @@
+<div class="modal-header">
+  <div class="modal-title">{{ '客诉申请单明细附件信息' | translate }}</div>
+</div>
+<nz-card>
+  <ag-grid-angular #agGrid [class]="themeClass" [style.height.px]="gridHeight-200" [rowData]="gridData"
+    [columnDefs]="columns" [gridOptions]="gridOptions" [myAgGridState]="'hw-customer-complaint-detail-annex'"
+    [myAgGridRowKey]="{tb:'PS_COMPLAINT_DETAIL_ANNEX'}">
+  </ag-grid-angular>
+  <custom-pager [height]="pagerHeight" [context]="context" [view]='context.view' [(pageSize)]="_pageSize" [fixed]="false"
+    [(pageNo)]="_pageNo" (pageChangeEvent)="onPageChanged($event)"></custom-pager>
+</nz-card>
+<ng-template #customTemplate let-dataItem>
+  <span title="{{ '下载' | translate}}" (click)="download(dataItem)" style="cursor: Pointer">
+    <i class="anticon anticon-download"></i>
+  </span>
+  <div *ngIf="chooseFileType(dataItem.fileType) !== ''" style="display: inline;">
+    <nz-divider nzType="vertical"></nz-divider>
+    <span title="{{ '预览' | translate}}" (click)="previewFile(dataItem)" style="cursor: Pointer">
+      <i class="anticon anticon-eye"></i>
+    </span>
+  </div>
+  <div *ngIf="!isResolve && state === '10'" style="display: inline;">
+    <nz-divider nzType="vertical"></nz-divider>
+    <span title="{{ '删除' | translate}}" nz-popconfirm nzTitle="{{ '是否确认删除该记录?' | translate}}"
+      (nzOnConfirm)="delete(dataItem);" class="pointer">
+      <i class="anticon anticon-delete"></i>
+    </span>
+  </div>
+</ng-template>

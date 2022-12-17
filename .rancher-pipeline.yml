@@ -1,0 +1,26 @@
+stages:
+- name: compile
+  steps:
+  - runScriptConfig:
+      image: 10.17.200.20:8083/node:latest
+      shellScript: |-
+        npm install --registry http://10.17.200.20:8081/repository/npm_group/
+        npm run build
+- name: Publish
+  steps:
+  - publishImageConfig:
+      dockerfilePath: ./Dockerfile
+      buildContext: .
+      tag: aps-cloud-ui:${CICD_EXECUTION_SEQUENCE}
+      pushRemote: true
+      registry: 10.17.200.20:8083
+    env:
+      PLUGIN_DEBUG: "true"
+      PLUGIN_INSECURE: "true"
+      PLUGIN_MIRROR: http://10.17.200.20:8083
+- name: Deploy
+  steps:
+  - applyYamlConfig:
+      path: ./deployment.yaml
+timeout: 60
+notification: {}

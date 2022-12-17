@@ -1,0 +1,54 @@
+<div class="modal-header">
+    <div class="modal-title">{{ (isModify?'编辑信息':'新增信息') | translate}}</div>
+</div>
+<div style="position: relative; height: 32px" *ngIf="i.respId">
+    <button nz-button nzType="dashed" style="position: absolute; right: 0;" (click)="clear()">重置</button>
+</div>
+<div>
+    <form nz-form #f="ngForm" se-container="2">
+        <se label="{{ '职责代码' | translate}}" required>
+            <input type="text" nz-input [(ngModel)]="i.respsCode" name="respsCode" [readonly]="Istrue" required>
+        </se>
+
+        <se label="{{ '职责名称' | translate}}" required>
+            <input type="text" nz-input [(ngModel)]="i.respsName" name="respsName" required>
+        </se>
+
+        <se label="{{ '应用模块 ' | translate}}" required>
+            <nz-select [(ngModel)]="i.applicationCode" nzShowSearch name="applicationCode" [nzDisabled]="Istrue" nzAllowClear required>
+                <nz-option *ngFor="let o of optionListAppName" [nzValue]="o.applicationCode" [nzLabel]="o.applicationName"></nz-option>
+                <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+                    <i class="anticon anticon-loading anticon-spin loading-icon"></i> Loading Data...
+                </nz-option>
+            </nz-select>
+        </se>
+        <se label="{{ '描述 ' | translate}}">
+            <input type="text" nz-input [(ngModel)]="i.description" name="description">
+        </se>
+        <se label="{{ '语言 ' | translate}}">
+            <nz-select [(ngModel)]="i.language" nzShowSearch name="language" [nzDisabled]="Istrue" nzAllowClear>
+                <nz-option *ngFor="let o of applicationLanguage" [nzValue]="o.value" [nzLabel]="o.label"></nz-option>
+                <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+                    <i class="anticon anticon-loading anticon-spin loading-icon"></i> Loading Data...
+                </nz-option>
+            </nz-select>
+        </se>
+
+        <se label="{{ '生效日期 ' | translate}}" required>
+            <nz-date-picker nzShowTime [nzDisabledDate]="disabledStartDate1" nzFormat="yyyy-MM-dd HH:mm:ss" [(ngModel)]="i.startDate" name="startDate" nzPlaceHolder="请选择日期" (ngModelChange)="onStartChange1($event)" required>
+            </nz-date-picker>
+        </se>
+        <se label="{{ '失效日期 ' | translate}}">
+            <nz-date-picker nzShowTime [nzDisabledDate]="disabledEndDate1" nzFormat="yyyy-MM-dd HH:mm:ss" [(ngModel)]="i.endDate" name="endDate" (ngModelChange)="onEndChange1($event)">
+            </nz-date-picker>
+        </se>
+
+    </form>
+</div>
+
+<div class="modal-footer">
+    <button nz-button type="submit" [nzType]="'primary'" (click)="save()" [disabled]="f.invalid || !f.dirty" [nzLoading]="http.loading">
+    {{ '保存' | translate}}</button>
+    <button nz-button type="button" (click)="close()">
+    {{ '关闭' | translate}}</button>
+</div>

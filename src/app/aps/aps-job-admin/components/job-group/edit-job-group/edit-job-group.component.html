@@ -1,0 +1,32 @@
+<div class="modal-header">
+  <div class="modal-title"> {{edit?'编辑执行器': '新增执行器' | translate }}</div>
+</div>
+
+<div>
+  <form nz-form #f="ngForm" se-container="1">
+    <se label="AppName" required>
+      <input type="text" nz-input [(ngModel)]="parameter.appname" name="appname">
+    </se>
+    <se label="名称" required>
+      <input type="text" nz-input [(ngModel)]="parameter.title" name="title">
+    </se>
+    <se label="注册方式" required>
+      <nz-radio-group [(ngModel)]="parameter.addressType" name="addressType">
+        <label nz-radio nzValue="0">自动注册</label>
+        <label nz-radio nzValue="1">手动录入</label>
+      </nz-radio-group>
+    </se>
+    <se label="机器地址" required>
+      <textarea rows="4" nz-input [(ngModel)]="parameter.addressList" name="addressList"></textarea>
+    </se>
+  </form>
+</div>
+
+<div align="center" style="padding-top:10px;">
+  <button nz-button type="button" (click)="update()">
+    {{'保存' | translate}}
+  </button>&nbsp;&nbsp;
+  <button nz-button type="button" (click)="close()">
+    {{'取消' | translate}}
+  </button>
+</div>

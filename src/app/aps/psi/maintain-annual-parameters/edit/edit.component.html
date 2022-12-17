@@ -1,0 +1,64 @@
+<div class="modal-header">
+  <div class="modal-title">{{ (isModify?'编辑':'新增') | translate}} </div>
+</div>
+<div style=" margin:2px auto;" *ngIf="isModify">
+  <button style="float: right;" nz-button nzType="dashed" (click)="clear()">{{ '重置' | translate}}</button>
+  <div style="clear: both;"></div>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="2">
+    <se label="{{ '事业部' | translate}}" required>
+      <nz-select nzShowSearch [(ngModel)]="i.businessUnitCode" name="businessUnitCode" required [nzDisabled]="isModify" (ngModelChange)="buCodeOptionsChange($event)">
+        <nz-option *ngFor="let option of buCodeOptions" [nzLabel]="option.label" [nzValue]="option.value">
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '计划期' | translate}}" required>
+      <nz-month-picker [(ngModel)]="i.planPeriodMonth" name="planPeriodMonth" required [nzDisabled]="isModify"></nz-month-picker>
+    </se>
+    <se label="{{ '品类' | translate}}" required>
+      <nz-select nzShowSearch [(ngModel)]="i.marketCategory" name="marketCategory" required [nzDisabled]="isModify">
+        <nz-option *ngFor="let option of categoryOptions" [nzLabel]="option.label" [nzValue]="option.value">
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '渠道' | translate}}" required>
+      <nz-select nzShowSearch [(ngModel)]="i.saleChannel" name="saleChannel" required [nzDisabled]="isModify">
+        <nz-option *ngFor="let option of saleChannelOptions" [nzLabel]="option.label" [nzValue]="option.value">
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '规划值' | translate}}" required>
+      <nz-input-group nzAddOnAfter="亿元">
+        <nz-input-number [(ngModel)]="i.planningAmount" name="planningAmount" ></nz-input-number>
+      </nz-input-group>
+    </se>
+    <se label="{{ '库存收入比' | translate}}" required>
+      <nz-input-group nzAddOnAfter="%">
+        <nz-input-number [(ngModel)]="i.invSalesRatio" name="invSalesRatio" nzPlaceHolder="请输入1-150的范围值" [nzMin]="1" [nzMax]="150"></nz-input-number>
+      </nz-input-group>
+    </se>
+    <se label="{{ '库存周转天数' | translate }}" required>
+      <div style="display: flex; align-items: center; justify-content: space-between;">
+        <nz-input-number [(ngModel)]="i.invRevolveMinDays" name="invRevolveMinDays" nzPlaceHolder="最小天数" [nzMin]="0" style="width: 45% !important;"></nz-input-number>
+        -
+        <nz-input-number [(ngModel)]="i.invRevolveMaxDays" name="invRevolveMaxDays" nzPlaceHolder="最大天数" [nzMin]="0" style="width: 45% !important;"></nz-input-number>
+      </div>
+    </se>
+    <se label="{{ '产量波动标准差' | translate }}" required>
+      <nz-input-group nzAddOnBefore="<">
+        <nz-input-number [(ngModel)]="i.prodFluSd" name="prodFluSd" nzPlaceHolder="请输入0.1-8的范围值" [nzMin]="0.1" [nzMax]="8"></nz-input-number>
+      </nz-input-group>
+    </se>
+    <se label="{{ '相邻月份波动幅度' | translate}}" required>
+      <nz-input-group nzAddOnAfter="%">
+        <nz-input-number [(ngModel)]="i.monthFluRatio" name="monthFluRatio" nzPlaceHolder="请输入1-50的范围值" [nzMin]="1" [nzMax]="50"></nz-input-number>
+      </nz-input-group>
+    </se>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save(f)"
+  [disabled]="!f.valid || !f.dirty" [nzLoading]="loading">{{ '保存' | translate}}</button>
+  <button nz-button type="button" (click)="close()">{{ '关闭' | translate}}</button>
+</div>

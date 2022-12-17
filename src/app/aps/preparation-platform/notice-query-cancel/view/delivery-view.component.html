@@ -1,0 +1,14 @@
+<div style="width:100%;margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid #e8e8e8;">
+  <div class="modal-title">{{ '送货单明细' | translate}}</div>
+</div>
+<div style="width:100%;margin-bottom: 10px;">
+  <div>
+    <button nz-button class="mx-sm" (click)="export()" [nzLoading]="http.loading">
+      <i class="anticon anticon-export"></i>{{ '导出' | translate}}</button>
+  </div>
+</div>
+
+<ag-grid-angular #agGrid id="dnGrid" [class]="themeClass" [style.height.px]="gridHeight" [rowData]="gridData" [columnDefs]="totalColumns"
+  [gridOptions]="gridOptions" [myAgGridRowKey]="{tb:'PC_DELIVERY_HEADER'}" [myAgGridState]="'PC_DELIVERY_HEADER'">
+</ag-grid-angular>
+<custom-excelexport [expColumns]='totalColumns' fileName='deliveryExport' #excelexport></custom-excelexport>

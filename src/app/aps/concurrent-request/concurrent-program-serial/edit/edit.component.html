@@ -1,0 +1,28 @@
+<div class="modal-header">
+  <div class="modal-title">{{title | translate}}</div>
+</div>
+<div style="position: relative; height: 32px" *ngIf="i.id">
+  <button nz-button nzType="dashed" style="position: absolute; right: 0;" (click)="clear()">重置</button>
+</div>
+<form nz-form #f="ngForm" se-container="2">
+
+  <se label="{{ '不兼容程序' | translate}}" required>
+    <nz-select #select [(ngModel)]="i.toRunConcurrentProgramId" name="TO_RUN_CONCURRENT_PROGRAM_ID"
+      required nzShowSearch>
+      <nz-option *ngFor="let option of torunconcurrentprogramidArray" [nzLabel]="option.label" [nzValue]="option.value">
+      </nz-option>
+    </nz-select>
+  </se>
+  <se label="{{ '不兼容类型' | translate}}" required>
+    <nz-select #select  [(ngModel)]="i.incompatibilityType" name="INCOMPATIBILITY_TYPE" required nzShowSearch>
+      <nz-option *ngFor="let option of incompatibilitytypeArray" [nzLabel]="option.label" [nzValue]="option.value">
+      </nz-option>
+    </nz-select>
+  </se>
+
+</form>
+<div class="modal-footer">
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save()" [disabled]="f.invalid || !f.dirty"
+    [nzLoading]="http.loading">{{'保存' | translate}}</button>
+  <button nz-button type="button" (click)="close()">{{ '关闭' | translate}}</button>
+</div>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="32px" height="32px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.4 (67378) - http://www.bohemiancoding.com/sketch -->
+    <title>一模多出</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="补充的icon" transform="translate(-241.000000, -795.000000)">
+            <g id="批量释放--copy-3" transform="translate(241.000000, 795.000000)">
+                <g id="分组-16" transform="translate(7.000000, 5.000000)">
+                    <path d="M4.84615385,6.875 L4.84615385,18.5625" id="直线" stroke="#6D8290" stroke-width="1.375" stroke-linecap="square"></path>
+                    <path d="M9.69230769,18.5625 L4.84615385,18.5625" id="直线-copy" stroke="#6D8290" stroke-width="1.375" stroke-linecap="square"></path>
+                    <path d="M9.69230769,10.3125 L4.84615385,10.3125" id="直线-copy-2" stroke="#6D8290" stroke-width="1.375" stroke-linecap="square"></path>
+                    <rect id="矩形" fill="#6D8290" x="0" y="0" width="8.30769231" height="6.875" rx="1.375"></rect>
+                    <rect id="矩形-copy-13" stroke="#6D8290" stroke-width="1.375" fill="#8BC34A" x="10.3798077" y="7.5625" width="6.93269231" height="5.5" rx="1.375"></rect>
+                    <rect id="矩形-copy-14" fill="#6D8290" x="9.69230769" y="15.125" width="8.30769231" height="6.875" rx="1.375"></rect>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

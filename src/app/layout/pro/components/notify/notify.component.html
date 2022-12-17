@@ -1,0 +1,21 @@
+<notice-icon
+  class="alain-pro__header-item"
+  [(popoverVisible)]="popoverVisible"
+  [data]="data"
+  [count]="count"
+  [loading]="loading"
+  (select)="createTplModal(tplContent, $event);"
+  (clear)="clear($event)"
+  (popoverVisibleChange)="loadData($event)"
+  [ngStyle]="style">
+</notice-icon>
+<ng-template #tplContent>
+  <nz-result [nzStatus]="messageStatus" [nzTitle]="messageTitle" style="padding: 24px 30px !important;">
+    <div nz-result-subtitle style="background-color: #fafafa; font-size: 15px">
+      <div style="white-space: normal">{{requestResult}}</div>
+    </div>
+    <div nz-result-extra>
+      <button nz-button nzType="primary" (click)="toRequestPage()" [nzLoading]="tplModalButtonLoading">查看请求</button>
+    </div>
+  </nz-result>
+</ng-template>

@@ -1,0 +1,23 @@
+<custom-formquery [queryParams]="queryParams" [context]="context" (event1)="searchItems($event)"
+    (event2)="rowSelect($event)">
+    <!-- <custom-button text="{{ '导出' | translate}}" (clickEvent)="export()" [src]="'基础icon-导出'">
+    </custom-button> -->
+</custom-formquery>
+
+<nz-card>
+    <ag-grid-angular #agGrid [class]="themeClass" [style.height.px]="gridHeight" [rowData]="gridData"
+        [columnDefs]="columns" [gridOptions]="gridOptions" [myAgGridRowKey]="{tb:'GOP_ATP_INTRANSIT'}"
+        [myAgGridState]="'atpIntransit'">
+    </ag-grid-angular>
+    <custom-pager [height]="pagerHeight" [context]="context" [view]='context.view' [(pageSize)]="_pageSize"
+        [(pageNo)]="_pageNo" (pageChangeEvent)="onPageChanged($event)">
+    </custom-pager>
+    <custom-excelexport [expColumns]='expColumns' [expColumnsOptions]='expColumnsOptions' fileName='在途能力展示'
+        #excelexport>
+    </custom-excelexport>
+</nz-card>
+
+<ng-template #customTemplate let-dataItem>
+    <span title="{{ '明细' | translate}}" (click)="detail(dataItem)" class="pointer"><i nz-icon nzType="bars"
+            nzTheme="outline"></i></span>
+</ng-template>

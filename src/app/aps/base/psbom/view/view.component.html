@@ -1,0 +1,104 @@
+&nbsp;
+&nbsp;
+<div class="content-title">
+  <form nz-form #f="ngForm" se-container="3" labelWidth="100">
+    <se label="{{'工厂' | translate}}">
+      <input type="text" nz-input [(ngModel)]="strPlantCode" name="strPlantCode" [disabled]="readOnly">
+    </se>
+    <se label="{{'物料编码' | translate}}">
+      <input type="text" nz-input [(ngModel)]="strASSEMBLY_ITEM" name="strASSEMBLY_ITEM" [disabled]="readOnly">
+    </se>
+    <se label="{{'物料描述' | translate}}">
+      <input type="text" nz-input [(ngModel)]="strDesc_CN" name="strDesc_CN" [disabled]="readOnly">
+    </se>
+    <se label="{{'替代项/版本' | translate}}">
+      <input type="text" nz-input [(ngModel)]="strALTERNATE" name="strALTERNATE" [disabled]="readOnly">
+    </se>
+    <se label="{{'时间范围' | translate}}">
+      <nz-select nzAllowClear [(ngModel)]="timerange" name="timerange" (ngModelChange)="timeChange($event)">
+        <nz-option *ngFor="let option of timeoptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+    <se>
+      <button nz-button (click)="query()" nzType="primary">
+        {{ '查询' | translate}}
+      </button>
+    </se>
+  </form>
+</div>
+<nz-card>
+  <div class="mb-md">
+    <nz-radio-group [(ngModel)]="expandStatus">
+      <label nz-radio-button nzValue="expand" (click)="expand()">展开</label>
+      <label nz-radio-button nzValue="iexpand" (click)="iexpand()">收起</label>
+    </nz-radio-group>
+    <!-- <nz-button-group>
+      <button nz-button [nzType]="s1" (click)="expand()">展开</button>
+      <button nz-button [nzType]="s2" (click)="iexpand()">收起</button>
+    </nz-button-group> -->
+    &nbsp;
+    <button nz-button nzType="primary" (click)="export()">导出</button>
+  </div>
+  <nz-table #nzTable style="table-layout:fixed;" [nzData]="data" [nzScroll]="{ x: '3840px',y: '600px' }" [nzBordered]=true
+    [nzLoading]="IsLoading" [nzHideOnSinglePage]="true" rowClassName={this.setClassName}>
+    <thead>
+      <tr>
+        <!-- <th *ngFor="let da of th1" nowrap="nowrap" nzWidth="200px" >{{ da }}</th> -->
+        <th [nzWidth]="300" style="height:20px">物料编码</th>
+        <th nzWidth="200px">物料描述</th>
+        <th nzWidth="200px">物料类型</th>
+        <th nzWidth="200px">计划分类</th>
+        <th nzWidth="200px">工序</th>
+        <th nzWidth="200px">组件数量</th>
+        <th nzWidth="200px">单位</th>
+        <th nzWidth="200px">替代组</th>
+        <th nzWidth="200px">损耗率</th>
+        <th nzWidth="200px">替代组/优先级</th>
+        <th nzWidth="200px">替代策略</th>
+        <th nzWidth="200px">替代百分比</th>
+        <th nzWidth="200px">供应库存</th>
+        <th nzWidth="200px">供应类型</th>
+        <th nzWidth="200px">关键组件标志</th>
+        <th nzWidth="200px">生效日期</th>
+        <th nzWidth="200px">失效日期</th>
+        <th nzWidth="200px">是否残缺</th>
+        <th nzWidth="200px">残缺更新时间</th>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-template ngFor let-data [ngForOf]="nzTable.data">
+        <ng-template ngFor let-item [ngForOf]="expandDataCache[data.key]">
+          <tr *ngIf="(item.parent && item.parent.expand)||!(item.parent)">
+            <td nzWidth="300" [nzIndentSize]="item.level*15" [nzShowExpand]="item.s" [(nzExpand)]="item.expand"
+              (nzExpandChange)="collapse(expandDataCache[data.key],item,$event)">{{item.componentItemCode}}</td>
+            <td>
+              <ellipsis lines="1">
+                <span tooltip title="{{item.componentDesc}}">{{item.componentDesc}}</span>
+              </ellipsis>
+            </td>
+            <td width="200px" [(nzExpand)]="item.expand">{{item.componentType}}</td>
+            <td width="200px" [(nzExpand)]="item.expand">{{item.planCategory}}</td>
+            <td width="200px" [(nzExpand)]="item.expand">{{item.processCode}}</td>
+            <td width="200px" [(nzExpand)]="item.expand">{{item.usage}}</td>
+            <td width="200px" [(nzExpand)]="item.expand">{{item.unitOfMeasure}}</td>
+            <td width="200px" [(nzExpand)]="item.expand">{{item.alternateBomDesignator}}</td>
+            <td width="200px" [(nzExpand)]="item.expand">{{item.componentYieldFactor}}</td>
+            <td width="200px" [(nzExpand)]="item.expand">{{item.proity}}</td>
+            <td width="200px" [(nzExpand)]="item.expand">{{item.policy}}</td>
+            <td width="200px" [(nzExpand)]="item.expand">{{item.subChange}}</td>
+            <td width="200px" [(nzExpand)]="item.expand">{{item.supplySubinventory}}</td>
+            <!--jianl修改，供应类型字段改成与后台返回的字段一致-->
+            <!-- <td width="200px" [(nzExpand)]="item.expand">{{item.SUPPLY_TYPE}}</td> -->
+            <td width="200px" [(nzExpand)]="item.expand">{{item.wipSupplyType}}</td>
+            <td width="200px" [(nzExpand)]="item.expand">{{item.keyResourceFlag}}</td>
+            <td width="200px" [(nzExpand)]="item.expand">{{item.effectivityDate}}</td>
+            <td width="200px" [(nzExpand)]="item.expand">{{item.disableDate}}</td>
+            <td width="200px" [(nzExpand)]="item.expand">{{item.incompleteFlag}}</td>
+            <td width="200px" [(nzExpand)]="item.expand">{{item.lastUpdateDate}}</td>
+          </tr>
+        </ng-template>
+      </ng-template>
+    </tbody>
+  </nz-table>
+</nz-card>
+<custom-excelexport [context]="context" [expColumns]='expColumns' fileName='BOM-LIST' #excelexport></custom-excelexport>

@@ -1,0 +1,20 @@
+<div class="modal-header">
+  <div class="modal-title">{{ '产品PSI制定数据导入'| translate }}</div>
+</div>
+<div style="height:150px">
+  <!-- <div style="margin:5px auto;text-align: center;font-size: 16px;">
+    <a href="#" (click)="export()">{{ '下载模板'| translate }}</a>
+  </div> -->
+  <div style="margin:50px 150px;">
+    <custom-xlsxfile-select [impColumns]='impColumns' (excelDataProcessEvent)="excelDataProcess($event)"
+    (fileDataParseEvent)="fileDataParse($event)">
+    </custom-xlsxfile-select>
+    <span style="display: inline-block; width: 60px;"></span>
+    <button nz-button (click)="close()" [nzType]="'default'">
+      <i class="anticon anticon-logout"></i> {{ '关闭' | translate}}
+    </button>
+  </div>
+</div>
+<custom-excelexport [expColumns]='expColumns' [expColumnsOptions]='expColumnsOptions'
+  fileName="{{'产品PSI调整' | translate}}" #excelexport>
+</custom-excelexport>

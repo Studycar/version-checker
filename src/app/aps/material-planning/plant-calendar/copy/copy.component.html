@@ -1,0 +1,23 @@
+<div class="modal-header">
+    <div class="modal-title">{{ '工厂日历复制' | translate}}</div>
+</div>
+<div>
+    <form nz-form #f="ngForm" se-container="2" [labelWidth]="140">
+        <se label="{{ '来源工厂' | translate}}" required>
+            <nz-select [(ngModel)]="params.sourcePlant" (ngModelChange)="onSourcePlantChange($event)" nzShowSearch name="source-plant" required>
+                <nz-option *ngFor="let o of sourcePlantOptions" [nzLabel]="o.label" [nzValue]="o.value"></nz-option>
+            </nz-select>
+        </se>
+        <se label="{{'目标工厂' | translate}}" required>
+            <nz-select [(ngModel)]="params.targetPlant" nzMode="multiple" nzShowSearch name="target-plant" required>
+                <nz-option *ngFor="let o of targetPlantOptions" [nzLabel]="o.label" [nzValue]="o.value" [nzDisabled]="o.disabled"></nz-option>
+            </nz-select>
+        </se>
+    </form>
+</div>
+<div class="modal-footer">
+    <button nz-button type="submit" [nzType]="'primary'" (click)="confirm()" [disabled]="f.invalid || !f.dirty" [nzLoading]="http.loading">
+        {{ '确定' | translate}}</button>
+    <button nz-button type="button" (click)="close()">
+        {{ '关闭' | translate}}</button>
+</div>

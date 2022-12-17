@@ -1,0 +1,47 @@
+<div class="modal-header">
+  <div class="modal-title">{{ ('例外查看') | translate}} </div>
+</div>
+<div style="margin:2px auto;">
+  <form nz-form #f="ngForm" se-container="3" [labelWidth]=80>
+    <se label="{{ '模块' | translate}}">
+      <input type="text" optional="(仅显示)" nz-input [(ngModel)]="record.applicationCode" name="applicationCode"
+        [readonly]=true [class.disabled]=true>
+    </se>
+    <se label="{{ '检查类型' | translate}}">
+      <input type="text" optional="(仅显示)" nz-input [(ngModel)]="record.exceptionType" name="exceptionType"
+        [readonly]=true [class.disabled]=true>
+    </se>
+    <button nz-button (click)="export()">
+      <i class="anticon anticon-export"></i> {{ '导出' | translate}}
+    </button>
+  </form>
+</div>
+<nz-card>
+  <!-- <kendo-grid #grid [data]="viewAsync | async" [height]="gridHeight" [pageSize]="gridState.take" [skip]="gridState.skip"
+    [sort]="gridState.sort" [sortable]="false" (dataStateChange)="dataStateChange($event)" [filter]="gridState.filter"
+    filterable="false" [resizable]="true" [selectable]="selectableSettings" [kendoGridSelectBy]="selectBy"
+    [selectedKeys]="selectionKeys" [columnMenu]="false" [reorderable]="false" [pageable]="true" [loading]="loading">
+    <kendo-grid-messages pagerPage="{{ '分页' | translate}}" pagerOf="{{ '的' | translate}}" pagerItems="{{ '总数' | translate}}"
+      pagerItemsPerPage="{{ '页项' | translate}}" groupPanelEmpty="Drag here to group" noRecords="{{ '没有数据' | translate}}">
+    </kendo-grid-messages>
+    <kendo-grid-column *ngFor="let col of columns" [locked]="col.locked" [field]="col.field" [title]="col.title| translate"
+      [width]="col.width" [filter]="col.filter?col.filter:''" [style]="gridLineStyle">
+      <ng-template kendoGridCellTemplate let-dataItem *ngIf="col.ui?.type === 'select'">
+        {{optionsFind(dataItem[col.field],col.ui.index)?.label}}
+      </ng-template>
+      <ng-template kendoGridCellTemplate let-dataItem *ngIf="col.ui?.tooltip">
+        <ellipsis lines="{{col.ui?.tooltip}}">
+          <span nz-tooltip [nzTitle]="dataItem[col.field]">{{dataItem[col.field]}}</span>
+        </ellipsis>
+      </ng-template>
+    </kendo-grid-column>
+  </kendo-grid> -->
+  <ag-grid-angular #agGrid [class]="themeClass" [style.height.px]="gridHeight" [rowData]="gridData"
+    [columnDefs]="columns" [gridOptions]="gridOptions" [myAgGridRowKey]="{tb:'EXCEPRION_S2SS'}"
+    [myAgGridState]="'dataexceptionview'">
+  </ag-grid-angular>
+  <custom-pager [height]="pagerHeight" [context]="context" [fixed]="false" [view]='context.view'
+    [(pageSize)]="_pageSize" [(pageNo)]="_pageNo" (pageChangeEvent)="onPageChanged($event)"></custom-pager>
+  <custom-excelexport [expColumns]='expColumns' [expColumnsOptions]='expColumnsOptions' fileName='例外数据明细' #excelexport>
+  </custom-excelexport>
+</nz-card>

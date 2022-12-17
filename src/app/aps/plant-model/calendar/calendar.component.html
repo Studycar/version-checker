@@ -1,0 +1,30 @@
+<div class="modal-header" *ngIf="pShowTitle">
+  <div class="modal-title">{{ ('工作日历') | translate}} </div>
+</div>
+<custom-formquery [queryParams]="queryParams" [context]="context" [expandForm]="true" [enableWBSetting]="false" columnCount="3" labelWidth="120"
+  (event1)="changePlant($event)" (event2)="changeGroup($event)" (event3)="changeResource($event)">
+  <span>
+    <custom-button text="{{ '日历班次' | translate}}" (clickEvent)="openCalendar()" [src]="'日历编码'">
+    </custom-button>
+    <!-- <custom-button text="{{ '资源日历' | translate}}" (clickEvent)="openResourceShift()" [src]="'资源日历班次'">
+    </custom-button>
+    <custom-button text="{{ '工作时段' | translate}}" (clickEvent)="openShiftTime()" [src]="'工作时段模板'">
+    </custom-button> -->
+    <!-- <custom-button text="{{ '日历维护' | translate}}" (clickEvent)="openResourceTime()" [src]="'工作日历初始化'">
+    </custom-button> -->
+    <custom-button text="{{ '登记日历' | translate}}" (clickEvent)="openResourceTimeNew()" [src]="'工作日历初始化'">
+    </custom-button>
+    <!--<nz-divider nzType="vertical"></nz-divider>-->
+    <!-- <custom-button text="{{ '批量修改' | translate}}" (clickEvent)="batchModify()" [src]="'批量修改'">
+    </custom-button> -->
+    <!-- <custom-button text="{{ '日期复制' | translate}}" (clickEvent)="openDateCopy()" [src]="'日期复制'">
+    </custom-button> -->
+    <custom-button text="{{ '日历复制' | translate}}" (clickEvent)="openLineCopy()" [src]="'工作日历复制'">
+    </custom-button>
+  </span>
+</custom-formquery>
+<nz-card>
+  <custom-calendar [queryParams]="queryParams" [minDateField]="'calendarDayMin'" [maxDateField]="'calendarDayMax'"
+    [data]="calendarDates" [height]="gridHeight" (selectEvent)="queryCommon($event)"
+    (clickEvent)="openCellCalendar($event)" (checkEvent)="updateResourceTime($event)"></custom-calendar>
+</nz-card>

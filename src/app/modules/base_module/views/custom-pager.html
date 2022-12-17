@@ -1,0 +1,48 @@
+﻿<div id="pagerWidth" #pagerWidth style="width: 100%;"></div>
+<div id="pagerContainer" class="pagerContainer" [class.fixed]="fixed" [style.height.px]="height"
+  [style.width]="width" [ngStyle]="backgroundStyle">
+  <span class="pageButton" (click)="onFirstPage($event)" title="{{'首页'|translate}}"><i nz-icon type="step-backward"
+      theme="outline"></i></span>
+  <span class="pageButton" (click)="onPreviousPage($event)" title="{{'上页'|translate}}"><i nz-icon type="caret-left"
+      theme="outline"></i></span>
+  <span [class.pageIndex]="pageIndex!==pageNo" [class.currentIndex]="pageIndex===pageNo"
+    *ngFor="let pageIndex of pageIndexs;let i=index" (click)="onPageChange(pageIndex,i)">{{pageIndex}}</span>
+  <span class="pageButton" (click)="onNextPage($event)" title="{{'下页'|translate}}"><i nz-icon type="caret-right"
+      theme="outline"></i></span>
+  <span class="pageButton" (click)="onLastPage($event)" title="{{'末页'|translate}}"><i nz-icon type="step-forward"
+      theme="outline"></i></span>
+  <span class="page-info">
+    <nz-select  style="width: 75px;" [nzSize]="'small'" name="pageSize" [(ngModel)]="pageSize"
+      (ngModelChange)="onPageSizeChange($event)">
+      <nz-option *ngFor="let pageSize of pageSizes" nzLabel="{{pageSize}}/{{'页'|translate}}" [nzValue]="pageSize">
+      </nz-option>
+    </nz-select>
+    <span>{{startRowIndex}}</span>
+    <span>-</span>
+    <span>{{endRowIndex}}</span>
+    <span>{{'的'|translate}}</span>
+    <span>{{total}}</span>
+    <span>{{'总数'|translate}}</span>
+    <span style="padding-left:5px;padding-right:5px;">
+      {{'页项输入'|translate}}
+      <nz-input-number [(ngModel)]="pageSize_custom" (ngModelChange)="onPageSizeChange_custom($event)" [nzPrecision]="0"
+        [nzMin]="1" [nzMax]="100000" name="pageSize_custom" [nzSize]="'small'">
+      </nz-input-number>
+    </span>
+  </span>
+  <span class="info">
+    <ng-container *ngIf="moCompletedQuantity!==false">
+      <span>{{'累计完工数量'|translate}}： </span>
+      <span>{{moCompletedQuantity}}</span>
+      <span>&nbsp;&nbsp;&nbsp;</span>
+    </ng-container>
+    <ng-container *ngIf="demandQuantity!==false">
+      <span>{{'累计需求数量'|translate}}： </span>
+      <span>{{demandQuantity}}</span>
+    </ng-container>
+    <ng-container *ngIf="checkMoRows!==false">
+      <span>{{'已勾选工单行数'|translate}}： </span>
+      <span>{{checkMoRows}}</span>
+    </ng-container>
+  </span>
+</div>

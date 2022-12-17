@@ -1,0 +1,47 @@
+<custom-formquery [queryParams]="queryParams" [context]="context" (event1)="LoadPlantCodes($event)" (event2)="searchItemsFrom($event)"
+  (event3)="searchItemsTo($event)" (event4)="ClearItemCodes($event)">
+  <span>
+    <custom-button text="{{ '导出' | translate}}" (clickEvent)="export()" [src]="'基础icon-导出'">
+    </custom-button>
+  </span>
+</custom-formquery>
+<nz-card>
+  <div>
+    <nz-tabset>
+      <nz-tab *ngFor="let tab of tabs" [nzTitle]="titleTemplate" (nzSelect)="tabSelect(tab)">
+        <ng-template #titleTemplate>
+          <div style="height: 24px;">
+            {{ tab.name | translate}}
+            <span class="tag-triangle">
+              <i class="anticon anticon-up" *ngIf="tab.index===selectIndex" style="margin-right: 0;"></i>
+            </span>
+          </div>
+        </ng-template>
+      </nz-tab>
+    </nz-tabset>
+    <ag-grid-angular
+      #agGrid
+      [class]="themeClass"
+      [style.height.px]="gridHeight"
+      [rowData]="gridData"
+      [columnDefs]="columns"    
+      [gridOptions]="gridOptions"
+      [myAgGridRowKey]="{tb:'PP_REQ_ORDERS'}"
+      tabAggridState
+      [originState]="tabFirstFlag"
+      [stateKey]="stateKey"
+      [tabSubject]="tabSubject"
+      (selectionChanged)="onSelectionChanged($event)">
+    </ag-grid-angular>
+
+    <custom-pager [height]="pagerHeight" [context]="context" [view]='context.view' [moCompletedQuantity]="extra.moCompletedQuantity" [demandQuantity]="extra.demandQuantity" [(pageSize)]="_pageSize"
+      [(pageNo)]="_pageNo" (pageChangeEvent)="onPageChanged($event)"></custom-pager>
+    <custom-excelexport [expColumns]='expColumns' [expColumnsOptions]='expColumnsOptions' fileName="{{'需求工作台' | translate}}" #excelexport>
+    </custom-excelexport>
+  </div>
+</nz-card>
+<ng-template #customTemplate let-dataItem>
+  <span title="{{'订单可视化查看' | translate}}" (click)="handleOrder(dataItem)" class="spanStyle">
+    <i class="anticon anticon-eye"></i>
+  </span>
+</ng-template>

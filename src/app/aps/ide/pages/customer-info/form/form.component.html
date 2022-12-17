@@ -1,0 +1,44 @@
+<form nz-form #f="ngForm" se-container="2">
+  <se label="{{ '客户名称' | translate}}">
+    <input type="text" nz-input [(ngModel)]="formData.cusName" name="cusName" disabled />
+  </se>
+  <se label="{{ '客户简称' | translate}}">
+    <input type="text" nz-input [(ngModel)]="formData.cusAbbreviation" name="cusAbbreviation" disabled />
+  </se>
+  <se label="{{ '所属公司' | translate}}">
+    <nz-select [(ngModel)]="formData.plantCode" name="plantCode" nzDisabled>
+      <nz-option *ngFor="let op of plantOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+    </nz-select>
+  </se>
+  <se label="{{ '所属客户' | translate}}">
+      <input type="text" nz-input [(ngModel)]="formData.affiliatedCus" name="affiliatedCus" disabled />
+  </se>
+  <se label="{{ '客户级别' | translate }}">
+    <nz-select [(ngModel)]="formData.cusGrade" name="cusGrade" nzDisabled>
+      <nz-option *ngFor="let op of cusGradeOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+    </nz-select>
+  </se>
+  <se label="{{ '客户类型' | translate }}">
+    <nz-select [(ngModel)]="formData.cusType" name="cusType" nzDisabled>
+      <nz-option *ngFor="let op of cusTypeOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+    </nz-select>
+  </se>
+  <se label="{{ '税号' | translate}}">
+      <input type="text" nz-input [(ngModel)]="formData.taxNum" name="taxNum" disabled />
+  </se>
+  <se label="{{ '地址' | translate}}">
+      <input type="text" nz-input [(ngModel)]="formData.address" name="address" disabled />
+  </se>
+  <se label="{{ '联系电话' | translate}}">
+      <input type="text" nz-input [(ngModel)]="formData.telNum" name="telNum" disabled />
+  </se>
+  <se label="{{ '开户银行' | translate}}">
+      <input type="text" nz-input [(ngModel)]="formData.bank" name="bank" disabled />
+  </se>
+  <se label="{{ '银行账号' | translate}}">
+      <input type="text" nz-input [(ngModel)]="formData.bankNum" name="bankNum" disabled />
+  </se>
+  <se label="{{ '附件信息' | translate}}">
+    <common-upload #commonUpload [annexs]="fileList" [showUpload]="false" [Disabled]="true"></common-upload>
+</se>
+</form>

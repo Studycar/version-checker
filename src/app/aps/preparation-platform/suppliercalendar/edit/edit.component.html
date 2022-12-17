@@ -1,0 +1,21 @@
+<div class="modal-header">
+  <div class="modal-title">{{ title }} 信息</div>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="2">
+    <se label="工厂">
+      <nz-select [(ngModel)]="i.PLANT_CODE" name="txtPLANT_CODE" (ngModelChange)="plantchange($event)" nzAllowClear>
+        <nz-option *ngFor="let option of plantoptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+    <se label="送货区域">
+      <nz-select [(ngModel)]="i.DELIVERY_REGION_CODE" name="strDELIVERY_REGION_CODE" nzAllowClear nzShowSearch>
+        <nz-option *ngFor="let option of regionoptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save()" [disabled]="!f.valid" [nzLoading]="http.loading">保存</button>
+  <button nz-button type="button" (click)="close()">关闭</button>
+</div>

@@ -1,0 +1,205 @@
+<!--
+ * @Author: Zwh
+ * @contact: zhangweika@outlook.com
+ * @Date: 2019-07-15 15:08:58
+ * @LastEditors: Zwh
+ * @LastEditTime: 2019-07-15 15:08:58
+ * @Note: ...
+ -->
+<div class="modal-header">
+  <div class="modal-title">{{ title | translate }}</div>
+</div>
+<div style="position: relative; height: 32px">
+  <button nz-button nzType="dashed" style="position: absolute; right: 0;" (click)="clear()">{{'重置' |
+    translate}}</button>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="3">
+    <nz-collapse>
+      <nz-collapse-panel nzHeader="{{'主要' | translate}}" [nzActive]="isOpen">
+        <se label="{{ '创建时间' | translate}}">
+          <input nz-input type="text" [(ngModel)]="i.creationDate" name="strCREATE_DATE"
+            [disabled]="EDIT_DISABLE||readOnly">
+        </se>
+        <se label="{{ '车间' | translate}}">
+          <input nz-input type="text" [(ngModel)]="i.scheduleGroupCode" name="strSCHEDULE_GROUP_CODE"
+            [disabled]="EDIT_DISABLE||readOnly">
+        </se>
+        <se label="{{ '窑炉' | translate}}">
+          <nz-select [(ngModel)]="i.resourceCode" name="strRESOURCE_CODE" [disabled]="EDIT_DISABLE||readOnly"
+            nzShowSearch nzAllowClear>
+            <nz-option *ngFor="let option of resourceoptions" [nzValue]="option.value" [nzLabel]="option.label">
+            </nz-option>
+          </nz-select>
+        </se>
+
+        <!-- <se label="{{ '工艺版本' | translate}}">
+          <nz-select [(ngModel)]="i.TECH_VERSION" name="strTECH_VERSION"
+            [disabled]="flagOneVersion||i.PROCESS_SCHEDULE_FLAG!=='Y'" (ngModelChange)="onChangeVersion($event)"
+            nzShowSearch nzAllowClear>
+            <nz-option *ngFor="let option of optionVersion" [nzValue]="option.value" [nzLabel]="option.label">
+            </nz-option>
+          </nz-select>
+        </se> -->
+        <!-- <se label="{{ '模具' | translate}}">
+          <nz-select [(ngModel)]="i.MOULD_CODE" name="i.MOULD_CODE" [disabled]="flagThree"
+            [nzAllowClear]="true">
+            <nz-option *ngFor="let option of optionsMold" [nzLabel]="option.value" [nzValue]="option.value">
+            </nz-option>
+          </nz-select>
+        </se> -->
+        <se label="{{ '工单号' | translate}}">
+          <input nz-input type="text" [(ngModel)]="i.makeOrderNum" name="strMAKE_ORDER_NUM"
+            [disabled]="EDIT_DISABLE||readOnly">
+        </se>
+        <!-- <se label="{{ '物料编码' | translate}}">
+          <input nz-input type="text" [(ngModel)]="i.ITEM_CODE" name="strITEM_CODE" [disabled]="readOnly">
+        </se>
+        <se label="{{ '物料描述' | translate}}">
+          <input nz-input type="text" [(ngModel)]="i.DESCRIPTIONS_CN" name="strDESCRIPTIONS_CN" [disabled]="readOnly">
+        </se> -->
+        <se label="{{ '生产型号' | translate}}">
+          <input nz-input type="text" [(ngModel)]="i.itemModel" name="itemModel" [disabled]="EDIT_DISABLE||readOnly">
+        </se>
+        <se label="{{ '规格' | translate}}">
+          <input nz-input type="text" [(ngModel)]="i.itemSpecs" name="itemSpecs" [disabled]="EDIT_DISABLE||readOnly">
+        </se>
+        <se label="{{ '厚度' | translate}}">
+          <input nz-input type="text" [(ngModel)]="i.itemThickness" name="itemThickness"
+            [disabled]="EDIT_DISABLE||readOnly">
+        </se>
+        <se label="{{ '产品系列' | translate}}">
+          <input nz-input type="text" [(ngModel)]="i.itemSeries" name="itemSeries"
+            [disabled]="EDIT_DISABLE||readOnly">
+        </se>
+        <se label="{{ '固定时间' | translate}}">
+          <nz-date-picker nzShowTime nzFormat="yyyy-MM-dd HH:mm:ss" [(ngModel)]="i.fixScheduleTime"
+            name="fixScheduleTime" [disabled]="fixScheduleTimeDisable||readOnly">
+          </nz-date-picker>
+        </se>
+        <se label="{{ '最早开始时间' | translate}}">
+          <nz-date-picker nzShowTime nzFormat="yyyy-MM-dd HH:mm:ss" [(ngModel)]="i.earliestStartTime"
+            name="earliestStartTime" [disabled]="fixScheduleTimeDisable||readOnly">
+          </nz-date-picker>
+        </se>
+        <se label="{{ '排产开始时间' | translate}}">
+          <input nz-input type="text" [(ngModel)]="i.fpcTime" name="strFPS_TIME" [disabled]="EDIT_DISABLE||readOnly">
+        </se>
+        <se label="{{ '排产结束时间' | translate}}">
+          <nz-date-picker nzShowTime nzFormat="yyyy-MM-dd HH:mm:ss" [disabled]="lpcTimeDisable||readOnly"
+            [(ngModel)]="i.lpcTime" name="lpcTime" (ngModelChange)="changeLPCTime()">
+          </nz-date-picker>
+          <!-- <input nz-input type="text" [(ngModel)]="i.lpcTime" name="lpcTime" [disabled]="readOnly"> -->
+          <!-- <input nz-input type="text" [(ngModel)]="i.lpcTime" name="lpcTime" (ngModelChange)="changeLPCTime()"> -->
+        </se>
+        <!-- <se label="{{ '工单类型' | translate}}">
+          <input nz-input type="text" [(ngModel)]="i.MAKE_ORDER_TYPE" name="strMAKE_ORDER_TYPE" [disabled]="readOnly">
+        </se> -->
+        <se label="{{ '生产时长（天）' | translate}}">
+          <input nz-input type="text" [(ngModel)]="i.productionTimeLength" name="productionTimeLength"
+            [disabled]="productionTimeLengthDisable||readOnly">
+        </se>
+        <se label="{{ '工单数量' | translate}}" required>
+          <nz-input-number name="strMO_QTY" [nzMin]="1" [(ngModel)]="i.moQty" required
+            [disabled]="moQtyDisable||readOnly">
+          </nz-input-number>
+          <!-- <input nz-input type="number" [(ngModel)]="i.moQty" [nzMax]="i.moQty" name="strMO_QTY" required [disabled]="flagFour"> -->
+        </se>
+        <se label="{{ '完工数量' | translate}}">
+          <input nz-input type="text" [(ngModel)]="i.completeNum" name="strCOMPLETE_NUM"
+            [disabled]="EDIT_DISABLE||readOnly">
+        </se>
+        <se label="{{ '进度' | translate}}">
+          <nz-select [(ngModel)]="i.makeOrderStatus" name="i.makeOrderStatus"
+            [disabled]="makeOrderStatusDisable||readOnly">
+            <nz-option *ngFor="let option of statusoptions" [nzLabel]="option.label" [nzValue]="option.value">
+            </nz-option>
+          </nz-select>
+        </se>
+        <!--<se label="{{ '参与排产标识' | translate}}">
+          <nz-select type="text" [(ngModel)]="i.SCHEDULE_FLAG" name="SCHEDULE_FLAG"
+            (ngModelChange)="scheduleChange($event)" [disabled]="flagOne">
+            <nz-option *ngFor="let option of yesOrNo" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+          </nz-select>
+        </se>
+        <se label="{{ '库存消耗' | translate}}">
+          <input nz-input type="text" [(ngModel)]="i.STOCK_USE_QTY" name="strSTOCK_USE_QTY" [disabled]="readOnly">
+        </se>-->
+        <!-- <se label="{{ '尾单标识' | translate}}">
+          <nz-select type="text" [(ngModel)]="i.BACKLOG_FLAG" name="BACKLOG_FLAG"
+            (ngModelChange)="backChange($event)" [disabled]="BACKLOG_FLAGDisable">
+            <nz-option *ngFor="let option of yesOrNo" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+          </nz-select>
+        </se>
+        <se label="{{ '尾单原因' | translate}}" [required]="i.BACKLOG_FLAG==='Y'">
+          <input nz-input type="text" [(ngModel)]="i.BACKLOG_REASON" name="BACKLOG_REASON"
+            [required]="i.BACKLOG_FLAG==='Y'" [disabled]="flagTwo || this.i.BACKLOG_FLAG!=='Y'">
+        </se> -->
+        <se label="{{ '拆分标识' | translate}}">
+          <input nz-input type="text" [(ngModel)]="i.derivedFlag" name="strDERIVED_FLAG"
+            [disabled]="EDIT_DISABLE||readOnly">
+        </se>
+        <se label="{{ '备注' | translate}}">
+          <input nz-input type="text" [(ngModel)]="i.comments" name="strCOMMENTS"
+            [disabled]="commentsDisable||readOnly">
+        </se>
+      </nz-collapse-panel>
+      <nz-collapse-panel nzHeader="{{'需求' | translate}}">
+        <!-- <se label="{{ '项目号' | translate}}">
+          <input nz-input type="text" [(ngModel)]="i.PROJECT_NUMBER" name="strPROJECT_NUM" [disabled]="readOnly">
+        </se>
+        <se label="{{ '来源订单号' | translate}}">
+          <input nz-input type="text" [(ngModel)]="i.reqNumber" name="strREQ_NUMBER" [disabled]="readOnly">
+        </se> -->
+        <se label="{{ '计划单号' | translate}}">
+          <input nz-input type="text" [(ngModel)]="i.reqNumber" name="strREQ_NUMBER"
+            [disabled]="EDIT_DISABLE||readOnly">
+        </se>
+        <se label="{{ '客户要求提货日期' | translate}}">
+          <input nz-input type="text" [(ngModel)]="i.demandDate" name="strDEMAND_DATE"
+            [disabled]="EDIT_DISABLE||readOnly">
+        </se>
+        <se label="{{ '打托数量' | translate}}">
+          <input nz-input type="number" [(ngModel)]="i.palletQty" name="palletQty"
+            [disabled]="palletQtyDisable||readOnly">
+        </se>
+        <!-- <se label="{{ '父工单' | translate}}">
+          <input nz-input type="text" [(ngModel)]="i.PARENT_MO_NUM" name="strPARENT_MO_NUM" [disabled]="readOnly">
+        </se>
+        <se label="{{ '父工单开始时间' | translate}}">
+          <input nz-input type="text" [(ngModel)]="i.PARENT_MO_START_DATE" name="strPARENT_MO_START_DATE"
+            [disabled]="readOnly">
+        </se>
+        <se label="{{ '父工单状态' | translate}}">
+          <input nz-input type="text" [(ngModel)]="i.PARENT_MO_STATUS" name="strPARENT_MO_STATUS" [disabled]="readOnly">
+        </se>
+        <se label="{{ '顶层工单' | translate}}">
+          <input nz-input type="text" [(ngModel)]="i.TOP_MO_NUM" name="strTOP_MO_NUM" [disabled]="readOnly">
+        </se>
+        <se label="{{ '顶层工单开始时间' | translate}}">
+          <input nz-input type="text" [(ngModel)]="i.TOP_MO_START_DATE" name="strTOP_MO_START_DATE"
+            [disabled]="readOnly">
+        </se>
+        <se label="{{ '顶层工单状态' | translate}}">
+          <input nz-input type="text" [(ngModel)]="i.TOP_MO_STATUS" name="strTOP_MO_STATUS" [disabled]="readOnly">
+        </se>
+        <se label="{{ '最早开始时间' | translate}}">
+          <nz-date-picker nzShowTime nzFormat="yyyy-MM-dd HH:mm:ss" [(ngModel)]="i.earliestStartTime"
+            name="earliestStartTime" [disabled]="flagOne">
+          </nz-date-picker>
+        </se> -->
+        <!-- <se label="{{ '验货时间' | translate}}">
+          <nz-date-picker nzShowTime nzFormat="yyyy-MM-dd HH:mm:ss" [(ngModel)]="i.INSPECTION_TIME"
+            name="INSPECTION_TIME" [disabled]="flagOne">
+          </nz-date-picker>
+        </se> -->
+
+      </nz-collapse-panel>
+    </nz-collapse>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save()" [disabled]="isCounting || !f.valid || !f.dirty"
+    [nzLoading]="http.loading">{{ '保存' | translate}}</button>
+  <button nz-button type="button" (click)="close()">{{ '关闭' | translate}}</button>
+</div>

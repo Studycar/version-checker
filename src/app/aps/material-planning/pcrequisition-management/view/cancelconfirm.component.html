@@ -1,0 +1,14 @@
+<div class="modal-header">
+  <div class="modal-title">{{ "依赖取消确认" | translate}} {{ record.id }}</div>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="1">
+    <se label="{{ '取消原因' | translate}}" required>
+      <textarea rows="4" nz-input [(ngModel)]="i.closedReason" name="closedReason" required>{{i.closedReason}}</textarea>
+    </se>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save()" [disabled]="!f.valid" [nzLoading]="http.loading">确定</button>
+  <button nz-button type="button" (click)="close()">取消</button>
+</div>

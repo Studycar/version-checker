@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="32px" height="32px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.4 (67378) - http://www.bohemiancoding.com/sketch -->
+    <title>排产评分</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="补充的icon" transform="translate(-322.000000, -795.000000)">
+            <g id="批量释放--copy-4" transform="translate(322.000000, 795.000000)">
+                <g id="分组-18" transform="translate(6.000000, 6.000000)">
+                    <rect id="矩形" fill="#6D8290" x="0" y="0" width="20" height="20" rx="1.33333333"></rect>
+                    <path d="M3.06666667,6.26666667 L16.9333333,6.26666667 L16.9333333,5.33333333 C16.9333333,4.0814879 15.9185121,3.06666667 14.6666667,3.06666667 L5.33333333,3.06666667 C4.0814879,3.06666667 3.06666667,4.0814879 3.06666667,5.33333333 L3.06666667,6.26666667 Z" id="矩形" stroke="#6D8290" stroke-width="0.8" fill="#8BC34A"></path>
+                    <rect id="矩形" stroke="#FFFFFF" stroke-width="0.8" fill="#FFFFFF" x="3.06666667" y="8.4" width="3.2" height="3.2"></rect>
+                    <rect id="矩形-copy-17" stroke="#FFFFFF" stroke-width="0.8" fill="#FFFFFF" x="3.06666667" y="13.7333333" width="3.2" height="3.2"></rect>
+                    <rect id="矩形-copy-15" stroke="#FFFFFF" stroke-width="0.8" fill="#FFFFFF" x="8.4" y="8.4" width="3.2" height="3.2"></rect>
+                    <rect id="矩形-copy-18" stroke="#FFFFFF" stroke-width="0.8" fill="#8BC34A" x="8.4" y="13.7333333" width="3.2" height="3.2"></rect>
+                    <rect id="矩形-copy-16" stroke="#FFFFFF" stroke-width="0.8" fill="#8BC34A" x="13.7333333" y="8.4" width="3.2" height="3.2"></rect>
+                    <rect id="矩形-copy-19" stroke="#FFFFFF" stroke-width="0.8" fill="#FFFFFF" x="13.7333333" y="13.7333333" width="3.2" height="3.2"></rect>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

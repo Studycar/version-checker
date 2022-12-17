@@ -1,0 +1,17 @@
+<div class="modal-header">
+  <div class="modal-title">{{ ('批量备注') | translate}} </div>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="1" [labelWidth]=100>
+    <se label="{{ '备注' | translate}}" required>
+      <textarea rows="4" nz-input [(ngModel)]="i.comments" name="comments" required></textarea>
+    </se>
+    <se label="{{ '选择颜色' | translate}}" required>
+      <input [(colorPicker)]="i.color" [style.background]="i.color" [cpWidth]="'300px'" [cpOutputFormat]="'hex'" (colorPickerChange)="colorPickerChange($event)" style="width: 40px;height: 30px; cursor: pointer;" />
+    </se>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="button" (click)="close()">{{ '关闭' | translate}}</button>
+  <button nz-button type="submit" (click)="confirm()" [nzType]="'primary'" [disabled]="f.invalid">{{ '确定' | translate}}</button>
+</div>

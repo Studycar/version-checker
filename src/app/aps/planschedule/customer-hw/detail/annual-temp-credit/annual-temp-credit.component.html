@@ -1,0 +1,43 @@
+<!-- 头部 -->
+<div class="modal-header">
+  <div class="modal-title">{{ '申请年度信用额度' | translate}}</div>
+</div>
+<!-- 内容 -->
+<div>
+  <form nz-form #f="ngForm" se-container="2">
+    <se label="{{ '客户编码' | translate}}">
+      <input nz-input [(ngModel)]="i.cusCode" name="cusCode" disabled />
+    </se>
+    <se label="{{ '客户名称' | translate}}">
+      <input nz-input [(ngModel)]="i.cusName" name="cusName" disabled />
+    </se>
+    <se label="{{ '客户等级' | translate}}">
+      <nz-select name="cusGrade" [(ngModel)]="i.cusGrade" name="cusGrade" nzDisabled>
+        <nz-option *ngFor="let op of cusGradeOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '客户所属公司' | translate}}">
+      <nz-select name="plantCode" [(ngModel)]="i.plantCode" name="plantCode" nzDisabled>
+        <nz-option *ngFor="let op of plantOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '当前年度信用额度' | translate}}">
+      <input nz-input [(ngModel)]="i.credit" name="credit" disabled />
+    </se>
+    <se label="{{ '当前额度申请时间' | translate}}">
+      <input nz-input [(ngModel)]="i.annualCreditApplyDate" name="annualCreditApplyDate" disabled />
+    </se>
+    <se label="{{ '申请年度信用额度' | translate}}" required>
+      <nz-input-number [(ngModel)]="i.annualCreditApply" [nzPrecision]="0" [nzMin]="0" name="annualCreditApply" required></nz-input-number>
+    </se>
+    <se label="{{ '备注' | translate}}">
+      <input nz-input [(ngModel)]="i.attribute1" name="attribute1" />
+    </se>
+  </form>
+</div>
+<!-- 底部 -->
+<div class="modal-footer">
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save()"
+    [disabled]="!f.valid || !f.dirty" [nzLoading]="http.loading">{{ '保存' | translate}}</button>
+  <button nz-button type="button" (click)="close()">{{ '关闭' | translate}}</button>
+</div>

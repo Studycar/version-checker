@@ -1,0 +1,70 @@
+<div class="modal-header">
+  <div class="modal-title">{{ ('生产订单拆分') | translate}} </div>
+</div>
+<!--<div class="content-title">
+  <button nz-button (click)="add()" [nzType]="'primary'">
+    <i class="anticon anticon-plus-circle-o"></i>{{ '新增' | translate}}
+  </button>
+  <button nz-button (click)="save()">
+    <i class="anticon anticon-save"></i> {{ '保存' | translate}}
+  </button>
+  <button (click)="remove()" nz-button [nzType]="'danger'">
+    <i class="anticon anticon-delete"></i>{{ '删除' | translate}}
+  </button>
+</div>-->
+
+<form nz-form #f="ngForm" se-container="3" [labelWidth]=100>
+  <se label="{{ '生产订单号' | translate}}">
+    <input type="text" nz-input [(ngModel)]="dataItem.makeOrderNum" name="makeOrderNum" readonly="true">
+  </se>
+  <se label="{{ '生产线' | translate}}">
+    <input type="text" nz-input [(ngModel)]="dataItem.resourceCode" name="resourceCode" readonly="true">
+  </se>
+  <se label="{{ '状态' | translate}}">
+    <input type="text" nz-input [(ngModel)]="dataItem.makeOrderStatusName" name="makeOrderStatusName" readonly="true">
+  </se>
+  <se label="{{ '物料编码' | translate}}">
+    <input type="text" nz-input [(ngModel)]="dataItem.itemCode" name="itemCode" readonly="true">
+  </se>
+  <se label="{{ '物料描述' | translate}}">
+    <input type="text" nz-input [(ngModel)]="dataItem.descriptionsCn" name="descriptionsCn" readonly="true">
+  </se>
+  <se label="{{ '数量' | translate}}">
+    <input type="text" nz-input [(ngModel)]="dataItem.moQty" name="moQty" readonly="true">
+  </se>
+</form>
+<form nz-form se-container="2" [labelWidth]=100>
+  <se label="{{ '拆分后数量' | translate}}">
+    <input type="text" nz-input [(ngModel)]="dataItem.afterQty" name="afterQty" readonly="true">
+  </se>
+  <se>
+    <button nz-button (click)="add()" [nzType]="'primary'">
+    <i class="anticon anticon-plus-circle-o"></i>{{ '新增' | translate}}
+  </button>
+    <button (click)="remove()" nz-button [nzType]="'danger'">
+    <i class="anticon anticon-delete"></i>{{ '删除' | translate}}
+  </button>
+    <button nz-button (click)="save()">
+    <i class="anticon anticon-save"></i> {{ '保存' | translate}}
+  </button>
+  </se>
+</form>
+
+<nz-card>
+  <ag-grid-angular #agGrid id="digitalGrid" [pagination]="false" [class]="themeClass" [style.height.px]="250" [rowData]="gridData" [columnDefs]="columns"
+    [gridOptions]="gridOptions" (cellValueChanged)="onCellValueChanged($event)" (virtualColumnsChanged)="onVirtualColumnsChanged($event)">
+  </ag-grid-angular>
+</nz-card>
+<!--<div class="modal-footer">
+  <form nz-form #f="ngForm" se-container="3">
+    <se label="{{ '总量' | translate}}">
+      <input type="text" nz-input [(ngModel)]="i.MO_QTY" name="MO_QTY" readonly="true">
+    </se>
+    <se label="{{ '可拆分总量' | translate}}">
+      <input type="text" nz-input [(ngModel)]="i.USABLE_QTY" name="USABLE_QTY" readonly="true">
+    </se>
+    <se label="{{ '已拆分' | translate}}">
+      <input type="text" nz-input [(ngModel)]="i.SPLIT_QTY" name="SPLIT_QTY" readonly="true">
+    </se>
+  </form>
+</div>-->

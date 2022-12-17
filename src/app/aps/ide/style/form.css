@@ -1,0 +1,73 @@
+form {
+  padding: 0 12px;
+}
+.ant-input,
+.ant-input-number {
+  padding: 4px 0;
+  border: none;
+  background-color: transparent;
+  color: #000;
+}
+:host ::ng-deep .ant-input-number-input {
+  padding: 0;
+}
+:host ::ng-deep textarea {
+  resize: none;
+}
+:host ::ng-deep .ant-form-item-label > label {
+  color: #aaa;
+}
+:host ::ng-deep .ant-select-selection {
+  border: none;
+}
+:host ::ng-deep .ant-select-disabled {
+  color: #000;
+}
+:host ::ng-deep .ant-select-disabled .ant-select-selection {
+  background-color: transparent;
+}
+:host ::ng-deep .ant-select-selection__rendered {
+  margin: 0;
+}
+/* :host ::ng-deep .ant-select-selection--single .ant-select-selection__rendered {
+
+} */
+:host ::ng-deep .ant-select-arrow {
+  display: none;
+}
+:host ::ng-deep .ant-table-wrapper {
+  margin-bottom: 100px;
+}
+:host ::ng-deep .ant-table-thead > tr > th {
+  text-align: center;
+  color: #aaa;
+}
+:host ::ng-deep .ant-table table {
+  text-align: center;
+}
+
+/* 移动端适配 */
+@media (max-width: 767px) {
+  :host ::ng-deep .se__horizontal .se__item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  :host ::ng-deep .se__horizontal .se__item .ant-form-item-label {
+    padding: 0;
+    width: 150px !important;
+  }
+  :host ::ng-deep .ant-input {
+    text-align: right;
+  }
+  :host ::ng-deep .ant-select-selection__rendered {
+    display: flex;
+    justify-content: flex-end;
+  }
+  :host ::ng-deep .ant-input-number-input {
+    text-align: right;
+  }
+  :host ::ng-deep .ant-upload-list-item-info {
+    padding: 0;
+  }
+}

@@ -1,0 +1,25 @@
+<div class="modal-header">
+  <div class="modal-title">单据编号记录</div>
+</div>
+<nz-spin *ngIf="!billNoRuleRecordList" class="modal-spin"></nz-spin>
+<div>
+  <nz-table #billNoRuleRecordTable [nzData]='billNoRuleRecordList'>
+    <thead>
+      <tr>
+        <th *ngFor="let head of tableHeadList">{{head | translate}}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let record of billNoRuleRecordTable.data; let i = index">
+        <td>{{i+1}}</td>
+        <td>{{record.code}}</td>
+        <td>{{record.name}}</td>
+        <td>{{record.dateFormat}}</td>
+        <td>{{record.maxnum}}</td>
+      </tr>
+    </tbody>
+  </nz-table>
+</div>
+<div class="modal-footer">
+  <button nz-button type="button" (click)="close()">关闭</button>
+</div>

@@ -1,0 +1,37 @@
+<custom-formquery [queryParams]="queryParams" [context]="context">
+  <span>
+    <custom-button text="{{ '新增' | translate }}" (clickEvent)="add()" [src]="'基础icon-新增'"></custom-button>
+  </span>
+</custom-formquery>
+
+<nz-card>
+    <ag-grid-angular
+      #agGrid
+      [class]="themeClass"
+      [style.height.px]="gridHeight"
+      [rowData]="gridData"
+      [columnDefs]="columns"
+      [gridOptions]="gridOptions"
+      [myAgGridRowKey]="{tb:'GOP_ORDER_PROMISE'}"
+      [myAgGridState]="'orderCommitment'">
+    </ag-grid-angular>
+    <custom-pager
+        [height]="pagerHeight"
+        [context]="context"
+        [view]='context.view'
+        [(pageSize)]="_pageSize"
+        [(pageNo)]="_pageNo"
+        (pageChangeEvent)="onPageChanged($event)">
+    </custom-pager>
+</nz-card>
+<ng-template #customTemplate let-dataItem>
+  <span title="{{ '重新计算' | translate}}" (click)="calculationCap(dataItem)" 
+    class="spanStyle">
+    <i class="anticon anticon-edit"></i>
+  </span>
+  <span title="{{'产能释放' | translate}}" (click)="releaseCap(dataItem)"  *ngIf="dataItem.promiseRtn =='Y'"
+    class="spanStyle">
+    <i class="anticon anticon-info-circle-o"></i>
+  </span>
+
+</ng-template>

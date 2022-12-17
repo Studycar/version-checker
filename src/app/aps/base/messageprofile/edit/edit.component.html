@@ -1,0 +1,44 @@
+<div class="modal-header">
+  <div class="modal-title">{{ (isModify?'编辑信息':'新增信息') | translate}} </div>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="2" [labelWidth]=100>
+    <se label="{{ '消息类型' | translate}}" required>
+      <nz-select nzShowSearch [(ngModel)]="i.MESSGAE_TYPE" name="MESSGAE_TYPE" required>
+        <nz-option *ngFor="let option of msgTypeOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '标题' | translate}}" required>
+      <input type="text" nz-input [(ngModel)]="i.TITLE" name="TITLE" required>
+    </se>
+    <se label="{{ '层级' | translate}}" required>
+      <nz-select nzShowSearch [(ngModel)]="i.MSG_LEVEL" name="MSG_LEVEL" required>
+        <nz-option *ngFor="let option of msgLevelOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '值' | translate}}">
+      <input type="text" nz-input [(ngModel)]="i.VALUVE" name="VALUVE">
+    </se>
+    <se label="{{ '角色' | translate}}" required>
+      <nz-select nzShowSearch [(ngModel)]="i.MSG_ROLE" name="MSG_ROLE" required>
+        <nz-option *ngFor="let option of msgRoleOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '接收人' | translate}}">
+      <input type="text" nz-input [(ngModel)]="i.RECEIVER" name="RECEIVER">
+    </se>
+    <se label="{{ '消息格式' | translate}}" required>
+      <input type="text" nz-input [(ngModel)]="i.MSG_FORMAT" name="MSG_FORMAT" required>
+    </se>
+    <se label="{{ '是否启用' | translate}}" required>
+      <nz-select nzShowSearch [(ngModel)]="i.ENABLED" name="ENABLED" required>
+        <nz-option *ngFor="let option of yesOrNo" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save()" [disabled]="!f.valid || !f.dirty"
+    [nzLoading]="http.loading">{{ '保存' | translate}}</button>
+  <button nz-button type="button" (click)="close()">{{ '关闭' | translate}}</button>
+</div>

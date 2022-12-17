@@ -1,0 +1,78 @@
+<!--
+ * @Author: Zwh
+ * @contact: zhangweika@outlook.com
+ * @Date: 2020-06-29 15:32:32
+ * @LastEditors: Zwh
+ * @LastEditTime: 2021-03-04 15:32:29
+ * @Note: ...
+-->
+<div class="modal-header">
+  <div class="modal-title">{{param.operType | translate}}信息</div>
+</div>
+<div style="position: relative; height: 32px" *ngIf="param.operType === '编辑'">
+  <button nz-button nzType="dashed" style="position: absolute; right: 0;" (click)="clear()">重置</button>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="2">
+    <se label="{{ '序号' | translate}}" required>
+      <!-- <input type="text" nz-input [(ngModel)]="i.COLUMN_SEQ_NUM" name="COLUMN_SEQ_NUM" required> -->
+        <nz-input-number [(ngModel)]="i.columnSeqNum" name="COLUMN_SEQ_NUM" required></nz-input-number>
+      </se>
+    <se label="{{ '提示' | translate}}" required>
+      <input type="text" nz-input [(ngModel)]="i.userPromptName" name="USER_PROMPT_NAME" required>
+    </se>
+    <se label="{{ '参数' | translate}}" required>
+      <input type="text" nz-input [(ngModel)]="i.endUserColumnName" name="END_USER_COLUMN_NAME" required>
+    </se>
+    <se label="{{ '参数描述' | translate}}">
+      <input type="text" nz-input [(ngModel)]="i.description" name="DESCRIPTION">
+    </se>
+    <se label="{{ '值集' | translate}}" required>
+      <nz-select #select [(ngModel)]="i.flexValueSetId" name="FLEX_VALUE_SET_ID" required nzShowSearch
+        [nzDropdownMatchSelectWidth]="false">
+        <nz-option *ngFor="let option of FLEX_VALUE_SET_ID_array" [nzLabel]="option.label" [nzValue]="option.value">
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '默认值类型' | translate}}">
+      <nz-select #select [(ngModel)]="i.defaultType" name="DEFAULT_TYPE" nzAllowClear nzShowSearch>
+        <nz-option *ngFor="let option of DEFAULT_TYPE_array" [nzLabel]="option.label" [nzValue]="option.value">
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '默认值' | translate}}">
+      <input type="text" nz-input [(ngModel)]="i.defaultValue" name="DEFAULT_VALUE">
+    </se>
+    <se label="{{ '范围' | translate}}">
+      <nz-select #select [(ngModel)]="i.rangeCode" name="RANGE_CODE" nzShowSearch nzAllowClear>
+        <nz-option *ngFor="let option of RANGE_CODE_array" [nzLabel]="option.label" [nzValue]="option.value">
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '显示大小' | translate}}" required>
+      <!-- <input type="text" nz-input [(ngModel)]="i.DISPLAY_SIZE" name="DISPLAY_SIZE"> -->
+        <nz-input-number [(ngModel)]="i.displaySize" name="DISPLAY_SIZE" required></nz-input-number>
+    </se>
+    <se label="{{ '说明大小' | translate}}" required>
+      <!-- <input type="text" nz-input [(ngModel)]="i.MAXIMUM_DESCRIPTION_LEN" name="MAXIMUM_DESCRIPTION_LEN"> -->
+        <nz-input-number [(ngModel)]="i.maximumDescriptionLen" name="MAXIMUM_DESCRIPTION_LEN" required></nz-input-number>
+    </se>
+    <se label="{{ '互斥' | translate}}">
+      <input type="checkbox" nz-input [(ngModel)]="i.confictFlag" name="CONFICT_FLAG">
+    </se>
+    <se label="{{ '有效' | translate}}">
+      <input type="checkbox" nz-input [(ngModel)]="i.enabledFlag" name="ENABLED_FLAG" checked="true">
+    </se>
+    <se label="{{ '必须' | translate}}">
+      <input type="checkbox" nz-input [(ngModel)]="i.requiredFlag" name="REQUIRED_FLAG">
+    </se>
+    <se label="{{ '显示' | translate}}">
+      <input type="checkbox" nz-input [(ngModel)]="i.displayFlag" name="DISPLAY_FLAG">
+    </se>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save()" [disabled]="f.invalid || !f.dirty"
+    [nzLoading]="http.loading">{{'保存' | translate}}</button>
+  <button nz-button type="button" (click)="close()">{{ '关闭' | translate}}</button>
+</div>

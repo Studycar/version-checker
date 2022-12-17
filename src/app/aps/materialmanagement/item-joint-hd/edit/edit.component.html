@@ -1,0 +1,73 @@
+<div class="modal-header">
+  <div class="modal-title">{{ (editDto.Id !== undefined ? '编辑信息' : '新增信息') | translate}}</div>
+</div>
+<div style=" margin:2px auto;">
+  <button style="float: right;" nz-button nzType="dashed" (click)="clear()">
+    {{ '重置' | translate}}</button>
+  <div style="clear: both;"></div>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="3" [labelWidth]=140>
+    <se label="{{ '主产品排产工厂' | translate}}" required>
+      <nz-select #select [(ngModel)]="editDto.PLANT_CODE_MASTER" nzShowSearch name="PLANT_CODE_MASTER"
+        (ngModelChange)="ngPlantCodeMasterModelChange($event)" required>
+        <nz-option *ngFor="let o of plantCodeList" [nzValue]="o.value" [nzLabel]="o.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '主产品排产资源' | translate}}" required>
+      <nz-select #select [(ngModel)]="editDto.RESOURCE_CODE_MASTER" nzShowSearch name="RESOURCE_CODE_MASTER" required>
+        <nz-option *ngFor="let o of resourceCodeMasterList" [nzValue]="o.value" [nzLabel]="o.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '主产品物料' | translate}}" required>
+      <popup-select #selMater1 [Value]="editDto.ITEM_ID_MASTER" [Text]='editDto.ITEM_CODE_MASTER'
+        [ValueField]="'ITEM_ID'" [TextField]="'ITEM_CODE'" [gridView]="gridViewItems1" [columns]="columnsItems"
+        (TextChanged)="onTextChanged1($event)" (SearchEvent)="searchItems1($event)" (RowSelect)="onRowSelect1($event)">
+      </popup-select>
+    </se>
+    <se label="{{ '主产品物料描述' | translate}}">
+      <input type="text" nz-input [(ngModel)]="editDto.ITEM_MASTER_DESCRIPTIONS" name="ITEM_MASTER_DESCRIPTIONS"
+        disabled="true">
+    </se>
+
+    <se label="{{ '联产品排产工厂' | translate}}" required>
+      <nz-select #select [(ngModel)]="editDto.PLANT_CODE_JOINT" nzShowSearch name="PLANT_CODE_JOINT"
+        (ngModelChange)="ngPlantCodeJointModelChange($event)" required>
+        <nz-option *ngFor="let o of plantCodeList" [nzValue]="o.value" [nzLabel]="o.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '联产品排产资源' | translate}}" required>
+      <nz-select #select [(ngModel)]="editDto.RESOURCE_CODE_JOINT" nzShowSearch name="RESOURCE_CODE_JOINT" required>
+        <nz-option *ngFor="let o of resourceCodeJointList" [nzValue]="o.value" [nzLabel]="o.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '联产品物料' | translate}}" required>
+      <popup-select #selMater2 [Value]="editDto.ITEM_ID_JOINT" [Text]='editDto.ITEM_CODE_JOINT' [ValueField]="'ITEM_ID'"
+        [TextField]="'ITEM_CODE'" [gridView]="gridViewItems2" [columns]="columnsItems"
+        (TextChanged)="onTextChanged2($event)" (SearchEvent)="searchItems2($event)" (RowSelect)="onRowSelect2($event)">
+      </popup-select>
+    </se>
+    <se label="{{ '联产品物料描述' | translate}}">
+      <input type="text" nz-input [(ngModel)]="editDto.ITEM_JOINT_DESCRIPTIONS" name="ITEM_JOINT_DESCRIPTIONS"
+        disabled="true">
+    </se>
+    <se label="{{ '数量转换关系' | translate}}" required>
+      <nz-input-number [(ngModel)]="editDto.QTY_TRANSFER" [nzMin]="0" name="QTY_TRANSFER" required></nz-input-number>
+    </se>
+    <se label="{{ '开始时间间隔' | translate}}" required>
+      <nz-input-number [(ngModel)]="editDto.TIME_INTERVAL" name="TIME_INTERVAL" required></nz-input-number>
+    </se>
+    <se label="{{ '合并数量上限' | translate}}" required>
+      <nz-input-number [(ngModel)]="editDto.SPLIT_QTY" [nzMin]="0" name="SPLIT_QTY" required></nz-input-number>
+    </se>
+    <se label="{{ '舍入值' | translate}}" required>
+      <nz-input-number [(ngModel)]="editDto.ROUNDING_VALUE" [nzMin]="0" name="ROUNDING_VALUE" required>
+      </nz-input-number>
+    </se>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save()" [disabled]="f.invalid || !f.dirty"
+    [nzLoading]="http.loading"> {{ '保存' | translate}}</button>
+  <button nz-button type="button" (click)="close()"> {{ '关闭' | translate}}</button>
+</div>

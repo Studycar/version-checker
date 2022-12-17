@@ -1,0 +1,55 @@
+<div class="modal-header">
+  <div class="modal-title">{{ isModify ? '编辑信息' : '新增信息' | translate }}</div>
+</div>
+<div style="position: relative; height: 32px" *ngIf="isModify">
+  <button nz-button nzType="dashed" style="position: absolute; right: 0;" (click)="clear()">{{'重置' | translate}}</button>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="2">
+    <se label="{{ '工厂' | translate }}" required>
+      <nz-select nzShowSearch name="plantCode" [nzDisabled]="isModify" [(ngModel)]="i.plantCode" required>
+        <nz-option *ngFor="let op of plantOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '存货编码' | translate }}" required>
+      <popup-select [Value]="i.stockCode" [ValueField]="'stockCode'" [Disabled]="isModify"
+        [Text]="i.stockCode" [TextField]="'stockCode'" name="stockCode" required
+        [gridView]="gridViewStocks" [columns]="columnsStocks" (TextChanged)="onStockTextChanged($event)"
+        (SearchEvent)="searchStocks($event)" (RowSelect)="onStocksSelect($event)">
+      </popup-select>
+    </se>
+    <se label="{{ '存货名称' | translate }}">
+      <input nz-input type="text" disabled name="stockName" [(ngModel)]="i.stockName"/>
+    </se>
+    <se label="{{ '钢种大类' | translate }}" required>
+      <nz-select nzShowSearch name="steelSort" [nzDisabled]="isModify" [(ngModel)]="i.steelSort" required>
+        <nz-option *ngFor="let op of steelSortOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '钢种' | translate }}" required>
+      <nz-select nzShowSearch name="steelType" [nzDisabled]="isModify" [(ngModel)]="i.steelType" required>
+        <nz-option *ngFor="let op of steelTypeOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '表面' | translate }}" required>
+      <nz-select nzShowSearch name="surface" [nzDisabled]="isModify" [(ngModel)]="i.surface" required>
+        <nz-option *ngFor="let op of surfaceOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '表面加价' | translate }}" required>
+      <nz-input-number name="surfaceMarkup" [(ngModel)]="i.surfaceMarkup" required></nz-input-number>
+    </se>
+    <se label="{{ '生效日期' | translate }}" required>
+      <nz-date-picker nzFormat="yyyy-MM-dd" [nzDisabledDate]="disabledStartDate" [nzDisabled]="isModify" [(ngModel)]="i.startDate" name="startDate" required>
+      </nz-date-picker>
+    </se>
+    <se label="{{ '失效日期' | translate }}" required>
+      <nz-date-picker nzFormat="yyyy-MM-dd" [nzDisabledDate]="disabledEndDate" [nzDisabled]="isModify" [(ngModel)]="i.endDate" name="endDate" required>
+      </nz-date-picker>
+    </se>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="button" (click)="close()">{{ '取消' | translate }}</button>
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save(f.value)" [nzLoading]="http.loading" [disabled]="f.invalid || !f.dirty">{{'保存' | translate }}</button>
+</div>

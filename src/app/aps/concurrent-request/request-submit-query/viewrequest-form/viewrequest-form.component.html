@@ -1,0 +1,9 @@
+<div class="modal-header" style="padding-top:10px;padding-bottom:10px;margin-bottom:10px;">
+  <div class="modal-title">{{'查看管理器请求' | translate}}</div>
+</div>
+<nz-card>
+  <ag-grid-angular #agGrid [class]="themeClass" [style.height.px]="gridHeight" [rowData]="gridData" [columnDefs]="columns">
+  </ag-grid-angular>
+  <custom-pager [height]="pagerHeight" [fixed]="false" [context]="context" [view]='context.gridView' [(pageSize)]="_pageSize"
+    [(pageNo)]="_pageNo" (pageChangeEvent)="onPageChanged($event)"></custom-pager>
+</nz-card>

@@ -1,0 +1,89 @@
+.flexible-modal {
+  position: relative;
+  background-color: #fff;
+  box-sizing: border-box;
+  padding: 0;
+  color: rgba(0, 0, 0, 0.65);
+  font-size: 14px;
+  font-variant: tabular-nums;
+  line-height: 1.5;
+  list-style: none;
+  font-feature-settings: 'tnum';
+  margin: 0 auto;
+  border-radius: 4px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  pointer-events: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+@media (min-width: 576px) {
+  .modal-sm .flexible-modal {
+    width: 300px;
+  }
+}
+
+@media (min-width: 768px) {
+  .modal-md .flexible-modal {
+    width: 600px;
+  }
+}
+
+@media (min-width: 992px) {
+  .modal-lg .flexible-modal {
+    width: 900px;
+  }
+}
+
+@media (min-width: 1600px) {
+  .modal-xl .flexible-modal {
+    width: 1200px;
+  }
+}
+
+.flexible-modal-header {
+  padding: 16px 24px;
+  min-height: 55px;
+  box-sizing: border-box;
+  color: rgba(0, 0, 0, 0.65);
+  background: #fff;
+  border-bottom: 1px solid #e8e8e8;
+  border-radius: 4px 4px 0 0;
+}
+
+.flexible-modal-title {
+  margin: 0;
+  color: rgba(0, 0, 0, 0.85);
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 22px;
+  word-wrap: break-word;
+}
+
+.flexible-modal-body {
+  flex: 1;
+  padding: 24px;
+  font-size: 14px;
+  line-height: 1.5;
+  word-wrap: break-word;
+  overflow: auto;
+}
+
+.flexible-modal-footer {
+  padding: 10px 16px;
+  text-align: right;
+  border-top: 1px solid #e8e8e8;
+  border-radius: 0 0 4px 4px;
+}
+
+.flexible-modal-mask {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.45);
+  pointer-events: auto;
+}

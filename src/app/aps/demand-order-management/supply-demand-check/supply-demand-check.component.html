@@ -1,0 +1,24 @@
+<custom-formquery [queryParams]="queryParams" [context]="context" (event1)="searchItems($event)">
+  <span>
+    <custom-button text="{{ '供需生成' | translate}}" (clickEvent)="submitReq()" [src]="'供需生成'">
+    </custom-button>
+    <custom-button text="{{ '导出' | translate}}" (clickEvent)="export()" [src]="'基础icon-导出'">
+    </custom-button>
+      <custom-button text="{{'库存检查' | translate}}" (clickEvent)="inventoryCheck()" [src]="'inventory-check'"></custom-button>
+  </span>
+</custom-formquery>
+
+<nz-card>
+  <ag-grid-angular #agGrid id="dnGrid" [class]="themeClass" [rowData]="gridData" [columnDefs]="totalColumns"
+    [gridOptions]="gridOptions" [myAgGridState]="'SUPPLY_DEMAND_CHECK'" [style.height.px]="gridHeight"
+    (virtualColumnsChanged)="onVirtualColumnsChanged()" [suppressRowTransform]="true" [components]="rowComponents"
+    (cellDoubleClicked)="onCellDoubleClicked($event)" (cellClicked)="onCellClicked($event)" [suppressRowClickSelection]="true">
+  </ag-grid-angular>
+  <custom-pager [height]="pagerHeight" [context]="context" [view]='context.view' [(pageSizes)]='pageSizes' [fixed]="false"
+    [(pageSize)]="_pageSize" [(pageNo)]="_pageNo" (pageChangeEvent)="onPageChanged($event)"></custom-pager>
+  <custom-excelexport [expColumns]='totalColumns' fileName='supplyDemandCheck' #excelexport></custom-excelexport>
+</nz-card>
+
+<nz-card *ngIf="showChart">
+    <div echarts [options]="options" style="width: 100%; height: 350px;"></div>
+</nz-card>

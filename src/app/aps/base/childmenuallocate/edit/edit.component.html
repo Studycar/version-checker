@@ -1,0 +1,43 @@
+<!--<div class="modal-header">
+  <div class="modal-title">{{title}} {{'信息'| translate}} </div>
+</div>
+<nz-spin *ngIf="!i" class="modal-spin"></nz-spin>
+<sf *ngIf="i" #sf mode="edit" [schema]="schema" [ui]="ui" [formData]="i" button="none">
+  <div class="modal-footer">
+    <button nz-button type="button" (click)="close()"> {{'关闭'| translate}}</button>
+    <button nz-button type="submit" [nzType]="'primary'" (click)="save(sf.value)" [disabled]="!sf.valid || !f.dirty" [nzLoading]="http.loading">
+    {{'保存'| translate}}</button>
+  </div>
+</sf>-->
+
+<div class="modal-header">
+  <div class="modal-title">{{title | translate}} </div>
+</div>
+<div style="position: relative; height: 32px" *ngIf="isModify">
+  <button nz-button nzType="dashed" style="position: absolute; right: 0;" (click)="clear()">重置</button>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="2">
+    <se label="{{'子菜单' | translate}}" required>
+      <nz-select nzShowSearch [(ngModel)]="i.MENU_ID" (ngModelChange)="change($event)" name="MENU_ID" required>
+        <nz-option *ngFor="let option of childMenuOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{'功能' | translate}}">
+      <input nz-input type="text" [(ngModel)]="i.FUNCTION_NAME" name="FUNCTION_NAME" disabled>
+    </se>
+    <se label="{{'菜单类型' | translate}}">
+      <input nz-input type="text" [(ngModel)]="i.MENU_TYPE_NAME" name="MENU_TYPE_NAME" disabled>
+    </se>
+    <se label="{{'菜单组' | translate}}" required>
+      <nz-select nzShowSearch [(ngModel)]="i.MENU_GROUP_ID" name="MENU_GROUP_ID" required>
+        <nz-option *ngFor="let option of menuGroupOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save()" [disabled]="!f.valid || !f.dirty" [nzLoading]="http.loading">
+    {{'保存'| translate}}</button>
+  <button nz-button type="button" (click)="close()"> {{'关闭'| translate}}</button>
+</div>

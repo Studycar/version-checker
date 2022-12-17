@@ -1,0 +1,138 @@
+<div class="div_menu">
+    <custom-button text="{{ '查询' | translate}}" (clickEvent)="search()" [compleSrc]="Img['搜索']">
+    </custom-button>
+    <custom-button text="{{ '排产刷新' | translate}}" (clickEvent)="refresh(true)" [compleSrc]="Img['排产刷新']">
+    </custom-button>
+    <!-- <nz-divider nzType="vertical"></nz-divider> -->
+    <custom-button text="{{ '工作日历' | translate}}" (clickEvent)="openCalendar()" [compleSrc]="Img['工作日历']">
+    </custom-button>
+    <!-- <custom-button [text]="fixValues.buttonText| translate" (clickEvent)="fixMo()" [compleSrc]="Img['固定时间']">
+    </custom-button> -->
+    <custom-button text="{{ '置尾单' | translate}}" (clickEvent)="setEndMo()" [compleSrc]="Img['置尾单']">
+    </custom-button>
+    <custom-button text="{{ '批量资源调整' | translate}}" (clickEvent)="batchMove()" [compleSrc]="Img['批量资源调整']">
+    </custom-button>
+    <custom-button text="{{ '调整保存' | translate}}" [disabled]="!editService.hasChanges()" (clickEvent)="save()"
+      [compleSrc]="Img['调整保存']" [compleSrcDisabled]="Img['调整保存_不可用']">
+    </custom-button> <!-- 按顺序调整 和 按资源调整 数据保存 -->
+    <!-- <custom-button text="{{ '工单指定' | translate}}" (clickEvent)="setResourceAndRate()"
+      compleSrc="../../../../assets/icons/工单指定.svg">
+    </custom-button> -->
+    <!-- <custom-button text="{{ '产能平衡' | translate}}" (clickEvent)="calculateWorking()" [compleSrc]="Img['产能平衡']">
+    </custom-button> -->
+
+    <!-- <custom-button text="{{ '智能排产' | translate}}" (clickEvent)="digitalization()" [compleSrc]="Img['智能排产']">
+    </custom-button> -->
+    <custom-button text="{{ '集约排产' | translate}}" (clickEvent)="chooseLine()" [compleSrc]="Img['集约选线']">
+    </custom-button>
+    <custom-button text="{{ '工单联动' | translate}}" (clickEvent)="moLink()" [compleSrc]="Img['工单联动']">
+    </custom-button>
+    <custom-button text="{{ '上层联动' | translate}}" (clickEvent)="moUpLink()" [compleSrc]="Img['上层联动']">
+    </custom-button>
+    <!-- <custom-button text="{{ '工单组件' | translate}}" (clickEvent)="openMoComponent()" [compleSrc]="Img['工单组件']">
+    </custom-button> -->
+    <!--<custom-button text="{{ '工单簇' | translate}}" (clickEvent)="openMoLevel()" [compleSrc]="Img['工单族']">
+    </custom-button>-->
+    <custom-button text="{{ 'MO总结' | translate}}" (clickEvent)="moSummary()" [compleSrc]="Img['工单族']">
+    </custom-button>
+    <custom-button text="{{ '备注保存' | translate}}" [disabled]="!editService.hasChanges()"
+      (clickEvent)="remarkMo()" [compleSrc]="Img['备注保存']" [compleSrcDisabled]="Img['备注保存_不可用']">
+    </custom-button>
+    <custom-button text="{{ '计划发布' | translate}}" (clickEvent)="PlanRelease()" [compleSrc]="Img['计划发布']">
+    </custom-button>
+    <custom-button text="{{ '工单发放' | translate}}" (clickEvent)="moRelease()" [compleSrc]="Img['发放']">
+    </custom-button>
+    <!-- <custom-button text="{{ '排产表' | translate}}" (clickEvent)="openSchedule()" [compleSrc]="Img['排产表']">
+    </custom-button> -->
+    <custom-button text="{{ '导出' | translate}}" (clickEvent)="export()" [compleSrc]="Img['导出']">
+    </custom-button>
+    <!-- <custom-button text="{{ '排产检核' | translate}}" (clickEvent)="openCheckReport()"
+      compleSrc="../../../../assets/imgs/planSchedule/排产检核.svg">
+    </custom-button> -->
+    <!-- <custom-button text="{{ '例外检查' | translate}}" (clickEvent)="moException()" [compleSrc]="Img['工单例外']">
+    </custom-button> -->
+    <!-- <custom-button text="{{ '自制发外比例计算' | translate}}" (clickEvent)="selfmadeOutsourcing()" [compleSrc]="Img['自动计算']">
+    </custom-button> -->
+    <!-- <custom-button text="{{ '更新最早开始时间' | translate}}" (clickEvent)="updateMoEarliestStartTime()"
+      compleSrc="../../../../assets/imgs/planSchedule/排产检核.svg">
+    </custom-button> -->
+    <!-- <span style="display: inline-block; vertical-align: bottom;">
+      <picker-color (colorPickerSelect)="pickerClose($event)"></picker-color>
+    </span> -->
+    <!-- <custom-button text="{{ '排产模拟' | translate}}"  (clickEvent)="simulation()"  [compleSrc]="Img['一键匹模']">
+    </custom-button> -->
+  <div style="float: right;">
+    <custom-button [isPopover]="true" [visible]="visible" [popoverContent]="workbenchSetting"
+      text="{{ '设置' | translate}}" [src]="'基础icon-工作台设置'" style="margin-right: 0;">
+    </custom-button>
+  </div>
+  <ng-template #workbenchSetting>
+    <workbench-setting-imp (updateClick)="closePopUp()" [context]="context"></workbench-setting-imp>
+  </ng-template>
+</div>
+<nz-card>
+  <ag-grid-angular #agGrid id="digitalGrid" domLayout='normal' [class]="themeClass" [class.dragging]="isDragging" [style.height.px]="gridHeight" [getRowStyle]="getRowStyle"
+    [rowData]="gridData" [columnDefs]="columns" [gridOptions]="gridOptions" [pagination]="false" [animateRows]="true"
+    [rowDragManaged]="false" [immutableData]="true" [getRowNodeId]="getRowNodeId" (rowDragEnter)="onRowDragEnter($event)"
+    (rowDragEnd)="onRowDragEnd($event)" (rowDragMove)="onRowDragMove($event)" (rowDragLeave)="onRowDragLeave($event)" (selectionChanged)="onSelectionChanged($event)"
+    (filterChanged)="onFilterChanged($event)" (virtualColumnsChanged)="onVirtualColumnsChanged($event)" (cellValueChanged)="onCellValueChanged($event)"
+    (cellDoubleClicked)="onCellDoubleClicked($event)" [myAgGridRowKey]="{tb:'PS_MAKE_ORDER'}" [myAgGridState]="'digitalization-workbench'"
+    restoreScroll="dwk-scroll" updateColorCell recordCol="markColour">
+  </ag-grid-angular>
+  <div style="margin-top: 10px;">
+    {{ '总记录数：' | translate}}{{gridData.length}}，
+    <custom-tb-select-sum [context]="context" [height]="sumHeight" [Style]="{ display: 'inline' }"></custom-tb-select-sum>
+  </div>
+  <custom-excelexport [expColumns]='expColumns' [expColumnsOptions]='expColumnsOptions' fileName='数据化排产' #excelexport></custom-excelexport>
+</nz-card>
+
+<ng-template #customTemplate let-dataItem>
+  <ng-container *ngIf="!dataItem.isBottomRowData">
+    <span title="{{ '编辑' | translate}}" (click)="openMoEditCommon(dataItem.id);" class="pointer">
+      <i class="anticon anticon-edit"></i>
+    </span>
+    <nz-divider nzType="vertical"></nz-divider>
+    <span title="{{ '查看原料' | translate}}" (click)="showRaw(dataItem)">
+      <i class="anticon anticon-profile"></i>
+    </span>
+  <!-- 工单状态为 未发放（S）、已发放（R），才能调整产线 -->
+  <ng-container *ngIf="['S','R'].includes(dataItem.makeOrderStatus)">
+    <nz-divider nzType="vertical"></nz-divider>
+    <span title="{{ '调整产线' | translate}}" (click)="showManu(dataItem);" class="pointer">
+      <i class="anticon anticon-retweet"></i>
+    </span>
+  </ng-container>
+  <!-- 工单状态为 未发放（S），才能取消订单 -->
+  <ng-container *ngIf="dataItem.makeOrderStatus === 'S'">
+    <nz-divider nzType="vertical"></nz-divider>
+    <span title="{{'工单取消' | translate}}"  nz-popconfirm nzTitle="{{ '是否确认取消?' | translate}}"
+    (nzOnConfirm)="cancelOrder(dataItem);" class="pointer">
+      <i class="anticon anticon-info-circle-o"></i>
+    </span>
+  </ng-container>
+    <!-- <nz-divider nzType="vertical"></nz-divider>
+    <span *ngIf="moSplitCheck(dataItem)" title="{{ '拆分' | translate}}"
+      (click)="splitMo(dataItem);" class="pointer">
+      <i class="anticon anticon-appstore"></i>
+    </span> -->
+  </ng-container>
+</ng-template>
+<ng-template #customTemplate1 let-dataItem>
+  <div [ngStyle]="{'cursor': 'pointer', 'display': 'flex'}" *ngIf="!dataItem.isBottomRowData">
+    <span *ngIf="dataItem.makeOrderNum && dataItem.bindindNum" class="bindind_cls">合</span>
+    <span *ngIf="dataItem.specifyFlag==='Y'||dataItem.fixScheduleTime!==null" [ngStyle]="{'color':'red'}">
+      *
+    </span>
+  <span style="overflow: hidden; text-overflow:ellipsis">{{dataItem.makeOrderNum}}</span>
+  </div>
+</ng-template>
+<ng-template #customTemplateTime let-dataItem>
+  <nz-date-picker nzShowTime nzFormat="yyyy-MM-dd HH:mm:ss" [(ngModel)]="dataItem.earliestStartTime" (ngModelChange)="changeStartDay(dataItem)"
+    name="EARLIEST_START_TIME" nzPlaceHolder="{{'请选择日期'| translate}}">
+  </nz-date-picker>
+</ng-template>
+<ng-template #customTemplateTimeGd let-dataItem>
+  <nz-date-picker nzShowTime nzFormat="yyyy-MM-dd HH:mm:ss" [(ngModel)]="dataItem.fixScheduleTime" (ngModelChange)="changeStartDayGD(dataItem)"
+    name="FIX_SCHEDULE_TIME" nzPlaceHolder="{{'请选择日期'| translate}}">
+  </nz-date-picker>
+</ng-template>

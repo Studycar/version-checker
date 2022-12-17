@@ -1,0 +1,302 @@
+<div class="modal-header" style="padding-top:10px;padding-bottom:10px;margin-bottom:10px;">
+  <div class="modal-title">{{'总装跟单件查询' | translate}}</div>
+</div>
+
+
+<!-- <div style=" margin:2px auto;">
+  <button style="float: right;" nz-button nzType="dashed" (click)="clear()">
+    {{ '重置' | translate}}</button>
+  <div style="clear: both;"></div>
+</div> -->
+
+
+<div class="mb-md" align="center">
+  <!--<table border=0 cellpadding=0 cellspacing=0 style="width:100%">
+    <tr style="width: 100%;">
+      <td style="width:80%;padding-left:20px;">-->
+
+  <table border=0 cellpadding=0 cellspacing=0 style="width:100%;height:180px;">
+    <tr class="table_tr">
+      <td class="table_td_1" align="right">
+        <span class="ant-form-item-required"></span>{{'工厂' | translate}}</td>
+      <td class="table_td_2">
+        <nz-select style="width:100%;height: 35px;" [(ngModel)]="this.i.Params.plantCode" nzShowSearch (ngModelChange)="onChangePlant($event)"
+          name="PLANT_CODE" nzAllowClear>
+          <nz-option *ngFor="let o of optionListPlant" [nzValue]="o.plantCode" [nzLabel]="o.plantCode"></nz-option>
+          <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+            <i class="anticon anticon-loading anticon-spin loading-icon"></i> Loading Data...
+          </nz-option>
+        </nz-select>
+      </td>
+      <td class="table_td_1" align="right">{{'项目号' | translate}}</td>
+      <td class="table_td_2">
+
+        <input type="text" style="width:100%;" nz-input [(ngModel)]="this.i.Params.projectNumber" name="projectNumber">
+
+      </td>
+
+      <td class="table_td_1" align="right">{{'工单号' | translate}}</td>
+      <td class="table_td_2">
+
+        <input type="text" style="width:100%;" nz-input [(ngModel)]="this.i.Params.makeOrderNum" name="makeOrderNum">
+
+      </td>
+    </tr>
+    <tr class="table_tr">
+      <td class="table_td_1" align="right">{{'物料' | translate}}</td>
+      <td class="table_td_2">
+        <popup-select #selMater1
+          [ID]="'selMater1'"
+          [Value]="i.Params.itemId"
+          [Text]='i.Params.itemCode'
+          [ValueField]="'itemId'"
+          [TextField]="'itemCode'"
+          [nzStyle]="{'width':'100%'}"
+          [gridView]="gridView1"
+          [columns]="Columns"
+          (TextChanged)="onTextChanged($event)"
+          (SearchEvent)="onSearch1($event)"
+          (RowSelect)="onRowSelect($event)">
+        </popup-select>
+      </td>
+      <td class="table_td_1" align="right">{{'物料描述' | translate}}</td>
+      <td class="table_td_2" colspan="3">
+        <input type="text" nz-input style="width:100%;" class="disable_background" [(ngModel)]="this.i.Params.descriptions" name="descriptions"
+          readonly="true">
+      </td>
+    </tr>
+
+    <tr class="table_tr">
+      <td class="table_td_1" align="right">{{'开工日期范围' | translate}}</td>
+      <td class="table_td_2">
+
+        <!--<nz-date-picker style="width:100%;" [nzDisabledDate]="disabledStartDate1" nzFormat="yyyy-MM-dd" [(ngModel)]="this.i.Params.startBegin"
+                name="startBegin" nzPlaceHolder="请选择日期" (ngModelChange)="onStartChange1($event)">
+              </nz-date-picker>-->
+
+        <nz-range-picker [(ngModel)]="dateRange1" (ngModelChange)="onDateRangeChange1($event)" name="dateRange1"></nz-range-picker>
+
+      </td>
+      <td class="table_td_1" align="right">{{'下达日期范围' | translate}}</td>
+      <td class="table_td_2">
+
+        <!--<nz-date-picker style="width:100%;" [nzDisabledDate]="disabledEndDate1" nzFormat="yyyy-MM-dd" [(ngModel)]="this.i.Params.startEnd"
+                name="startEnd" nzPlaceHolder="请选择日期" (ngModelChange)="onEndChange1($event)">
+              </nz-date-picker>-->
+
+        <nz-range-picker [(ngModel)]="dateRange2" (ngModelChange)="onDateRangeChange2($event)" name="dateRange2"></nz-range-picker>
+
+      </td>
+      <td class="table_td_1" align="right">{{'订单状态' | translate}}</td>
+      <td class="table_td_2">
+
+        <nz-select style="width:100%;" [(ngModel)]="this.i.Params.makeOrderStatus" nzShowSearch name="makeOrderStatus" nzAllowClear>
+          <nz-option *ngFor="let o of listOfStatus" [nzValue]="o.value" [nzLabel]="o.label"></nz-option>
+          <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+            <i class="anticon anticon-loading anticon-spin loading-icon"></i> Loading Data...
+          </nz-option>
+        </nz-select>
+
+      </td>
+    </tr>
+    <tr>
+      <td class="table_td_1" align="right"></td>
+      <td class="table_td_2" colspan="5">
+        <label nz-checkbox [(ngModel)]="this.i.Params.makeOrderStatusA">{{'仅显示未下达跟单件' | translate}}</label>
+        <label nz-checkbox [(ngModel)]="this.i.Params.redundantJobFlag">{{'仅显示冗余工单' | translate}}</label>
+        <label nz-checkbox [(ngModel)]="this.i.Params.makeOrderStatusG">{{'仅显示下达错误订单' | translate}}</label>
+        <div style="float: right;">
+          <button nz-button type="'primary'" (click)="Confrim()" [nzType]="'primary'">
+            {{'查询' | translate}}
+          </button>
+          &nbsp;
+          <button style="float: right;" nz-button nzType="dashed" (click)="clear()">
+            {{ '重置' | translate}}
+          </button>
+          <!-- <button nz-button type="'primary'" (click)="close()">
+            {{'关闭' | translate}}
+          </button> -->
+        </div>
+      </td>
+    </tr>
+    <!--<tr class="table_tr">
+            <td class="table_td_1" align="right">{{'工单下达日期' | translate}}</td>
+            <td class="table_td_2">
+
+              <nz-date-picker style="width:100%;" [nzDisabledDate]="disabledStartDate2" nzFormat="yyyy-MM-dd" [(ngModel)]="this.i.Params.endBegin"
+                name="endBegin" nzPlaceHolder="请选择日期" (ngModelChange)="onStartChange2($event)">
+              </nz-date-picker>
+
+            </td>
+            <td class="table_td_1" align="right">{{'到' | translate}}</td>
+            <td class="table_td_2">
+
+              <nz-date-picker style="width:100%;" [nzDisabledDate]="disabledEndDate2" nzFormat="yyyy-MM-dd" [(ngModel)]="this.i.Params.endEnd"
+                name="endEnd" nzPlaceHolder="请选择日期" (ngModelChange)="onEndChange2($event)">
+              </nz-date-picker>
+
+            </td>
+            <td>
+            </td>
+          </tr>-->
+
+  </table>
+
+  <!--    </td>
+      <td style="width:20%;padding-left:20px;">
+      </td>
+    </tr>
+  </table>-->
+  <table border=0 cellpadding=0 cellspacing=0 style="width:100%">
+    <tr style="width: 100%;">
+      <td style="width:95%;padding-left:20px;">
+        <nz-card>
+          <custom-tree-view #treeView [dataTree]="treeDataTable " [columns]="treeNodeColumns " [keyField]="keyField " [selectionRef]="this.i.Params.selection"
+            [expandRef]="this.i.Params.expand" [valueField]="valueField " [valueLevel]="valueLevel " [valueObject]="this.i.Params"
+            [valueObjectField]=" 'lineIdsStr' "></custom-tree-view>
+        </nz-card>
+      </td>
+
+      <!--<td style="width:50%;padding-left:20px;">
+        <table border=0 cellpadding=0 cellspacing=0 style="width:100%;height:460px;">
+          <tr style="height: 40px;padding-top:5px;">
+            <td>
+              计划组
+            </td>
+          </tr>
+          <tr style="height: 420px;padding-top:5px;">
+            <td style="height: 420px;padding-top:5px;" valign="top">
+              <nz-card style="width:100%;height:420px;">
+                <st #st1 [data]="urlGroup" [columns]="columns1" showPagination="false" frontPagination="false" [scroll]="{ y: '320px' }"
+                  (checkboxChange)="checkboxChangeGroup($event)" [size]="size" bordered>
+
+                  <ng-template st-row="custom1" let-item>
+                    <nz-tooltip [nzTitle]="item.DESCRIPTIONS">
+                      <ellipsis lines="1">
+                        <span nz-tooltip>{{item.DESCRIPTIONS}}</span>
+                      </ellipsis>
+                    </nz-tooltip>
+                  </ng-template>
+                </st>
+              </nz-card>
+            </td>
+          </tr>
+        </table>
+      </td>
+
+      <td style="width:50%;padding-left:20px;">
+        <table border=0 cellpadding=0 cellspacing=0 style="width:100%;height:460px;">
+          <tr style="height: 40px;padding-top:5px;">
+            <td>
+              资源
+            </td>
+          </tr>
+          <tr style="height: 420px;padding-top:5px;">
+            <td style="height: 420px;padding-top:5px;" valign="top">
+              <nz-card style="width:100%;height:420px;">
+                <st #st [data]="urLine" [columns]="columns2" showPagination="false" frontPagination="false" [scroll]="{ y: '320px' }"
+                  (checkboxChange)="checkboxChangeLine($event)" [size]="size"   bordered>
+                  <ng-template st-row="custom" let-item>
+                    <nz-tooltip [nzTitle]="item.DESCRIPTIONS">
+                      <ellipsis lines="1">
+                        <span nz-tooltip>{{item.DESCRIPTIONS}}</span>
+                      </ellipsis>
+                    </nz-tooltip>
+                  </ng-template>
+                </st>
+              </nz-card>
+            </td>
+          </tr>
+        </table>
+      </td>-->
+
+    </tr>
+  </table>
+</div>
+<!--<td style="padding-left:20px;">
+      <nz-radio-group [(ngModel)]="this.i.Params.RADIO_VALUE" [nzSize]="'small'" (ngModelChange)="radChange($event)">
+          <label nz-radio [ngStyle]="radStyle" nzValue="C">{{'已完成个人请求' | translate}}</label>
+          <label nz-radio [ngStyle]="radStyle" nzValue="R">{{'正在处理的个人请求' | translate}}</label>
+          <label nz-radio [ngStyle]="radStyle" nzValue="A">{{'所有个人请求' | translate}}</label>
+          <label nz-radio [ngStyle]="radStyle" nzValue="T">{{'特定请求' | translate}}</label>
+        </nz-radio-group>
+      </td>
+      </tr>-->
+<!-- <tr style="height: 280px;">
+      <td style="border: 1px solid #c0c0c0;" align="center">
+        <table border=0 cellpadding=0 cellspacing=0 style="width:100%;height:100%;">
+          <tr>
+            <td style="width:40%;padding-right:10px;" align="right">{{'父请求编号' | translate}}</td>
+            <td>
+              <input style="width: 150px;" [nzSize]="'small'" [(ngModel)]="this.i.Params.PARENT_REQUEST_ID" [disabled]="this.i.othersDisable"
+                nz-input>
+            </td>
+          </tr>
+          <tr>
+            <td style="width:40%;padding-right:10px;" align="right">{{'请求编号' | translate}}</td>
+            <td>
+              <input style="width: 150px;" [nzSize]="'small'" [(ngModel)]="this.i.Params.REQUEST_ID" [disabled]="this.i.othersDisable"
+                nz-input>
+            </td>
+          </tr>
+
+          <tr>
+            <td style="width:40%;padding-right:10px;" align="right">{{'提交时间' | translate}}</td>
+            <td>
+              <nz-date-picker style="width: 150px;" [(ngModel)]="this.i.Params.REQUEST_DATE" [nzDisabled]="this.i.othersDisable" [nzSize]="'small'"
+                (ngModelChange)="RequestDate($event)"></nz-date-picker>
+            </td>
+          </tr>
+          <tr>
+            <td style="width:40%;padding-right:10px;" align="right">{{'完成时间' | translate}}</td>
+            <td>
+              <nz-date-picker style="width: 150px;" [(ngModel)]="this.i.Params.ACTUAL_COMP_DATE" [nzDisabled]="this.i.othersDisable" [nzSize]="'small'"
+                (ngModelChange)="ActualDate($event)"></nz-date-picker>
+            </td>
+          </tr>
+          <tr>
+            <td style="width:40%;padding-right:10px;" align="right">{{'状态' | translate}}</td>
+            <td>
+              <nz-select style="width: 150px;" [(ngModel)]="this.i.Params.STATUS_CODE" [nzSize]="'small'" nzAllowClear nzShowSearch [nzDisabled]="this.i.othersDisable">
+                <nz-option *ngFor="let option of listOfStatus" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+              </nz-select>
+            </td>
+          </tr>
+          <tr>
+            <td style="width:40%;padding-right:10px;" align="right">{{'阶段' | translate}}</td>
+            <td>
+              <nz-select style="width: 150px;" [(ngModel)]="this.i.Params.PHASE_CODE" [nzSize]="'small'" nzAllowClear nzShowSearch [nzDisabled]="this.i.othersDisable">
+                <nz-option *ngFor="let option of listOfPhase" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+              </nz-select>
+            </td>
+          </tr>
+          <tr>
+            <td style="width:40%;padding-right:10px;" align="right">{{'申请人' | translate}}</td>
+            <td>
+              <nz-select style="width: 150px;" [(ngModel)]="this.i.Params.USER_ID" [nzSize]="'small'" nzAllowClear nzShowSearch [nzDisabled]="this.i.othersDisable">
+                <nz-option *ngFor="let option of listOfUser" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+              </nz-select>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  -->
+
+
+<!-- <div class="mb-md">
+  <table border=0 cellpadding=0 cellspacing=0 style="width:100%;height:100%;">
+    <tr style="height: 40px;padding-top:5px;">
+      <td align="center">
+
+        <button nz-button type="'primary'" (click)="Confrim()" [nzType]="'primary'">
+          {{'查询' | translate}}
+        </button>
+        &nbsp;&nbsp;
+        <button nz-button type="'primary'" (click)="close()">
+          {{'关闭' | translate}}
+        </button>
+      </td>
+    </tr>
+  </table>
+</div> -->

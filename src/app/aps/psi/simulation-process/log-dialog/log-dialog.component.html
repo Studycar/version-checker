@@ -1,0 +1,27 @@
+<div class="modal-header">
+  <div class="modal-title">查看日志-模拟号【{{ i.smltNum }}】</div>
+</div>
+<div>
+  <div class="table-container">
+    <ng-scrollbar>
+      <div
+        class="table-row"
+        *ngFor="let item of tableData">
+        <div class="table-label">{{ item.logDate }}</div>
+        <div class="table-description">{{ item.logMessage }}</div>
+      </div>
+    </ng-scrollbar>
+  </div>
+  <custom-pager
+    [fixed]="false"
+    [height]="pagerHeight"
+    [context]="context"
+    [view]='context.view'
+    [(pageSize)]="_pageSize"
+    [(pageNo)]="_pageNo"
+    (pageChangeEvent)="onPageChanged($event)">
+  </custom-pager>
+</div>
+<div class="modal-footer">
+  <button nz-button type="button" (click)="close()">{{ '关闭' | translate}}</button>
+</div>

@@ -1,0 +1,78 @@
+<!--
+ * @Author: Zwh
+ * @contact: zhangweika@outlook.com
+ * @Date: 2020-06-29 15:32:42
+ * @LastEditors: Zwh
+ * @LastEditTime: 2021-02-26 15:22:42
+ * @Note: ...
+-->
+<custom-formquery [queryParams]="queryParams" [context]="context" (event1)="groupChange($event)"
+  (event2)="ItemChange($event)" (event3)="plantChange($event)">
+  <span>
+    <custom-button text="{{ '导出' | translate}}" (clickEvent)="export()" [src]="'基础icon-导出'">
+    </custom-button>
+    <custom-button text="{{ '发放' | translate}}" (clickEvent)="release()" [src]="'发放'">
+    </custom-button>
+  </span>
+</custom-formquery>
+<nz-card>
+  <div>
+    <nz-tabset>
+      <nz-tab *ngFor="let tab of tabs" [nzTitle]="titleTemplate" (nzSelect)="tabSelect(tab)">
+        <ng-template #titleTemplate>
+          <div style="height: 24px;">
+            {{ tab.name | translate }}
+            <span class="tag-triangle">
+              <i class="anticon anticon-up" *ngIf="tab.index===selectIndex" style="margin-right: 0;"></i>
+            </span>
+          </div>
+        </ng-template>
+      </nz-tab>
+    </nz-tabset>
+    <!--<kendo-grid #grid [data]="view"  [height]="400" [pageSize]="gridState.take" [skip]="gridState.skip" [sort]="gridState.sort"
+      [sortable]="true" (dataStateChange)="onStateChange($event)" [filter]="gridState.filter" filterable="menu" [resizable]="true"
+      [selectable]="selectableSettings" [kendoGridSelectBy]="'MAKE_ORDER_NUM'" [selectedKeys]="mySelection" [columnMenu]="true"
+      [reorderable]="true" [pageable]="pageable" [loading]="QueryService.http.loading" [myGridRowKey]="{tb:'PS_MAKE_ORDER'}"
+      [myGridState]="'mobatchrelease'" [navigable]="false">
+      <kendo-grid-messages pagerPage="分页" pagerOf="的" pagerItems="总数" pagerItemsPerPage="页项" groupPanelEmpty="Drag here to group"
+        noRecords="没有数据">
+      </kendo-grid-messages>
+      <kendo-grid-checkbox-column [width]="60" showSelectAll="true" [locked]="true"></kendo-grid-checkbox-column>
+      <kendo-grid-command-column title="{{ '子层标识' | translate}}" width="100" [locked]="true">
+        <ng-template kendoGridCellTemplate let-isNew="isNew" let-dataItem="dataItem">
+          <span style="text-align: center;display:block;cursor: Pointer;" *ngIf="dataItem.LEVEL === 0" title="{{ '展开' | translate}}"
+            (click)="OpenLevel(dataItem)">
+            <i class="anticon anticon-plus"></i>
+          </span>
+        </ng-template>
+      </kendo-grid-command-column>
+      <kendo-grid-column *ngFor="let col of columns" [locked]="col.locked" [field]="col.field" [title]="col.title" [width]="col.width"
+        [hidden]="col.field !=='MAKE_ORDER_NUM' && col.field !=='ITEM_CODE' && col.field !=='DESCRIPTIONS' && hiddenColumns.indexOf(col.field) < 0"
+        [style]="gridLineStyle">
+        <ng-template kendoGridCellTemplate let-dataItem *ngIf="col.ui?.type === 'select'">
+          {{optionsFind(dataItem[col.field],col.ui.index)?.label}}
+        </ng-template>
+        <ng-template kendoGridCellTemplate let-dataItem *ngIf="col.ui?.tooltip">
+          <ellipsis lines="{{col.ui?.tooltip}}">
+            <span nz-tooltip [nzTitle]="dataItem[col.field]">{{dataItem[col.field]}}</span>
+          </ellipsis>
+        </ng-template>
+      </kendo-grid-column>
+    </kendo-grid>-->
+    <ag-grid-angular #agGrid [class]="themeClass" [style.height.px]="gridHeight" [rowData]="gridData"
+      [columnDefs]="columns" [gridOptions]="gridOptions2" (selectionChanged)="onSelectionChanged($event)"
+      [myAgGridRowKey]="{tb:'PS_MAKE_ORDER'}" tabAggridState [originState]="tabFirstFlag" [stateKey]="stateKey"
+      [tabSubject]="tabSubject">
+    </ag-grid-angular>
+    <custom-pager [height]="pagerHeight" [context]="context" [view]='context.view' [(pageSize)]="_pageSize"
+      [(pageNo)]="_pageNo" (pageChangeEvent)="onPageChanged($event)"></custom-pager>
+    <custom-excelexport [expColumns]='expColumns' [expColumnsOptions]='expColumnsOptions' fileName='工单发放'
+      #excelexport></custom-excelexport>
+  </div>
+</nz-card>
+<ng-template #customTemplate let-dataItem>
+  <span title="{{ '展开' | translate}}" *ngIf="dataItem.levelNum === 0"
+    style="text-align: center;display:block;cursor: Pointer;" (click)="OpenLevel(dataItem)" class="pointer">
+    <i class="anticon anticon-plus"></i>
+  </span>
+</ng-template>

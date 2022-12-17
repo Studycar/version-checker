@@ -1,0 +1,62 @@
+<div style="width:100%;margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid #e8e8e8;">
+  <div class="modal-title">{{ 'PO缺料查询' | translate}}</div>
+</div>
+<div style="width:100%;margin-bottom: 10px;">
+  <div>
+    <button nz-button class="mx-sm" (click)="export()" [nzLoading]="http.loading">
+      <i class="anticon anticon-export"></i>{{ '导出' | translate}}</button>
+    <button nz-button (click)="searchExpand()" class="mx-sm">
+      <i nz-icon [nzType]="expandForm?'anticon-up':'anticon-down'"></i>{{ '搜索' | translate}}
+    </button>
+  </div>
+  <form nz-form *ngIf="expandForm" #f="ngForm" se-container="3" [style.margin-top.px]="5">
+    <se label="{{ '组织' | translate}}" required>
+      <nz-select #select [(ngModel)]="queryParams.plantCode" nzShowSearch name="strPlantCode" required
+        (ngModelChange)="plantChange($event)">
+        <nz-option *ngFor="let option of dtPlant" [nzLabel]="option.plantCode" [nzValue]="option.plantCode"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '物料类别' | translate}}">
+      <nz-select #select [(ngModel)]="queryParams.categoryType" nzShowSearch name="categoryType" nzAllowClear>
+        <nz-option *ngFor="let option of dtCategory" [nzLabel]="option.categoryCode" [nzValue]="option.categoryCode">
+        </nz-option>
+      </nz-select>
+    </se>
+    <div>
+      <button nz-button type="submit" [nzType]="'primary'" (click)="query()">{{ '查询' | translate}}</button>
+      <button nz-button type="submit" (click)="clear()" class="mx-sm"> {{ '重置' | translate}}</button>
+    </div>
+  </form>
+</div>
+<!--<kendo-grid #grid [data]="gridData" [height]="gridHeight" [sort]="gridState.sort" [sortable]="true" [filter]="gridState.filter"
+  filterable="menu" [resizable]="true" [columnMenu]="true" [reorderable]="true" [loading]="commonQueryService.http.loading">
+
+  <kendo-grid-messages pagerPage="{{ '分页' | translate}}" pagerOf="{{ '的' | translate}}" pagerItems="{{ '总数' | translate}}"
+    pagerItemsPerPage="{{ '页项' | translate}}" groupPanelEmpty="Drag here to group" noRecords="{{ '没有数据' | translate}}">
+  </kendo-grid-messages>
+
+  <kendo-grid-column *ngFor="let col of staticColumns" [field]="col.field" [title]="col.title" [locked]="col.locked" [width]="col.width"
+    [filter]="col.filter?col.filter:''" [style]="gridRowStyle">
+    <ng-template kendoGridCellTemplate let-dataItem>
+      <ellipsis lines="1">
+        <span nz-tooltip [nzTitle]="dataItem[col.field]">{{dataItem[col.field]}}</span>
+      </ellipsis>
+    </ng-template>
+  </kendo-grid-column>
+
+  <kendo-grid-column *ngFor="let col of extendColumns" [field]="col.field" [title]="col.title" [locked]="col.locked" [width]="col.width"
+    [filter]="col.filter?col.filter:''" [style]="gridRowStyle">
+    <ng-template kendoGridCellTemplate let-dataItem>
+      <ellipsis lines="1">
+        <span nz-tooltip [nzTitle]="dataItem[col.field]">{{dataItem[col.field]}}</span>
+      </ellipsis>
+    </ng-template>
+  </kendo-grid-column>
+</kendo-grid>-->
+
+<ag-grid-angular #agGrid id="dnGrid" [class]="themeClass" [style.height.px]="gridHeight" [rowData]="gridData"
+  [columnDefs]="totalColumns" [gridOptions]="gridOptions" [myAgGridRowKey]="{tb:'PC_PO_LACK'}"
+  [myAgGridState]="'PC_PO_LACK'" [suppressRowTransform]="true">
+</ag-grid-angular>
+
+<custom-excelexport [expColumns]='totalColumns' fileName='poLackMaterialExport' #excelexport></custom-excelexport>

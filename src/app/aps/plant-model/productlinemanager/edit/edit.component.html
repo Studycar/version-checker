@@ -1,0 +1,128 @@
+<div class="modal-header">
+  <div class="modal-title">{{ (isModify?'编辑信息':'新增信息') | translate}} </div>
+</div>
+<div style="position: relative; height: 32px" *ngIf="i.id">
+  <button nz-button nzType="dashed" style="position: absolute; right: 0;" (click)="clear()">重置</button>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="2" [labelWidth]=200>
+    <se label="{{ '工厂' | translate}}" required>
+      <nz-select [(ngModel)]="i.plantCode" name="strPlantCode" [nzShowSearch]=true
+        (ngModelChange)="changePlant($event)" required [nzDisabled]=readOnly>
+        <nz-option *ngFor="let option of applicationplant" [nzLabel]="option.label" [nzValue]="option.value">
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '事业部' | translate}}" required>
+      <input type="text" nz-input [(ngModel)]="i.scheduleRegionCode" name="strScheduleRegionCode" [disabled]="true"
+        required>
+    </se>
+    <se label="{{ '计划组' | translate}}" required>
+      <nz-select [(ngModel)]="i.scheduleGroupCode" name="strScheduleGroupCode" [nzShowSearch]=true
+        required="required">
+        <nz-option *ngFor="let option of schedulegroup" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+    <!-- <se label="{{ '资源组' | translate}}">
+      <input type="text" nz-input [(ngModel)]="i.resourceGroupCode" name="strResourceGroupCode">
+    </se> -->
+    <se label="{{ '资源编码' | translate}}" required>
+      <input type="text" nz-input [(ngModel)]="i.resourceCode" name="strResourceCode" required [disabled]="readOnly">
+    </se>
+    <se label="{{ '资源描述' | translate}}">
+      <input type="text" nz-input [(ngModel)]="i.descriptions" name="strDescriptions">
+    </se>
+    <se label="{{ '资源类型' | translate}}" required>
+      <nz-select [(ngModel)]="i.resourceType" name="strResourceType" required
+        (ngModelChange)="changeResourceType($event)">
+        <nz-option *ngFor="let option of typeoptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+    <!-- <se label="{{ '资源数量' | translate}}">
+      <nz-input-number [(ngModel)]="i.qty" [nzMin]="0" name="qty">
+      </nz-input-number>
+    </se> -->
+    <!-- <se label="{{ '排序码' | translate}}">
+      <input nz-input [(ngModel)]="i.orderByCode" name="strOrderByCode">
+    </se> -->
+    <se label="{{ '拒绝联动' | translate}}">
+      <nz-select [(ngModel)]="i.refuseLinkageFlag" name="strRefuseLinkageFlag" nzAllowClear>
+        <nz-option *ngFor="let option of yesnoOptions" [nzLabel]="option.label" [nzValue]="option.value"
+          [nzDisabled]="option.disabled"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '跟随标志' | translate}}">
+      <nz-select [(ngModel)]="i.followFlag" name="strFollowFlag" nzAllowClear>
+        <nz-option *ngFor="let option of yesnoOptions" [nzLabel]="option.label" [nzValue]="option.value"
+          [nzDisabled]="option.disabled"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '启用MES标识' | translate}}">
+      <nz-select [(ngModel)]="i.enableMesFlag" name="strEnableMesFlag" nzAllowClear
+        (ngModelChange)="changeEnableMesFlag($event)">
+        <nz-option *ngFor="let option of yesnoOptions" [nzLabel]="option.label" [nzValue]="option.value"
+          [nzDisabled]="option.disabled"></nz-option>
+      </nz-select>
+    </se>
+    <!-- <se label="{{ '启用实绩排产' | translate}}">
+      <nz-select [(ngModel)]="i.enableActualProdFlag" name="strEnableActualProdFlag" nzAllowClear>
+        <nz-option *ngFor="let option of yesnoOptions" [nzLabel]="option.label" [nzValue]="option.value"
+          [nzDisabled]="i.enableMesFlag!=='Y'"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '前处理提前期(小时)' | translate}}">
+      <nz-input-number [(ngModel)]="i.preprocessingLeadTime" [nzMin]="0" [nzPrecision]="2" name="preprocessingLeadTime">
+      </nz-input-number>
+    </se> -->
+    <!-- <se label="{{ '后处理提前期(小时)' | translate}}">
+      <nz-input-number [(ngModel)]="i.postprocessingLeadTime" [nzMin]="0" [nzPrecision]="2"
+        name="postprocessingLeadTime">
+      </nz-input-number>
+    </se> -->
+    <!-- <se label="{{ '小时产出' | translate}}">
+      <nz-input-number [(ngModel)]="i.uph" [nzMin]="0" name="uph">
+      </nz-input-number>
+    </se> -->
+    <!-- <se label="{{ '吨位(T)' | translate}}">
+      <nz-input-number [(ngModel)]="i.tonnage" [nzMin]="0" name="tonnage">
+      </nz-input-number>
+    </se>
+    <se label="{{ '工单类型' | translate}}">
+      <nz-select type="text" [(ngModel)]="i.moType" name="strMoType">
+        <nz-option *ngFor="let option of mooptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se> -->
+    <!-- <se label="{{ '供应商编码' | translate}}" [required]="needVendors">
+      <popup-select #selMater1 [(SelectValue)]="i.vendorNumber" [(SelectText)]='i.vendorNumber'
+        [ValueField]="'vendorNumber'" [required]="needVendors" [TextField]="'vendorNumber'" [gridView]="gridView1"
+        [columns]="columns1" (SearchEvent)="search1($event)" (TextChanged)="change1($event)"
+        (RowSelect)="vendorChange($event)">
+      </popup-select>
+    </se>
+    <se label="{{ '供应商名称' | translate}}">
+      <input type="text" nz-input [(ngModel)]="i.vendorName" name="strVendorName" [disabled]="readOnly">
+    </se>
+    <se label="{{ '供应商地点编码' | translate}}">
+      <popup-select #selMater1 [(SelectValue)]="i.vendorSiteCode" [(SelectText)]='i.vendorSiteCode'
+        [ValueField]="'vendorSiteCode'" [TextField]="'vendorSiteCode'" [gridView]="gridView2" [columns]="columns2"
+        (SearchEvent)="search2($event)" (TextChanged)="change2($event)">
+      </popup-select>
+    </se> -->
+    <se label="{{ '是否有效' | translate}}" required>
+      <nz-select [(ngModel)]="i.enableFlag" name="strEnableFlag" nzAllowClear required="required">
+        <nz-option *ngFor="let option of yesnoOptions" [nzLabel]="option.label" [nzValue]="option.value"
+          [nzDisabled]="option.disabled"></nz-option>
+      </nz-select>
+    </se>
+    <!-- <se label="{{ '是否参与遗传算法' | translate}}" required>
+      <nz-select [(ngModel)]="i.gaFlag" name="gaFlag" nzAllowClear required="required">
+        <nz-option *ngFor="let option of yesnoOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se> -->
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save(f)" [disabled]="!f.valid"
+    [nzLoading]="http.loading">{{ '保存' | translate}}</button>
+  <button nz-button type="button" (click)="close()">{{ '关闭' | translate}}</button>
+</div>

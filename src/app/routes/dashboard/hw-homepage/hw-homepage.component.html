@@ -1,0 +1,100 @@
+<nz-spin [nzSpinning]="false" [nzDelay]="500">
+  <div class="notice-view">
+    <div class="notice-title">
+        <span>{{'重要事项' | translate}}</span>
+    </div>
+    <div class="notice-content" (click)="showModal()">
+        <div class="notice-item-con" *ngFor="let item of noticeArr">
+            <nz-carousel nzAutoPlay [nzAutoPlaySpeed]="8000" [nzEnableSwipe]="false" [nzDots]="false" [nzDotPosition]="'left'" style="width: 78%; height: 18px;">
+                <div *ngIf="item.contentArr.length === 0" nz-carousel-content class="content">{{item.content | translate}}</div>
+                <ng-container *ngIf="item.contentArr.length > 0">
+                    <div *ngFor="let content of item.contentArr" nz-carousel-content class="content">{{content | translate}}</div>
+                </ng-container>
+            </nz-carousel>
+            <div class="author">{{item.author | translate}}</div>
+        </div>
+    </div>
+  </div>
+  <div class="item-container">
+
+    <div class="dashboard-view">
+      <div class="dashboard-title" nz-row>
+        <div nz-col nzSpan="8"></div>
+        <div nz-col nzSpan="8">{{'生产实时产量' | translate}}</div>
+        <div nz-col nzSpan="8">
+          <nz-select nzShowSearch [(ngModel)]="commonPlant" (ngModelChange)="onCommonPlantChange($event)" style="width: 140px">
+            <nz-option *ngFor="let item of plantOptions" [nzLabel]="item.label" [nzValue]="item.value"></nz-option>
+          </nz-select>
+        </div>
+      </div>
+      <div class="dashboard-content" nz-row>
+        <div class="left-dashboard" nz-col nzSpan="8">
+          <div class="title">年计划</div>
+          <div class="echart" echarts [options]="leftChartOptions"></div>
+        </div>
+        <div class="center-dashboard" nz-col nzSpan="8">
+          <div class="title">{{'实时产量/套' | translate}}</div>
+          <div class="center-dashboard-data">
+              <div>
+                <div class="center-ordinary-bottom">{{'日计划产量' | translate}}</div>
+                <div class="center-ordinary-top">{{dailyPlanOutput}}</div>
+              </div>
+              <div>
+                  <div class="center-special-top">{{dailyActualOutput}}</div>
+                  <div class="center-ordinary-bottom">{{'日实际产量' | translate}}</div>
+              </div>
+          </div>
+        </div>
+        <div class="right-dashboard" nz-col nzSpan="8">
+          <div class="title">月计划</div>
+          <div class="echart" echarts [options]="rightChartOptions"></div>
+        </div>
+      </div>
+    </div>
+    <div class="carousel-view" (mousewheel)="onMouseWheel($event)">
+      <div class="carousel-title">
+          <div class="date-select">
+              <nz-date-picker [(ngModel)]="dataCollectionDate" [nzDisabledDate]="disabledDate" (ngModelChange)="onDataCollectionDateChange($event)" [nzAllowClear]="false" style="width: 120px"></nz-date-picker>
+          </div>
+          <div class="title-desc">{{'快来看看你的APS人生吧!' | translate}}</div>
+      </div>
+      <nz-carousel #nzCarousel nzAutoPlay [nzAutoPlaySpeed]="8000" [nzDotRender]="dotTemplate" [nzEnableSwipe]="false" [nzDotPosition]="'left'" style="height: 327px">
+          <div class="carousel-content" nz-carousel-content>
+              <div class="left-msg-box msg-box">HI，亲爱的{{userName}}</div>
+              <div class="right-msg-box msg-box">这是您使用宏旺APS系统的第<em>{{usingDuration}}</em>天</div>
+          </div>
+          <div class="carousel-content" nz-carousel-content>
+              <div class="left-msg-box msg-box">{{dataCollectionDate | date:'yyyy年M月d日'}}这天</div>
+              <div class="right-msg-box msg-box">
+                  <div *ngIf="loggedIn">您于<em>{{loginTime}}</em>开启了APS系统计划工作。</div>
+                  <div *ngIf="!loggedIn">您最近于{{loggedInDate}}这天<em>{{loginTime}}</em>登录使用过系统。</div>
+                  <div *ngIf="userRole === 'administrator' && plannerLoggedIn">计划员从<em>{{plannerLoginTime}}</em>已开始系统排产工作。</div>
+                  <div *ngIf="userRole === 'administrator' && !plannerLoggedIn">计划员最近于{{plannerLoggedInDate}}这天<em>{{plannerLoginTime}}</em>登录使用过系统。</div>
+              </div>
+          </div>
+          <div class="carousel-content" nz-carousel-content>
+              <div class="left-msg-box msg-box">{{dataCollectionDate | date:'yyyy年M月d日'}}这天</div>
+              <div class="right-msg-box msg-box">
+                  <div *ngIf="loggedIn">您于<em>{{logoutTime}}</em>结束了APS系统工作。</div>
+                  <div *ngIf="!loggedIn">您最近于{{logoutDate}}这天<em>{{logoutTime}}</em>登录使用过系统。</div>
+                  <div *ngIf="userRole === 'administrator' && plannerLoggedIn">计划员于<em>{{plannerLogoutTime}}</em>结束了最后的排产工作。</div>
+                  <div *ngIf="userRole === 'administrator' && !plannerLoggedIn">计划员最近于{{plannerLogoutDate}}这天<em>{{plannerLogoutTime}}</em>登录使用过系统。</div>
+                  <div>晚安！</div>
+              </div>
+          </div>
+      </nz-carousel>
+  </div>
+  </div>
+</nz-spin>
+
+<nz-modal [(nzVisible)]="modalVisible" nzTitle="{{'重要事项'|translate}}" [nzFooter]="modalFooter" (nzOnCancel)="handleCancel()">
+  <textarea rows="8" nz-input [(ngModel)]="noteStr" placeholder="{{'通知最多有两条，用/隔开' | translate}}"></textarea>
+  <ng-template #modalFooter>
+      <button nz-button nzType="primary" (click)="handleSave()">{{'保存'|translate}}</button>
+      <button nz-button nzType="default" (click)="handleCancel()">{{'关闭'|translate}}</button>
+  </ng-template>
+</nz-modal>
+
+<ng-template #dotTemplate>
+  <div class="dot-template"></div>
+</ng-template>

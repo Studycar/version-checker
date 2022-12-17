@@ -1,0 +1,19 @@
+<div>
+  <button nz-button (click)="export()">
+    <i class="anticon anticon-export"></i> {{ '导出' | translate}}
+  </button>
+  <button nz-button (click)="swap()">
+    <i class="anticon anticon-swap"></i> {{ '转换' | translate}}
+  </button>
+  <span style="margin:0px 0px 0px 50px;" [ngStyle]="{'color': avgProductionCycle < 0 ? 'red' : 'black'}">
+    平均生产周期：{{avgProductionCycle}}小时
+  </span>
+</div>
+<aps-gantt [options]="options" *ngIf="swapFlag"></aps-gantt>
+<nz-card>
+  <custom-tree-view #treeView [dataTree]="treeDataTable" [columns]="treeNodeColumns" [keyField]="keyField"
+    [rowSize]="rowSize" [showCheckBox]="showCheckBox" [scroll]="scroll" [loading]="loading" *ngIf="!swapFlag">
+  </custom-tree-view>
+  <custom-excelexport [expColumns]='expColumns' [expColumnsOptions]='expColumnsOptions' fileName='工单簇' #excelexport>
+  </custom-excelexport>
+</nz-card>

@@ -1,0 +1,26 @@
+<div class="modal-header">
+  <div class="modal-title">{{ '维护年度参数导入'| translate }}</div>
+</div>
+<nz-spin [nzSpinning]="loading">
+  <div style="height:150px">
+    <div style="margin:5px auto;text-align: center;font-size: 16px;">
+      <a href="../../../../../assets/tmp/template/维护年度参数导入模板.xlsx">{{ '下载模板'| translate }}</a>
+    </div>
+    <div style="margin: 50px auto; display: flex; justify-content: center;">
+      <nz-upload
+        nzAction="/api/sop/sopPsiYearParam/import"
+        [nzHeaders]="headers"
+        (nzChange)="handleChange($event)"
+        [nzShowUploadList]="false"
+      >
+        <button nz-button>
+          <i nz-icon nzType="upload"></i> {{ '导入' | translate}}
+        </button>
+      </nz-upload>
+      <span style="display: inline-block; width: 60px;"></span>
+      <button nz-button (click)="close()" [nzType]="'default'">
+        <i nz-icon nzType="logout" nzTheme="outline"></i> {{ '关闭' | translate}}
+      </button>
+    </div>
+  </div>
+</nz-spin>

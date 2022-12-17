@@ -1,0 +1,15 @@
+<div class="flow-page">
+  <div class="steps">
+    <div [ngClass]="currentPage === 1 ? 'visible': 'hidden'">
+      <h4 style="padding-left: 12px;">{{ '基本信息' | translate }}</h4>
+      <ng-content select="[step-1]"></ng-content>
+    </div>
+    <div [ngClass]="currentPage === 2 ? 'visible': 'hidden'">
+      <ng-content select="[step-2]"></ng-content>
+    </div>
+  </div>
+  <div class="footer" [ngStyle]="{ display: currentPage === 2 ? 'none': 'flex' }">
+    <button nz-button nzType="primary" *ngIf="currentPage > 1" (click)="prev()">上一步</button>
+    <button nz-button nzType="primary" *ngIf="currentPage < totalPage" (click)="next()">下一步</button>
+  </div>
+</div>

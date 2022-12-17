@@ -1,0 +1,85 @@
+<div class="modal-header">
+  <div class="modal-title">{{ (Istrue?'编辑信息':'新增信息') | translate}} {{ record.id }}</div>
+</div>
+<div *ngIf="!Istrue" style=" margin:2px auto;">
+  <button style="float: right;" nz-button nzType="dashed" (click)="clear()">
+    {{ '重置' | translate}}</button>
+  <div style="clear: both;"></div>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="2">
+    <se label="{{ '采购申请编号' | translate}}">
+      <input type="text" nz-input [(ngModel)]="i.documentNum" name="documentNum" readonly [class.disabled]="true">
+    </se>
+    <se label="{{ '行号' | translate}}">
+      <input type="text" nz-input [(ngModel)]="i.lineNum" name="lineNum" readonly [class.disabled]="true">
+    </se>
+    <se label="{{ '物料编码' | translate}}" required>
+      <popup-select #selMater1 [(SelectValue)]="i.itemCode" [(SelectText)]='i.itemCode' [ValueField]="'itemCode'"
+        [TextField]="'itemCode'" [gridView]="gridViewItems" [columns]="columnsItems" (SearchEvent)="searchItems($event)" (TextChanged)="itemChange($event)"
+        (RowSelect)="itemChange($event)"  [Disabled]="!Isnew"  required>
+      </popup-select>
+    </se>
+    <se label="{{ '物料描述' | translate}}">
+      <input type="text" nz-input [(ngModel)]="i.itemDescriptions" name="itemDescriptions" readonly [class.disabled]="true">
+    </se>
+    <se label="{{ '数量' | translate}}" required>
+      <nz-input-number type="number" [nzMin]="1" nz-input [(ngModel)]="i.quantity" name="quantity" readonly [class.disabled]="Isview" required>
+      </nz-input-number>
+    </se>
+    <se label="{{ '单位' | translate}}" required>
+      <nz-select [(ngModel)]="i.unitOfMeasure" name="unitOfMeasure" [disabled]="true"  required (ngModelChange)="valueChanged($event)">
+        <nz-option *ngFor="let option of listUnitOfMeasure" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '需求时间' | translate}}" required>
+      <nz-date-picker nzShowTime nzFormat="yyyy-MM-dd" [(ngModel)]="i.needByDate" name="needByDate"  [nzDisabledDate]="disabledDate"
+      nzPlaceHolder="请选择" [required]="true" [nzAllowClear]="false" [disabled]="Isview" (ngModelChange)="valueChanged($event)">
+      </nz-date-picker>
+    </se>
+    <se label="{{ '收货地点' | translate}}" >
+      <nz-select [(ngModel)]="i.deliverToLocationId" name="deliverToLocationId" [disabled]="Isview"    (ngModelChange)="valueChanged($event)">
+        <nz-option *ngFor="let option of listLocation" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '收货子库' | translate}}" >
+      <nz-select [(ngModel)]="i.destinationSubinventory" name="destinationSubinventory" [disabled]="Isview"   (ngModelChange)="valueChanged($event)">
+        <nz-option *ngFor="let option of listSubinventory" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '申请理由' | translate}}" required>
+      <input type="text" nz-input [(ngModel)]="i.justification" name="justification"  [class.disabled]="Isview" required (ngModelChange)="valueChanged($event)">
+    </se>
+    <se label="{{ '供应商' | translate}}" [required]="requiredCD">
+      <nz-select [(ngModel)]="i.vendorNumber" name="vendorNumber" [disabled]="Isview" [required]="requiredCD" (ngModelChange)="valueVendorNumberChanged($event)">
+        <nz-option *ngFor="let option of listVendor" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '供应商地点' | translate}}" [required]="requiredCD">
+      <nz-select [(ngModel)]="i.vendorSiteCode" name="vendorSiteCode" [disabled]="Isview" [required]="requiredCD" (ngModelChange)="valueChanged($event)">
+        <nz-option *ngFor="let option of listVendorSite" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '项目号' | translate}}" >
+      <input type="text" nz-input [(ngModel)]="i.projectNumber" name="projectNumber"  [class.disabled]="Isview" (ngModelChange)="valueChanged($event)">
+      <!--<nz-select [(ngModel)]="i.PROJECT_NUMBER" name="PROJECT_NUMBER" [disabled]="Isview"  >
+        <nz-option *ngFor="let option of userreltypeoptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>-->
+    </se>
+    <se label="{{ '客指' | translate}}" >
+      <nz-select [(ngModel)]="i.customerDesignated" name="customerDesignated"   (ngModelChange)="ngCustomerDesignatedChange($event)" [disabled]="Isview" >
+        <nz-option *ngFor="let option of listYesOrNo" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '通知采购员' | translate}}">
+      <input type="text" nz-input [(ngModel)]="i.noteToAgent" name="noteToAgent"   [readonly]="Isview" [class.disabled]="Isview" (ngModelChange)="valueChanged($event)">
+    </se>
+    <se label="{{ '通知供应商' | translate}}">
+      <input type="text" nz-input [(ngModel)]="i.noteToVendor" name="noteToVendor" [readonly]="Isview" [class.disabled]="Isview" (ngModelChange)="valueChanged($event)">
+    </se>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save()" [disabled]="!f.valid || !dirty" [nzLoading]="http.loading">保存</button>
+  <button nz-button type="button" (click)="close()">关闭</button>
+</div>

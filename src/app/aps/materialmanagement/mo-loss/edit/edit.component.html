@@ -1,0 +1,55 @@
+<div class="modal-header">
+  <div class="modal-title">{{ (IsUpdate?'编辑信息':'新增信息') | translate}}</div>
+</div>
+<div *ngIf="IsUpdate" style=" margin:2px auto;">
+  <button style="float: right;" nz-button nzType="dashed" (click)="clear()">{{ '重置' | translate}}</button>
+  <div style="clear: both;"></div>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="2" [labelWidth]=140>
+    <se label="{{ '事业部' | translate}}" required>
+      <nz-select #select [(ngModel)]="saveData.SCHEDULE_REGION_CODE" nzShowSearch (ngModelChange)="onScheduleRegionChange($event)"
+        name="SCHEDULE_REGION_CODE" [disabled]="IsUpdate" required>
+        <nz-option *ngFor="let o of listScheduleRegion" [nzValue]="o.value" [nzLabel]="o.label"></nz-option>
+        <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+          <i class="anticon anticon-loading anticon-spin loading-icon"></i> Loading Data...
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '工厂' | translate}}" required>
+      <nz-select #select [(ngModel)]="saveData.PLANT_CODE" nzShowSearch (ngModelChange)="onPlantChange($event)" name="PLANT_CODE"
+        [disabled]="IsUpdate" required>
+        <nz-option *ngFor="let o of listPlant" [nzValue]="o.value" [nzLabel]="o.label"></nz-option>
+        <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+          <i class="anticon anticon-loading anticon-spin loading-icon"></i> Loading Data...
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '值类别' | translate}}" required>
+      <nz-select #select [(ngModel)]="saveData.CATEGORY" nzShowSearch name="CATEGORY" (ngModelChange)="onCategoryChange($event)"
+        [disabled]="IsUpdate" required>
+        <nz-option *ngFor="let o of listDataType" [nzValue]="o.value" [nzLabel]="o.label"></nz-option>
+        <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+          <i class="anticon anticon-loading anticon-spin loading-icon"></i> Loading Data...
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '类别值' | translate}}">
+      <popup-select #selMater1 [ID]="'selMater1'" [Value]="saveData.CATEGORY_VALUES" [Text]='saveData.CATEGORY_VALUES' [ValueField]="'CATEGORY_VALUES'"
+        [TextField]="'CATEGORY_VALUES'" [Disabled]="IsUpdate" [gridView]="gridViewItems" [columns]="columnsItems" (TextChanged)="onTextChanged($event)"
+        (SearchEvent)="searchItems($event)" (RowSelect)="onRowSelect($event)">
+      </popup-select>
+    </se>
+    <se label="{{ '固定损耗' | translate}}" required>
+      <nz-input-number [(ngModel)]="saveData.CONSTANT_LOSS" [nzMin]="0" name="CONSTANT_LOSS" required></nz-input-number>
+    </se>
+    <se label="{{ '变动损耗(%)' | translate}}" required>
+      <nz-input-number [(ngModel)]="saveData.VARIABLE_LOSS" [nzMin]="0" name="VARIABLE_LOSS" required></nz-input-number>
+    </se>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save()" [disabled]="f.invalid || !f.dirty" [nzLoading]="http.loading">
+    {{ '保存' | translate}}</button>
+  <button nz-button type="button" (click)="close()">    {{ '关闭' | translate}}</button>
+</div>

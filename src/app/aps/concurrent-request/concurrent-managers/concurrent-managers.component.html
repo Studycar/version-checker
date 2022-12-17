@@ -1,0 +1,24 @@
+<custom-formquery [showExpandIcon]="false">
+  <span>
+    <custom-button text="{{ '刷新' | translate}}" (clickEvent)="Refresh()" [src]="'基础icon-刷新'">
+    </custom-button>
+  </span>
+</custom-formquery>
+<nz-card>  
+  <ag-grid-angular #agGrid [class]="themeClass" [style.height.px]="gridHeight" [rowData]="gridData"
+    [columnDefs]="columns22" [gridOptions]="gridOptions" [myAgGridRowKey]="{tb:'currentManager'}"
+    [myAgGridState]="'currentManager'">
+  </ag-grid-angular>
+  <custom-pager [height]="pagerHeight" [context]="context" [view]='context.view' [(pageSize)]="_pageSize"
+    [(pageNo)]="_pageNo" (pageChangeEvent)="onPageChanged($event)"></custom-pager>
+</nz-card>
+
+<ng-template #customTemplate let-dataItem>
+<span title="{{'停用' | translate}}" (click)="Stop(dataItem.id)" class="pointer">
+                            <i class="anticon anticon-pause-circle-o"></i>
+                          </span>
+<nz-divider nzType="vertical"></nz-divider>
+<span title="{{'激活' | translate}}" (click)="Activate(dataItem.id)" class="pointer">
+                            <i class="anticon anticon-play-circle-o"></i>
+                          </span>
+</ng-template>

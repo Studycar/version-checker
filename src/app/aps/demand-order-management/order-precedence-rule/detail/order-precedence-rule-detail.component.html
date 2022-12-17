@@ -1,0 +1,53 @@
+<div class="modal-header">
+  <div class="modal-title">{{title | translate}}</div>
+</div>
+<div style="margin: 8px 0">
+  <button nz-button nzType="primary" (click)="addToGrid()">{{ '新增' | translate}}
+  </button>
+  <button nz-button nzType='primary' (click)="save()" [disabled]="gridData.length===0">{{ '保存' | translate}}
+  </button>
+</div>
+<ag-grid-angular #agGrid [class]="themeClass" [style.height.px]="500" [rowData]="gridData" [columnDefs]="columns"
+  [gridOptions]="gridOptions" [myAgGridState]="'order-precedence-rule-detail'">
+</ag-grid-angular>
+
+<ng-template #customTemplate let-dataItem>
+  <!-- <span title="{{ '编辑' | translate}}" (click)="edit(dataItem)" style="cursor: Pointer"><i
+      class="anticon anticon-edit"></i></span>
+  <nz-divider nzType="vertical"></nz-divider>
+  <span title="{{ '删除' | translate}}" nz-popconfirm nzTitle="是否确认删除该记录?" (nzOnConfirm)="delete(dataItem)"
+    style="cursor: Pointer"><i class="anticon anticon-delete"></i></span> -->
+
+  <span title="{{ '删除' | translate}}" (click)="removeFromGrid(dataItem)" style="cursor: Pointer"><i
+      class="anticon anticon-delete"></i></span>
+</ng-template>
+<ng-template #customTemplate1 let-dataItem>
+  <nz-select [(ngModel)]="dataItem.divisionName" [ngStyle]="{width:'120px'}" nzShowSearch name="divisionName"
+    required>
+    <nz-option *ngFor="let o of priorityList" [nzValue]="o.value" [nzLabel]="o.label"></nz-option>
+  </nz-select>
+</ng-template>
+<ng-template #customTemplate2 let-dataItem>
+  <nz-input-number name="ratio" [nzMax]="1" [nzMin]="0" [(ngModel)]="dataItem.ratio" [required]="true">
+  </nz-input-number>
+</ng-template>
+<ng-template #customTemplate3 let-dataItem>
+  <nz-input-number name="beginValue" [(ngModel)]="dataItem.beginValue" [required]="false">
+  </nz-input-number>
+</ng-template>
+<ng-template #customTemplate4 let-dataItem>
+  <nz-input-number name="endValue" [(ngModel)]="dataItem.endValue" [required]="false">
+  </nz-input-number>
+</ng-template>
+<ng-template #customTemplate5 let-dataItem>
+  <input type="text" nz-input name="assignValue" [(ngModel)]="dataItem.assignValue" [required]="false">
+</ng-template>
+<ng-template #customTemplate6 let-dataItem>
+  <nz-input-number name="grade" [nzMax]="100" [nzMin]="0" [(ngModel)]="dataItem.grade" [required]="true">
+  </nz-input-number>
+</ng-template>
+<ng-template #customTemplate7 let-dataItem>
+  <nz-select [(ngModel)]="dataItem.enableFlag" nzShowSearch name="enableFlag" required>
+    <nz-option *ngFor="let o of yesNo" [nzValue]="o.value" [nzLabel]="o.label"></nz-option>
+  </nz-select>
+</ng-template>

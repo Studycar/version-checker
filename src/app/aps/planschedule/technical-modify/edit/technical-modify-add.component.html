@@ -1,0 +1,25 @@
+<!--<div class="modal-header">
+  <div class="modal-title">{{ '技改编辑' | translate}}</div>
+</div>-->
+<custom-formquery [queryParams]="queryParams" [context]="context">
+  <span>
+    <custom-button text="{{ '导出' | translate}}" (clickEvent)="export()" [src]="'基础icon-导出'">
+    </custom-button>
+    <custom-button text="{{ '选择车型' | translate}}" (clickEvent)="selectCategory()" [src]="'基础icon-新增'">
+    </custom-button>
+    <custom-button text="{{ '选择物料' | translate}}" (clickEvent)="selectItem()" [src]="'基础icon-新增'">
+    </custom-button>
+  </span>
+</custom-formquery>
+<nz-card>
+  <ag-grid-angular #agGrid [class]="themeClass" [style.height.px]="gridHeight" [rowData]="gridData" [columnDefs]="columns"
+    [gridOptions]="gridOptions" [myAgGridRowKey]="{tb:'PS_TECHNICAL_MODIFY'}" [myAgGridState]="'PS_TECHNICAL_MODIFY'">
+  </ag-grid-angular>
+  <div>{{ '总记录数：' | translate}}{{gridData.length}}</div>
+  <custom-excelexport [expColumns]='expColumns' [expColumnsOptions]='expColumnsOptions' fileName='技术更改' #excelexport></custom-excelexport>
+</nz-card>
+<ng-template #customTemplate let-dataItem>
+  <nz-divider nzType="vertical"></nz-divider>
+  <span title="{{ '明细' | translate}}" (click)="detail(dataItem)" class="pointer"><i class="anticon anticon-bars"></i>
+  </span>
+</ng-template>

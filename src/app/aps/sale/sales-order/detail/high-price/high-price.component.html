@@ -1,0 +1,26 @@
+<div class="modal-header">
+  <div class="modal-title">{{ '合同高价先出审批' | translate }}</div>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="2">
+    <se label="{{ '工厂' | translate}}">
+      <input nz-input [(ngModel)]="i.steelType" name="steelType" disabled />
+    </se>
+    <se label="{{ '销售订单' | translate}}">
+        <input nz-input [(ngModel)]="i.salesOrderCode" name="salesOrderCode" disabled />
+    </se>
+    <se label="{{ '合同号' | translate}}">
+        <input nz-input [(ngModel)]="i.contractCode" name="contractCode" disabled />
+    </se>
+    <se label="{{ '基价' | translate}}">
+      <input nz-input [(ngModel)]="i.basePrice" name="basePrice" disabled />
+    </se>
+    <se label="{{ '提交备注' | translate}}" required>
+        <input nz-input [(ngModel)]="i.attribute2" name="attribute2" />
+    </se>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="button" (click)="close()">{{ '取消' | translate }}</button>
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save()" [nzLoading]="http.loading" [disabled]="f.invalid || !f.dirty">{{ '提交' | translate }}</button>
+</div>

@@ -1,0 +1,25 @@
+<div class="modal-header">
+    <div class="modal-title">{{ '明细信息' | translate }}</div>
+</div>
+
+<nz-card>
+    <ag-grid-angular
+      #agGrid
+      [class]="themeClass"
+      [style.height.px]="gridHeight"
+      [rowData]="gridData"
+      [columnDefs]="columns"
+      [gridOptions]="gridOptions"
+      [myAgGridRowKey]="{tb:'GOP_ATP_ONHAND_USED'}"
+      [myAgGridState]="'atpAvailableDetail'">
+    </ag-grid-angular>
+    <custom-pager
+        [height]="pagerHeight"
+        [context]="context"
+        [view]='context.view'
+        [(pageSize)]="_pageSize"
+        [(pageNo)]="_pageNo"
+        [fixed]="false"
+        (pageChangeEvent)="onPageChanged($event)">
+    </custom-pager>
+</nz-card>

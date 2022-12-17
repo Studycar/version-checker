@@ -1,0 +1,43 @@
+<div class="modal-header">
+  <div class="modal-title">{{ '银行信息' }}</div>
+</div>
+<custom-formquery [queryParams]="queryParams" [context]="context" >
+  <custom-button *ngIf="customer.cusState === '10' || customer.cusState === '40' || isChanging" text="{{ '新增' | translate }}" [src]="'基础icon-新增'" (clickEvent)="add()"></custom-button>
+  <custom-button *ngIf="customer.cusState === '10' || customer.cusState === '40' || isChanging" text="{{ '删除' | translate }}" [src]="'基础icon-删除'" (clickEvent)="remove()"></custom-button>
+  <custom-button *ngIf="!isChanging" text="{{ '导出' | translate }}" [src]="'基础icon-导出'" (clickEvent)="export()"></custom-button>
+  <custom-button *ngIf="isChanging" text="{{ '取消' | translate }}" [src]="'btn_cancel'" [srcDisabled]="'btn_cancel_disabled'" (clickEvent)="cancel()"></custom-button>
+  <custom-button *ngIf="isChanging" [disabled]="!isChanged" text="{{ '提交审批' | translate }}" [src]="'提交审核'" [srcDisabled]="'提交审核_disabled'" (clickEvent)="applyAudit()"></custom-button>
+  <custom-button *ngIf="customer.cusState === '50' && !isChanging" text="{{ '银行变更' | translate }}" [src]="'变更'" [srcDisabled]="'变更_disabled'" (clickEvent)="change()"></custom-button>
+</custom-formquery>
+<nz-card>
+  <ag-grid-angular #agGrid [class]="themeClass" [style.height.px]="gridHeight-200" [rowData]="gridData"
+    [columnDefs]="columns" [gridOptions]="gridOptions" [myAgGridState]="'hw-customer-bank'"
+    [myAgGridRowKey]="{tb:'PS_CUSTOMER_BANK'}">
+  </ag-grid-angular>
+  <custom-pager [height]="pagerHeight" [context]="context" [view]='context.view' [(pageSize)]="_pageSize" [fixed]="false"
+    [(pageNo)]="_pageNo" (pageChangeEvent)="onPageChanged($event)"></custom-pager>
+  <custom-excelexport [expColumns]='expColumns' [expColumnsOptions]='expColumnsOptions' fileName='客户银行档案表' #excelexport></custom-excelexport>
+</nz-card>
+<ng-template #customTemplate let-dataItem>
+  <!-- 仅客户待审核状态可编辑、删除 -->
+  <ng-container *ngIf="customer.cusState === '10' || customer.cusState === '40' || isChanging">
+    <span title="{{ '编辑' | translate}}" (click)="add(dataItem)" style="cursor: Pointer">
+      <i class="anticon anticon-edit"></i>
+    </span>
+    <ng-container *ngIf="dataItem.defaultFlag === '0'">
+      <nz-divider nzType="vertical"></nz-divider>
+      <span title="{{ '删除' | translate}}" nz-popconfirm nzTitle="{{ '是否确认删除该记录?' | translate}}"
+        (nzOnConfirm)="remove(dataItem);" class="pointer">
+        <i class="anticon anticon-delete"></i>
+      </span>
+      <nz-divider nzType="vertical"></nz-divider>
+      <span title="{{ '设置默认' | translate}}" nz-popconfirm nzTitle="{{ '是否设置为默认?' | translate}}"
+        (nzOnConfirm)="setDefault(dataItem);" class="pointer">
+        <i class="anticon anticon-check"></i>
+      </span>
+    </ng-container>
+  </ng-container>
+  <!-- <div style="display: inline;" *ngIf="customer.cusState === '10' || customer.cusState === '40'">
+    
+  </div> -->
+</ng-template>

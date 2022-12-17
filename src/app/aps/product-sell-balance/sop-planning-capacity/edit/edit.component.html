@@ -1,0 +1,54 @@
+<div class="modal-header">
+  <div class="modal-title">{{ (isModify ? '编辑信息' : '新增信息') | translate}}</div>
+</div>
+<div  *ngIf="isModify"   style=" margin:2px auto;">
+  <button style="float: right;" nz-button nzType="dashed" (click)="clear()">
+    {{ '重置' | translate}}</button>
+  <div style="clear: both;"></div>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="4" [labelWidth]=140>
+    <se label="{{ '工厂' | translate}}" required>
+      <nz-select #select [(ngModel)]="editDto.plantCode" nzShowSearch name="plantCode" [nzDisabled]="isModify"
+        required (ngModelChange)="plantChange($event)">
+        <nz-option *ngFor="let o of plantCodeList" [nzValue]="o.value" [nzLabel]="o.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '内外销' | translate}}" required>
+      <nz-select #select [(ngModel)]="editDto.salesType" nzShowSearch name="salesType" [nzDisabled]="isModify"
+        required>
+        <nz-option *ngFor="let o of saleTypeList" [nzValue]="o.value" [nzLabel]="o.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '产能分类' | translate}}" required>
+      <nz-select #select [(ngModel)]="editDto.capacityCategory" nzShowSearch name="capacityCategory"
+        [nzDisabled]="isModify" required>
+        <nz-option *ngFor="let o of capacityList" [nzValue]="o.value" [nzLabel]="o.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '月份' | translate}}" required>
+      <nz-month-picker nzSize="default" [(ngModel)]="editDto.currentMonth" name="currentMonth" [nzDisabled]="isModify"
+        required>
+      </nz-month-picker>
+    </se>
+    <se label="{{ '开工天数' | translate}}" required>
+      <nz-input-number [(ngModel)]="editDto.workDays" (ngModelChange)="getAverageData()" [nzPrecision]="0" [nzStep]="1"
+        [nzMin]="0" name="workDays" required>
+      </nz-input-number>
+    </se>
+    <se label="{{ '规划总量' | translate}}" required>
+      <nz-input-number [(ngModel)]="editDto.totalPlanningQuantity" (ngModelChange)="getAverageData()"
+        [nzPrecision]="0" [nzStep]="1" [nzMin]="0" name="totalPlanningQuantity" required>
+      </nz-input-number>
+    </se>
+    <se *ngFor="let d of days; let i = index;" label="{{ d + '日' | translate}}">
+      <nz-input-number [(ngModel)]="editDto['day'+d]" [nzPrecision]="0" [nzStep]="1" [nzMin]="0" name="{{ 'day' + d }}">
+      </nz-input-number>
+    </se>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save()" [disabled]="f.invalid || !f.dirty"
+    [nzLoading]="http.loading"> {{ '保存' | translate}}</button>
+  <button nz-button type="button" (click)="close()"> {{ '关闭' | translate}}</button>
+</div>

@@ -1,0 +1,26 @@
+<div class="modal-header">
+  <div class="modal-title">{{ (editDto.Id !== undefined ? '编辑信息' : '新增信息') | translate}}</div>
+</div>
+<div style=" margin:2px auto;">
+  <button style="float: right;" nz-button nzType="dashed" (click)="clear()">
+    {{ '重置' | translate}}</button>
+  <div style="clear: both;"></div>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="2" [labelWidth]=140>
+    <se label="{{ '属性组' | translate}}" required>
+      <nz-select #select [(ngModel)]="editDto.attributeGroup" nzShowSearch name="attributeGroup" required
+        (ngModelChange)="ngTextChange($event)">
+        <nz-option *ngFor="let o of categoryList" [nzValue]="o.value" [nzLabel]="o.value"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '属性组描述' | translate}}">
+      <input type="text" nz-input [(ngModel)]="editDto.attribute1" name="attribute1" [disabled]="true">
+    </se>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save()" [disabled]="f.invalid || !f.dirty"
+    [nzLoading]="http.loading"> {{ '保存' | translate}}</button>
+  <button nz-button type="button" (click)="close()"> {{ '关闭' | translate}}</button>
+</div>

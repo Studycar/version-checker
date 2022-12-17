@@ -1,0 +1,16 @@
+<flow-page #page>
+  <div step-1>
+    <ide-customer-info-change-form #form
+      [(formData)]="formData"
+      (formDataChange)="formDataChange()"></ide-customer-info-change-form>
+  </div>
+  <div step-2>
+    <flow-iframe #flow
+      [formCode]="formCode"
+      [f]="form.f"
+      customTitle="客户信息主数据变更"
+      (prevPage)="prevPage()"
+      (addFormData)="addFormData($event)"
+      (actionComplete)="actionComplete($event)"></flow-iframe>
+  </div>
+</flow-page>

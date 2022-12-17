@@ -1,0 +1,47 @@
+<!-- 查询及头部按钮 -->
+<custom-formquery [queryParams]="queryParams" [context]="context">
+  <custom-button text="{{ '新增' | translate}}" (clickEvent)="add()" [src]="'基础icon-新增'"></custom-button>
+  <custom-button text="{{ '删除' | translate }}" [src]="'基础icon-删除'" (clickEvent)="remove()"></custom-button>
+  <custom-button text="{{ '订单下发' | translate }}" [src]="'批量下达'" (clickEvent)="orderPublish()"></custom-button>
+  <custom-button text="{{ '导出' | translate}}" (clickEvent)="export()" [src]="'基础icon-导出'"></custom-button>
+</custom-formquery>
+<nz-card>
+  <!-- 表格 -->
+  <ag-grid-angular
+    #agGrid
+    id=""
+    [class]="themeClass"
+    [style.height.px]="gridHeight"
+    [rowData]="gridData"
+    [columnDefs]="columns"
+    [gridOptions]="gridOptions"
+    [myAgGridState]="'zdz-customer-order'"
+    [myAgGridRowKey]="{ tb:'PS_BRANCH_CUS_ORDER' }"
+  >
+  </ag-grid-angular>
+  <!-- 分页系统 -->
+  <custom-pager
+    [height]="pagerHeight"
+    [context]="context"
+    [view]="context.view"
+    [(pageSize)]="_pageSize"
+    [(pageNo)]="_pageNo"
+    (pageChangeEvent)="onPageChanged($event)">
+  </custom-pager>
+  <!-- 导出功能组件 -->
+  <custom-excelexport [expColumns]="expColumns" [expColumnsOptions]='expColumnsOptions' fileName="转定子客户订单" #excelexport></custom-excelexport>
+</nz-card>
+
+<ng-template #customTemplate let-dataItem>
+  <!-- 只有新增状态可以编辑、删除 -->
+  <ng-container *ngIf="dataItem.cusOrderState === '80'">
+    <span title="{{ '编辑' | translate}}" (click)="add(dataItem)" style="cursor: Pointer">
+      <i class="anticon anticon-edit"></i>
+    </span>
+    <nz-divider nzType="vertical"></nz-divider>
+    <span title="{{ '删除' | translate}}" nz-popconfirm nzTitle="{{ '是否确认删除该记录?' | translate}}"
+      (nzOnConfirm)="remove(dataItem);" class="pointer">
+      <i class="anticon anticon-delete"></i>
+    </span>
+  </ng-container>
+</ng-template>

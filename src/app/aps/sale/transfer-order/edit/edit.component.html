@@ -1,0 +1,108 @@
+<div class="modal-header">
+  <div class="modal-title">{{ isModify ? '编辑信息' : '新增信息' }}</div>
+</div>
+<div style="position: relative; height: 32px" *ngIf="isModify">
+  <button nz-button nzType="dashed" style="position: absolute; right: 0;" (click)="clear()">{{'重置' | translate}}</button>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="2">
+    <se label="{{ '调拨单号' | translate }}" *ngIf="isModify">
+      <input nz-input type="text" disabled name="code" [(ngModel)]="i.code">
+    </se>
+    <se label="{{ '调拨单日期' | translate }}" required>
+      <nz-date-picker nzFormat="yyyy-MM-dd" [(ngModel)]="i.allocationDate" name="allocationDate" required>
+      </nz-date-picker>
+    </se>
+    <se label="{{ '调拨单状态' | translate }}" required>
+      <nz-select #select nzShowSearch name="state" nzDisabled [(ngModel)]="i.state" required>
+        <nz-option *ngFor="let op of allotStateOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '备注' | translate }}">
+      <input nz-input type="text" name="remarks" [(ngModel)]="i.remarks">
+    </se>
+    <se label="{{ '工厂' | translate }}" required>
+      <nz-select nzShowSearch name="plantCode" [(ngModel)]="i.plantCode" [nzDisabled]="isModify" required>
+        <nz-option *ngFor="let op of plantOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '转出部门编码' | translate }}" required>
+      <popup-select [(SelectValue)]="i.outCode" [ValueField]="'depCode'"
+        [(SelectText)]="i.outCode" [TextField]="'depCode'" name="outCode"
+        [gridView]="gridViewDeparts" [columns]="columnsDeparts" (TextChanged)="onDepartsTextChanged($event, 'out')"
+        (SearchEvent)="searchDeparts($event)" (RowSelect)="onDepartsSelect($event, 'out')" required>
+      </popup-select>
+    </se>
+    <se label="{{ '转出部门' | translate }}">
+      <input nz-input type="text" name="outDepartment" disabled [(ngModel)]="i.outDepartment">
+    </se>
+    <se label="{{ '转入部门编码' | translate }}" required>
+      <popup-select [(SelectValue)]="i.inCode" [ValueField]="'depCode'"
+        [(SelectText)]="i.inCode" [TextField]="'depCode'" name="inCode"
+        [gridView]="gridViewDeparts" [columns]="columnsDeparts" (TextChanged)="onDepartsTextChanged($event, 'in')"
+        (SearchEvent)="searchDeparts($event)" (RowSelect)="onDepartsSelect($event, 'in')" required>
+      </popup-select>
+    </se>
+    <se label="{{ '转入部门' | translate }}">
+      <input nz-input type="text" name="inDepartment" disabled [(ngModel)]="i.inDepartment">
+    </se>
+    <se label="{{ '出库类别编码' | translate }}" required>
+      <popup-select [(SelectValue)]="i.cklbCode" [ValueField]="'rdCode'"
+        [(SelectText)]="i.cklbCode" [TextField]="'rdCode'" name="cklbCode"
+        [gridView]="gridViewLbs" [columns]="columnsLbs" (TextChanged)="onLbsTextChanged($event, 'cklb')"
+        (SearchEvent)="searchLbs($event, 'cklb')" (RowSelect)="onLbsSelect($event, 'cklb')" required>
+      </popup-select>
+    </se>
+    <se label="{{ '出库类别' | translate }}">
+      <input nz-input type="text" name="cklb" disabled [(ngModel)]="i.cklb">
+    </se>
+    <se label="{{ '入库类别编码' | translate }}" required>
+      <popup-select [(SelectValue)]="i.rklbCode" [ValueField]="'rdCode'"
+        [(SelectText)]="i.rklbCode" [TextField]="'rdCode'" name="rklbCode"
+        [gridView]="gridViewLbs" [columns]="columnsLbs" (TextChanged)="onLbsTextChanged($event, 'rklb')"
+        (SearchEvent)="searchLbs($event, 'rklb')" (RowSelect)="onLbsSelect($event, 'rklb')" required>
+      </popup-select>
+    </se>
+    <se label="{{ '入库类别' | translate }}">
+      <input nz-input type="text" name="rklb" disabled [(ngModel)]="i.rklb">
+    </se>
+    <se label="{{ '转出仓库编码' | translate }}" required>
+      <popup-select [(SelectValue)]="i.outWarehouseCode" [ValueField]="'subinventoryCode'"
+        [(SelectText)]="i.outWarehouseCode" [TextField]="'subinventoryCode'" name="outWarehouseCode"
+        [gridView]="gridViewWares" [columns]="columnsWares" (TextChanged)="onWaresTextChanged($event, 'out')"
+        (SearchEvent)="searchWares($event)" (RowSelect)="onWaresSelect($event, 'out')" required>
+      </popup-select>
+    </se>
+    <se label="{{ '转出仓库' | translate }}">
+      <input nz-input type="text" name="outWarehouse" disabled [(ngModel)]="i.outWarehouse">
+    </se>
+    <se label="{{ '转入仓库编码' | translate }}" required>
+      <popup-select [(SelectValue)]="i.inWarehouseCode" [ValueField]="'subinventoryCode'"
+        [(SelectText)]="i.inWarehouseCode" [TextField]="'subinventoryCode'" name="inWarehouseCode"
+        [gridView]="gridViewWares" [columns]="columnsWares" (TextChanged)="onWaresTextChanged($event, 'in')"
+        (SearchEvent)="searchWares($event)" (RowSelect)="onWaresSelect($event, 'in')" required>
+      </popup-select>
+    </se>
+    <se label="{{ '转入仓库' | translate }}">
+      <input nz-input type="text" name="inWarehouse" disabled [(ngModel)]="i.inWarehouse">
+    </se>
+    <!-- <se label="{{ '用户名' | translate }}" required>
+      <input nz-input type="text" name="userName" disabled [(ngModel)]="i.userName" required>
+    </se>
+    <se label="{{ '真实用户名' | translate }}">
+      <input nz-input type="text" name="description" disabled [(ngModel)]="i.description">
+    </se> -->
+    <!-- <se label="{{ '审核时间' | translate }}">
+      <nz-date-picker nzFormat="yyyy-MM-dd" nzDisabled [(ngModel)]="i.approveTime" name="approveTime">
+      </nz-date-picker>
+    </se>
+    <se label="{{ '审核日期' | translate }}">
+      <nz-date-picker nzFormat="yyyy-MM-dd" nzDisabled [(ngModel)]="i.approveDate" name="approveDate">
+      </nz-date-picker>
+    </se> -->
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="button" (click)="close()">{{ '取消' | translate }}</button>
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save(f.value)" [nzLoading]="http.loading" [disabled]="f.invalid || !f.dirty">{{ '保存' | translate }}</button>
+</div>

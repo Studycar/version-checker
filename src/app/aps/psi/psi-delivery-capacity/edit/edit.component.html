@@ -1,0 +1,69 @@
+<div class="modal-header">
+  <div class="title">{{ (isModify ? '编辑' : '新增') | translate }}</div>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="2">
+    <se label="{{ '事业部' | translate}}" required>
+      <nz-select nzShowSearch [(ngModel)]="i.businessUnitCode" name="businessUnitCode" required (ngModelChange)="buCodeOptionsChange($event)">
+        <nz-option *ngFor="let option of buCodeOptions" [nzLabel]="option.label" [nzValue]="option.value">
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '类型' | translate}}" required>
+      <nz-select nzShowSearch [(ngModel)]="i.type" name="type" required (ngModelChange)="typeChange($event)">
+        <nz-option *ngFor="let option of typeList" [nzLabel]="option.label" [nzValue]="option.value">
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '类型值' | translate}}" required>
+      <nz-select nzShowSearch [(ngModel)]="i.typeValue" name="typeValue" required (ngModelChange)="typeValueChange($event)">
+        <nz-option *ngFor="let option of typeValueOptions" [nzLabel]="option.label" [nzValue]="option.value">
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '年份' | translate}}" required>
+      <nz-year-picker [(ngModel)]="i.planYear" name="planYear" required></nz-year-picker>
+    </se>
+    <se label="{{ '1月(台数)' | translate}}">
+      <nz-input-number [(ngModel)]="i.planMonth01" name="planMonth01" [nzMin]="0" ></nz-input-number>
+    </se>
+    <se label="{{ '2月(台数)' | translate}}">
+      <nz-input-number [(ngModel)]="i.planMonth02" name="planMonth02" [nzMin]="0" ></nz-input-number>
+    </se>
+    <se label="{{ '3月(台数)' | translate}}">
+      <nz-input-number [(ngModel)]="i.planMonth03" name="planMonth03" [nzMin]="0" ></nz-input-number>
+    </se>
+    <se label="{{ '4月(台数)' | translate}}">
+      <nz-input-number [(ngModel)]="i.planMonth04" name="planMonth04" [nzMin]="0" ></nz-input-number>
+    </se>
+    <se label="{{ '5月(台数)' | translate}}">
+      <nz-input-number [(ngModel)]="i.planMonth05" name="planMonth05" [nzMin]="0" ></nz-input-number>
+    </se>
+    <se label="{{ '6月(台数)' | translate}}">
+      <nz-input-number [(ngModel)]="i.planMonth06" name="planMonth06" [nzMin]="0" ></nz-input-number>
+    </se>
+    <se label="{{ '7月(台数)' | translate}}">
+      <nz-input-number [(ngModel)]="i.planMonth07" name="planMonth07" [nzMin]="0" ></nz-input-number>
+    </se>
+    <se label="{{ '8月(台数)' | translate}}">
+      <nz-input-number [(ngModel)]="i.planMonth08" name="planMonth08" [nzMin]="0" ></nz-input-number>
+    </se>
+    <se label="{{ '9月(台数)' | translate}}">
+      <nz-input-number [(ngModel)]="i.planMonth09" name="planMonth09" [nzMin]="0" ></nz-input-number>
+    </se>
+    <se label="{{ '10月(台数)' | translate}}">
+      <nz-input-number [(ngModel)]="i.planMonth10" name="planMonth10" [nzMin]="0" ></nz-input-number>
+    </se>
+    <se label="{{ '11月(台数)' | translate}}">
+      <nz-input-number [(ngModel)]="i.planMonth11" name="planMonth11" [nzMin]="0" ></nz-input-number>
+    </se>
+    <se label="{{ '12月(台数)' | translate}}">
+      <nz-input-number [(ngModel)]="i.planMonth12" name="planMonth12" [nzMin]="0" ></nz-input-number>
+    </se>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save(f)"
+  [disabled]="!f.valid || !f.dirty">{{ '保存' | translate}}</button>
+  <button nz-button type="button" (click)="close()">{{ '关闭' | translate}}</button>
+</div>

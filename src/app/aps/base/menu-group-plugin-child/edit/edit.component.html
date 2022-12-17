@@ -1,0 +1,46 @@
+<div class="modal-header">
+    <div class="modal-title">{{ (Istrue?'编辑信息':'新增信息') | translate}} {{ record.id }}</div>
+</div>
+<div style=" margin:2px auto;">
+    <button style="float: right;" nz-button nzType="dashed" (click)="clear()">
+    <i class="anticon anticon-delete"></i>{{ '重置' | translate}}</button>
+    <div style="clear: both;"></div>
+</div>
+
+<div>
+    <form nz-form #f="ngForm" se-container="2" [labelWidth]=140>
+
+        <se label="{{ '菜单名' | translate}}" required>
+            <nz-select [(ngModel)]="i.menuId" nzShowSearch name="menuId" (ngModelChange)="onChange($event)" nzAllowClear required>
+                <nz-option *ngFor="let o of applications" [nzValue]="o.value" [nzLabel]="o.label"></nz-option>
+            </nz-select>
+        </se>
+
+        <se label="{{ '应用模块' | translate}}">
+            <nz-select [(ngModel)]="i.applicationId" nzShowSearch name="applicationId" nzDisabled="true" nzAllowClear>
+                <nz-option *ngFor="let o of applicationsAction" [nzValue]="o.value" [nzLabel]="o.label"></nz-option>
+            </nz-select>
+        </se>
+
+        <se label="{{ '功能' | translate}}">
+            <input type="text" nz-input [(ngModel)]="i.functionName" name="functionName" class="disable_background" [disabled]="true" nzAllowClear>
+        </se>
+
+        <se label="{{ '菜单类型' | translate}}">
+            <nz-select [(ngModel)]="i.menuType" nzShowSearch name="menuType" nzDisabled="true" nzAllowClear>
+                <nz-option *ngFor="let o of applicationRateType" [nzValue]="o.value" [nzLabel]="o.label"></nz-option>
+            </nz-select>
+
+        </se>
+        <se label="{{ '菜单顺序' | translate}}" required>
+            <nz-input-number [(ngModel)]="i.orderSeq" [nzPrecision]="0" [nzMin]="0" name="orderSeq" required></nz-input-number>
+        </se>
+
+    </form>
+</div>
+
+<div class="modal-footer">
+    <button nz-button type="submit" [nzType]="'primary'" (click)="save()" [disabled]="f.invalid || !f.dirty" [nzLoading]="http.loading">{{ '保存' | translate}}</button>
+    <button nz-button type="button" (click)="close()">
+    {{ '关闭' | translate}}</button>
+</div>

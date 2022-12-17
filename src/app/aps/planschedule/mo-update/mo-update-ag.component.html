@@ -1,0 +1,40 @@
+<div class="modal-header">
+  <div class="modal-title">{{ '批量修改最早开始时间' | translate }}</div>
+</div>
+<div class="content-title">
+  <form nz-form #f="ngForm" se-container="2" labelWidth="140">
+    <se label="{{ '最早开始时间' | translate }}" required="true">
+      <nz-date-picker
+        name="earliestStartTime"
+        [(ngModel)]="earliestStartTime"
+        nzShowTime
+        [required]="true"
+        nzFormat="yyyy-MM-dd HH:mm:ss"
+      ></nz-date-picker>
+    </se>
+    <se>
+      <button
+        nz-button
+        (click)="doSave()"
+        nzType="primary"
+        [nzLoading]="isSavingData"
+        [disabled]="!f.valid"
+      >
+        {{ '确认' | translate }}
+      </button>
+    </se>
+  </form>
+</div>
+<nz-card>
+  <ag-grid-angular
+    #agGrid
+    [class]="themeClass"
+    [style.height.px]="gridHeight"
+    [rowData]="gridData"
+    [columnDefs]="columns"
+    [gridOptions]="gridOptions"
+    [myAgGridRowKey]="{ tb: 'PS_MAKE_ORDER' }"
+    [myAgGridState]="'MO_UPDATE_LIST'"
+  >
+  </ag-grid-angular>
+</nz-card>

@@ -1,0 +1,49 @@
+<div class="modal-header">
+    <div class="modal-title">{{ (isModify?'编辑信息':'新增信息') | translate}}</div>
+</div>
+<div style="position: relative; height: 32px" *ngIf="i.id">
+    <button nz-button nzType="dashed" style="position: absolute; right: 0;" (click)="clear()">重置</button>
+</div>
+<div>
+    <form nz-form #f="ngForm" se-container="2" [labelWidth]=140>
+        <se label="{{ '工厂' | translate}}" required>
+            <input type="text" nz-input [(ngModel)]="i.plantCode" [disabled]="IsReaded" name="PLANTCODE" required>
+        </se>
+        <se label="{{ '工厂描述' | translate}}">
+            <input type="text" nz-input [(ngModel)]="i.descriptions" name="DESCRIPTIONS">
+        </se>
+        <se label="{{ '工厂代码' | translate}}">
+            <input type="text" nz-input [(ngModel)]="i.attribute1" name="attribute1">
+        </se>
+        <se label="{{ '事业部' | translate}}" required>
+            <nz-select #select nzShowSearch [(ngModel)]="i.scheduleRegionCode" name="SCHEDULEREGIONCODE" [nzDisabled]="Istrue" required>
+                <nz-option *ngFor="let option of scheduleregions" [nzLabel]="option.label" [nzValue]="option.value" [nzDisabled]="option.disabled"></nz-option>
+            </nz-select>
+        </se>
+        <!--<se label="{{ '发运集警告天数' | translate}}">
+      <nz-input-number [(ngModel)]="i.WARNINGDAY" name="strWARNINGDAY"></nz-input-number>
+    </se>-->
+        <se label="{{ '业务实体' | translate}}">
+            <nz-select #select [(ngModel)]="i.operatingUnitCode" nzShowSearch [nzAllowClear]="true" name="strOPERATINGUNIT">
+                <nz-option *ngFor="let option of operatingunits" [nzLabel]="option.label" [nzValue]="option.value" [nzDisabled]="option.disabled"></nz-option>
+            </nz-select>
+        </se>
+        <!-- <se label="{{ '采购组织' | translate}}">
+            <nz-select #select [(ngModel)]="i.purchasingPlantCode" nzShowSearch [nzAllowClear]="true" name="purchasingPlantCode">
+                <nz-option *ngFor="let option of purchasingPlantCodes" [nzLabel]="option.label" [nzValue]="option.value" [nzDisabled]="option.disabled"></nz-option>
+            </nz-select>
+        </se> -->
+        <se label="{{ '统一社会信用代码' | translate }}" required [error]="{ pattern: '请填写正确的信用代码' }">
+          <input nz-input type="text" name="purchasingPlantCode" required [(ngModel)]="i.purchasingPlantCode" pattern="^[A-Z0-9]{15}$|^[A-Z0-9]{18}$|^[A-Z0-9]{20}$">
+        </se>
+        <se label="{{ '是否有效' | translate}}" required>
+            <nz-select #select [(ngModel)]="i.enableFlag" name="ENABLEFLAG" required>
+                <nz-option *ngFor="let option of enableflags" [nzLabel]="option.label" [nzValue]="option.value" [nzDisabled]="option.disabled"></nz-option>
+            </nz-select>
+        </se>
+    </form>
+</div>
+<div class="modal-footer">
+    <button nz-button type="submit" [nzType]="'primary'" (click)="save()" [disabled]="f.invalid || !f.dirty" [nzLoading]="http.loading">{{ '保存' | translate}}</button>
+    <button nz-button type="button" (click)="close()">{{ '关闭' | translate}}</button>
+</div>

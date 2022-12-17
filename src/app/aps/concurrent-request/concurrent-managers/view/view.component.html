@@ -1,0 +1,113 @@
+<nz-card>
+  <div style="padding:0;margin:0;">
+    <kendo-grid [height]="400" style="width: 100%" [data]="gridView" [pageSize]="pageSize" [skip]="skip" (pageChange)="pageChange($event)"
+      [pageable]="{
+    buttonCount: 10,
+    info: true,
+    pageSizes: true,
+    previousNext: true
+  }" [resizable]="true" [reorderable]="true">
+      <kendo-grid-column field="ROW_NUMBER" title="位置 " width="80 " [style]="{'border-bottom':'1px solid #d9d9d9'}">
+        <ng-template kendoGridHeaderTemplate let-column>
+          <ellipsis lines="1 ">
+            <span nz-tooltip [nzTitle]="column.title">{{column.title}}</span>
+          </ellipsis>
+        </ng-template>
+        <ng-template kendoGridCellTemplate let-item>
+          <ellipsis lines="1 ">
+            <span nz-tooltip [nzTitle]="item.ROW_NUMBER">{{item.ROW_NUMBER}}</span>
+          </ellipsis>
+        </ng-template>
+      </kendo-grid-column>
+      <kendo-grid-column field="REQUEST_ID" title="请求编号 " width="100" [style]="{
+          'border-bottom': '1px solid #d9d9d9'} ">
+        <ng-template kendoGridHeaderTemplate let-column>
+          <ellipsis lines="1 ">
+            <span nz-tooltip [nzTitle]="column.title">{{column.title}}</span>
+          </ellipsis>
+        </ng-template>
+        <ng-template kendoGridCellTemplate let-item>
+          <ellipsis lines="1 ">
+            <span nz-tooltip [nzTitle]="item.REQUEST_ID">{{item.REQUEST_ID}}</span>
+          </ellipsis>
+        </ng-template>
+      </kendo-grid-column>
+      <kendo-grid-column field="PHASE_NAME" width="120" title="阶段 " [style]="{
+          'border-bottom': '1px solid #d9d9d9'} ">
+        <ng-template kendoGridHeaderTemplate let-column>
+          <ellipsis lines="1 ">
+            <span nz-tooltip [nzTitle]="column.title">{{column.title}}</span>
+          </ellipsis>
+        </ng-template>
+        <ng-template kendoGridCellTemplate let-item>
+          <ellipsis lines="1 ">
+            <span nz-tooltip [nzTitle]="item.PHASE_NAME">{{item.PHASE_NAME}}</span>
+          </ellipsis>
+        </ng-template>
+      </kendo-grid-column>
+      <kendo-grid-column field="STATUS_NAME" title="状态 " width="120" [style]="{ 'border-bottom': '1px solid #d9d9d9'} ">
+        <ng-template kendoGridHeaderTemplate let-column>
+          <ellipsis lines="1 ">
+            <span nz-tooltip [nzTitle]="column.title">{{column.title}}</span>
+          </ellipsis>
+        </ng-template>
+        <ng-template kendoGridCellTemplate let-item>
+          <ellipsis lines="1 ">
+            <span nz-tooltip [nzTitle]="item.STATUS_NAME">{{item.STATUS_NAME}}</span>
+          </ellipsis>
+        </ng-template>
+      </kendo-grid-column>
+      <kendo-grid-column field="USER_CONCURRENT_PROGRAM_NAME" title="程序名称 " width="200 " [style]="{ 'border-bottom': '1px solid #d9d9d9'} ">
+        <ng-template kendoGridHeaderTemplate let-column>
+          <ellipsis lines="1 ">
+            <span nz-tooltip [nzTitle]="column.title">{{column.title}}</span>
+          </ellipsis>
+        </ng-template>
+        <ng-template kendoGridCellTemplate let-item>
+          <ellipsis lines="1 ">
+            <span nz-tooltip [nzTitle]="item.USER_CONCURRENT_PROGRAM_NAME">{{item.USER_CONCURRENT_PROGRAM_NAME}}</span>
+          </ellipsis>
+        </ng-template>
+      </kendo-grid-column>
+      <kendo-grid-column field="REQUESTED_BY_NAME" width="120 " title="申请人 " [style]="{ 'border-bottom':
+          '1px solid #d9d9d9'} ">
+        <ng-template kendoGridHeaderTemplate let-column>
+          <ellipsis lines="1 ">
+            <span nz-tooltip [nzTitle]="column.title">{{column.title}}</span>
+          </ellipsis>
+        </ng-template>
+        <ng-template kendoGridCellTemplate let-item>
+          <ellipsis lines="1 ">
+            <span nz-tooltip [nzTitle]="item.REQUESTED_BY_NAME">{{item.REQUESTED_BY_NAME}}</span>
+          </ellipsis>
+        </ng-template>
+      </kendo-grid-column>
+      <kendo-grid-column field="REQUESTED_START_DATE_STR" title="计划运行时间 " width="180 " [style]="{
+          'border-bottom': '1px solid #d9d9d9'} ">
+        <ng-template kendoGridHeaderTemplate let-column>
+          <ellipsis lines="1 ">
+            <span nz-tooltip [nzTitle]="column.title">{{column.title}}</span>
+          </ellipsis>
+        </ng-template>
+        <ng-template kendoGridCellTemplate let-item>
+          <ellipsis lines="1 ">
+            <span nz-tooltip [nzTitle]="item.REQUESTED_START_DATE_STR">{{item.REQUESTED_START_DATE_STR}}</span>
+          </ellipsis>
+        </ng-template>
+      </kendo-grid-column>
+      <kendo-grid-column field="HOLD_FLAG" title="暂挂标识 " width="100 " [style]="{
+          'border-bottom': '1px solid #d9d9d9','border-right':'1px solid #d9d9d9'}" [headerStyle]="{'border-right':'1px solid #d9d9d9'}">
+        <ng-template kendoGridHeaderTemplate let-column>
+          <ellipsis lines="1 ">
+            <span nz-tooltip [nzTitle]="column.title">{{column.title}}</span>
+          </ellipsis>
+        </ng-template>
+        <ng-template kendoGridCellTemplate let-item>
+          <ellipsis lines="1 ">
+            {{item.HOLD_FLAG == 'Y' ? '是':'否'}}
+          </ellipsis>
+        </ng-template>
+      </kendo-grid-column>
+    </kendo-grid>
+  </div>
+</nz-card>

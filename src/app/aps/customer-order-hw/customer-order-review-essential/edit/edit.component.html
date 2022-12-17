@@ -1,0 +1,27 @@
+<div class="modal-header">
+  <div class="modal-title">{{ isModify ? '编辑信息' : '新增信息' }}</div>
+</div>
+<div style="position: relative; height: 32px" *ngIf="isModify">
+  <button nz-button nzType="dashed" style="position: absolute; right: 0;" (click)="clear()">{{'重置' | translate}}</button>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="2">
+    <se label="{{ '评审维度' | translate }}" required>
+      <nz-select #select nzShowSearch name="essential" [(ngModel)]="i.essential" required>
+        <nz-option *ngFor="let op of essentialOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '优先级' | translate }}" required>
+      <nz-input-number name="priority" [(ngModel)]="i.priority" required></nz-input-number>
+    </se>
+    <se label="{{ '是否启用' | translate }}" required>
+      <nz-select #select nzShowSearch name="yesNo" [(ngModel)]="i.yesNo" required>
+        <nz-option *ngFor="let op of YesNoOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save(f.value)" [nzLoading]="http.loading" [disabled]="f.invalid || !f.dirty">{{'保存' | translate }}</button>
+  <button nz-button type="button" (click)="close()">{{ '取消' | translate }}</button>
+</div>

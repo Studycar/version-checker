@@ -1,0 +1,5 @@
+﻿<nz-upload [nzShowUploadList]="false" [nzBeforeUpload]="beforeUpload" (nzChange)="handleChange($event)">
+  <button nz-button [nzType]="'default'" class="mx-sm">
+    <i class="anticon anticon-file-excel"></i><span>{{ buttonText | translate}}</span>
+  </button>
+</nz-upload>

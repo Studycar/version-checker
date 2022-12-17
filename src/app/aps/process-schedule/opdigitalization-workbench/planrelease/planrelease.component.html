@@ -1,0 +1,26 @@
+<div class="modal-header">
+  <div class="modal-title">{{ '计划发布' | translate}} </div>
+</div>
+<div style=" margin:1px auto;">
+  <button style="float: right;" nz-button (click)="clear()">{{ '重置' | translate}}</button>
+  <div style="clear: both;"></div>
+  <div>
+    <form nz-form #f="ngForm" se-container="2" [labelWidth]='100'>
+      <se label="{{ '版本名称' | translate}}">
+        <input type="text" nz-input [(ngModel)]="i.version" name="version" readonly="true" [class.disabled]="true"
+          [ngModelOptions]="{standalone: true}">
+      </se>
+      <se label="{{ '确认标识' | translate}}">
+        <nz-switch [(ngModel)]="i.confirm_flag" [ngModelOptions]="{standalone: true}"></nz-switch>
+      </se>
+      <se label="{{ '附加信息' | translate}}">
+        <textarea rows="3" nz-input [(ngModel)]="i.remark" [ngModelOptions]="{standalone: true}"></textarea>
+      </se>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button nz-button type="submit" [nzType]="'primary'" (click)="confirm()" [disabled]="!f.valid"
+      [nzLoading]="http.loading">{{
+      '确定' | translate}}</button>
+    <button nz-button type="button" (click)="close()">{{ '关闭' | translate}}</button>
+  </div>

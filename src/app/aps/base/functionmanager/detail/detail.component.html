@@ -1,0 +1,17 @@
+<div class="modal-header">
+  <div class="modal-title">{{'操作明细' | translate}}</div>
+</div>
+<div>
+  <button nz-button (click)="setting()" [nzType]="'primary'">{{ '操作配置' | translate}}
+  </button>
+  <button nz-button (click)="export()" [nzType]="'primary'">{{ '导出' | translate}}
+  </button>
+</div>
+<nz-card>
+  <ag-grid-angular #agGrid [class]="themeClass" [style.height.px]="gridHeight" [rowData]="gridData"
+    [columnDefs]="columns" [gridOptions]="gridOptions" [pagination]="false"
+    [myAgGridRowKey]="{tb:'BASE_FUNCTION_OPERATIONS'}" [myAgGridState]="'functionOperations'">
+  </ag-grid-angular>
+  <custom-excelexport [expColumns]='expColumns' [expColumnsOptions]='expColumnsOptions' fileName='操作明细' #excelexport>
+  </custom-excelexport>
+</nz-card>

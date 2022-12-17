@@ -1,0 +1,47 @@
+<custom-formquery [queryParams]="queryParams" [context]="context">
+  <custom-button text="{{ '新增' | translate }}" [src]="'基础icon-新增'" (clickEvent)="add()"></custom-button>
+  <!-- <custom-button text="{{ '导出' | translate }}" [src]="'基础icon-导出'" (clickEvent)="export()"></custom-button> -->
+  <custom-button text="{{ '查看全部客户信息' | translate }}" [src]="'列表查看'" (clickEvent)="showDetailed()"></custom-button>
+</custom-formquery>
+<nz-card>
+  <ag-grid-angular #agGrid [class]="themeClass" [style.height.px]="gridHeight" [rowData]="gridData"
+    [columnDefs]="columns" [gridOptions]="gridOptions" [myAgGridState]="'hw-customer-full'"
+    [myAgGridRowKey]="{tb:'PS_CUSTOMER_FULL'}">
+  </ag-grid-angular>
+  <custom-pager [height]="pagerHeight" [context]="context" [view]='context.view' [(pageSize)]="_pageSize"
+    [(pageNo)]="_pageNo" (pageChangeEvent)="onPageChanged($event)"></custom-pager>
+  <custom-excelexport [expColumns]='expColumns' [expColumnsOptions]='expColumnsOptions' fileName='基础客户信息' #excelexport></custom-excelexport>
+</nz-card>
+<ng-template #customTemplate let-dataItem>
+  <!-- 仅待审批和驳回状态可编辑/删除 -->
+  <div style="display: inline;" *ngIf="['10', '40'].includes(dataItem.cusState)">
+    <span title="{{ '编辑' | translate }}" (click)="edit(dataItem)" style="cursor: Pointer">
+      <i class="anticon anticon-edit"></i>
+    </span>
+    <nz-divider nzType="vertical"></nz-divider>
+    <span title="{{ '删除' | translate}}" nz-popconfirm nzTitle="{{ '是否确认删除该记录?' | translate}}"
+      (nzOnConfirm)="remove(dataItem);" class="pointer">
+      <i class="anticon anticon-delete"></i>
+    </span>
+    <nz-divider nzType="vertical"></nz-divider>
+  </div> 
+  <span title="{{ '银行列表' | translate }}" (click)="showBank(dataItem)" style="cursor: Pointer">
+    <i class="anticon anticon-bank"></i>
+  </span>
+  <nz-divider nzType="vertical"></nz-divider>
+  <div style="display: inline;" *ngIf="['50', '70'].includes(dataItem.cusState)">
+    <span title="{{ '状态变更' | translate }}" (click)="onCusStateChange(dataItem)" style="cursor: Pointer">
+      <i class="anticon anticon-sync"></i>
+    </span>
+    <nz-divider nzType="vertical"></nz-divider>
+  </div>
+  <div style="display: inline;" *ngIf="dataItem.cusState === '50'">
+    <span title="{{ '信息变更' | translate }}" (click)="openInfoChangeModal(dataItem)" style="cursor: Pointer">
+      <i class="anticon anticon-audit"></i>
+    </span>
+    <nz-divider nzType="vertical"></nz-divider>
+  </div>
+  <span title="{{ '明细' | translate }}" (click)="showDetailed(dataItem)" style="cursor: Pointer">
+    <i class="anticon anticon-bars"></i>
+  </span>
+</ng-template>

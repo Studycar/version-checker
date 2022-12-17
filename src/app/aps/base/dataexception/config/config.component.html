@@ -1,0 +1,18 @@
+<div class="modal-header">
+  <div class="modal-title">{{ ('脚本配置') | translate}} </div>
+</div>
+<!-- <div style=" margin:2px auto;">
+  <button style="float: right;" nz-button nzType="dashed" (click)="clear()">
+    <i class="anticon anticon-delete"></i>{{ '重置' | translate}}</button>
+  <div style="clear: both;"></div>
+</div> -->
+<div>
+  <form nz-form #f="ngForm" se-container="2" [labelWidth]=100>
+    <textarea [(ngModel)]="record.sqlText" name="sqlText" nz-input rows="16" placeholder="仅支持SELECT查询语句" (ngModelChange)="textChange($event)"></textarea>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="button" (click)="close()">{{ '关闭' | translate}}</button>
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save(f.value)" [disabled]="f.invalid" [nzLoading]="http.loading">{{
+    '保存' | translate}}</button>
+</div>

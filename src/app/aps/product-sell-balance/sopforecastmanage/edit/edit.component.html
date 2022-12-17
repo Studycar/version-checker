@@ -1,0 +1,66 @@
+<!--
+ * @Author: Zwh
+ * @contact: zhangweika@outlook.com
+ * @Date: 2019-07-15 15:09:02
+ * @LastEditors: Zwh
+ * @LastEditTime: 2019-09-12 10:34:52
+ * @Note: ...
+ -->
+<div class="modal-header">
+  <div class="modal-title">{{ title }} 信息</div>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="2">
+    <se label="{{ '事业部' | translate}}" required>
+      <input type="text" nz-input [(ngModel)]="i.businessUnitCode" name="BUSINESS_UNIT_CODE" [disabled]=true required>
+    </se>
+    <se label="{{ '内外销' | translate}}" required>
+      <input type="text" nz-input [(ngModel)]="i.salesType" name="SALES_TYPE" [disabled]=true required>
+    </se>
+    <se label="{{ '工厂' | translate}}" required>
+      <input type="text" nz-input [(ngModel)]="i.plantCode" name="PLANT_CODE" [disabled]=true required>
+    </se>
+    <se label="{{ '产品大类' | translate}}">
+      <input type="text" nz-input [(ngModel)]="i.salesCatgoryBig" name="SALES_CATEGORY_BIG" [disabled]=true>
+    </se>
+    <se label="{{ '产品小类' | translate}}">
+      <input type="text" nz-input [(ngModel)]="i.salesCatgorySub" name="SALES_CATGORY_SUB" [disabled]=true>
+    </se>
+    <se label="{{ '物料编码' | translate}}">
+      <input type="text" nz-input [(ngModel)]="i.itemCode" name="ITEM_CODE" [disabled]=true>
+    </se>
+    <se label="{{ '物料描述' | translate}}">
+      <input type="text" nz-input [(ngModel)]="i.descriptionsCn" name="ITEM_DES" [disabled]=true>
+    </se>
+    <se label="{{ '业务大区' | translate}}">
+      <input type="text" nz-input [(ngModel)]="i.salesRegion" name="SALES_REGION" [disabled]=true>
+    </se>
+    <se label="{{ '业务区域' | translate}}">
+      <input type="text" nz-input [(ngModel)]="i.salesArea" name="SALES_AREA" [disabled]=true>
+    </se>
+    <se label="{{ '客户' | translate}}">
+      <input type="text" nz-input [(ngModel)]="i.customerName" name="CUSTOMER_NAME" [disabled]=true>
+    </se>
+    <se label="{{ '预测类型' | translate}}" required>
+      <input type="text" nz-input [(ngModel)]="i.forecastType" name="FORECAST_TYPE" [disabled]=true required>
+    </se>
+    <se label="{{ '原始日期' | translate}}" required>
+      <input type="text" nz-input [(ngModel)]="i.forecastDate" name="FORECAST_DATE" [disabled]=true required>
+    </se>
+    <se label="{{ '净预测日期' | translate}}" required>
+      <nz-date-picker nzShowTime nzFormat="yyyy-MM-dd HH:mm:ss" [(ngModel)]="i.netForecastDate" name="NET_FORECAST_DATE" required></nz-date-picker>
+    </se>
+    <se label="{{ '预测数量' | translate}}" required>
+      <input type="text" nz-input [(ngModel)]="i.originalQty" name="ORIGINAL_QTY" [disabled]=true required>
+    </se>
+    <se label="{{ '净预测数量' | translate}}" required>
+      <input type="number" nz-input [(ngModel)]="i.netQty" name="NET_QTY" required>
+<!--      <nz-input-number [(ngModel)]="i.netQty" [nzMin]="0" name="NET_QTY" required></nz-input-number>-->
+    </se>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save()" [disabled]="!f.valid || !f.dirty"
+    [nzLoading]="http.loading">{{ '保存' | translate}}</button>
+  <button nz-button type="button" (click)="close()">{{ '关闭' | translate}}</button>
+</div>

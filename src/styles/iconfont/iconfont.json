@@ -1,0 +1,23 @@
+{
+  "id": "2946569",
+  "name": "aps_java",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "9967563",
+      "name": "指引-01",
+      "font_class": "zhiyin-",
+      "unicode": "e602",
+      "unicode_decimal": 58882
+    },
+    {
+      "icon_id": "8917020",
+      "name": "指引",
+      "font_class": "zhiyin",
+      "unicode": "e81c",
+      "unicode_decimal": 59420
+    }
+  ]
+}

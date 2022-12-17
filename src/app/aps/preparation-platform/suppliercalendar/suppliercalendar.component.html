@@ -1,0 +1,48 @@
+<custom-formquery [queryParams]="queryParams" [context]="context" (event1)="plantchange($event)" (event2)="searchItems($event)">
+  <button nz-button (click)="add()" [nzType]="'primary'">
+    <i class="anticon anticon-plus-circle-o"></i>{{ '新增' | translate}}
+  </button>
+  <button (click)="removeBatch()" nz-button [nzType]="'danger'">
+    <i class="anticon anticon-delete"></i>{{ '删除' | translate}}
+  </button>
+  <button nz-button (click)="export()" [nzType]="'default'">
+    <i class="anticon anticon-export"></i> {{ '导出' | translate}}
+  </button>
+</custom-formquery>
+<nz-card>
+  <kendo-grid #grid [data]="viewAsync | async" [height]="gridHeight" [pageSize]="gridState.take" [skip]="gridState.skip"
+    [sort]="gridState.sort" [sortable]="true" [navigable]="true" [filter]="gridState.filter" filterable="menu"
+    [resizable]="true" [selectable]="true" [kendoGridSelectBy]="'Id'" [selectedKeys]="mySelection" [columnMenu]="true"
+    [reorderable]="true" [pageable]="{
+    buttonCount: 10,
+    info: true,
+    pageSizes: true,
+    previousNext: true
+  }">
+    <kendo-grid-messages pagerPage="{{ '分页' | translate }}" pagerOf="{{ '的' | translate}}" pagerItems="{{ '总数' | translate}}"
+      pagerItemsPerPage="{{ '分页' | translate}}" groupPanelEmpty="Drag here to group" noRecords="{{'没有数据' | translate}}">
+    </kendo-grid-messages>
+    <kendo-grid-command-column title="操作" width="120" [style]="{'border-bottom': '1px solid #d9d9d9'}">
+      <ng-template kendoGridCellTemplate let-isNew="isNew" let-dataItem="dataItem">
+        <span title="编辑" (click)="add(dataItem)" style="cursor: Pointer">
+          <i class="anticon anticon-edit"></i>
+        </span>
+        <nz-divider nzType="vertical"></nz-divider>
+        <span title="删除" nz-popconfirm nzTitle="是否确认删除该记录?" (nzOnConfirm)="remove(dataItem)" style="cursor: Pointer">
+          <i class="anticon anticon-delete"></i>
+        </span>
+      </ng-template>
+    </kendo-grid-command-column>
+    <kendo-grid-checkbox-column showSelectAll="true" width="60" [style]="{'border-bottom': '1px solid #d9d9d9'}"></kendo-grid-checkbox-column>
+    <kendo-grid-column field="PLANT_CODE" title="工厂"></kendo-grid-column>
+    <kendo-grid-column field="VENDOR_NUMBER" title="供应商名称"></kendo-grid-column>
+    <kendo-grid-column field="ITEM_NAME" title="周日"></kendo-grid-column>
+    <kendo-grid-column field="DEMAND_QTY" title="周一"></kendo-grid-column>
+    <kendo-grid-column field="DEMAND_DATE" title="周二"></kendo-grid-column>
+    <kendo-grid-column field="DELIVERY_REGION_CODE" title="周三"></kendo-grid-column>
+    <kendo-grid-column field="DELIVERY_REGION_CODE" title="周四"></kendo-grid-column>
+    <kendo-grid-column field="DELIVERY_REGION_CODE" title="周五"></kendo-grid-column>
+    <kendo-grid-column field="DELIVERY_REGION_CODE" title="周六"></kendo-grid-column>
+  </kendo-grid>
+</nz-card>
+<custom-excelexport [expColumns]='expColumns' fileName='散料需求' #excelexport></custom-excelexport>

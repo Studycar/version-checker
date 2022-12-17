@@ -1,0 +1,36 @@
+<div class="modal-header">
+  <div class="modal-title">{{ param.operType | translate}}信息</div>
+</div>
+<div *ngIf="Istrue" style=" margin:2px auto;">
+  <button style="float: right;" nz-button nzType="dashed" (click)="clear()">
+    {{ '重置' | translate}}</button>
+  <div style="clear: both;"></div>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="2">
+    <se label="{{ '执行简称' | translate}}" required>
+      <input type="text" nz-input [(ngModel)]="param.i.executableName" name="EXECUTABLE_NAME" [disabled]="Istrue" required>
+    </se>
+    <se label="{{ '应用模块' | translate}}" required>
+      <nz-select [(ngModel)]="param.i.applicationId" name="APPLICATION_ID"  required nzShowSearch>
+        <nz-option *ngFor="let option of applicationArray" [nzLabel]="option.label" [nzValue]="option.value">
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '描述' | translate}}" required>
+      <input type="text" nz-input [(ngModel)]="param.i.description" name="DESCRIPTION" required>
+    </se>
+    <se label="{{ '执行方法' | translate}}" required>
+      <nz-select [(ngModel)]="param.i.executionMethodCode" name="EXECUTION_METHOD_CODE" required nzShowSearch>
+        <nz-option *ngFor="let option of execMethodArray" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '执行程序名' | translate}}" required>
+      <input type="text" nz-input [(ngModel)]="param.i.executionFileName" name="EXECUTION_FILE_NAME" required>
+    </se>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save()" [disabled]="f.invalid || !f.dirty" [nzLoading]="http.loading">{{'保存' | translate}}</button>
+  <button nz-button type="button" (click)="close()">{{ '关闭' | translate}}</button>
+</div>

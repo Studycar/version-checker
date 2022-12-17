@@ -1,0 +1,253 @@
+<div id="divContainer" class="div-container">
+  <div style="clear: bottom;">
+    <ng-content></ng-content>
+    <div style="float: right; display: inline-flex;">
+      <ng-content select=".right"></ng-content>
+      <custom-button
+        *ngIf="enableWBSetting"
+        [isPopover]="true"
+        [visible]="visible"
+        [popoverContent]="workbenchSetting"
+        text="{{ '设置' | translate}}"
+        [src]="'基础icon-工作台设置'"
+      >
+      </custom-button>
+      <custom-button
+        [isPopover]="true"
+        [popoverContent]="popoverContent"
+        [showExpand]="showExpandIcon"
+        text="{{ '搜索' | translate}}"
+        [src]="'基础icon-查询'"
+      >
+      </custom-button>
+    </div>
+  </div>
+
+  <ng-template #popoverContent>
+    <!--选项区域-->
+    <div class="verticalField" [style.width.px]="verticalWidth">
+      <ng-scrollbar>
+        <form
+          id="queryForm"
+          nz-form #f="ngForm"
+          [se-container]="columnCount"
+        >
+          <se
+            *ngFor="let param of queryParams.defines; let i = index;"
+            label="{{(param.ui?.type==='3'?'':param.title)| translate}}"
+            [ngSwitch]="param.ui?.type"
+            [required]="param.required"
+            controlClass="verticalTitle"
+          >
+            <input
+              *ngSwitchCase="0"
+              type="text"
+              nz-input
+              [(ngModel)]="queryParams.values[param.field]"
+              (ngModelChange)="change($event,param.ui.eventNo,param.ui)"
+              name="{{param.field}}"
+              placeholder="{{param.readonly?'':'请输入内容'| translate}}"
+              [readonly]="param.readonly"
+              [required]="param.required"
+              [class.disabled]="param.readonly"
+            >
+            <nz-select
+              *ngSwitchCase="1"
+              nzShowSearch
+              nzPlaceHolder="{{param.readonly?'':'请选择'| translate}}"
+              name="{{param.field}}"
+              [nzDisabled]="param.readonly"
+              [nzAllowClear]="!param.required"
+              [(ngModel)]="queryParams.values[param.field]"
+              (ngModelChange)="change($event,param.ui.eventNo,param.ui)"
+              [required]="param.required"
+              [nzLoading]="param.ui.nzLoading || false"
+            >
+              <nz-option
+                *ngFor="let option of param.ui.options"
+                [nzLabel]="option[param.ui.optionsLabel || 'label']"
+                [nzValue]="option[param.ui.optionsValue || 'value']"
+              ></nz-option>
+            </nz-select>
+            <nz-date-picker
+              *ngSwitchCase="2"
+              nzFormat="yyyy-MM-dd"
+              [(ngModel)]="queryParams.values[param.field]"
+              name="{{param.field}}"
+              (ngModelChange)="change($event,param.ui.eventNo,param.ui)"
+              nzPlaceHolder="{{param.readonly?'':'请选择日期'| translate}}"
+              [nzDisabled]="param.readonly"
+              [required]="param.required"
+            >
+            </nz-date-picker>
+            <label
+              *ngSwitchCase="3"
+              nz-checkbox
+              [(ngModel)]="queryParams.values[param.field]"
+              name="{{param.field}}"
+            >
+              {{param.title| translate}}
+            </label>
+            <nz-date-picker
+              *ngSwitchCase="4"
+              nzShowTime
+              nzFormat="yyyy-MM-dd HH:mm:ss"
+              [(ngModel)]="queryParams.values[param.field]"
+              (ngModelChange)="change($event,param.ui.eventNo,param.ui)"
+              name="{{param.field}}"
+              nzPlaceHolder="{{param.readonly?'':'请选择时间'| translate}}"
+              [nzDisabled]="param.readonly"
+              [required]="param.required"
+            >
+            </nz-date-picker>
+            <custom-tree-select
+              *ngSwitchCase="5"
+              [dataTree]="param.ui.options"
+              [columns]="param.ui.columns"
+              [keyField]="param.ui.keyField"
+              [selectionRef]="param.ui.selection"
+              [valueField]="param.ui.valueField"
+              [valueLevel]="param.ui.valueLevel"
+              [valueObject]="queryParams.values"
+              [valueObjectField]="param.field"
+              [required]="param.required"
+              [(invalid)]="formInvalid[i]"
+            >
+            </custom-tree-select>
+            <app-popup-select
+              *ngSwitchCase="6"
+              [(SelectValue)]="queryParams.values[param.field].value"
+              [ValueField]="param.ui.valueField"
+              [(SelectText)]="queryParams.values[param.field].text"
+              [TextField]="param.ui.textField"
+              [gridView]="param.ui.gridView"
+              [columns]="param.ui.columns"
+              (SearchEvent)="change($event,param.ui.eventNo)"
+              (TextChanged)="onPopupSelectTextChanged($event)"
+              [nzLoading]="param.ui.nzLoading || false"
+              (RowSelect)="change($event,param.ui.extraEvent?.RowSelectEventNo)"
+            >
+            </app-popup-select>
+            <nz-range-picker
+              *ngSwitchCase="7"
+              [(ngModel)]="queryParams.values[param.field]"
+              (ngModelChange)="change($event,param.ui.eventNo,param.ui)"
+              name="{{param.field}}"
+              [nzDisabled]="param.readonly"
+              [required]="param.required"
+            >
+            </nz-range-picker>
+            <nz-range-picker
+              *ngSwitchCase="8"
+              [(ngModel)]="queryParams.values[param.field]"
+              (ngModelChange)="change($event,param.ui.eventNo,param.ui)"
+              name="{{param.field}}"
+              [nzDisabled]="param.readonly"
+              [required]="param.required"
+              [nzShowTime]="{ nzFormat: 'HH:mm' }"
+              nzFormat="yyyy-MM-dd HH:mm"
+            >
+            </nz-range-picker>
+            <div style="max-height: 36px;overflow-y: scroll;overflow-x: hidden;padding:0px 1px;">
+              <nz-select
+                *ngSwitchCase="9"
+                nzMode="multiple"
+                nzPlaceHolder="{{param.readonly?'':'可多选'| translate}}"
+                name="{{param.field}}"
+                [nzDisabled]="param.readonly"
+                nzShowSearch
+                [nzAllowClear]="!param.required"
+                [(ngModel)]="queryParams.values[param.field]"
+                (ngModelChange)="change($event,param.ui.eventNo,param.ui)"
+                [required]="param.required"
+              >
+                <nz-option
+                  *ngFor="let option of param.ui.options"
+                  [nzLabel]="option.label"
+                  [nzValue]="option.value"
+                >
+                </nz-option>
+              </nz-select>
+            </div>
+            <nz-select
+              *ngSwitchCase="10"
+              nzPlaceHolder="{{param.readonly?'':'请选择'| translate}}"
+              name="{{param.field}}"
+              [nzDisabled]="param.readonly"
+              nzShowSearch
+              [nzAllowClear]="!param.required"
+              [nzServerSearch]="true"
+              [(ngModel)]="queryParams.values[param.field]"
+              (ngModelChange)="change($event,param.ui.eventNo,param.ui)"
+              (nzScrollToBottom)="change($event,param.ui.extraEvent?.ScrollEventNo)"
+              (nzOnSearch)="change($event,param.ui.extraEvent?.SearchEventNo)"
+              [required]="param.required"
+            >
+              <nz-option
+                *ngFor="let option of param.ui.options"
+                [nzLabel]="option.label"
+                [nzValue]="option.value"
+              >
+              </nz-option>
+            </nz-select>
+            <nz-month-picker
+              *ngSwitchCase="11"
+              name="{{param.field}}"
+              [(ngModel)]="queryParams.values[param.field]"
+              [nzFormat]="param.ui.format||'yyyy-MM'"
+              (ngModelChange)="change($event,param.ui.eventNo,param.ui)"
+              [nzDisabled]="param.readonly"
+              [nzAllowClear]="!param.required"
+              [required]="param.required"
+            ></nz-month-picker>
+            <textarea
+              *ngSwitchCase="12"
+              nz-input
+              [(ngModel)]="queryParams.values[param.field]"
+              name="{{param.field}}"
+              placeholder="{{param.readonly?'':'请输入内容'| translate}}"
+              [readonly]="param.readonly"
+              [nzAutosize]="{ minRows: 1, maxRows: 1 }"
+              [required]="param.required"
+              [class.disabled]="param.readonly"
+            >
+           </textarea>
+            <input
+              *ngSwitchDefault
+              type="text"
+              nz-input
+              [(ngModel)]="queryParams.values[param.field]"
+              (ngModelChange)="change($event,param.ui.eventNo,param.ui)"
+              name="{{param.field}}"
+              placeholder="{{'请输入内容'| translate}}"
+              [readonly]="param.readonly"
+              [required]="param.required"
+              [class.disabled]="param.readonly"
+            >
+          </se>
+        </form>
+      </ng-scrollbar>
+    </div>
+    <!--底部按钮区域-->
+    <div class="verticalBtn">
+      <!--左边按钮-->
+      <div>
+        <button *ngIf="showResetButton" nz-button nzType="default" (click)="clear()">{{ '重置' | translate}}</button>
+      </div>
+      <!--右边按钮-->
+      <div>
+        <button *ngIf="showSearchButton" nz-button nzType="primary" [disabled]="f.invalid||getFormInvalid()"
+                (click)="query()">{{'查询'|
+          translate}}
+        </button>
+      </div>
+    </div>
+  </ng-template>
+  <ng-template #workbenchSetting>
+    <workbench-setting-imp
+      *ngIf="enableWBSetting"
+      [context]="context"
+      (updateClick)="closePopUp()"
+    ></workbench-setting-imp>
+  </ng-template>
+</div>

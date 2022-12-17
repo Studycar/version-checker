@@ -1,0 +1,22 @@
+<div class="modal-header">
+    <div class="modal-title">{{title | translate}}</div>
+</div>
+<div style="position: relative; height: 32px" *ngIf="editType === 'edit'">
+    <button nz-button nzType="dashed" style="position: absolute; right: 0;" (click)="clear()">重置</button>
+</div>
+<div>
+    <form nz-form #f="ngForm" se-container="2">
+        <se *ngFor="let field of fields" label="{{field.label | translate}}" [ngSwitch]="field.type" [required]="field.required">
+            <input *ngSwitchCase="1" type="text" nz-input name="{{field.field}}" [(ngModel)]="formFields[field.field]" [required]="field.required">
+            <nz-date-picker *ngSwitchCase="2" nzShowTime name="{{field.field}}" [(ngModel)]="formFields[field.field]" [nzStyle]="{width:'100%'}" [required]="field.required" nzPlaceHolder=""></nz-date-picker>
+            <!-- <nz-input-number *ngSwitchCase="3" name="{{field.field}}" [(ngModel)]="formFields[field.field]" [nzStep]="1" [nzStyle]="{width:'100%'}" [required]="field.required"></nz-input-number> -->
+            <input *ngSwitchCase="3" type="number" nz-input name="{{field.field}}" [(ngModel)]="formFields[field.field]" [required]="field.required">
+        </se>
+        <!-- <nz-input-number [(ngModel)]="i.ORDER_SEQ" [nzPrecision]="0" [nzMin]="0" name="ORDER_SEQ" required></nz-input-number> -->
+    </form>
+</div>
+<div class="modal-footer">
+    <button nz-button type="submit" [nzType]="'primary'" (click)="save()" [disabled]="!f.valid || !f.dirty" [nzLoading]="http.loading">{{ '保存' | translate}}
+  </button>
+    <button nz-button type="button" (click)="close()">{{ '关闭' | translate}}</button>
+</div>

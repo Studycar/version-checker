@@ -1,0 +1,123 @@
+<!-- 头部 -->
+<div class="modal-header">
+  <div class="modal-title">{{ (isModify?'编辑':'新增') | translate}}</div>
+</div>
+<div style="margin:2px auto;" *ngIf="isModify">
+  <button style="float: right;" nz-button nzType="dashed" (click)="clear()">{{ '重置' | translate}}</button>
+  <div style="clear: both;"></div>
+</div>
+<!-- 内容 -->
+<div>
+  <form nz-form #f="ngForm" se-container="2">
+    <se label="{{ '工厂' | translate }}" required>
+      <nz-select nzShowSearch name="plantCode" [nzDisabled]="isModify" [(ngModel)]="i.plantCode" required>
+        <nz-option *ngFor="let op of plantOptions" [nzValue]="op.value" [nzLabel]="op.label"></nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '存货编码' | translate }}" required>
+      <popup-select [Value]="i.stockCode" [ValueField]="'stockCode'" 
+        [Text]="i.stockCode" [TextField]="'stockCode'" name="stockCode" required
+        [gridView]="gridViewStocks" [columns]="columnsStocks" (TextChanged)="onStockTextChanged($event)"
+        (SearchEvent)="searchStocks($event)" (RowSelect)="onStocksSelect($event)">
+      </popup-select>
+    </se>
+    <se label="{{ '存货名称' | translate }}">
+      <input nz-input type="text" disabled name="stockName" [(ngModel)]="i.stockName"/>
+    </se>
+    <se label="{{ '规格' | translate }}">
+      <input nz-input type="text" disabled name="standards" [(ngModel)]="i.standards"/>
+    </se>
+    <se label="{{ '单位' | translate}}">
+      <nz-select nzShowSearch [(ngModel)]="i.unit" name="unit" nzDisabled>
+        <nz-option *ngFor="let option of unitOptions" [nzLabel]="option.label" [nzValue]="option.value">
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '钢种' | translate}}" required>
+      <nz-select nzShowSearch [(ngModel)]="i.steelType" name="steelType" required>
+        <nz-option *ngFor="let option of contractSteelTypeOptions" [nzLabel]="option.label" [nzValue]="option.value">
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '下单日期' | translate }}" required>
+      <nz-date-picker nzFormat="yyyy-MM-dd" [(ngModel)]="i.orderDate"name="orderDate" required>
+      </nz-date-picker>
+    </se>
+    <se label="{{ '订单月份' | translate }}" required>
+      <nz-month-picker nzFormat="yyyy-MM" [(ngModel)]="i.orderMonth"name="orderMonth" required>
+      </nz-month-picker>
+    </se>
+    <se label="{{ '客户简称' | translate }}" required>
+      <popup-select [Value]="i.cusAbbreviation" [ValueField]="'cusAbbreviation'" [Disabled]="isModify"
+        [Text]="i.cusAbbreviation" [TextField]="'cusAbbreviation'" name="cusAbbreviation" required [options]="customersOptions"
+        [gridView]="gridViewCustoms" [columns]="columnsCustoms" (TextChanged)="onPopupSelectTextChanged($event)"
+        (SearchEvent)="searchCustoms($event)" (RowSelect)="onRowSelect($event)">
+      </popup-select>
+    </se>
+    <se label="{{ '客户编码' | translate }}">
+      <input nz-input type="text" disabled [(ngModel)]="i.cusCode" name="cusCode">
+    </se>
+    <se label="{{ '客户交期' | translate }}" required>
+      <nz-date-picker nzFormat="yyyy-MM-dd" [(ngModel)]="i.cusDeliveryDate" name="cusDeliveryDate" required>
+      </nz-date-picker>
+    </se>
+    <se label="{{ '加工类型' | translate}}" required>
+      <nz-select nzShowSearch [(ngModel)]="i.processingType" name="processingType" required>
+        <nz-option *ngFor="let option of processingTypeOptions" [nzLabel]="option.label" [nzValue]="option.value">
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '加工要求' | translate }}">
+      <input nz-input type="text" name="processingReq" [(ngModel)]="i.processingReq"/>
+    </se>
+    <se label="{{ '公差' | translate}}">
+      <nz-select nzShowSearch [(ngModel)]="i.tolerance" name="tolerance">
+        <nz-option *ngFor="let option of gongchaOptions" [nzLabel]="option.label" [nzValue]="option.value">
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '下单数量' | translate }}" required>
+      <nz-input-number name="quantity" [(ngModel)]="i.quantity" required></nz-input-number>
+    </se>
+    <se label="{{ '销售类型' | translate}}">
+      <nz-select nzShowSearch [(ngModel)]="i.salesOrderType" name="salesOrderType">
+        <nz-option *ngFor="let option of salesOrderTypeOptions" [nzLabel]="option.label" [nzValue]="option.value">
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '包装方式' | translate}}">
+      <nz-select nzShowSearch [(ngModel)]="i.packType" name="packType">
+        <nz-option *ngFor="let option of packTypeOptions" [nzLabel]="option.label" [nzValue]="option.value">
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '运输方式' | translate}}">
+      <nz-select nzShowSearch [(ngModel)]="i.transportType" name="transportType">
+        <nz-option *ngFor="let option of transportTypeOptions" [nzLabel]="option.label" [nzValue]="option.value">
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '是否自提' | translate}}">
+      <nz-select nzShowSearch [(ngModel)]="i.pickUp" name="pickUp">
+        <nz-option *ngFor="let option of YesNoOptions" [nzLabel]="option.label" [nzValue]="option.value">
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '计划交期' | translate }}">
+      <nz-date-picker nzFormat="yyyy-MM-dd" [(ngModel)]="i.plannedDeliveryDate" name="plannedDeliveryDate">
+      </nz-date-picker>
+    </se>
+    <se label="{{ '计划' | translate}}" required>
+      <nz-select nzShowSearch [(ngModel)]="i.plan" name="plan" required>
+        <nz-option *ngFor="let option of planOptions" [nzLabel]="option.label" [nzValue]="option.value">
+        </nz-option>
+      </nz-select>
+    </se>
+  </form>
+</div>
+<!-- 底部 -->
+<div class="modal-footer">
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save(f)"
+    [disabled]="!f.valid || !f.dirty" [nzLoading]="loading">{{ '保存' | translate}}</button>
+  <button nz-button type="button" (click)="close()">{{ '关闭' | translate}}</button>
+</div>

@@ -1,0 +1,11 @@
+<!-- 头部 -->
+<div class="modal-header">
+  <div class="modal-title">{{ '制造规范产线' | translate }}</div>
+</div>
+<!-- 内容 -->
+<ag-grid-angular #agGrid [class]="themeClass" [style.height.px]="gridHeight" [rowData]="gridData"
+  [columnDefs]="columns" [gridOptions]="gridOptions" [myAgGridState]="'PsHwSpecIndexApply'"
+  [myAgGridRowKey]="{tb:' ps_hw_spec_index_apply'}">
+</ag-grid-angular>
+<custom-pager [fixed]="false" [height]="pagerHeight" [context]="context" [view]='context.view' [(pageSize)]="_pageSize"
+  [(pageNo)]="_pageNo" (pageChangeEvent)="onPageChanged($event)" style="margin-top: 16px"></custom-pager>

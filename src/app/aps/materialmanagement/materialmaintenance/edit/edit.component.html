@@ -1,0 +1,55 @@
+<div class="modal-header">
+  <div class="modal-title">编辑 {{ record.id }} 信息</div>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="2">
+    <se label="物料">
+      <input type="text" nz-input [(ngModel)]="i.ITEMCODE" readonly="readonly" name="ITEMCODE">
+    </se>
+    <se label="生产线选择规则">
+      <nz-select #select [(ngModel)]="i.PRODLINERULE" name="PRODLINERULE">
+        <!-- <nz-option *ngFor="let option of prodlinerules" [nzLabel]="option.label" [nzValue]="option.value" [nzDisabled]="option.disabled"></nz-option> -->
+      </nz-select>
+    </se>
+    <se label="是否跟随">
+      <nz-select #select [(ngModel)]="i.FOLLOWEDFLAG" name="FOLLOWEDFLAG">
+        <!-- <nz-option *ngFor="let option of yesnos" [nzLabel]="option.label" [nzValue]="option.value" [nzDisabled]="option.disabled"></nz-option> -->
+      </nz-select>
+    </se>
+    <se label="是否级联跟单">
+      <nz-select #select [(ngModel)]="i.CASCADEFOLLOWEDFLAG" name="CASCADEFOLLOWEDFLAG">
+        <!-- <nz-option *ngFor="let option of yesnos" [nzLabel]="option.label" [nzValue]="option.value" [nzDisabled]="option.disabled"></nz-option> -->
+      </nz-select>
+    </se>
+    <se label="是否启用工序排程">
+      <nz-select #select [(ngModel)]="i.PROCESSSCHEDULINGFLAG" name="PROCESSSCHEDULINGFLAG">
+        <!-- <nz-option *ngFor="let option of yesnos" [nzLabel]="option.label" [nzValue]="option.value" [nzDisabled]="option.disabled"></nz-option> -->
+      </nz-select>
+    </se>
+    <se label="联动层次">
+      <nz-select #select [(ngModel)]="i.LINKAGELEVEL" name="LINKAGELEVEL">
+        <!-- <nz-option *ngFor="let option of linkagelevels" [nzLabel]="option.label" [nzValue]="option.value" [nzDisabled]="option.disabled"></nz-option> -->
+      </nz-select>
+    </se>
+    <se label="拒绝联动">
+      <nz-select #select [(ngModel)]="i.REFUSELINKAGEFLAG" name="REFUSELINKAGEFLAG">
+        <!-- <nz-option *ngFor="let option of refuselinkageflags" [nzLabel]="option.label" [nzValue]="option.value" [nzDisabled]="option.disabled"></nz-option> -->
+      </nz-select>
+    </se>
+    <se label="处理提前期">
+      <input type="number" nz-input-number [(ngModel)]="i.PROCESSINGLEADTIMENEW" style="width: 170px;"
+        name="PROCESSINGLEADTIMENEW">
+    </se>
+    <se label="安全生产周期(小时)">
+      <input type="number" nz-input-number [(ngModel)]="i.SAFETYLEADTIME" style="width: 170px;" name="SAFETYLEADTIME">
+    </se>
+    <se label="最大提前生产周期(天)">
+      <input type="number" nz-input-number [(ngModel)]="i.EXCEEDLEADTIME" style="width: 170px;" name="EXCEEDLEADTIME">
+    </se>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="submit" [nzType]="'primary'" [disabled]="f.invalid || !f.dirty" (click)="save()"
+    [nzLoading]="http.loading">保存</button>
+  <button nz-button type="button" (click)="close()">关闭</button>
+</div>

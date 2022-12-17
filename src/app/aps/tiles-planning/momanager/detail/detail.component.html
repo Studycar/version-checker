@@ -1,0 +1,13 @@
+<div class="modal-header">
+  <div class="modal-title">{{ ('明细') | translate}} </div>
+</div>
+<ag-grid-angular id="oemProductionPlanTable" #agGrid [class]="themeClass" [style.height.px]="gridHeight" [rowData]="gridData"
+    [columnDefs]="columns" [gridOptions]="gridOptions">
+</ag-grid-angular>
+<!-- <custom-pager [height]="pagerHeight" [context]="context" [view]='context.view' [(pageSize)]="_pageSize"
+    [(pageNo)]="_pageNo" (pageChangeEvent)="onPageChanged($event)" [fixed]="false"></custom-pager> -->
+<div class="modal-footer">
+  <!-- <button nz-button type="submit" (click)="confirm()" [nzType]=" 'primary'">
+    {{ '确定' | translate}}</button> -->
+  <button nz-button type="button" (click)="close() ">{{ '关闭' | translate}}</button>
+</div>

@@ -1,0 +1,60 @@
+<div class="modal-header">
+  <div class="modal-title">{{'色标管理' | translate}}</div>
+</div>
+
+
+<div class="mb-md">
+  <button nz-button [nzType]="'primary'">
+    <i class="anticon anticon-plus-circle-o"></i> {{ '保存' | translate}}
+  </button>
+</div>
+<div>
+  <nz-table
+  #editRowTable
+  nzBordered
+  [nzData]="dataSet">
+
+  <thead>
+    <tr>
+      <th nzWidth="40%">描述</th>
+
+      <th nzWidth="40%">颜色</th>
+
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of editRowTable.data">
+      <td>
+        <div class="editable-cell">
+          <div class="editable-cell-text-wrapper">
+            <ng-container>
+              {{data.MEANING}}
+            </ng-container>
+          </div>
+        </div>
+      </td>
+
+      <td>
+        <ng-container >
+          <input style="width:60px;"  type="color" nz-input [(ngModel)]="data.LOOKUP_CODE">
+        </ng-container>
+      </td>
+
+     <!-- <td>
+        <div class="editable-row-operations">
+          <ng-container *ngIf="!editCache[data.key].edit">
+            <a (click)="startEdit(data.key)">Edit</a>
+          </ng-container>
+          <ng-container *ngIf="editCache[data.key].edit">
+            <a (click)="saveEdit(data.key)">Save</a>
+            <nz-popconfirm [nzTitle]="'Sure to cancel?'" (nzOnConfirm)="cancelEdit(data.key)">
+              <a nz-popconfirm>Cancel</a>
+            </nz-popconfirm>
+          </ng-container>
+        </div>
+      </td>-->
+    </tr>
+  </tbody>
+</nz-table>
+</div>
+

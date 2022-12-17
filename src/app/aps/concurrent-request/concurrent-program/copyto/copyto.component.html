@@ -1,0 +1,28 @@
+<div class="modal-header">
+  <div class="modal-title">复制 {{ i.oldConcurrentProgramName }} 信息</div>
+</div>
+<form nz-form #f="ngForm" se-container="2">
+  <se label="{{ '程序' | translate}}" required>
+    <input type="text" nz-input [(ngModel)]="i.userConcurrentProgramName" name="USER_CONCURRENT_PROGRAM_NAME"
+      required>
+  </se>
+  <se label="{{ '简称' | translate}}" required>
+    <input type="text" nz-input [(ngModel)]="i.concurrentProgramName" name="CONCURRENT_PROGRAM_NAME" required>
+  </se>
+  <se label="{{ '应用模块' | translate}}" required>
+    <nz-select #select [(ngModel)]="i.applicationId" name="APPLICATION_ID" required nzShowSearch>
+      <nz-option *ngFor="let option of applicationArray" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+    </nz-select>
+  </se>
+  <se label="{{ '包含不兼容参数' | translate}}">
+    <input type="checkbox" nz-input [(ngModel)]="i.serial" name="SERIAL">
+  </se>
+  <se label="{{ '包含参数' | translate}}">
+    <input type="checkbox" nz-input [(ngModel)]="i.parameter" name="PARAMETER">
+  </se>
+</form>
+<div class="modal-footer">
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save()" [disabled]="f.invalid"
+    [nzLoading]="http.loading">{{'保存' | translate}}</button>
+  <button nz-button type="button" (click)="close()">{{ '关闭' | translate}}</button>
+</div>

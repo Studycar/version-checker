@@ -1,0 +1,39 @@
+span {
+    font-size: 8px;
+}
+
+.table_tr {
+    
+    height: 45px;
+    padding-top:5px;
+}
+
+.table_td_1 {
+    
+    width:11%;
+    padding-right:10px;
+}
+.table_td_2 {
+    
+    width:22%;
+}
+
+.table_from {
+    
+    width:100%;
+    height: 35px;
+}
+
+.disable_background {
+    background-color: rgb(245, 245, 245);
+  }
+
+.ant-form-item-required {
+    display: inline-block;
+    margin-right: 4px;
+    content: "*";
+    font-family: SimSun;
+    line-height: 1;
+    font-size: 13px;
+    color: #f5222d;
+}

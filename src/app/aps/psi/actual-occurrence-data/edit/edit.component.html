@@ -1,0 +1,68 @@
+<div class="modal-header">
+  <div class="modal-title">{{ (isModify?'编辑':'新增') | translate}} </div>
+</div>
+<div style=" margin:2px auto;" *ngIf="isModify">
+  <button style="float: right;" nz-button nzType="dashed" (click)="clear()">{{ '重置' | translate}}</button>
+  <div style="clear: both;"></div>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="2">
+    <se label="{{ '事业部' | translate}}" required>
+      <nz-select nzShowSearch [(ngModel)]="i.businessUnitCode" name="businessUnitCode" required [nzDisabled]="isModify" (ngModelChange)="businessUnitCodeOptionsChange($event)">
+        <nz-option *ngFor="let option of businessUnitCodeOptions" [nzLabel]="option.label" [nzValue]="option.value">
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '月份' | translate}}" required>
+      <nz-month-picker [(ngModel)]="i.periodMonth" name="periodMonth" required [nzDisabled]="isModify"></nz-month-picker>
+    </se>
+    <se label="{{ '数据类型' | translate}}" required>
+      <nz-select nzShowSearch [(ngModel)]="i.dataType" name="dataType" required [nzDisabled]="isModify">
+        <nz-option *ngFor="let option of dataTypeOptions" [nzLabel]="option.label" [nzValue]="option.value">
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '品类' | translate}}" required>
+      <nz-select nzShowSearch [(ngModel)]="i.category" name="category" required [nzDisabled]="isModify" *ngIf="!isModify">
+        <nz-option *ngFor="let option of categoryOptions" [nzLabel]="option.label" [nzValue]="option.value">
+        </nz-option>
+      </nz-select>
+      <input nz-input [(ngModel)]="i.category" name="category" [disabled]="isModify"  *ngIf="isModify" />
+    </se>
+    <se label="{{ '渠道' | translate}}" required>
+      <nz-select nzShowSearch [(ngModel)]="i.channel" name="channel" required [nzDisabled]="isModify">
+        <nz-option *ngFor="let option of channelOptions" [nzLabel]="option.label" [nzValue]="option.value">
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '内外销' | translate}}" required>
+      <nz-select nzShowSearch [(ngModel)]="i.salesType" name="salesType" required [nzDisabled]="isModify">
+        <nz-option *ngFor="let option of salesTypeOptions" [nzLabel]="option.label" [nzValue]="option.value">
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '单价' | translate}}" required>
+      <nz-input-group nzAddOnAfter="元">
+        <nz-input-number [(ngModel)]="i.dtlAvgPrice" name="dtlAvgPrice" [nzMin]="0" required (ngModelChange)="calculate($event)"></nz-input-number>
+      </nz-input-group>
+    </se>
+    <se label="{{ '数量' | translate}}" required>
+      <nz-input-group nzAddOnAfter="万台">
+        <nz-input-number [(ngModel)]="i.dtQty" name="dtQty" [nzMin]="0" required (ngModelChange)="calculate($event)"></nz-input-number>
+      </nz-input-group>
+    </se>
+    <se label="{{ '金额(亿元)' | translate}}" required>
+      {{ dtAmt }}
+    </se>
+    <se label="{{ '月均金额' | translate}}" required>
+      <nz-input-group nzAddOnAfter="亿元">
+        <nz-input-number [(ngModel)]="i.dtlAvgAmt" name="dtlAvgAmt" [nzMin]="0" required></nz-input-number>
+      </nz-input-group>
+    </se>
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="submit" [nzType]="'primary'" (click)="save(f)"
+  [disabled]="!f.valid || !f.dirty">{{ '保存' | translate}}</button>
+  <button nz-button type="button" (click)="close()">{{ '关闭' | translate}}</button>
+</div>

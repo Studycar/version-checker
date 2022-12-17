@@ -1,0 +1,114 @@
+<div style="padding-bottom: 5px;">
+  <table cellPadding=0 cellspacing=0 border=0>
+    <tr>
+      <td>
+        <span>
+          <custom-button text="{{ '查询' | translate}}" (clickEvent)="query()" [src]="'基础icon-查询'">
+          </custom-button>
+        </span>
+      </td>
+      <!--<td *ngIf="false">
+        <span>
+          <custom-button text="{{ '保存' | translate}}" (clickEvent)="save()" [src]="'保存'">
+          </custom-button>
+        </span>
+      </td>-->
+      <td>
+        <span>
+          <custom-button text="{{ '数据刷新' | translate}}" (clickEvent)="RefreshData()" [src]="'基础icon-刷新'">
+          </custom-button>
+        </span>
+      </td>
+      <!--<td>
+        <button nz-button (click)="add()" [nzType]="'primary'" [nzLoading]="http.loading">
+           <i class="anticon anticon-reload"></i>{{ '查询刷新' | translate}}</button>
+      </td>-->
+      <td>
+        <span>
+          <custom-button text="{{ '批量下达' | translate}}" (clickEvent)="noticeRelease()" [src]="'批量下达'">
+          </custom-button>
+        </span>
+      </td>
+      <td>
+        <span>
+          <custom-button text="{{ '单元格下达' | translate}}" (clickEvent)="oneNoticeRelease()" [src]="'单元格下达'">
+          </custom-button>
+        </span>
+      </td>
+      <td>
+        <span>
+          <custom-button text="{{ '自动计算' | translate}}" (clickEvent)="autoCalculate()" [src]="'自动计算'">
+          </custom-button>
+        </span>
+      </td>
+      <!--<td *ngIf="false">
+        <span>
+          <custom-button text="{{ '发送邮件' | translate}}" (clickEvent)="add()" [src]="'发送邮件'">
+          </custom-button>
+        </span>
+      </td>-->
+      <td>
+        <span>
+          <custom-button text="{{ '清除计划' | translate}}" (clickEvent)="clearPlan()" [src]="'清除计划'">
+          </custom-button>
+        </span>
+      </td>
+      <td>
+        <span>
+          <custom-button text="{{ 'PO缺料' | translate}}" (clickEvent)="PoLackMaterial()" [src]="'PO缺料'">
+          </custom-button>
+        </span>
+      </td>
+      <!--<td>
+        <span>
+          <custom-button text="{{ '发布' | translate}}" (clickEvent)="planRelease()" [src]="'发布'">
+          </custom-button>
+        </span>
+      </td>-->
+      <td>
+        <span>
+          <custom-button text="{{ '需求明细' | translate}}" (clickEvent)="demandDetail()" [src]="'来源明细'">
+          </custom-button>
+        </span>
+      </td>
+      <!-- <td>
+        <span>
+          <custom-button text="{{ '数据检查' | translate}}" (clickEvent)="dataCheck()" [src]="'数据检查'">
+          </custom-button>
+        </span>
+      </td> -->
+      <td>
+        <span>
+          <custom-button text="{{ '导出' | translate}}" (clickEvent)="export()" [src]="'基础icon-导出'">
+          </custom-button>
+        </span>
+      </td>
+      <td>
+        <table cellPadding=0 cellspacing=0 border=0>
+          <tr>
+            <td>
+              <span>{{ '最小包装' | translate}}</span>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <input type="text" nz-input [(ngModel)]="T_MINIMUN_PACKAGE" name="strMinPack" readonly style="width:60px;">
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<nz-card>
+  <ag-grid-angular #agGrid id="dnGrid" [class]="themeClass" [style.height.px]="gridHeight" [rowData]="gridData" [columnDefs]="columns"
+    [gridOptions]="gridOptions" (selectionChanged)="onSelectionChanged()" [myAgGridRowKey]="{tb:'PC_DELIVERY_WORKBENCH_TEMP'}"
+    [myAgGridState]="'PC_DELIVERY_WORKBENCH_TEMP'" (virtualColumnsChanged)="onVirtualColumnsChanged()" (cellValueChanged)="onCellValueChanged($event)"
+    [suppressRowTransform]="true" [components]="components" [getRowClass]="getRowClass" (cellDoubleClicked)="onCellDoubleClicked($event)"
+    (cellClicked)="onCellClick($event)" [suppressRowClickSelection]="true">
+  </ag-grid-angular>
+  <custom-pager [height]="pagerHeight" [context]="context" [view]='context.view' [(pageSize)]="_pageSize" [(pageNo)]="_pageNo"
+    (pageChangeEvent)="onPageChanged($event)"></custom-pager>
+  <custom-excelexport [expColumns]='expColumns' fileName='shippingNoticeExport' #excelexport></custom-excelexport>
+</nz-card>

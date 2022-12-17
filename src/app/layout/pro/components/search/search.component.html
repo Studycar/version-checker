@@ -1,0 +1,15 @@
+<nz-input-group [nzSuffix]="suffixIcon">
+  <input placeholder="{{'请输入关键词搜索'|translate}}" nz-input [(ngModel)]="searchMenuValue" class="sider-search-input" (ngModelChange)="onChange($event)"
+    [nzAutocomplete]="searchAuto" (keyup.enter)="goToPage()" />
+</nz-input-group>
+<ng-template #suffixIcon>
+  <i nz-icon nzType="search" style="color:#fff"></i>
+</ng-template>
+<nz-autocomplete #searchAuto [nzWidth]="autoCompleteWidth">
+  <nz-auto-optgroup *ngFor="let group of list" nzLabel="{{group.text|translate}}">
+    <nz-auto-option *ngFor="let option of group.children" nzLabel="{{option.value|translate}}" nzValue="{{option.value|translate}}">
+      <a [routerLink]="option.link" [innerHtml]="option.text"></a>
+    </nz-auto-option>
+  </nz-auto-optgroup>
+  <nz-auto-option *ngIf="!list || !list.length" nzValue="null" nzDisabled>找不到相关菜单</nz-auto-option>
+</nz-autocomplete>

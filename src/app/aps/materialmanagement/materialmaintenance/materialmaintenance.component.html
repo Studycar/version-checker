@@ -1,0 +1,60 @@
+<custom-formquery [queryParams]="queryParams" [context]="context" (event1)="searchItems($event)"
+  (event2)="rowSelect($event)" (event3)="ClearItemCodes($event)">
+  <span>
+    <!-- <custom-button text="{{ '提前期导入' | translate}}" (clickEvent)="leadTimeImport()" [src]="'基础icon-导入'" [loading]="optionsLoading">
+    </custom-button>
+    <custom-button text="{{ '提前期导出' | translate}}" (clickEvent)="leadTimeExport()" [src]="'基础icon-导出'">
+    </custom-button> 
+    <custom-button text="{{ '工序导入' | translate}}" (clickEvent)="itemProcessImport()" [src]="'基础icon-导入'" [loading]="optionsLoading">
+    </custom-button>
+    <custom-button text="{{ '工序导出' | translate}}" (clickEvent)="itemProcessExport()" [src]="'基础icon-导出'">
+    </custom-button>-->
+    <custom-button text="{{ '物料导出' | translate}}" (clickEvent)="export()" [src]="'基础icon-导出'">
+    </custom-button>
+    <!-- <custom-button text="{{ '物料导入' | translate}}" (clickEvent)="itemImport()" [src]="'基础icon-导入'" [loading]="optionsLoading">
+    </custom-button> -->
+  </span>
+</custom-formquery>
+<nz-card>
+  <div>
+    <nz-tabset>
+      <nz-tab *ngFor="let tab of tabs" [nzTitle]="titleTemplate" (nzSelect)="tabSelect(tab)">
+        <ng-template #titleTemplate>
+          <div style="height: 24px;">
+            {{ tab.name | translate }}
+            <span class="tag-triangle">
+              <i class="anticon anticon-up" *ngIf="tab.index===selectIndex" style="margin-right: 0;"></i>
+            </span>
+          </div>
+        </ng-template>
+      </nz-tab>
+    </nz-tabset>
+    <ag-grid-angular #agGrid [class]="themeClass" [style.height.px]="gridHeight" [rowData]="gridData"
+      [columnDefs]="columns" [gridOptions]="gridOptions" [myAgGridRowKey]="{tb:'PS_ITEM'}" tabAggridState
+      [originState]="tabFirstFlag" [stateKey]="stateKey" [tabSubject]="tabSubject"></ag-grid-angular>
+    <custom-pager [height]="pagerHeight" [context]="context" [view]='context.view' [(pageSize)]="_pageSize"
+      [(pageNo)]="_pageNo" (pageChangeEvent)="onPageChanged($event)">
+    </custom-pager>
+    <custom-excelexport [expColumns]='expColumns' [expColumnsOptions]='expColumnsOptions' fileName='物料查询导出'
+      #excelExport>
+    </custom-excelexport>
+    <custom-excelexport [expColumns]='expLeadTimeColumns' fileName='工序提前期' #excelLeadTimeExport>
+    </custom-excelexport>
+    <custom-excelexport [expColumns]='expItemProcessColumns' fileName='物料工序' #excelItemProcessExport>
+    </custom-excelexport>
+  </div>
+</nz-card>
+
+<ng-template #customTemplate let-dataItem>
+  <span title="{{ '物料工序' | translate}}" *ngIf="dataItem.makeBuyCode === '1' || dataItem.makeBuyCode === '3'"
+    [routerLink]="['/materialmanagement/material-process']"
+    [queryParams]="{itemCode: dataItem.itemCode, plantCode: dataItem.plantCode, itemId:dataItem.itemId}"
+    class="pointer">
+    <i class="anticon anticon-paper-clip"></i>
+  </span>
+  <nz-divider nzType="vertical"></nz-divider>
+  <span title="{{ '物料工序列表' | translate}}" *ngIf="dataItem.makeBuyCode === '1' || dataItem.makeBuyCode === '3' "
+    (click)="process(dataItem)" class="pointer">
+    <i class="anticon anticon-bars"></i>
+  </span>
+</ng-template>

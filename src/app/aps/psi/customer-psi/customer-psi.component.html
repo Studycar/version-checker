@@ -1,0 +1,48 @@
+<custom-formquery [queryParams]="queryParams" [context]="context"
+  (event1)="buCodeOptionsChange($event)"
+  (event2)="organizationOptionsChange($event)"
+  (event3)="searchCustomers($event)"
+  (event4)="searchItems($event)"
+  (event5)="rowSelectItems($event)"
+  (event6)="monAverageChange($event)"
+  (event7)="salesCategoryBigChange($event)"
+>
+  <span>
+    <custom-button text="{{ '保存' | translate}}" (clickEvent)="save()" [src]="'保存'">
+    </custom-button>
+    <custom-button text="{{ '导入' | translate}}" (clickEvent)="imports()" [src]="'基础icon-导入'" [loading]="optionsLoading">
+    </custom-button>
+    <custom-button text="{{ '导出' | translate}}" (clickEvent)="export()" [src]="'基础icon-导出'">
+    </custom-button>
+  </span>
+  <span name="afterSearch">
+    <span class="after-search-label">维度选择: </span><nz-checkbox-group [(ngModel)]="dimensionOptions" (ngModelChange)="chooseDimension($event)"></nz-checkbox-group>
+  </span>
+</custom-formquery>
+
+<nz-card>
+  <ag-grid-angular
+    id="customerPSI"
+    #agGrid
+    [class]="themeClass"
+    [style.height.px]="gridHeight"
+    [rowData]="gridData"
+    [columnDefs]="columns"
+    [gridOptions]="gridOptions"
+    [frameworkComponents]="frameworkComponents"
+    [myAgGridRowKey]="{tb:'SOP_CUSTOMER_PSI'}"
+    [myAgGridState]="'customerPSI'"
+    (cellValueChanged)="onCellValueChanged($event)"
+    (virtualColumnsChanged)="onVirtualColumnsChanged($event)">
+  </ag-grid-angular>
+  <custom-pager
+    [height]="pagerHeight"
+    [context]="context"
+    [view]='context.view'
+    [(pageSize)]="_pageSize"
+    [(pageNo)]="_pageNo"
+    (pageChangeEvent)="onPageChanged($event)">
+  </custom-pager>
+  <custom-excelexport [expColumns]="expColumns" [expColumnsOptions]="expColumnsOptions" fileName="客户PSI" #excelexport>
+  </custom-excelexport>
+</nz-card>

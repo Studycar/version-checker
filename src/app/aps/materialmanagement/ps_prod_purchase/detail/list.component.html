@@ -1,0 +1,44 @@
+<div class="modal-header">
+  <div class="modal-title">{{ '成品与采购件明细' | translate}}</div>
+</div>
+<div class="operatable-area">
+  <custom-button text="{{ '新增' | translate}}" (clickEvent)="add({})" [src]="'基础icon-新增'">
+  </custom-button>
+  <custom-button text="{{ '删除' | translate}}" (clickEvent)="deleteBatch()" [src]="'基础icon-删除'">
+  </custom-button>
+  <!-- <custom-button text="{{ '启用' | translate}}" (clickEvent)="turnOnOffBatch('1')" [src]="'提交新请求'">
+  </custom-button>
+  <custom-button text="{{ '禁用' | translate}}" (clickEvent)="turnOnOffBatch('0')" [src]="'基础icon-删除'">
+  </custom-button> -->
+</div>
+<ag-grid-angular #agGrid [class]="themeClass" [style.height.px]="gridHeight" [rowData]="gridData" [columnDefs]="columns"
+  [gridOptions]="gridOptions" [myAgGridState]="'psProdPurchaseEx'"
+  [myAgGridRowKey]="{tb:' ps_prod_purchase_ex'}">
+</ag-grid-angular>
+<custom-pager [fixed]="false" [height]="pagerHeight" [context]="context" [view]='context.view' [(pageSize)]="_pageSize"
+  [(pageNo)]="_pageNo" (pageChangeEvent)="onPageChanged($event)"></custom-pager>
+<custom-excelexport [expColumns]='expColumns' [expColumnsOptions]='expColumnsOptions' fileName='成品与采购件' #excelexport>
+</custom-excelexport>
+<ng-template #customTemplate let-dataItem>
+  <span title="编辑" (click)="add(dataItem)" style="cursor: Pointer">
+    <i class="anticon anticon-edit"></i>
+  </span>
+  <nz-divider nzType="vertical"></nz-divider>
+
+  <span *ngIf="dataItem.enableFlag==='N'" title="删除" nz-popconfirm nzTitle="是否确认删除该记录?"
+    (nzOnConfirm)="deleteBatch()" style="cursor: Pointer">
+    <i class="anticon anticon-delete"></i>
+  </span>
+
+  <!-- <nz-divider nzType="vertical"></nz-divider>
+
+  <span *ngIf="dataItem.enableFlag==='N'" title="启用" nz-popconfirm nzTitle="是否确认启用该记录?"
+    (nzOnConfirm)="turnOnOff(dataItem,'1')" style="cursor: Pointer">
+    <i class="anticon anticon-unlock"></i>
+  </span>
+
+  <span *ngIf="dataItem.enableFlag==='Y'" title="禁用" nz-popconfirm nzTitle="是否确认禁用该记录?"
+    (nzOnConfirm)="turnOnOff(dataItem,'0')" style="cursor: Pointer">
+    <i class="anticon anticon-lock"></i>
+  </span> -->
+</ng-template>

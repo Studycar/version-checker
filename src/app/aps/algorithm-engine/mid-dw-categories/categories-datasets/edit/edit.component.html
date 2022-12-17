@@ -1,0 +1,69 @@
+<div class="modal-header">
+  <div class="modal-title">{{ (isModify?'编辑信息':'新增信息') | translate}} </div>
+</div>
+<div style=" margin:2px auto;" *ngIf="isModify">
+  <button style="float: right;" nz-button nzType="dashed" (click)="clear()">{{ '重置' | translate}}</button>
+  <div style="clear: both;"></div>
+</div>
+<div>
+  <form nz-form #f="ngForm" se-container="2">
+    <se label="{{ '数据集大类' | translate}}" required>
+      <input type="text" nz-input [(ngModel)]="i.categoryCode" name="categoryCode" [class.disabled]="true" required>
+    </se>
+    <se label="{{ '数据集大类简称' | translate}}" required>
+      <input type="text" nz-input [(ngModel)]="i.categoryShortName" name="categoryShortName" [class.disabled]="true"
+        required>
+    </se>
+    <se label="{{ '数据集版本' | translate}}">
+      <input type="text" nz-input [(ngModel)]="i.datasetVersion" name="datasetVersion" [class.disabled]="true">
+    </se>
+    <se label="{{ '数据集简称' | translate}}">
+      <input type="text" nz-input [(ngModel)]="i.datasetShortName" name="datasetShortName" [class.disabled]="true">
+    </se>
+    <se label="{{ '数据集类型' | translate}}" required>
+      <nz-select nzShowSearch [(ngModel)]="i.datasetType" name="datasetType" [class.disabled]="isDisabled"
+        required>
+        <nz-option *ngFor="let option of optionListType" [nzLabel]="option.label" [nzValue]="option.value">
+        </nz-option>
+      </nz-select>
+    </se>
+    <se label="{{ '数据集名称' | translate}}" required>
+      <input type="text" nz-input [(ngModel)]="i.datasetName" name="datasetName" [class.disabled]="isDisabled" required>
+    </se>
+    <se label="{{ '数据集描述' | translate}}" col="1">
+      <input type="text" nz-input [(ngModel)]="i.datasetDescription" name="datasetDescription"
+        [class.disabled]="isDisabled">
+    </se>
+    <se label="{{ 'SQL脚本列名称' | translate}}" col="1" required>
+      <textarea nz-input [(ngModel)]="i.sqlColumnClauses" name="sqlColumnClauses" placeholder="格式示例：t.item_code ,t.item_name
+      注意：如有多个列字段，必须使用英文逗号分隔。不能包含*字符。" (change)="combie()" [class.disabled]="isDisabled"
+        [nzAutosize]="{ minRows: 2, maxRows: 4 }" [required]="true"> </textarea>
+    </se>
+    <se label="{{ 'SQL脚本表名称' | translate}}" col="1" required>
+      <textarea nz-input [(ngModel)]="i.sqlTableClauses" name="sqlTableClauses" placeholder="格式示例：mid.ds_item_info t,mid.ds_plant d
+      注意：如有多个表对象，必须使用英文逗号分隔。" (change)="combie()" [class.disabled]="isDisabled"
+        [nzAutosize]="{ minRows: 2, maxRows: 4 }" [required]="true"> </textarea>
+    </se>
+    <se label="{{ 'SQL脚本条件语句' | translate}}" col="1">
+      <textarea nz-input [(ngModel)]="i.sqlWhereClauses" name="sqlWhereClauses"
+        placeholder="格式示例：t.status = 'Inactive' and t.plant_id=d.plant_id and td.plant_id in (201,270)"
+        [class.disabled]="isDisabled" (change)="combie()" [nzAutosize]="{ minRows: 4, maxRows: 4 }"
+        [required]="false"> </textarea>
+    </se>
+    <se label="{{ 'SQL脚本（合并）' | translate}}" col="1" required>
+      <textarea nz-input [(ngModel)]="i.totalSqlStatements" name="totalSqlStatements"
+        [nzAutosize]="{ minRows: 6, maxRows: 10 }" [required]="true" [class.disabled]="true"> </textarea>
+    </se>
+    <se label="{{ '调试日志' | translate}}" col="1">
+      <textarea nz-input [(ngModel)]="i.debugLogs" name="debugLogs" readonly
+        [nzAutosize]="{ minRows: 2, maxRows: 4 }" [required]="false"> </textarea>
+    </se>
+  </form>
+</div>
+<div class="modal-footer">
+  <button id='sqlDebug' nz-button type="submit" [nzType]="'primary'" (click)="save(f)"
+    [disabled]="!f.valid || !f.dirty||isDisabled">{{ 'SQL调试并保存' | translate}}</button>
+  <button nz-button type="submit" [nzType]="'primary'" (click)="submit()" [disabled]="isDisabled">{{'提交' |
+    translate}}</button>
+  <button nz-button type="button" (click)="close()">{{ '关闭' | translate}}</button>
+</div>

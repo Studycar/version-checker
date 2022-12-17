@@ -1,0 +1,43 @@
+<custom-formquery [queryParams]="queryParams" [context]="context" (event1)="searchItem($event)"
+  (event3)="searchVendor($event)">
+  <span>
+    <custom-button text="{{ '保存' | translate}}" (clickEvent)="save()" [src]="'保存'"></custom-button>
+    <custom-button text="{{ '取消' | translate}}" (clickEvent)="cancel()" [src]="'取消订单'"></custom-button>
+    <custom-button text="{{ '释放' | translate}}" (clickEvent)="release()" [src]="'释放'"></custom-button>
+    <custom-button text="{{ '发布' | translate}}" (clickEvent)="publish()" [src]="'发布'"></custom-button>
+    <custom-button text="{{ '导出' | translate}}" (clickEvent)="export()" [src]="'基础icon-导出'"></custom-button>
+  </span>
+</custom-formquery>
+<nz-card>
+  <ag-grid-angular #agGrid id="dnGrid" [class]="themeClass" [style.height.px]="gridHeight" [rowData]="gridData"
+    [columnDefs]="extendColumns" [gridOptions]="gridOptions" (selectionChanged)="onSelectionChanged()"
+    [myAgGridRowKey]="{tb:'PC_NOTIFY_HEADER'}" [suppressRowClickSelection]="true" [myAgGridState]="'PC_NOTIFY_HEADER'"
+    (virtualColumnsChanged)="onVirtualColumnsChanged()" (cellValueChanged)="onCellValueChanged($event)"
+    (cellDoubleClicked)="onCellDoubleClicked($event)">
+  </ag-grid-angular>
+  <custom-pager [height]="pagerHeight" [context]="context" [view]='context.view' [(pageSize)]="_pageSize"
+    [(pageNo)]="_pageNo" (pageChangeEvent)="onPageChanged($event)"></custom-pager>
+  <custom-excelexport [expColumns]='extendColumns' [expColumnsOptions]='expColumnsOptions' fileName='送货通知' #excelexport>
+  </custom-excelexport>
+</nz-card>
+<ng-template #customTemplate let-dataItem>
+  <span>
+    <nz-date-picker nzShowTime nzFormat="yyyy-MM-dd HH:mm:ss" [(ngModel)]="dataItem.needByDate" name="needByDate"
+      nzPlaceHolder="请选择" [required]="true" [nzAllowClear]="false">
+    </nz-date-picker>
+  </span>
+</ng-template>
+
+<ng-template #customTemplate1 let-dataItem>
+  <span>
+    <nz-select #select [(ngModel)]="dataItem.attribute5" style="width:120px">
+      <nz-option *ngFor="let address of addressOptions" [nzLabel]="address" [nzValue]="address">
+      </nz-option>
+    </nz-select>
+  </span>
+</ng-template>
+<ng-template #customTemplate2 let-dataItem>
+  <span>
+    <input type="text" nz-input [(ngModel)]="dataItem.comments" name="comments" required>
+  </span>
+</ng-template>

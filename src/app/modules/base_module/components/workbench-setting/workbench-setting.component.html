@@ -1,0 +1,32 @@
+<div class="workbench-setting">
+  <section autoHeight [fixedHeight]="268">
+    <ng-scrollbar>
+      <div classta="title"></div>
+      <nz-checkbox-wrapper style="width: 100%;">
+        <div nz-row class="workbench-setting-row" *ngFor="let row of checkboxDefined;let r = index;">
+          <div nz-col nzSpan="4" *ngFor="let checkbox of row;let c = index">
+            <label
+              nz-checkbox
+              [title]="checkbox.label"
+              [nzValue]="checkbox.field"
+              [ngModel]="!checkbox.hide"
+              class="text-ellipsis"
+              (ngModelChange)="change($event, r, c)"
+            >
+              {{checkbox.label}}
+            </label>
+          </div>
+        </div>
+      </nz-checkbox-wrapper>
+    </ng-scrollbar>
+  </section>
+  <div class="footer">
+    <div>
+      <button nz-button nzType="default" (click)="reset()">{{'恢复默认值' | translate}}</button>
+      <button nz-button nzType="dashed" (click)="resetTable()">{{'重置表格' | translate}}</button>
+    </div>
+    <div>
+      <button nz-button nzType="primary" (click)="updateState()">{{'确定' | translate}}</button>
+    </div>
+  </div>
+</div>
