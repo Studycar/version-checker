@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aps-cloud-ui
+  namespace: hwaps-prd
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 2
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: aps-cloud-ui
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: aps-cloud-ui
+    spec:
+      containers:
+        - image: ${IMAGE}
+          imagePullPolicy: IfNotPresent
+          name: aps-cloud-ui
+          resources:
+            limits:
+              cpu: '1'
+              memory: 2Gi
+            requests:
+              cpu: 250m
+              memory: 512Mi
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+            - mountPath: /etc/nginx/nginx.conf
+              name: volume-1663135955814
+              subPath: nginx.conf
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      imagePullSecrets:
+        - name: kb
