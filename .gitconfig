@@ -1,0 +1,16 @@
+[user]
+	name = 梁学轩
+	email = 2547607525@qq.com
+[core]
+	excludesfile = /Users/studycar/.gitignore_global
+[difftool "sourcetree"]
+	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+	path = 
+[mergetool "sourcetree"]
+	cmd = /Applications/Sourcetree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+	trustExitCode = true
+[commit]
+	template = /Users/studycar/.stCommitMsg
+[pull]
+	rebase = false
+	ff = false
